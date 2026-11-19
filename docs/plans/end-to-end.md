@@ -1,5 +1,7 @@
 # TraceForge end-to-end plan
 
+> **Superseded by the execution manual in [README.md](README.md)** (phase folders, step documents, task IDs `P<n>-S<nn>`). Kept for history; where they differ, the execution manual and the Synverk cards win.
+
 Two people, two parallel tracks, equal work. Each person owns a set of folders, so the two of you never edit the same files. The tracks meet only through **shared contracts** (Pydantic schemas) agreed in step 00. Until the other side is ready, each side works against **sample JSON files** that follow those contracts.
 
 - **Track A — Rafique: "evidence side"** (failure → evidence → ranked context → verified test result).

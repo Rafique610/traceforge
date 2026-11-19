@@ -3,7 +3,7 @@
 | Need | Go to |
 |---|---|
 | What TraceForge is, chosen stack, folder layout, phase status | `docs/domain/traceforge/index.md` |
-| The step-by-step build plan (A3 + A4) | `docs/plans/end-to-end.md` |
+| The execution manual: phases, step documents, owners (A3 + A4) | `docs/plans/README.md` |
 | Rules for any task | `docs/invariants/core.md` |
 | FastAPI / backend rules | `docs/invariants/backend.md` |
 | React / frontend rules | `docs/invariants/frontend.md` |

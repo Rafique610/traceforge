@@ -51,4 +51,4 @@ Taskfile.yml
 ```
 
 ## Phase status
-Planning complete; no code yet. See `docs/plans/end-to-end.md`.
+Planning complete; no code yet. Execution manual: `docs/plans/README.md` (7 phases, 35 steps, task IDs `P<n>-S<nn>` mapped to Synverk cards TRAC-1…32).
