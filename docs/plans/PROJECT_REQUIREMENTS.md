@@ -66,7 +66,7 @@ IDs: `FR-` functional, `NFR-` non-functional, `SR-` security, `IR-` integration,
 - Python 3.12 + uv; FastAPI; SQLAlchemy 2 + Alembic; PostgreSQL 16; Vite + React + TS with pnpm; Taskfile; Docker Compose; Ollama.
 - Two members; work split into two lanes with separate folders.
 - Mistral free tier (reported ~1 request/second; exact limits to be read from the admin panel in P1-S05).
-- `main` protected; all changes by PR reviewed by the other member.
+- `main` blocks force push and deletion; either member may merge their own work (review optional).
 
 ## Acceptance criteria (whole project)
 - **A3:** a config case and a code case go from UI input to a verified patch and stored review; a runtime_dependency decoy is diagnosed without a patch; an insufficient-evidence case abstains; a GitHub issue creates an incident; results page shows E1 and L0 vs G0 from saved runs on the frozen set; ≥10 failure analyses; both members demo and explain.

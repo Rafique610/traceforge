@@ -1,17 +1,21 @@
 # Processes
 
-## Steps and cards
-- The plan lives in `docs/plans/end-to-end.md` as numbered steps. Each step becomes one Synverk card when work on it starts.
-- Work one card at a time. Read the card first, tell the user its flow name and link, then code.
+## Sync before work
+- Before starting any work: `git fetch origin`, then `git status -sb`. If the branch is behind `origin`, `git pull --ff-only` first. Start a new step branch from an up-to-date `main`.
+
+## Steps
+- The plan is the execution manual in `docs/plans/` (phase folders, one step document per task, IDs `P<n>-S<nn>`). Synverk is not used for this project; the TRAC-n numbers in step documents are historical references only.
+- Work one step at a time. Read the step document first, tell the user its ID and path, then code.
 - Before handoff: test it yourself, fix obvious errors, update README, then explain in plain language (backend and frontend) what changed and what the user will notice, with exact commands to verify.
 - Keep a running list of things noticed but not done; flag them, never fix or skip silently.
-- Paste check output as a card comment, move the card to review. Only the user approves. Wait for approval before the next card.
+- Track status in the step document (Status line + checklist) and the phase README. Set NEEDS REVIEW and give the check output in chat. Only the user approves. Wait for approval before the next step.
 
-## Commits
+## Commits and merging
 - After approval the agent commits the step and pushes the branch to `origin`.
 - One commit per approved step (or explicitly batched group). Subject under 72 chars, e.g. `feat(retrieval): add BM25 baseline`. Covers only that diff. No bulleted essay body.
 - Never add an AI/agent co-author or "generated with" line.
-- Merging into `main`, force-pushing and tagging need a yes each time.
+- No peer approval is required. Either member may merge their own work into `main` (directly or via a self-merged PR) when they judge it ready; the other member fixes or follows up afterwards if needed. A PR review by the other member is welcome but optional.
+- `main` still blocks force pushes and deletion. For the agent: merging into `main`, force-pushing and tagging need a yes each time.
 
 ## README
 - Update `README.md` on every step: new capabilities, paths and commands. Every commit carries an up-to-date README.

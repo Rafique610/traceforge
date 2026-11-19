@@ -6,64 +6,57 @@
 | Phase | 0 Foundation |
 | Step | 1 |
 | Task ID | P0-S01 |
-| Synverk card | none (pre-card setup) |
+| Synverk card | none (Synverk not used, D16) |
 | Primary owner | Muhammad Rafique (repo owner) |
-| Supporting | Muhammad Ruhan Kamran (accepts invites) |
-| Reviewer | Ruhan |
-| Priority | High (blocks every merge) |
+| Supporting | Muhammad Ruhan Kamran (accepts invite) |
+| Reviewer | optional |
+| Priority | High (blocks Ruhan's pushes) |
 | Effort | 0.5 day |
-| Status | IN PROGRESS (repo, ignore rules, protection done; collaborator, Synverk sharing, PR #1 pending) |
+| Status | IN PROGRESS (repo, ignore rules, protection, PR #1 and docs PR done; collaborator and `.gitattributes` pending) |
 
 ## B. Objective
-Both members can push branches, review each other's PRs and see the same board. Without this, `main` protection (1 approving review, admins included) means **nothing can merge**.
+Both members can push and merge their own work to `main`. No approving review is required (D6); `main` only blocks force pushes and deletion.
 
 ## C. Prerequisites
-- Ruhan's GitHub username and the email he uses for Synverk (open question Q4).
+- Ruhan's GitHub username (open question Q4).
 - `gh` logged in as `Rafique610` (verified).
 
 ## D. Technical background
-- Branch protection with `enforce_admins: true` applies to the owner too, so every change, including Rafique's, needs Ruhan's approval. This keeps contributions equal and visible (rubric C6).
-- Synverk cards name the owner in their titles; assignment in Synverk needs the person to be a project member.
+- Branch protection keeps `enforce_admins: true` with no required review, so the owner is also blocked from force-pushing or deleting `main`, but anyone with push access can merge.
 - `.gitattributes` with LF for source files avoids Windows CRLF noise inside Linux containers (risk T7).
+- Before any work: `git fetch` and pull if behind (D17).
 
 ## E. Implementation instructions
-1. **Verify current state** (already done once):
-   `gh api repos/Rafique610/traceforge/branches/main/protection --jq '{admins:.enforce_admins.enabled,reviews:.required_pull_request_reviews.required_approving_review_count}'` → `{"admins":true,"reviews":1}`.
+1. **Verify current state:**
+   `gh api repos/Rafique610/traceforge/branches/main/protection --jq '{admins:.enforce_admins.enabled,reviews:.required_pull_request_reviews,force:.allow_force_pushes.enabled}'` → `{"admins":true,"reviews":null,"force":false}`.
 2. **Add Ruhan as collaborator** with write access:
    `gh api -X PUT repos/Rafique610/traceforge/collaborators/<ruhan-username> -f permission=push`. Ruhan accepts the email invite.
-3. **Share the Synverk project** with Ruhan (Synverk UI → project → share, or `share` MCP tool) with edit access.
-4. **Assign cards** in Synverk by the owner in each title (Ruhan assigns his own after joining; Rafique assigns his).
-5. **Add `.gitattributes`** at the root: `* text=auto eol=lf`, `*.ps1 text eol=crlf`, `*.pdf binary`.
-6. **Merge PR #1** (research safeguards) once Ruhan approves.
-7. **Merge this docs branch** (`rafique/execution-docs`) after Ruhan's review.
-8. Both members clone and confirm `git pull` works.
+3. **Add `.gitattributes`** at the root: `* text=auto eol=lf`, `*.ps1 text eol=crlf`, `*.pdf binary`.
+4. Both members clone and confirm `git pull` works.
 
 ## F. Checklist
 - [x] Public repo `Rafique610/traceforge` created
 - [x] `.gitignore` excludes course PDFs, `INSTRUCTIONS.md`, `.memory/`, `.env`
-- [x] `main` protected (1 approval, admins included, no force push/deletion)
+- [x] `main` protected (no force push/deletion; no required review)
+- [x] PR #1 merged
+- [x] Execution docs PR merged
 - [ ] Ruhan's GitHub username obtained
 - [ ] Ruhan added with push access and invite accepted
-- [ ] Synverk project shared with Ruhan
-- [ ] Cards assigned to their owners in Synverk
-- [ ] `.gitattributes` added (via PR)
-- [ ] PR #1 reviewed and merged
-- [ ] Execution docs PR reviewed and merged
+- [ ] `.gitattributes` added
 - [ ] Both members cloned and pulled `main`
 
 ## G. Expected deliverables
-- Collaborator entry for Ruhan; Synverk membership.
+- Collaborator entry for Ruhan.
 - `.gitattributes` (new).
-- Merged PR #1 and docs PR.
 
 ## H. Testing and validation
 - `gh api repos/Rafique610/traceforge/collaborators --jq '.[].login'` lists both logins.
-- Ruhan opens a trivial PR from a branch: push succeeds; merge button is blocked until Rafique approves.
-- Rafique's own PR cannot be merged without Ruhan's approval (proves admin enforcement).
+- Ruhan pushes a branch and merges a trivial change: succeeds without anyone's approval.
+- `git push --force origin main` is rejected (proves protection).
 
 ## I. Dependencies and integration
 - **Depends on:** nothing.
-- **Unblocks:** every PR in the project; Synverk assignment.
+- **Unblocks:** Ruhan's work on `main`.
 
 ## J. Definition of done
-Both members can push, each PR needs the other's approval, both see and can move cards in Synverk, PR #1 and the docs PR are merged, and `.gitattributes` is on `main`.
+Both members can push and merge their own work, force push/deletion of `main` is blocked, and `.gitattributes` is on `main`.

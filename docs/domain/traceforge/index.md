@@ -4,7 +4,8 @@
 
 **Course.** AI-4009 Generative AI, FAST-NUCES. R&D Product track. Supervisor: Sir Akhtar Jamil.
 **Team.** Muhammad Rafique (23i-0747), Muhammad Ruhan Kamran (23i-0062). Taha Ahmed is no longer on the team.
-**Repo.** https://github.com/Rafique610/traceforge (public, owned by Rafique; Ruhan is a collaborator). `main` is protected; every change lands by PR reviewed by the other member.
+**Repo.** https://github.com/Rafique610/traceforge (public, owned by Rafique; Ruhan is a collaborator). `main` blocks force pushes and deletion; no approving review is required, so either member may merge their own work.
+**Plan tracking.** The docs (`docs/plans/`) are the plan. Synverk is not used for this project.
 **Work split.** Two parallel tracks with separate folders, joined only through `backend/traceforge/contracts/`. Track A (Rafique): lab, datasets, evidence, codeintel, retrieval, sandbox, evaluation. Track B (Ruhan): incidents, agent, repair, reviews, reports, github, frontend. Details in `docs/plans/end-to-end.md`.
 **Hardware.** Both members: Windows, Docker Desktop, 6 GB VRAM GPU (Rafique: RTX 3050 6GB Laptop).
 **Budget.** USD 0. Free API tiers and local models only.
@@ -51,4 +52,4 @@ Taskfile.yml
 ```
 
 ## Phase status
-Planning complete; no code yet. Execution manual: `docs/plans/README.md` (7 phases, 35 steps, task IDs `P<n>-S<nn>` mapped to Synverk cards TRAC-1…32).
+Planning complete; no code yet. Execution manual: `docs/plans/README.md` (7 phases, 35 steps, task IDs `P<n>-S<nn>`; the old TRAC-1…32 card numbers are kept only as references).

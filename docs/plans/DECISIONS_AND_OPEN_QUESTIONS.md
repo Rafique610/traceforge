@@ -13,7 +13,7 @@ Three kinds of entries, never mixed:
 | D3 | Team: Muhammad Rafique and Muhammad Ruhan Kamran (Taha Ahmed no longer on team) | User, 19 Nov 2026 |
 | D4 | Work split: Track A Rafique (evidence side), Track B Ruhan (agent side); separate folders; contracts shared | User approved; `end-to-end.md`; card titles |
 | D5 | Budget USD 0: primary LLM Mistral free tier (pinned Devstral), comparator Qwen2.5-Coder-7B via Ollama, spare Groq | User choice |
-| D6 | Repo public at `Rafique610/traceforge`; `main` protected (1 approval, admins included, no force push) | Verified via GitHub API |
+| D6 | Repo public at `Rafique610/traceforge`; `main` blocks force push and deletion; **no approving review required**, either member may merge their own work (required review removed 19 Nov 2026) | User, 19 Nov 2026; verified via GitHub API |
 | D7 | Frontend: Vite + React + TypeScript | User choice |
 | D8 | Course PDFs and `INSTRUCTIONS.md` are git-ignored | `.gitignore` |
 | D9 | Outcome classes: configuration, application_code, runtime_dependency (no patch), insufficient_evidence (abstain) | Domain doc; review fix |
@@ -23,6 +23,8 @@ Three kinds of entries, never mixed:
 | D13 | Tooling: Python 3.12 + uv, pnpm, pytest/Vitest, ruff, Taskfile, Docker Compose | `docs/invariants/tooling.md` |
 | D14 | DB access via SQLAlchemy 2 + Alembic (agent chose; user had no preference) | `docs/invariants/backend.md` |
 | D15 | Dataset targets: ≥60 config, ≥60 code, ≥12 runtime_dependency, ≥12 insufficient_evidence held-out; ≥30 dev | Domain doc; TRAC-19 |
+| D16 | The docs in `docs/plans/` are the plan; Synverk is not used for this project (TRAC-n kept as references) | User, 19 Nov 2026 |
+| D17 | Before any work, fetch and pull `main`/the current branch if it is behind `origin` | User, 19 Nov 2026; `docs/invariants/processes.md` |
 
 ## Assumptions (to confirm)
 | # | Assumption | Used in | Confirm by |
@@ -44,8 +46,8 @@ Three kinds of entries, never mixed:
 | Q1 | Exact Devstral model ID and Mistral free-tier limits (RPS, tokens/month, data-training terms) | P1-S05, P4-S01, P5-S03 | Ruhan | Blocks experiments |
 | Q2 | Official Devstral list price for the business section (only Mistral Large $0.50/$1.50 per 1M was found on the official page) | P0-S04 | Ruhan | No |
 | Q3 | Does the supervisor approve the revised 2-member scope and R&D track in writing? | P0-S04, submission | Ruhan | Blocks submission |
-| Q4 | Ruhan's GitHub username, to add as collaborator; and Synverk sharing | P0-S01 | Rafique | **Blocks every merge** |
-| Q5 | Synverk flows: AGENTS.md asks to tell the user the card's flow name/link, but the project has no flows | All steps | Both | No: create a flow or relax the rule |
+| Q4 | Ruhan's GitHub username, to add as collaborator | P0-S01 | Rafique | Blocks Ruhan's pushes only (merges no longer need his approval) |
+| Q5 | ~~Synverk flows~~ Resolved by D16: Synverk not used | — | — | No |
 | Q6 | Latency targets per case (none until measured) | NFR-03 | Both | No |
 | Q7 | A4 public host (free tier) and whether login is needed | P6-S02 | Ruhan | No (A4) |
 | Q8 | A4 deadline and A3 demo date: user said dates don't matter; sequencing is by dependency only | Roadmap | — | No |
@@ -56,10 +58,10 @@ Three kinds of entries, never mixed:
 |---|---|---|---|
 | X1 | Proposal PDF vs current decisions | PDF lists 3 members, GPT-4.1-mini primary, RTX 4050 | P0-S04 updates the proposal; current decisions win |
 | X2 | Audited architecture §14 vs repo rules | Layered `api/`, `db/` folders vs feature folders required by `docs/invariants/core.md` | Repo rules win; [ARCHITECTURE.md](ARCHITECTURE.md) uses feature folders |
-| X3 | `main` vs PR #1 | `main` has the plan without the five safeguards; PR #1 adds them | Merge PR #1 once Ruhan can review |
+| X3 | `main` vs PR #1 | `main` has the plan without the five safeguards; PR #1 adds them | Resolved: PR #1 and #2 merged 19 Nov 2026 |
 | X4 | TRAC-10 (agent) waits on TRAC-8 (incidents API) | The agent CLI runs on samples and doesn't technically need the incidents API | Kept as on the card (card wins); this plan lists the same dependency. Can be relaxed on the board if Ruhan wants to start the agent earlier |
 | X5 | TRAC-23 (A3 delivery) doesn't wait on TRAC-17 (GitHub intake) | The demo needs the real integration (rubric C4) | This plan makes P4-S03 depend on P2-S06; suggest adding TRAC-17 to TRAC-23's waits on the board (not changed here) |
 | X6 | TRAC-23 is one card but covers three activities | Experiments, failure analysis, demo pack have different owners | Split into P4-S01/S02/S03 here; all map to TRAC-23 |
 | X7 | AGENTS.md says `instructions.md`; the file is `INSTRUCTIONS.md` and marked superseded (history only) | Request named `instructions.md` | Read `INSTRUCTIONS.md`; its still-valid rules live in `docs/invariants/` |
-| X8 | Cards name owners in titles but have no Synverk assignee | Ruhan isn't a project member | Assign after Q4 |
+| X8 | Cards name owners in titles but have no Synverk assignee | Ruhan isn't a project member | Moot (D16): owners live in the step documents |
 | X9 | `INSTRUCTIONS.md` §5b says ORM only; its header says raw sqlite3 for another project | Different project | SQLAlchemy chosen (D14) |

@@ -19,7 +19,7 @@
 | [P0-S05](step-05-shared-contracts.md) | Shared contracts + samples (TRAC-4) | Rafique (+Ruhan) | P0-S02 | NOT STARTED |
 
 ## Execution order
-1. **P0-S01 first** (Rafique): until Ruhan is a collaborator, no PR can be approved and nothing merges.
+1. **P0-S01 first** (Rafique): until Ruhan is a collaborator he cannot push.
 2. **In parallel:** P0-S02 (Rafique) ‖ P0-S03 and P0-S04 (Ruhan).
 3. **P0-S05** after P0-S02 merges (contracts live in the backend package). Pair session.
 - Blocking: P0-S01 blocks all merges; P0-S02 blocks P0-S05, P1-S01, P1-S05; P0-S05 blocks P1-S02, P1-S04, P2-S01, P3-S02.

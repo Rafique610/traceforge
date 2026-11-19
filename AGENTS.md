@@ -92,11 +92,14 @@ docs say to do X — verify X in the source first.
 This shape is fixed and always active — no need to load `processes.md` just
 to know it:
 
-1. Work ONE step at a time. The step is one Synverk card (this
-   project's board, through the `synverk` MCP server): read the card
-   and its flow first, and tell the user the flow's name and link before
-   coding. Synverk is the current plan; `docs/adrs/` holds the decisions.
-   Where they disagree, the card wins — and say so.
+0. Sync first. Before any work, `git fetch` and check whether the local
+   branch is behind `origin`; if it is, pull to the latest (`git pull
+   --ff-only`) before touching anything.
+1. Work ONE step at a time. The step is one step document in
+   `docs/plans/phase-*/` (task ID `P<n>-S<nn>`): read it first and tell the
+   user its ID and path before coding. The docs are the current plan; the
+   Synverk board is not used for this project. `docs/adrs/` holds the
+   decisions. Where a step document and an ADR disagree, say so.
 2. Test it yourself before handing off. Fix obvious errors yourself — don't
    hand basic issues back to the user.
 3. Note anything else you notice along the way (UI gaps, config, missing
@@ -105,15 +108,16 @@ to know it:
 4. Hand off in plain language — what changed, why, what the user will
    notice — for both frontend and backend, plus the exact terminal commands
    so the user can verify it themselves.
-5. Wait for explicit approval before starting the next step. Paste the
-   check output in a comment on the card and move it to review. The user is the
-   project owner and approves it, in chat or on the board; the agent never
-   approves its own card.
+5. Wait for explicit approval before starting the next step. Set the step
+   document's Status to NEEDS REVIEW and give the check output in chat. The
+   user is the project owner and approves it in chat; the agent never
+   approves its own step.
 6. Log the step in that day's `.memory/tasks.md` (format in `processes.md`)
    so progress is visible without re-deriving it from chat history.
 
-This is what gives a visible timetable: the Synverk board is the "what's
-next," and `.memory/tasks.md` is the running "what's done" — both are cheap
+This is what gives a visible timetable: `docs/plans/` (step Status lines
+and `TEAM_WORK_DISTRIBUTION.md`) is the "what's next," and
+`.memory/tasks.md` is the running "what's done" — both are cheap
 to skim, so where things stand is never buried in scrollback.
 
 ## Session-level rules

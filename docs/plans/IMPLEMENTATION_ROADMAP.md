@@ -85,7 +85,7 @@ About 25 person-days along Rafique's lane. **Track A is the critical path for As
 - **Dataset volume (P3-S01):** 144 validated cases + 30 dev is the largest single task. Mitigation: template parameterization from P1-S03; start variants during Phase 2 if graph work stalls.
 - **Mistral free-tier throughput:** L0 vs G0 on ≥50 cases ≈ 100 runs × several calls each. Start P4-S01 runs as soon as the freeze lands; rely on the cache.
 - **Supervisor approval (P0-S04):** external wait; send early.
-- **Ruhan's access:** until he is a GitHub collaborator, no PR can be approved and nothing can merge to `main`.
+- **Ruhan's access:** until he is a GitHub collaborator he cannot push; merges no longer need his approval.
 
 ## Milestone acceptance
 - **M0:** P0-S02 and P0-S03 health checks pass on both laptops; P0-S05 samples validate; revised proposal sent.

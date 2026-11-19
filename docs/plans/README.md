@@ -5,7 +5,7 @@ TraceForge takes a reproducible failure in a Dockerized Python service and works
 This folder is the team's execution manual: what to build, why, how, who owns it, in what order, how it is tested, and when it counts as done.
 
 ## Where things stand (19 November 2026)
-- **Implemented and verified:** public repo `Rafique610/traceforge`, `main` protected (1 approving review, admins included), docs rules tree (`docs/invariants/`, `docs/domain/`), Synverk board TraceForge with cards TRAC-1…TRAC-32.
+- **Implemented and verified:** public repo `Rafique610/traceforge`, `main` protected against force push and deletion (no approving review required), docs rules tree (`docs/invariants/`, `docs/domain/`), this execution manual merged to `main`.
 - **Not implemented:** all application code. Every step below is NOT STARTED unless its document says otherwise.
 - Details: [PROJECT_OVERVIEW.md](PROJECT_OVERVIEW.md#current-status).
 
@@ -44,17 +44,18 @@ This folder is the team's execution manual: what to build, why, how, who owns it
 | 5 Research completion | [phase-5-research-completion](phase-5-research-completion/README.md) | A4 | P5-S01 … P5-S05 |
 | 6 Productization and paper | [phase-6-productization-paper](phase-6-productization-paper/README.md) | A4 | P6-S01 … P6-S04 |
 
-## Task IDs and Synverk cards
+## Task IDs
 - Task IDs are `P<phase>-S<step>`, e.g. `P2-S03`. The same ID is used in every document.
-- Each step document names its Synverk card (`TRAC-n`). The card is the live status; the step document is the how-to. Where they disagree, the card wins (AGENTS.md), and the disagreement is logged in [DECISIONS_AND_OPEN_QUESTIONS.md](DECISIONS_AND_OPEN_QUESTIONS.md).
-- Mapping table: [IMPLEMENTATION_ROADMAP.md](IMPLEMENTATION_ROADMAP.md#task-to-card-map).
+- **The docs are the plan; Synverk is not used for this project.** The step document is both the how-to and the live status. The `TRAC-n` numbers in step documents and the [card map](IMPLEMENTATION_ROADMAP.md#task-to-card-map) are historical references only. Steps that mention a Synverk card, proof or comment: use the step document's Status line and the PR description instead.
+- **No peer approval needed.** Where a step says "reviewed by" or "both approve", read it as *optional* review; either member may merge their own work when they judge it ready.
 
 ## How to track progress
+0. `git fetch origin`; if your branch is behind, `git pull --ff-only` before anything else.
 1. Pick the next step in your lane from [TEAM_WORK_DISTRIBUTION.md](TEAM_WORK_DISTRIBUTION.md). Check its prerequisites are done.
-2. Move its Synverk card to *in progress*; create the branch named in the step document.
-3. Tick checklist boxes in the step document **in the same PR as the work** (`[ ]` → `[x]`). Only tick what is actually done and verified.
+2. Set its Status to IN PROGRESS; create the branch named in the step document from an up-to-date `main`.
+3. Tick checklist boxes in the step document **in the same commit as the work** (`[ ]` → `[x]`). Only tick what is actually done and verified.
 4. Change the step's **Status** line: NOT STARTED → IN PROGRESS → NEEDS REVIEW → COMPLETED (or BLOCKED with a reason).
-5. Open the PR; the other member reviews. Paste check output on the card, move it to review. The project owner approves.
+5. Merge to `main` (directly or via a self-merged PR) when you judge it ready; the other member may review afterwards.
 6. After merge, update the status column in the phase README and your row in TEAM_WORK_DISTRIBUTION.md.
 
 Status labels used everywhere: **NOT STARTED, IN PROGRESS, BLOCKED, NEEDS REVIEW, COMPLETED**.

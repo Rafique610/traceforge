@@ -1,6 +1,6 @@
 # Team work distribution
 
-Members come from the project docs and Synverk cards: **Muhammad Rafique** and **Muhammad Ruhan Kamran**. No one else is on the team. Every task has one primary owner; the other member reviews its PR.
+Members come from the project docs: **Muhammad Rafique** and **Muhammad Ruhan Kamran**. No one else is on the team. Every task has one primary owner; review by the other member is optional.
 
 The split follows one rule: **each person owns whole folders**, and the two halves exchange data only through the five shared contracts (P0-S05). That lets both work at the same time with almost no waiting.
 
