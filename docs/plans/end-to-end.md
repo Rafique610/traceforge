@@ -7,6 +7,13 @@ Two people, two parallel tracks, equal work. Each person owns a set of folders, 
 
 Each step becomes one Synverk card when it starts. Each person works one card at a time in their own lane.
 
+## Five rules that protect the research result
+1. **Cause–symptom distance.** Every case records `distance` = graph hops from where the symptom appears to where the cause lives (0, 1, 2+). At least half the held-out cases have distance ≥1 (config read in one file, crash in another; worker failing on an API setting; trace ending in a library; bug in a caller). Results are reported per distance. (A3, A7)
+2. **Pipeline-first agent.** Fixed stages collect → retrieve → diagnose → patch → test. The LLM uses tools only inside the diagnose stage, with a small step budget (Agentless-style). (B3)
+3. **Rule-based diagnosis baseline.** Plain rules map error type + evidence to a cause class; the LLM diagnosis is compared against it. (A8)
+4. **LLM response cache.** Every model request/response is stored by prompt hash; reruns and re-scoring replay from cache at zero API cost. Temperature 0. (B2)
+5. **Freeze before tuning.** The held-out set is frozen and hashed before any weight or prompt tuning; tuning uses the dev split only. (A7 before A6 weights are tuned; B8 refuses unfrozen manifests)
+
 ## Who owns which folders
 
 | Rafique (Track A) | Ruhan (Track B) | Shared (PR reviewed by both) |
@@ -44,8 +51,8 @@ Each contract ships with 2–3 sample JSON files in `backend/traceforge/contract
 | # | Rafique (Track A) | # | Ruhan (Track B) |
 |---|---|---|---|
 | A1 | **Lab fixtures**: `shop-api` (FastAPI + Postgres, documented contracts) and `worker` (Redis queue consumer), public tests, health/heartbeat probes. | B1 | **Incidents API + DB**: SQLAlchemy models, Alembic, `POST/GET /incidents`, state machine with transition guard, audit events. |
-| A2 | **Sandbox runner**: run visible/hidden tests on a worktree in a limited container (no socket, no network, CPU/mem/time caps) → `TestRunResult`. | B2 | **Model gateway**: one OpenAI-compatible client for Mistral, Ollama, Groq; tool schemas; token/latency/cost log; smoke test; pin model (ADR). |
-| A3 | **Fault generator**: config + code mutation templates, `CaseManifest`, `task dataset:validate` (buggy fails, original passes). First 4 cases: config, code, runtime_dependency, insufficient_evidence. | B3 | **Agent controller**: phased typed tools reading `EvidenceBundle`/`ContextBundle` (samples for now), hypothesis schema, abstain and runtime_dependency outputs, budgets, audit. |
+| A2 | **Sandbox runner**: run visible/hidden tests on a worktree in a limited container (no socket, no network, CPU/mem/time caps) → `TestRunResult`. | B2 | **Model gateway**: one OpenAI-compatible client for Mistral, Ollama, Groq; tool schemas; token/latency/cost log; response cache keyed by prompt hash (temperature 0); smoke test; pin model (ADR). |
+| A3 | **Fault generator**: config + code mutation templates, `CaseManifest`, `task dataset:validate` (buggy fails, original passes). Each case records its cause–symptom `distance`. First 4 cases: config, code, runtime_dependency, insufficient_evidence. | B3 | **Pipeline agent**: fixed stages collect → retrieve → diagnose → patch; typed tools only in diagnose (small step budget) reading `EvidenceBundle`/`ContextBundle` (samples for now); hypothesis schema; abstain and runtime_dependency outputs; audit. |
 
 **Sync 1:** B3 runs on A3's 4 real cases (still using sample evidence/context).
 
@@ -61,8 +68,8 @@ Each contract ships with 2–3 sample JSON files in `backend/traceforge/contract
 ### Phase 3 — parallel
 | # | Rafique (Track A) | # | Ruhan (Track B) |
 |---|---|---|---|
-| A7 | **Dataset scale-up**: ≥60 config, ≥60 code, ≥12 runtime_dependency, ≥12 insufficient_evidence held-out; ≥30 dev; freeze + hash. | B7 | **Frontend**: incident list/create, timeline, evidence, ranked hits, diff, test results, approve/reject. |
-| A8 | **Evaluation metrics**: Recall@5/MRR/nDCG, diagnosis accuracy, abstention precision, verified repair rate, latency/cost from `AgentRunRecord`s; failure-analysis table. | B8 | **Experiment runner + results page**: batch-runs the agent over a manifest for a condition (L0/G0), saves `AgentRunRecord`s; UI page renders A8's metrics. |
+| A7 | **Dataset scale-up**: ≥60 config, ≥60 code, ≥12 runtime_dependency, ≥12 insufficient_evidence held-out; ≥30 dev; at least half with distance ≥1; freeze + hash before any tuning. | B7 | **Frontend**: incident list/create, timeline, evidence, ranked hits, diff, test results, approve/reject. |
+| A8 | **Evaluation metrics**: Recall@5/MRR/nDCG, diagnosis accuracy, abstention precision, verified repair rate, latency/cost from `AgentRunRecord`s, all broken down by distance; rule-based diagnosis baseline; failure-analysis table. | B8 | **Experiment runner + results page**: batch-runs the agent over a manifest for a condition (L0/G0), saves `AgentRunRecord`s; refuses a manifest whose hash isn't frozen; UI page renders A8's metrics. |
 
 **Sync 3 — together:** run the A3 evaluation (E1 on all cases; L0 vs G0 on ≥50), write ≥10 failure analyses (split by track: each analyses failures in their own part), build the demo script and submission pack, and dry-run from a clean clone.
 
