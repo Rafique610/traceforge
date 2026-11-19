@@ -1,0 +1,28 @@
+# Course material and old notes (never commit)
+/*.pdf
+/INSTRUCTIONS.md
+
+# Agent session memory
+.memory/
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+
+# Node
+node_modules/
+dist/
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
