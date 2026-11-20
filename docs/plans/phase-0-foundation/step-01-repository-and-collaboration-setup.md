@@ -12,7 +12,7 @@
 | Reviewer | optional |
 | Priority | High (blocks Ruhan's pushes) |
 | Effort | 0.5 day |
-| Status | IN PROGRESS (repo, ignore rules, protection, PR #1 and docs PR done; collaborator and `.gitattributes` pending) |
+| Status | IN PROGRESS (only Ruhan cloning `main` left) |
 
 ## B. Objective
 Both members can push and merge their own work to `main`. No approving review is required (D6); `main` only blocks force pushes and deletion.
@@ -40,9 +40,9 @@ Both members can push and merge their own work to `main`. No approving review is
 - [x] `main` protected (no force push/deletion; no required review)
 - [x] PR #1 merged
 - [x] Execution docs PR merged
-- [ ] Ruhan's GitHub username obtained
-- [ ] Ruhan added with push access and invite accepted
-- [ ] `.gitattributes` added
+- [x] Ruhan's GitHub username obtained (`ruhank-dev`)
+- [x] Ruhan added with push access
+- [x] `.gitattributes` added
 - [ ] Both members cloned and pulled `main`
 
 ## G. Expected deliverables

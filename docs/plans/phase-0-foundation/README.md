@@ -1,6 +1,6 @@
 # Phase 0 — Foundation
 
-**Status:** IN PROGRESS (P0-S01 partly done; everything else NOT STARTED)
+**Status:** IN PROGRESS (P0-S01 nearly done; everything else NOT STARTED)
 
 ## Phase information
 - **Purpose:** give both members a running skeleton, the shared contracts, and an approved scope, so Phase 1 can run fully in parallel.
