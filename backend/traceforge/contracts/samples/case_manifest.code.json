@@ -23,5 +23,6 @@
     "datasets/hidden_tests/shop_api/test_orders_hidden.py::test_empty_cart_total_zero"
   ],
   "variant_group": "order_total",
-  "origin": "synthetic"
+  "origin": "synthetic",
+  "log_format": "uvicorn_access"
 }

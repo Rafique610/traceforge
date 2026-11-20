@@ -25,5 +25,6 @@
     "datasets/hidden_tests/worker/test_redis_connect.py::test_worker_reaches_redis"
   ],
   "variant_group": "redis_host",
-  "origin": "synthetic"
+  "origin": "synthetic",
+  "log_format": "plain"
 }

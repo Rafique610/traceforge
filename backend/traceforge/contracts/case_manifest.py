@@ -39,6 +39,9 @@ class CaseManifest(BaseModel):
     hidden_test_ids: list[str] = []
     variant_group: str
     origin: Literal["synthetic", "bugsinpy"] = "synthetic"
+    log_format: Literal["plain", "json", "uvicorn_access", "none"] = Field(
+        default="plain", description="How the faulty service logs; results are broken down by it"
+    )
 
     @model_validator(mode="after")
     def _repairable_needs_target(self) -> Self:

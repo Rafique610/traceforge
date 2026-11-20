@@ -12,5 +12,6 @@
   "visible_test_ids": [],
   "hidden_test_ids": [],
   "variant_group": "silent_worker",
-  "origin": "synthetic"
+  "origin": "synthetic",
+  "log_format": "none"
 }

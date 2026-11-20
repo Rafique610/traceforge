@@ -134,6 +134,18 @@
       ],
       "title": "Origin",
       "type": "string"
+    },
+    "log_format": {
+      "default": "plain",
+      "description": "How the faulty service logs; results are broken down by it",
+      "enum": [
+        "plain",
+        "json",
+        "uvicorn_access",
+        "none"
+      ],
+      "title": "Log Format",
+      "type": "string"
     }
   },
   "required": [
