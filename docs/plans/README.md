@@ -56,6 +56,6 @@ This folder is the team's execution manual: what to build, why, how, who owns it
 3. Tick checklist boxes in the step document **in the same commit as the work** (`[ ]` → `[x]`). Only tick what is actually done and verified.
 4. Change the step's **Status** line: NOT STARTED → IN PROGRESS → NEEDS REVIEW → COMPLETED (or BLOCKED with a reason).
 5. Merge to `main` (directly or via a self-merged PR) when you judge it ready; the other member may review afterwards.
-6. After merge, update the status column in the phase README and your row in TEAM_WORK_DISTRIBUTION.md.
+6. **Before every commit**, update section 0 "Progress at a glance" in [TEAM_WORK_DISTRIBUTION.md](TEAM_WORK_DISTRIBUTION.md) for both members, in the same commit. After merge, update the status column in the phase README.
 
 Status labels used everywhere: **NOT STARTED, IN PROGRESS, BLOCKED, NEEDS REVIEW, COMPLETED**.

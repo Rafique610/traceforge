@@ -12,6 +12,7 @@
 
 ## Commits and merging
 - After approval the agent commits the step and pushes the branch to `origin`.
+- **Before every commit** (by either member or the agent), update `docs/plans/TEAM_WORK_DISTRIBUTION.md` section 0 "Progress at a glance" for **both** members: done counts, working on, next up, waiting on, the per-step status rows, and the "Last updated" line. Tick the section 3 checklist items this commit finishes. The update goes in the same commit, so both people see progress side by side without asking.
 - One commit per approved step (or explicitly batched group). Subject under 72 chars, e.g. `feat(retrieval): add BM25 baseline`. Covers only that diff. No bulleted essay body.
 - Never add an AI/agent co-author or "generated with" line.
 - No peer approval is required. Either member may merge their own work into `main` (directly or via a self-merged PR) when they judge it ready; the other member fixes or follows up afterwards if needed. A PR review by the other member is welcome but optional.
