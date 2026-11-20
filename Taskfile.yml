@@ -1,0 +1,61 @@
+version: "3"
+
+dotenv: [".env"]
+
+tasks:
+  db:up:
+    desc: Start Postgres and wait until it is healthy
+    cmds:
+      - docker compose up -d --wait db
+
+  db:down:
+    desc: Stop Postgres (data is kept in the named volume)
+    cmds:
+      - docker compose stop db
+
+  dev:
+    desc: Start Postgres, then the API with auto-reload on http://localhost:8000
+    deps: [db:up]
+    dir: backend
+    cmds:
+      - uv run uvicorn traceforge.main:app --reload
+
+  test:
+    desc: Run backend tests
+    dir: backend
+    cmds:
+      - uv run pytest {{.CLI_ARGS}}
+
+  lint:
+    desc: Check lint and formatting
+    dir: backend
+    cmds:
+      - uv run ruff check .
+      - uv run ruff format --check .
+
+  fmt:
+    desc: Fix lint where safe and format
+    dir: backend
+    cmds:
+      - uv run ruff check --fix .
+      - uv run ruff format .
+
+  db:migrate:
+    desc: Apply all Alembic migrations
+    dir: backend
+    cmds:
+      - uv run alembic upgrade head
+
+  db:revision:
+    desc: "Create a migration from model changes: task db:revision NAME=add_incidents"
+    dir: backend
+    requires:
+      vars: [NAME]
+    cmds:
+      - uv run alembic revision --autogenerate -m "{{.NAME}}"
+
+  contracts:schema:
+    desc: Write JSON Schema for every shared contract to backend/traceforge/contracts/schema/
+    dir: backend
+    cmds:
+      - uv run python -m traceforge.contracts.export_schema

@@ -1,0 +1,83 @@
+{
+  "$defs": {
+    "TestOutcome": {
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "outcome": {
+          "enum": [
+            "passed",
+            "failed",
+            "error",
+            "skipped"
+          ],
+          "title": "Outcome",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "outcome"
+      ],
+      "title": "TestOutcome",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "passed": {
+      "minimum": 0,
+      "title": "Passed",
+      "type": "integer"
+    },
+    "failed": {
+      "minimum": 0,
+      "title": "Failed",
+      "type": "integer"
+    },
+    "tests": {
+      "items": {
+        "$ref": "#/$defs/TestOutcome"
+      },
+      "title": "Tests",
+      "type": "array"
+    },
+    "stdout_tail": {
+      "maxLength": 4096,
+      "title": "Stdout Tail",
+      "type": "string"
+    },
+    "duration_ms": {
+      "minimum": 0,
+      "title": "Duration Ms",
+      "type": "integer"
+    },
+    "timed_out": {
+      "title": "Timed Out",
+      "type": "boolean"
+    },
+    "error": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Error"
+    }
+  },
+  "required": [
+    "passed",
+    "failed",
+    "tests",
+    "stdout_tail",
+    "duration_ms",
+    "timed_out"
+  ],
+  "title": "TestRunResult",
+  "type": "object"
+}

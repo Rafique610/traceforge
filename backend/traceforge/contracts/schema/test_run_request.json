@@ -1,0 +1,36 @@
+{
+  "properties": {
+    "case_id": {
+      "title": "Case Id",
+      "type": "string"
+    },
+    "worktree_path": {
+      "description": "Repo-relative POSIX path of the disposable worktree",
+      "title": "Worktree Path",
+      "type": "string"
+    },
+    "suite": {
+      "enum": [
+        "visible",
+        "hidden",
+        "reproducer"
+      ],
+      "title": "Suite",
+      "type": "string"
+    },
+    "timeout_s": {
+      "default": 120,
+      "exclusiveMinimum": 0,
+      "maximum": 900,
+      "title": "Timeout S",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "case_id",
+    "worktree_path",
+    "suite"
+  ],
+  "title": "TestRunRequest",
+  "type": "object"
+}

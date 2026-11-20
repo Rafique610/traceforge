@@ -1,0 +1,33 @@
+{
+  "model_id": "devstral-small-latest",
+  "provider": "mistral",
+  "dataset_sha256": "07e6bfa9f7322ab1d3594c27cbfbc413fecdc64245a36359842affb7bb994ad3",
+  "git_sha": "3f9c2e1a7b5d4c8e9f0a1b2c3d4e5f6a7b8c9d0e",
+  "cost_usd": 0.0,
+  "run_id": "run-G1-cfg-redis-host-001-r1",
+  "case_id": "cfg-redis-host-001",
+  "condition": "G1",
+  "prompt_hash": "6f8e839c9b3992ce6c8a9bf5f56a9d181142cd94863feb411129af1fd95a8d76",
+  "diagnosis": {
+    "cause_class": "configuration",
+    "target": "worker.REDIS_HOST",
+    "evidence_ids": [
+      "EV-0002",
+      "EV-0003",
+      "EV-0004"
+    ],
+    "contradicting_ids": [],
+    "abstained": false
+  },
+  "patch_sha256": "dfdd6f253b1cb525eeb94bcb8513fc10b7476ed863c19e25bb76154e50793e04",
+  "attempts": 1,
+  "outcome": "TEST_VERIFIED_IN_LAB",
+  "hidden_passed": true,
+  "tokens_in": 3120,
+  "tokens_out": 288,
+  "list_price_usd": 0.002,
+  "latency_ms": 9400,
+  "tool_calls": 2,
+  "invalid_tool_calls": 0,
+  "cache_hits": 0
+}

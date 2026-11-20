@@ -1,0 +1,14 @@
+{
+  "passed": 0,
+  "failed": 1,
+  "tests": [
+    {
+      "id": "lab/worker/tests/test_queue.py::test_consume_one_job",
+      "outcome": "failed"
+    }
+  ],
+  "stdout_tail": "E   redis.exceptions.ConnectionError: Error -2 connecting to redsi:6379.\n1 failed in 2.31s",
+  "duration_ms": 2310,
+  "timed_out": false,
+  "error": null
+}

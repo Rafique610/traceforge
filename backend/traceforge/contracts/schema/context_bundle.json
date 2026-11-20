@@ -1,0 +1,104 @@
+{
+  "$defs": {
+    "ContextHit": {
+      "properties": {
+        "node_id": {
+          "title": "Node Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "symbol",
+            "config_key",
+            "test",
+            "file"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "path": {
+          "pattern": "^[^\\\\:]+$",
+          "title": "Path",
+          "type": "string"
+        },
+        "start_line": {
+          "minimum": 1,
+          "title": "Start Line",
+          "type": "integer"
+        },
+        "end_line": {
+          "minimum": 1,
+          "title": "End Line",
+          "type": "integer"
+        },
+        "score": {
+          "title": "Score",
+          "type": "number"
+        },
+        "reasons": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Reasons",
+          "type": "array"
+        },
+        "excerpt": {
+          "title": "Excerpt",
+          "type": "string"
+        }
+      },
+      "required": [
+        "node_id",
+        "kind",
+        "path",
+        "start_line",
+        "end_line",
+        "score",
+        "reasons",
+        "excerpt"
+      ],
+      "title": "ContextHit",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "incident_id": {
+      "title": "Incident Id",
+      "type": "string"
+    },
+    "mode": {
+      "enum": [
+        "L",
+        "G"
+      ],
+      "title": "Mode",
+      "type": "string"
+    },
+    "token_budget": {
+      "exclusiveMinimum": 0,
+      "title": "Token Budget",
+      "type": "integer"
+    },
+    "tokens_used": {
+      "minimum": 0,
+      "title": "Tokens Used",
+      "type": "integer"
+    },
+    "hits": {
+      "items": {
+        "$ref": "#/$defs/ContextHit"
+      },
+      "title": "Hits",
+      "type": "array"
+    }
+  },
+  "required": [
+    "incident_id",
+    "mode",
+    "token_budget",
+    "tokens_used",
+    "hits"
+  ],
+  "title": "ContextBundle",
+  "type": "object"
+}

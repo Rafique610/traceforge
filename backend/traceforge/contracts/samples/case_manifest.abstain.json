@@ -1,0 +1,16 @@
+{
+  "case_id": "abs-silent-worker-002",
+  "split": "test",
+  "cause_class": "insufficient_evidence",
+  "fault_family": "log_suppressed",
+  "service": "worker",
+  "base_sha": "3f9c2e1a7b5d4c8e9f0a1b2c3d4e5f6a7b8c9d0e",
+  "gold_config_keys": [],
+  "gold_symbols": [],
+  "distance": null,
+  "reproducer_id": "repro.worker.enqueue_order_email",
+  "visible_test_ids": [],
+  "hidden_test_ids": [],
+  "variant_group": "silent_worker",
+  "origin": "synthetic"
+}

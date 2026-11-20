@@ -1,0 +1,116 @@
+{
+  "$defs": {
+    "EvidenceItem": {
+      "properties": {
+        "id": {
+          "pattern": "^EV-\\d{4}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "log",
+            "health",
+            "config",
+            "trace_frame",
+            "compose",
+            "issue"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "service": {
+          "title": "Service",
+          "type": "string"
+        },
+        "content": {
+          "title": "Content",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "path": {
+          "anyOf": [
+            {
+              "pattern": "^[^\\\\:]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Path"
+        },
+        "line": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Line"
+        },
+        "ts": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ts"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "service",
+        "content",
+        "sha256"
+      ],
+      "title": "EvidenceItem",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "incident_id": {
+      "title": "Incident Id",
+      "type": "string"
+    },
+    "base_sha": {
+      "title": "Base Sha",
+      "type": "string"
+    },
+    "compose_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Compose Sha256",
+      "type": "string"
+    },
+    "items": {
+      "items": {
+        "$ref": "#/$defs/EvidenceItem"
+      },
+      "title": "Items",
+      "type": "array"
+    }
+  },
+  "required": [
+    "incident_id",
+    "base_sha",
+    "compose_sha256",
+    "items"
+  ],
+  "title": "EvidenceBundle",
+  "type": "object"
+}

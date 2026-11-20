@@ -1,0 +1,9 @@
+{
+  "passed": 0,
+  "failed": 0,
+  "tests": [],
+  "stdout_tail": "",
+  "duration_ms": 60000,
+  "timed_out": true,
+  "error": "reproducer exceeded 60s"
+}

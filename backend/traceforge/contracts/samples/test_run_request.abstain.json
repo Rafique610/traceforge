@@ -1,0 +1,6 @@
+{
+  "case_id": "abs-silent-worker-002",
+  "worktree_path": ".worktrees/abs-silent-worker-002/base",
+  "suite": "reproducer",
+  "timeout_s": 60
+}

@@ -1,0 +1,6 @@
+{
+  "case_id": "cfg-redis-host-001",
+  "worktree_path": ".worktrees/cfg-redis-host-001/attempt-1",
+  "suite": "visible",
+  "timeout_s": 120
+}

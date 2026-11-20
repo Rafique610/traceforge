@@ -1,0 +1,29 @@
+{
+  "model_id": "devstral-small-latest",
+  "provider": "mistral",
+  "dataset_sha256": "07e6bfa9f7322ab1d3594c27cbfbc413fecdc64245a36359842affb7bb994ad3",
+  "git_sha": "3f9c2e1a7b5d4c8e9f0a1b2c3d4e5f6a7b8c9d0e",
+  "cost_usd": 0.0,
+  "run_id": "run-L0-abs-silent-worker-002-r1",
+  "case_id": "abs-silent-worker-002",
+  "condition": "L0",
+  "prompt_hash": "6a41b14ee6d96a25b752a14b1638dff5d96789c7b20f0e984b48e7c34bc261da",
+  "diagnosis": {
+    "cause_class": "insufficient_evidence",
+    "target": null,
+    "evidence_ids": [],
+    "contradicting_ids": [],
+    "abstained": true
+  },
+  "patch_sha256": null,
+  "attempts": 0,
+  "outcome": "NO_PATCH",
+  "hidden_passed": null,
+  "tokens_in": 1800,
+  "tokens_out": 120,
+  "list_price_usd": 0.0011,
+  "latency_ms": 5100,
+  "tool_calls": 1,
+  "invalid_tool_calls": 0,
+  "cache_hits": 0
+}

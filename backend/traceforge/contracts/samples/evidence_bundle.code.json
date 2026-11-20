@@ -1,0 +1,31 @@
+{
+  "incident_id": "inc-0002",
+  "base_sha": "3f9c2e1a7b5d4c8e9f0a1b2c3d4e5f6a7b8c9d0e",
+  "compose_sha256": "0f877ec27d7d11b5ac1920b49646a8b35e3f5c45a6a629a7e8142c8270b791f7",
+  "items": [
+    {
+      "id": "EV-0001",
+      "kind": "log",
+      "service": "shop_api",
+      "content": "127.0.0.1:51234 - \"POST /orders/checkout HTTP/1.1\" 500 Internal Server Error",
+      "sha256": "48c2ee664a5cdadecc0a8d45355984e61ee11e3566c162734798dd4a292162d4",
+      "ts": "2026-11-20T10:20:11Z"
+    },
+    {
+      "id": "EV-0002",
+      "kind": "trace_frame",
+      "service": "shop_api",
+      "content": "File \"/app/lab/shop_api/app/orders.py\", line 44, in order_total\n    first = items[0]\nIndexError: list index out of range",
+      "sha256": "461b64e720e9b5f5cd3d3e2e3f574d2aae887dd7b6bf894cbb742fdf62451c07",
+      "path": "lab/shop_api/app/orders.py",
+      "line": 44
+    },
+    {
+      "id": "EV-0003",
+      "kind": "health",
+      "service": "shop_api",
+      "content": "container traceforge-lab-shop_api-1: running (healthy)",
+      "sha256": "868ec9d307d0cabd29e9b75741c27c82844457ec0a96721822073dcf4d070707"
+    }
+  ]
+}

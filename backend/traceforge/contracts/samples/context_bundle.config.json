@@ -1,0 +1,46 @@
+{
+  "incident_id": "inc-0001",
+  "mode": "G",
+  "token_budget": 4000,
+  "tokens_used": 612,
+  "hits": [
+    {
+      "node_id": "sym:lab/worker/queue.py::connect",
+      "kind": "symbol",
+      "path": "lab/worker/queue.py",
+      "start_line": 20,
+      "end_line": 23,
+      "score": 1.0,
+      "reasons": [
+        "trace_anchor"
+      ],
+      "excerpt": "def connect():\n    return redis.Redis(host=settings.redis_host, port=6379).ping()"
+    },
+    {
+      "node_id": "sym:lab/worker/settings.py::WorkerSettings.redis_host",
+      "kind": "symbol",
+      "path": "lab/worker/settings.py",
+      "start_line": 9,
+      "end_line": 9,
+      "score": 0.82,
+      "reasons": [
+        "graph_hop:1",
+        "reads_config:REDIS_HOST"
+      ],
+      "excerpt": "    redis_host: str"
+    },
+    {
+      "node_id": "cfg:worker.REDIS_HOST",
+      "kind": "config_key",
+      "path": "lab/compose.yaml",
+      "start_line": 31,
+      "end_line": 31,
+      "score": 0.77,
+      "reasons": [
+        "config_binding",
+        "bm25:redis"
+      ],
+      "excerpt": "      REDIS_HOST: ${REDIS_HOST}"
+    }
+  ]
+}

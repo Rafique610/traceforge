@@ -9,11 +9,11 @@
 | Synverk card | TRAC-1 |
 | Primary owner | Muhammad Rafique |
 | Supporting | — |
-| Reviewer | Muhammad Ruhan Kamran |
+| Reviewer | optional (Ruhan) |
 | Priority | High |
 | Effort | 1 day |
-| Status | NOT STARTED |
-| Branch | `rafique/P0-S02-backend-scaffold` |
+| Status | NEEDS REVIEW |
+| Branch | `rafique/P0-S02-S05-backend-and-contracts` (batched with P0-S05) |
 
 ## B. Objective
 Create the empty but running FastAPI backend that every backend feature folder plugs into: settings, DB session, health endpoint, Postgres, migrations, task runner, lint and tests. It is the root of the critical path (P0-S05, P1-S01, P1-S05 wait on it).
@@ -55,20 +55,20 @@ Create the empty but running FastAPI backend that every backend feature folder p
 Edge cases: Postgres not ready when the API starts → health shows `down`, no crash; port 5432 already used on a laptop → document overriding the host port via `.env`.
 
 ## F. Checklist
-- [ ] uv project created with pinned Python 3.12 and lockfile
-- [ ] Dependencies and dev dependencies added
-- [ ] `config.py` with `Settings` and SecretStr password
-- [ ] `database.py` engine/session/Base/get_db
-- [ ] `health/` router + schema; DB-down handled
-- [ ] `main.py` only wires routers
-- [ ] `compose.yaml` Postgres with `${VAR}` and healthcheck
-- [ ] `.env.example` complete; `.env` git-ignored and not committed
-- [ ] Alembic initialised; URL from Settings
-- [ ] Taskfile: dev, test, lint, fmt, db:migrate, db:revision
-- [ ] ruff configured and clean
-- [ ] Tests written and passing
-- [ ] README updated
-- [ ] No real credential values in tracked files (grep check)
+- [x] uv project created with pinned Python 3.12 and lockfile
+- [x] Dependencies and dev dependencies added
+- [x] `config.py` with `Settings` and SecretStr password
+- [x] `database.py` engine/session/Base/get_db
+- [x] `health/` router + schema; DB-down handled
+- [x] `main.py` only wires routers
+- [x] `compose.yaml` Postgres with `${VAR}` and healthcheck
+- [x] `.env.example` complete; `.env` git-ignored and not committed
+- [x] Alembic initialised; URL from Settings
+- [x] Taskfile: dev, test, lint, fmt, db:migrate, db:revision
+- [x] ruff configured and clean
+- [x] Tests written and passing (25 passed with Postgres up; health ok/degraded checked live)
+- [x] README updated
+- [x] No real credential values in tracked files (grep check)
 
 ## G. Expected deliverables
 New: `backend/` (as above), `compose.yaml`, `.env.example`, `Taskfile.yml`. Modified: `README.md`. Endpoint: `GET /health`.
@@ -85,4 +85,4 @@ New: `backend/` (as above), `compose.yaml`, `.env.example`, `Taskfile.yml`. Modi
 - **Integration:** every later backend feature registers its router in `main.py` through a small change in its own PR.
 
 ## J. Definition of done
-Merged to `main` after Ruhan's review; health, lint and tests pass on both laptops; no credentials tracked; README explains setup; TRAC-1 has the check output pasted and is approved.
+Merged to `main`; health, lint and tests pass on both laptops; no credentials tracked; README explains setup; the user approved it in chat.

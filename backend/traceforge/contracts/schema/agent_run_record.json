@@ -1,0 +1,213 @@
+{
+  "$defs": {
+    "Diagnosis": {
+      "properties": {
+        "cause_class": {
+          "enum": [
+            "configuration",
+            "application_code",
+            "runtime_dependency",
+            "insufficient_evidence"
+          ],
+          "title": "Cause Class",
+          "type": "string"
+        },
+        "target": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "`path::qualname` for code, or the config key; None if abstained",
+          "title": "Target"
+        },
+        "evidence_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "contradicting_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Contradicting Ids",
+          "type": "array"
+        },
+        "abstained": {
+          "default": false,
+          "title": "Abstained",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "cause_class"
+      ],
+      "title": "Diagnosis",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "run_id": {
+      "title": "Run Id",
+      "type": "string"
+    },
+    "case_id": {
+      "title": "Case Id",
+      "type": "string"
+    },
+    "condition": {
+      "enum": [
+        "L0",
+        "G0",
+        "L1",
+        "G1"
+      ],
+      "title": "Condition",
+      "type": "string"
+    },
+    "model_id": {
+      "title": "Model Id",
+      "type": "string"
+    },
+    "provider": {
+      "enum": [
+        "mistral",
+        "ollama",
+        "groq"
+      ],
+      "title": "Provider",
+      "type": "string"
+    },
+    "prompt_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Prompt Hash",
+      "type": "string"
+    },
+    "diagnosis": {
+      "$ref": "#/$defs/Diagnosis"
+    },
+    "patch_sha256": {
+      "anyOf": [
+        {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Patch Sha256"
+    },
+    "attempts": {
+      "maximum": 3,
+      "minimum": 0,
+      "title": "Attempts",
+      "type": "integer"
+    },
+    "outcome": {
+      "enum": [
+        "TEST_VERIFIED_IN_LAB",
+        "REJECTED",
+        "UNVERIFIED",
+        "NO_PATCH"
+      ],
+      "title": "Outcome",
+      "type": "string"
+    },
+    "hidden_passed": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Hidden Passed"
+    },
+    "tokens_in": {
+      "minimum": 0,
+      "title": "Tokens In",
+      "type": "integer"
+    },
+    "tokens_out": {
+      "minimum": 0,
+      "title": "Tokens Out",
+      "type": "integer"
+    },
+    "cost_usd": {
+      "description": "What was actually paid (0 on free tiers)",
+      "minimum": 0,
+      "title": "Cost Usd",
+      "type": "number"
+    },
+    "list_price_usd": {
+      "description": "Paid-tier equivalent at list price",
+      "minimum": 0,
+      "title": "List Price Usd",
+      "type": "number"
+    },
+    "latency_ms": {
+      "minimum": 0,
+      "title": "Latency Ms",
+      "type": "integer"
+    },
+    "tool_calls": {
+      "minimum": 0,
+      "title": "Tool Calls",
+      "type": "integer"
+    },
+    "invalid_tool_calls": {
+      "minimum": 0,
+      "title": "Invalid Tool Calls",
+      "type": "integer"
+    },
+    "cache_hits": {
+      "minimum": 0,
+      "title": "Cache Hits",
+      "type": "integer"
+    },
+    "dataset_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Dataset Sha256",
+      "type": "string"
+    },
+    "git_sha": {
+      "title": "Git Sha",
+      "type": "string"
+    }
+  },
+  "required": [
+    "run_id",
+    "case_id",
+    "condition",
+    "model_id",
+    "provider",
+    "prompt_hash",
+    "diagnosis",
+    "attempts",
+    "outcome",
+    "tokens_in",
+    "tokens_out",
+    "cost_usd",
+    "list_price_usd",
+    "latency_ms",
+    "tool_calls",
+    "invalid_tool_calls",
+    "cache_hits",
+    "dataset_sha256",
+    "git_sha"
+  ],
+  "title": "AgentRunRecord",
+  "type": "object"
+}

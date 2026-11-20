@@ -1,0 +1,33 @@
+{
+  "incident_id": "inc-0002",
+  "mode": "L",
+  "token_budget": 4000,
+  "tokens_used": 455,
+  "hits": [
+    {
+      "node_id": "sym:lab/shop_api/app/orders.py::order_total",
+      "kind": "symbol",
+      "path": "lab/shop_api/app/orders.py",
+      "start_line": 41,
+      "end_line": 48,
+      "score": 1.0,
+      "reasons": [
+        "trace_anchor",
+        "bm25:order_total"
+      ],
+      "excerpt": "def order_total(items):\n    first = items[0]\n    total = first.price * first.qty"
+    },
+    {
+      "node_id": "test:lab/shop_api/tests/test_orders.py::test_checkout_total",
+      "kind": "test",
+      "path": "lab/shop_api/tests/test_orders.py",
+      "start_line": 12,
+      "end_line": 19,
+      "score": 0.41,
+      "reasons": [
+        "bm25:checkout"
+      ],
+      "excerpt": "def test_checkout_total(client):"
+    }
+  ]
+}

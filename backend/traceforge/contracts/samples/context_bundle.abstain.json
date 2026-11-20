@@ -1,0 +1,20 @@
+{
+  "incident_id": "inc-0003",
+  "mode": "L",
+  "token_budget": 4000,
+  "tokens_used": 120,
+  "hits": [
+    {
+      "node_id": "file:lab/worker/emails.py",
+      "kind": "file",
+      "path": "lab/worker/emails.py",
+      "start_line": 1,
+      "end_line": 30,
+      "score": 0.18,
+      "reasons": [
+        "bm25:email"
+      ],
+      "excerpt": "def send_order_email(order_id):"
+    }
+  ]
+}

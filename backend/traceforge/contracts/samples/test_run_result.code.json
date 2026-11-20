@@ -1,0 +1,14 @@
+{
+  "passed": 1,
+  "failed": 0,
+  "tests": [
+    {
+      "id": "datasets/hidden_tests/shop_api/test_orders_hidden.py::test_empty_cart_total_zero",
+      "outcome": "passed"
+    }
+  ],
+  "stdout_tail": "1 passed in 0.84s",
+  "duration_ms": 840,
+  "timed_out": false,
+  "error": null
+}

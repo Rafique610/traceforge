@@ -1,0 +1,151 @@
+{
+  "$defs": {
+    "GoldSymbol": {
+      "description": "Where the cause lives in code. `path` is repo-relative POSIX, e.g. `lab/worker/queue.py`.",
+      "properties": {
+        "path": {
+          "pattern": "^[^\\\\:]+$",
+          "title": "Path",
+          "type": "string"
+        },
+        "qualname": {
+          "title": "Qualname",
+          "type": "string"
+        },
+        "start_line": {
+          "minimum": 1,
+          "title": "Start Line",
+          "type": "integer"
+        },
+        "end_line": {
+          "minimum": 1,
+          "title": "End Line",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "path",
+        "qualname",
+        "start_line",
+        "end_line"
+      ],
+      "title": "GoldSymbol",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "case_id": {
+      "title": "Case Id",
+      "type": "string"
+    },
+    "split": {
+      "enum": [
+        "dev",
+        "test"
+      ],
+      "title": "Split",
+      "type": "string"
+    },
+    "cause_class": {
+      "enum": [
+        "configuration",
+        "application_code",
+        "runtime_dependency",
+        "insufficient_evidence"
+      ],
+      "title": "Cause Class",
+      "type": "string"
+    },
+    "fault_family": {
+      "title": "Fault Family",
+      "type": "string"
+    },
+    "service": {
+      "enum": [
+        "shop_api",
+        "worker"
+      ],
+      "title": "Service",
+      "type": "string"
+    },
+    "base_sha": {
+      "title": "Base Sha",
+      "type": "string"
+    },
+    "gold_config_keys": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Gold Config Keys",
+      "type": "array"
+    },
+    "gold_symbols": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/GoldSymbol"
+      },
+      "title": "Gold Symbols",
+      "type": "array"
+    },
+    "distance": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Graph hops from where the symptom shows to where the cause lives. None when there is no target (runtime_dependency, insufficient_evidence).",
+      "title": "Distance"
+    },
+    "reproducer_id": {
+      "title": "Reproducer Id",
+      "type": "string"
+    },
+    "visible_test_ids": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Visible Test Ids",
+      "type": "array"
+    },
+    "hidden_test_ids": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Hidden Test Ids",
+      "type": "array"
+    },
+    "variant_group": {
+      "title": "Variant Group",
+      "type": "string"
+    },
+    "origin": {
+      "default": "synthetic",
+      "enum": [
+        "synthetic",
+        "bugsinpy"
+      ],
+      "title": "Origin",
+      "type": "string"
+    }
+  },
+  "required": [
+    "case_id",
+    "split",
+    "cause_class",
+    "fault_family",
+    "service",
+    "base_sha",
+    "reproducer_id",
+    "variant_group"
+  ],
+  "title": "CaseManifest",
+  "type": "object"
+}

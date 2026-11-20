@@ -1,0 +1,29 @@
+{
+  "case_id": "cfg-redis-host-001",
+  "split": "test",
+  "cause_class": "configuration",
+  "fault_family": "wrong_host",
+  "service": "worker",
+  "base_sha": "3f9c2e1a7b5d4c8e9f0a1b2c3d4e5f6a7b8c9d0e",
+  "gold_config_keys": [
+    "worker.REDIS_HOST"
+  ],
+  "gold_symbols": [
+    {
+      "path": "lab/worker/settings.py",
+      "qualname": "WorkerSettings.redis_host",
+      "start_line": 9,
+      "end_line": 9
+    }
+  ],
+  "distance": 1,
+  "reproducer_id": "repro.worker.enqueue_order_email",
+  "visible_test_ids": [
+    "lab/worker/tests/test_queue.py::test_consume_one_job"
+  ],
+  "hidden_test_ids": [
+    "datasets/hidden_tests/worker/test_redis_connect.py::test_worker_reaches_redis"
+  ],
+  "variant_group": "redis_host",
+  "origin": "synthetic"
+}

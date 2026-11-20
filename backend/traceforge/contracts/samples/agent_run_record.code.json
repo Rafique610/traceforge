@@ -1,0 +1,32 @@
+{
+  "model_id": "devstral-small-latest",
+  "provider": "mistral",
+  "dataset_sha256": "07e6bfa9f7322ab1d3594c27cbfbc413fecdc64245a36359842affb7bb994ad3",
+  "git_sha": "3f9c2e1a7b5d4c8e9f0a1b2c3d4e5f6a7b8c9d0e",
+  "cost_usd": 0.0,
+  "run_id": "run-L0-code-empty-cart-004-r1",
+  "case_id": "code-empty-cart-004",
+  "condition": "L0",
+  "prompt_hash": "391f43702a7f93bc68c1bef11a2d3cbb0a8171f2b48a7b799861c1167f85f93a",
+  "diagnosis": {
+    "cause_class": "application_code",
+    "target": "lab/shop_api/app/orders.py::order_total",
+    "evidence_ids": [
+      "EV-0001",
+      "EV-0002"
+    ],
+    "contradicting_ids": [],
+    "abstained": false
+  },
+  "patch_sha256": "02b5ab8598b0fbf29d44f9688de566a633c336f88afb0c546edd54ceef25bd8c",
+  "attempts": 3,
+  "outcome": "UNVERIFIED",
+  "hidden_passed": false,
+  "tokens_in": 8450,
+  "tokens_out": 910,
+  "list_price_usd": 0.0056,
+  "latency_ms": 31200,
+  "tool_calls": 4,
+  "invalid_tool_calls": 1,
+  "cache_hits": 1
+}
