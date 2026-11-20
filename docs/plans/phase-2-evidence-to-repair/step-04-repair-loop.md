@@ -52,6 +52,9 @@ Edge cases: patch applies but breaks import → visible fails → next attempt; 
 - Each attempt runs the **whole** visible suite, not only the failing test, so a fix in file A that breaks file B is caught.
 - Flag any change to a function's parameters (AST compare) in the patch record.
 
+**Gap fixes (21 Nov 2026; see D26–D31)**
+- Reject a patch that adds a literal value copied from a visible test (string or number from the test's inputs/asserts, excluding 0, 1, '' and None) and record it as `REJECTED` with reason `test_literal` (D31).
+
 ## F. Checklist
 - [ ] Diff parser + policy with reasons
 - [ ] Worktree manager (create, apply, cleanup)
@@ -69,6 +72,7 @@ Edge cases: patch applies but breaks import → visible fails → next attempt; 
 - [ ] Size cap and test-file block
 - [ ] Whole visible suite per attempt
 - [ ] Signature-change flag
+- [ ] Test-literal check with a unit test that catches a special-cased input
 
 ## G. Expected deliverables
 New: `backend/traceforge/repair/{patch_policy,worktree,loop}.py`, models/migration, tests. Modified: `agent/pipeline.py` (calls repair), `Taskfile.yml`, `README.md`. Interface: `repair(...) -> RepairResult`.

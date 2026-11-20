@@ -33,6 +33,12 @@ Three kinds of entries, never mixed:
 | D23 | Graph keeps reverse edges; report lists the impact set of changed symbols; signature changes are flagged | User, 21 Nov 2026; P2-S02, P2-S04, P2-S05 |
 | D24 | `log_format` varies across cases (plain/json/uvicorn_access/none); metrics broken down by it | User, 21 Nov 2026; P1-S03, P3-S01, P3-S02 |
 | D25 | Feasibility prototype P0-S06 runs before Phase 1 feature work that depends on model or retrieval limits | User, 21 Nov 2026 |
+| D26 | Cache key = prompt hash + model ID + replicate index; replicates are real reruns; if the provider proves deterministic, say so and treat replicates as one | Gap Q10; P1-S05, P5-S03 |
+| D27 | Dataset validator runs broken and original 3× each and rejects flaky cases; freeze record counts rejections | Gap Q11; P1-S03, P3-S01 |
+| D28 | Ruhan writes or blind-reviews ≥25% of fault templates before any graph tuning; noted as a threat to validity | Gap Q12; P3-S01, P6-S04 |
+| D29 | Small informal usefulness study in A4: 3–5 classmates rate 6 reports each on a 4-question rubric | Gap Q13; P6-S03, P6-S04 |
+| D30 | Sandbox reuses a warm image per `base_sha`; container start and test time measured; P5-S03 time budget comes from those medians | Gap Q14; P1-S02, P5-S03 |
+| D31 | Anti-overfitting: hidden tests use different inputs; patches adding visible-test literals are rejected (`test_literal`); rejections reported by reason | Gap Q15; P2-S04, P3-S01, P3-S02 |
 
 ## Assumptions (to confirm)
 | # | Assumption | Used in | Confirm by |
@@ -60,12 +66,12 @@ Three kinds of entries, never mixed:
 | Q7 | A4 public host (free tier) and whether login is needed | P6-S02 | Ruhan | No (A4) |
 | Q8 | A4 deadline and A3 demo date: user said dates don't matter; sequencing is by dependency only | Roadmap | — | No |
 | Q9 | Ruhan's GPU model (Rafique's is RTX 3050 6 GB; Ruhan's reported as 6 GB) | P5-S04 hardware note | Ruhan | No |
-| Q10 | Replicates vs cache: a cache keyed only by prompt hash makes the 3 replicates identical. Proposed: key = prompt hash + model ID + replicate index | P1-S05, P5-S03 | Ruhan | Yes, before P5-S03 |
-| Q11 | Flaky tests can fake a VERIFIED. Proposed: validator runs broken and original 3× each and rejects flips | P1-S03, P1-S02 | Rafique | No |
-| Q12 | Author bias: Rafique writes both faults and the graph. Proposed: Ruhan writes or blind-reviews ≥25% of templates before tuning | P3-S01 | Both | No |
-| Q13 | Usefulness of the report to a human is unmeasured. Option: 3–5 classmates rate reports on a short rubric (A4) | P6-S03, P6-S04 | Ruhan | No |
-| Q14 | Sandbox cost: container start per attempt × ~1,600 runs may dominate time. Measure in P0-S06/P1-S02; reuse warm images | P1-S02, P5-S03 | Rafique | No |
-| Q15 | Overfitting a patch to the test (special-casing inputs). Hidden tests use different inputs; add a check that the patch doesn't contain literal test values | P2-S04, P3-S01 | Both | No |
+| Q10 | ~~Replicates vs cache: a cache keyed only by prompt hash makes the 3 replicates identical. Proposed: key = prompt hash + model ID + replicate index~~ Resolved by D26 | P1-S05, P5-S03 | Ruhan | No |
+| Q11 | ~~Flaky tests can fake a VERIFIED. Proposed: validator runs broken and original 3× each and rejects flips~~ Resolved by D27 | P1-S03, P1-S02 | Rafique | No |
+| Q12 | ~~Author bias: Rafique writes both faults and the graph. Proposed: Ruhan writes or blind-reviews ≥25% of templates before tuning~~ Resolved by D28 | P3-S01 | Both | No |
+| Q13 | ~~Usefulness of the report to a human is unmeasured. Option: 3–5 classmates rate reports on a short rubric (A4)~~ Resolved by D29 | P6-S03, P6-S04 | Ruhan | No |
+| Q14 | ~~Sandbox cost: container start per attempt × ~1,600 runs may dominate time. Measure in P0-S06/P1-S02; reuse warm images~~ Resolved by D30 | P1-S02, P5-S03 | Rafique | No |
+| Q15 | ~~Overfitting a patch to the test (special-casing inputs). Hidden tests use different inputs; add a check that the patch doesn't contain literal test values~~ Resolved by D31 | P2-S04, P3-S01 | Both | No |
 
 ## Contradictions found
 | # | Where | Contradiction | Resolution |

@@ -35,6 +35,10 @@ The Assignment 4 written work for the R&D track: a full research paper reviewed 
 6. Investor pitch (Ruhan): problem, users, solution demo, results (real numbers only), business model and costs (official prices), funding routes from the proposal, ask.
 7. AI-tool declaration updated for A4.
 
+**Gap fixes (21 Nov 2026; see D26–D31)**
+- Run the usefulness study: 3–5 classmates each rate 6 reports (2 verified, 2 unverified, 1 abstain, 1 runtime_dependency), chosen at random from saved runs. Report medians per question and quote notes; say plainly it is a small informal study (D29).
+- Threats-to-validity section covers author bias (D28), flaky tests (D27), provider nondeterminism (D26) and test-overfitting checks (D31).
+
 ## F. Checklist
 - [ ] Outline and template agreed
 - [ ] Rafique's sections drafted
@@ -48,6 +52,8 @@ The Assignment 4 written work for the R&D track: a full research paper reviewed 
 - [ ] Investor pitch deck
 - [ ] AI-tool declaration
 - [ ] Final read by both
+- [ ] Usefulness study run and reported
+- [ ] Threats-to-validity section
 
 ## G. Expected deliverables
 Paper PDF, figure scripts, final docs, pitch deck, declaration.

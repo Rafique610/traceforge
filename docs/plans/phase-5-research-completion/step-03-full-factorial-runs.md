@@ -34,6 +34,10 @@ Run the complete controlled experiment that answers the research question: condi
 5. Completeness check: `task eval:check-grid` asserts every case × condition × replicate exists.
 6. Hand the run IDs to Rafique for P5-S02.
 
+**Gap fixes (21 Nov 2026; see D26–D31)**
+- Before starting, estimate total time = runs × (median model latency from P1-S05 probe + median sandbox time from P1-S02) and plan the run in resumable batches (D30).
+- Check after replicate 2 that at least some records differ from replicate 1; if all are identical, report that the provider was deterministic and treat replicates as one (D26).
+
 ## F. Checklist
 - [ ] Reuse-vs-rerun decision for A3 runs documented
 - [ ] Replicate in cache key; first-run cache bypass
@@ -43,6 +47,8 @@ Run the complete controlled experiment that answers the research question: condi
 - [ ] All 12 cells complete
 - [ ] Grid completeness check passes
 - [ ] Run IDs handed over
+- [ ] Time estimate from measured medians
+- [ ] Replicate-difference check recorded
 
 ## G. Expected deliverables
 Run directories for 12 cells; `evaluation/results/a4/grid_meta.json` (committed); runner changes and tests.

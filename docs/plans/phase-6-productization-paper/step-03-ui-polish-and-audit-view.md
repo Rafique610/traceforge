@@ -33,6 +33,9 @@ Make the final demo and the public showcase clear: an audit timeline proving eve
 4. Accessibility and layout pass with the **impeccable** skill (focus states, contrast, keyboard navigation for the review panel).
 5. Vitest for each new component; screenshots attached.
 
+**Gap fixes (21 Nov 2026; see D26–D31)**
+- Add a rating page for the small usefulness study: a reviewer sees one report and answers 4 questions on a 1–5 scale (cause clear? evidence convincing? patch understandable? would approve?) plus a free-text note. Ratings saved as JSON with the report hash (D29).
+
 ## F. Checklist
 - [ ] Audit timeline
 - [ ] Hit path view
@@ -40,6 +43,7 @@ Make the final demo and the public showcase clear: an audit timeline proving eve
 - [ ] impeccable UX/accessibility pass
 - [ ] Tests
 - [ ] Screenshots on TRAC-31
+- [ ] Rating page saves ratings bound to the report hash
 
 ## G. Expected deliverables
 New components above; small endpoint for `stats.json` if not already served.

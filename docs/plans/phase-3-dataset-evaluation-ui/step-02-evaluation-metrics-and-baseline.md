@@ -46,6 +46,9 @@ Every number shown in the demo is computed here from saved records (rubric D2, D
 **Additions from the feasibility review (21 Nov 2026; see D18–D24)**
 - Also report: invalid-edit rate, lines changed per patch, new ruff errors, parse failures, signature-change rate, and every metric broken down by `log_format` as well as `distance`.
 
+**Gap fixes (21 Nov 2026; see D26–D31)**
+- Report rejections by reason (`test_literal`, invalid edit, size cap, test-file edit) per condition, so a high repair rate can't hide cheating fixes (D31).
+
 ## F. Checklist
 - [ ] Retrieval metrics
 - [ ] Diagnosis metrics incl. abstention and runtime_dependency
@@ -59,6 +62,7 @@ Every number shown in the demo is computed here from saved records (rubric D2, D
 - [ ] Baseline scored on dev; table pasted on TRAC-20
 - [ ] Edit-quality metrics
 - [ ] Breakdown by log format
+- [ ] Rejection reasons table per condition
 
 ## G. Expected deliverables
 New: `backend/traceforge/evaluation/{metrics/*,baselines/rules.py,report.py,failures.py}`, tests. Modified: contracts (additive), `Taskfile.yml`, `README.md`.

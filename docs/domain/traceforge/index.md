@@ -61,3 +61,4 @@ Phase 0 in progress: backend skeleton (`/health`, Postgres, Alembic, Taskfile) a
 - A code map (outline of files and function signatures) is available identically in both retrieval arms.
 - The graph keeps reverse edges so the report lists what else a patch could affect.
 - Log format varies across cases (plain, JSON, access log, none); results are broken down by format.
+- Validity guards: replicate index in the cache key; flaky cases rejected (3× runs); Ruhan writes or reviews ≥25% of fault templates; hidden tests use different inputs and patches with copied test literals are rejected; sandbox reuses warm images and its timing drives the run budget; a small classmate rating study of reports in A4.

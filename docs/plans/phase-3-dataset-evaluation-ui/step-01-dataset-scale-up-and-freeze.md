@@ -46,6 +46,10 @@ Edge cases: a variant that doesn't reproduce → drop it, never "fix" the label;
 - Split by `variant_group`: all variants of one template stay in the same split, so test cases are never near-copies of dev cases.
 - Ruhan writes or blind-reviews at least 25% of the fault templates before the graph is tuned, so faults aren't shaped around Rafique's own graph (Q12).
 
+**Gap fixes (21 Nov 2026; see D26–D31)**
+- Hidden tests use different inputs from visible tests for the same behaviour; the validator fails a case whose hidden test shares an input literal with its visible test (D31).
+- The freeze record lists how many candidate cases the 3× flakiness check rejected (D27).
+
 ## F. Checklist
 - [ ] ≥10 fault families implemented
 - [ ] ≥60 config, ≥60 code, ≥12 runtime_dependency, ≥12 insufficient_evidence in test
@@ -59,6 +63,8 @@ Edge cases: a variant that doesn't reproduce → drop it, never "fix" the label;
 - [ ] Log formats spread across the test split
 - [ ] Split by variant_group verified
 - [ ] ≥25% of templates written or reviewed by Ruhan
+- [ ] Hidden inputs differ from visible inputs (validator check)
+- [ ] Flaky-rejection count in the freeze record
 
 ## G. Expected deliverables
 Modified/new: `datasets/generation/templates/*`, `datasets/cases/*`, `datasets/hidden_tests/*`, `datasets/manifests/{dev,test}.jsonl`, `datasets/manifests/test.sha256`, `Taskfile.yml` (`dataset:freeze`, `dataset:stats`).

@@ -44,6 +44,10 @@ One trusted function that runs a test suite against a code checkout inside a loc
 
 Edge cases: missing image → clear error, `UNVERIFIED` upstream; pytest collection error → `error` set and `failed` counts it; JUnit file absent → `error`.
 
+**Gap fixes (21 Nov 2026; see D26–D31)**
+- Record timing per run in `TestRunResult.duration_ms` and log container start vs test time separately; build the test image once per `base_sha` and reuse it (warm image), never rebuild per attempt (D30).
+- Write the measured median start + run time into the step's PR, so P5-S03 can estimate total experiment time from a real number.
+
 ## F. Checklist
 - [ ] Image map + presence check
 - [ ] `run_tests()` with all isolation flags
@@ -55,6 +59,8 @@ Edge cases: missing image → clear error, `UNVERIFIED` upstream; pytest collect
 - [ ] Unit tests (mocked) + one real Docker test
 - [ ] Average duration recorded on TRAC-6
 - [ ] README section
+- [ ] Warm image reused across attempts
+- [ ] Median container start and test time measured and recorded
 
 ## G. Expected deliverables
 New: `backend/traceforge/sandbox/{__init__,images,runner,selftest}.py`, tests. Modified: `Taskfile.yml` (`sandbox:selftest`, `lab:build`), `pyproject.toml` (`docker`), `README.md`. Interface: `run_tests(TestRunRequest) -> TestRunResult`.
