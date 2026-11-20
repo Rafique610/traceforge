@@ -48,6 +48,10 @@ One way to call Mistral, Ollama or Groq with tools, where every call is logged (
 
 Edge cases: very long prompts beyond context → raise before sending; Ollama not running → clear error; secrets never logged (assert in a test that the key isn't in any log line).
 
+**Additions from the feasibility review (21 Nov 2026; see D18–D24)**
+- Turn the P0-S06 model probe into `task gateway:probe`: read limit, write limit, edit validity and real rate-limit numbers per model, saved as JSON. ADR 0001 cites these numbers (D21).
+- Cache key = prompt hash + model ID + replicate index, so the 3 replicates in P5-S03 are real reruns while re-scoring replays for free (Q10).
+
 ## F. Checklist
 - [ ] Settings for providers, keys (SecretStr), cache, rate, prices
 - [ ] `ModelResponse` and `chat()`
@@ -60,6 +64,8 @@ Edge cases: very long prompts beyond context → raise before sending; Ollama no
 - [ ] Unit tests (cache, retry, cost, canonical key, no secret in logs)
 - [ ] `.cache/` and `runs/` git-ignored
 - [ ] README: how to set keys and run the smoke test
+- [ ] `task gateway:probe` reproduces the P0-S06 numbers
+- [ ] Cache key includes model ID and replicate index
 
 ## G. Expected deliverables
 New: `backend/traceforge/agent/{gateway,cache,call_log,smoke}.py`, tests, `docs/adrs/0001-primary-model.md`. Modified: `config.py`, `.env.example`, `.gitignore`, `Taskfile.yml`, `README.md`. Interface: `chat(...) -> ModelResponse`.
@@ -70,6 +76,7 @@ New: `backend/traceforge/agent/{gateway,cache,call_log,smoke}.py`, tests, `docs/
 - Acceptance: ADR merged; answering open question Q1 in [DECISIONS_AND_OPEN_QUESTIONS.md](../DECISIONS_AND_OPEN_QUESTIONS.md) (update that row in this PR).
 
 ## I. Dependencies and integration
+- **Informed by:** P0-S06 limits report.
 - **Depends on:** P0-S02.
 - **Unblocks:** P1-S06 (agent), P3-S04 (runner uses cache), P5-S04 (model comparison).
 

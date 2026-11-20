@@ -41,6 +41,10 @@ The diagnosis brain and patch requester, built against contract **samples** so i
 
 Edge cases: model returns prose instead of a tool call → one reminder, then abstain; diff block missing → patch outcome recorded as no diff (P2-S04 counts it as a failed attempt).
 
+**Additions from the feasibility review (21 Nov 2026; see D18–D24)**
+- Prompt context stays within the per-prompt budget set by D20 (measured in P0-S06), not the advertised window.
+- The diagnose stage offers the same read-only code-map tool in every condition (D22).
+
 ## F. Checklist
 - [ ] Source protocols + sample implementations
 - [ ] Typed tools with validation and path restriction
@@ -52,6 +56,8 @@ Edge cases: model returns prose instead of a tool call → one reminder, then ab
 - [ ] Tests incl. prompt-injection sample
 - [ ] Works with Mistral and Ollama profiles
 - [ ] README section
+- [ ] Context budget from D20 enforced
+- [ ] Code-map tool available in both retrieval arms
 
 ## G. Expected deliverables
 New: `backend/traceforge/agent/{sources,tools,diagnose,patch,pipeline}.py`, `agent/prompts/*.md`, tests. Modified: `Taskfile.yml`, `README.md`. Interface: `run_case(...) -> AgentRunRecord`.
@@ -62,6 +68,7 @@ New: `backend/traceforge/agent/{sources,tools,diagnose,patch,pipeline}.py`, `age
 - Acceptance: injection test passes; abstain and runtime_dependency samples produce no patch.
 
 ## I. Dependencies and integration
+- **Informed by:** P0-S06 limits report.
 - **Depends on:** P1-S04, P1-S05, P0-S05.
 - **Unblocks:** P1-S07 (Sync 1), P2-S04 (repair loop wraps the patch stage).
 - **Integration:** swap sample sources for real ones at Sync 2 (P2-S07) without changing pipeline code.

@@ -25,6 +25,14 @@ Three kinds of entries, never mixed:
 | D15 | Dataset targets: ≥60 config, ≥60 code, ≥12 runtime_dependency, ≥12 insufficient_evidence held-out; ≥30 dev | Domain doc; TRAC-19 |
 | D16 | The docs in `docs/plans/` are the plan; Synverk is not used for this project (TRAC-n kept as references) | User, 19 Nov 2026 |
 | D17 | Before any work, fetch and pull `main`/the current branch if it is behind `origin` | User, 19 Nov 2026; `docs/invariants/processes.md` |
+| D18 | Retrieval benchmark E1 adds R0 ripgrep and a trace-only reference to L and G; embeddings optional | User, 21 Nov 2026; P2-S03 |
+| D19 | Edit format: search/replace blocks, ≤60 changed lines, ≤2 files, no test files; stored as unified diff. **Provisional** until P0-S06 | User, 21 Nov 2026; P2-S04 |
+| D20 | Per-prompt context budget = measured usable size from P0-S06, not the advertised window. **Provisional** | User, 21 Nov 2026; P1-S06 |
+| D21 | Primary model stays Devstral (Mistral free tier) unless P0-S06 numbers say otherwise. **Provisional** | User, 21 Nov 2026; P1-S05 |
+| D22 | Code map available identically in both retrieval arms (context or diagnose tool) | User, 21 Nov 2026; P2-S02, P2-S03, P1-S06 |
+| D23 | Graph keeps reverse edges; report lists the impact set of changed symbols; signature changes are flagged | User, 21 Nov 2026; P2-S02, P2-S04, P2-S05 |
+| D24 | `log_format` varies across cases (plain/json/uvicorn_access/none); metrics broken down by it | User, 21 Nov 2026; P1-S03, P3-S01, P3-S02 |
+| D25 | Feasibility prototype P0-S06 runs before Phase 1 feature work that depends on model or retrieval limits | User, 21 Nov 2026 |
 
 ## Assumptions (to confirm)
 | # | Assumption | Used in | Confirm by |
@@ -52,6 +60,12 @@ Three kinds of entries, never mixed:
 | Q7 | A4 public host (free tier) and whether login is needed | P6-S02 | Ruhan | No (A4) |
 | Q8 | A4 deadline and A3 demo date: user said dates don't matter; sequencing is by dependency only | Roadmap | — | No |
 | Q9 | Ruhan's GPU model (Rafique's is RTX 3050 6 GB; Ruhan's reported as 6 GB) | P5-S04 hardware note | Ruhan | No |
+| Q10 | Replicates vs cache: a cache keyed only by prompt hash makes the 3 replicates identical. Proposed: key = prompt hash + model ID + replicate index | P1-S05, P5-S03 | Ruhan | Yes, before P5-S03 |
+| Q11 | Flaky tests can fake a VERIFIED. Proposed: validator runs broken and original 3× each and rejects flips | P1-S03, P1-S02 | Rafique | No |
+| Q12 | Author bias: Rafique writes both faults and the graph. Proposed: Ruhan writes or blind-reviews ≥25% of templates before tuning | P3-S01 | Both | No |
+| Q13 | Usefulness of the report to a human is unmeasured. Option: 3–5 classmates rate reports on a short rubric (A4) | P6-S03, P6-S04 | Ruhan | No |
+| Q14 | Sandbox cost: container start per attempt × ~1,600 runs may dominate time. Measure in P0-S06/P1-S02; reuse warm images | P1-S02, P5-S03 | Rafique | No |
+| Q15 | Overfitting a patch to the test (special-casing inputs). Hidden tests use different inputs; add a check that the patch doesn't contain literal test values | P2-S04, P3-S01 | Both | No |
 
 ## Contradictions found
 | # | Where | Contradiction | Resolution |

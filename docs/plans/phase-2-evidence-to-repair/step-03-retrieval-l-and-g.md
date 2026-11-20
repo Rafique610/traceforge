@@ -45,6 +45,11 @@ Produce the context the LLM sees, in two modes that differ **only** in graph fea
 
 Edge cases: no trace and no named key → anchors empty; G falls back to lexical + nothing (the result is still valid). Gold symbol not in corpus (e.g. Compose-only fault) → gold matches a `ComposeEnv`/config node.
 
+**Additions from the feasibility review (21 Nov 2026; see D18–D24)**
+- Add baseline **R0 ripgrep**: same query terms, files ranked by hit count. Optional **E embeddings** (small local model via Ollama) if time allows. Report all arms in E1 with Recall@5, MRR, nDCG@10 and time per query (D18).
+- Add a **trace-only** reference (context = traceback files only) to show how much any retrieval adds.
+- The code map is given identically to L and G, so it never decides the L-vs-G comparison (D22).
+
 ## F. Checklist
 - [ ] Chunk corpus per SHA
 - [ ] BM25 candidates with identifier-aware tokenizer
@@ -57,6 +62,9 @@ Edge cases: no trace and no named key → anchors empty; G falls back to lexical
 - [ ] Unit tests
 - [ ] E1 table for seed cases pasted on TRAC-14
 - [ ] Weights left at initial values (tuning only after freeze, on dev)
+- [ ] R0 ripgrep baseline in E1
+- [ ] Trace-only reference in E1
+- [ ] Embeddings arm (optional) or explicitly dropped
 
 ## G. Expected deliverables
 New: `backend/traceforge/retrieval/{corpus,lexical,anchors,graph_ranker,context_budget,retrieve,e1}.py`, tests. Modified: `pyproject.toml`, `Taskfile.yml`, `README.md`. Interface: `retrieve(...) -> ContextBundle`.
@@ -67,6 +75,7 @@ New: `backend/traceforge/retrieval/{corpus,lexical,anchors,graph_ranker,context_
 - Acceptance: identical inputs → identical bundles (determinism test).
 
 ## I. Dependencies and integration
+- **Informed by:** P0-S06 limits report.
 - **Depends on:** P2-S01, P2-S02.
 - **Unblocks:** P2-S07 (real context), P4-S01 (E1 on the full set), P5-S03.
 - **Integration:** Ruhan's `ContextSource` gets `RetrievalContextSource(mode)` at Sync 2; the condition's L/G letter selects the mode.

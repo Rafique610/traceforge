@@ -46,6 +46,12 @@ Turn a proposed diff into a verified, rejected or unverified result, with the tw
 
 Edge cases: patch applies but breaks import → visible fails → next attempt; runner timeout → `UNVERIFIED` (never success); model returns identical diff each attempt in F0 → allowed (temperature 0), recorded.
 
+**Additions from the feasibility review (21 Nov 2026; see D18–D24)**
+- Edit format: **search/replace blocks** (D19, confirmed by P0-S06). The applier converts accepted edits to a unified diff for storage and hashing. An edit whose old lines don't match exactly is invalid and uses up the attempt.
+- Size cap: ≤60 changed lines and ≤2 files per patch; edits to test files are rejected.
+- Each attempt runs the **whole** visible suite, not only the failing test, so a fix in file A that breaks file B is caught.
+- Flag any change to a function's parameters (AST compare) in the patch record.
+
 ## F. Checklist
 - [ ] Diff parser + policy with reasons
 - [ ] Worktree manager (create, apply, cleanup)
@@ -59,6 +65,10 @@ Edge cases: patch applies but breaks import → visible fails → next attempt; 
 - [ ] Policy tests; equal-attempts test
 - [ ] CLI task
 - [ ] Seed config + code results pasted on TRAC-15
+- [ ] Search/replace applier + diff conversion
+- [ ] Size cap and test-file block
+- [ ] Whole visible suite per attempt
+- [ ] Signature-change flag
 
 ## G. Expected deliverables
 New: `backend/traceforge/repair/{patch_policy,worktree,loop}.py`, models/migration, tests. Modified: `agent/pipeline.py` (calls repair), `Taskfile.yml`, `README.md`. Interface: `repair(...) -> RepairResult`.
@@ -69,6 +79,7 @@ New: `backend/traceforge/repair/{patch_policy,worktree,loop}.py`, models/migrati
 - Acceptance: a hand-written correct patch for the code seed case is verified; a hand-written wrong one is rejected by the hidden suite.
 
 ## I. Dependencies and integration
+- **Informed by:** P0-S06 limits report.
 - **Depends on:** P1-S06, P1-S02, P1-S03.
 - **Unblocks:** P2-S05, P2-S07, P3-S04.
 - **Integration:** consumes Rafique's `run_tests`; produces `outcome`/`patch_sha256` in `AgentRunRecord` for P3-S02.

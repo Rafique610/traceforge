@@ -38,6 +38,9 @@ Give the engineer the output they act on: a report built deterministically from 
 
 Edge cases: incident without patch asking for a hash → 422; second review after `REVIEWED` → allowed as a new row? **Decision:** no — one review per frozen patch in A3; a new patch would need a new incident run.
 
+**Additions from the feasibility review (21 Nov 2026; see D18–D24)**
+- The report lists the impact set of every changed symbol (from `impact()` in P2-S02) and any signature-change flag, so the reviewer sees what else could be affected (D23).
+
 ## F. Checklist
 - [ ] `Report` model and builder from DB records only
 - [ ] Markdown renderer
@@ -47,6 +50,7 @@ Edge cases: incident without patch asking for a hash → 422; second review afte
 - [ ] Review endpoint with constrained schema
 - [ ] Tests for 4 outcome classes, tamper, wrong state, immutability
 - [ ] Report for a seed case pasted on TRAC-16
+- [ ] Impact list and signature flag shown in the report
 
 ## G. Expected deliverables
 New: `backend/traceforge/reports/{builder,render,router}.py`, `backend/traceforge/reviews/{models,schemas,service,router}.py`, migration, tests. Modified: `main.py`, `README.md`.
@@ -56,6 +60,7 @@ New: `backend/traceforge/reports/{builder,render,router}.py`, `backend/traceforg
 - Acceptance: no field in the report is produced by an LLM; every ID resolves.
 
 ## I. Dependencies and integration
+- **Informed by:** P0-S06 limits report.
 - **Depends on:** P1-S04, P2-S04.
 - **Unblocks:** P2-S07, P3-S03 (UI shows report and review).
 

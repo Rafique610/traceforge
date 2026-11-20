@@ -12,7 +12,7 @@
 | Reviewer | optional (Ruhan) |
 | Priority | High |
 | Effort | 1 day |
-| Status | NEEDS REVIEW |
+| Status | COMPLETED |
 | Branch | `rafique/P0-S02-S05-backend-and-contracts` (batched with P0-S05) |
 
 ## B. Objective

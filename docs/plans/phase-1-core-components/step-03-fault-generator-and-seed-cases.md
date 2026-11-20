@@ -67,6 +67,10 @@ A reproducible way to inject a known fault into the lab, write its ground truth 
 
 Edge cases: patch drifts when lab code changes → validator fails loudly (pin `base_sha`); Windows CRLF in patches → `.gitattributes` LF; flaky reproducer → run it 3× during validation and require consistent results.
 
+**Additions from the feasibility review (21 Nov 2026; see D18–D24)**
+- Each case records `log_format` (`plain`, `json`, `uvicorn_access`, `none`) in its manifest; the 4 seed cases use at least 3 different formats (D24).
+- `task dataset:validate` runs the broken version 3 times and the original 3 times; any flip is a flaky case and is rejected (Q11).
+
 ## F. Checklist
 - [ ] Case directory layout
 - [ ] Config, code, runtime, insufficient templates
@@ -77,6 +81,8 @@ Edge cases: patch drifts when lab code changes → validator fails loudly (pin `
 - [ ] Template unit tests
 - [ ] `task dataset:validate`, `task dataset:generate`
 - [ ] README dataset section
+- [ ] Seed cases cover ≥3 log formats
+- [ ] Validator rejects flaky cases (3× runs)
 
 ## G. Expected deliverables
 New: `datasets/generation/`, `datasets/cases/<4 ids>/`, `datasets/hidden_tests/<4 ids>/`, `datasets/manifests/dev.jsonl`, `datasets/validate.py`. Modified: `Taskfile.yml`, `README.md`. Possibly a contract PR adding `distance_source` (additive).
@@ -88,6 +94,7 @@ New: `datasets/generation/`, `datasets/cases/<4 ids>/`, `datasets/hidden_tests/<
 - Acceptance: a reviewer can read one case dir and understand the fault without seeing the patch name or gold labels in visible files.
 
 ## I. Dependencies and integration
+- **Informed by:** P0-S06 limits report.
 - **Depends on:** P1-S01, P1-S02, P0-S05.
 - **Unblocks:** P1-S07 (Sync 1), P3-S01 (scale-up), P2-S04 testing on real cases.
 - **Integration:** `datasets/manifests/*.jsonl` is the only thing Track B reads; hidden tests stay in `datasets/hidden_tests/` and are only mounted by the sandbox.

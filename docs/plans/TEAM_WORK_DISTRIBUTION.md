@@ -40,8 +40,9 @@ Shared (PR approved by both): `backend/traceforge/contracts/`, `main.py`, `confi
 
 ### Muhammad Rafique
 - [ ] [P0-S01](phase-0-foundation/step-01-repository-and-collaboration-setup.md) Repository and collaboration setup
-- [ ] [P0-S02](phase-0-foundation/step-02-backend-scaffold.md) Backend scaffold (TRAC-1)
+- [x] [P0-S02](phase-0-foundation/step-02-backend-scaffold.md) Backend scaffold (TRAC-1)
 - [ ] [P0-S05](phase-0-foundation/step-05-shared-contracts.md) Shared contracts, primary owner (TRAC-4)
+- [ ] [P0-S06](phase-0-foundation/step-06-feasibility-prototype.md) Feasibility prototype, Part A: retrieval spike
 - [ ] [P1-S01](phase-1-core-components/step-01-lab-fixtures.md) Lab fixtures (TRAC-5)
 - [ ] [P1-S02](phase-1-core-components/step-02-sandbox-test-runner.md) Sandbox test runner (TRAC-6)
 - [ ] [P1-S03](phase-1-core-components/step-03-fault-generator-and-seed-cases.md) Fault generator + 4 seed cases (TRAC-7)
@@ -62,7 +63,8 @@ Shared (PR approved by both): `backend/traceforge/contracts/`, `main.py`, `confi
 ### Muhammad Ruhan Kamran
 - [ ] [P0-S03](phase-0-foundation/step-03-frontend-scaffold.md) Frontend scaffold (TRAC-2)
 - [ ] [P0-S04](phase-0-foundation/step-04-proposal-update-and-approval.md) Proposal update and approval (TRAC-3)
-- [ ] [P0-S05](phase-0-foundation/step-05-shared-contracts.md) Shared contracts, supporting member (pair session)
+- [ ] [P0-S05](phase-0-foundation/step-05-shared-contracts.md) Shared contracts, supporting member: confirm the fields and samples
+- [ ] [P0-S06](phase-0-foundation/step-06-feasibility-prototype.md) Feasibility prototype, Part B: model probe
 - [ ] [P1-S04](phase-1-core-components/step-04-incidents-api-and-database.md) Incidents API + DB (TRAC-8)
 - [ ] [P1-S05](phase-1-core-components/step-05-model-gateway.md) Model gateway + ADR 0001 (TRAC-9)
 - [ ] [P1-S06](phase-1-core-components/step-06-pipeline-agent.md) Pipeline agent (TRAC-10)
@@ -86,14 +88,14 @@ Effort is in **person-days**, a planning estimate from task size, not a measurem
 
 | Phase | Rafique | Ruhan |
 |---|---|---|
-| 0 | P0-S01 0.5 · P0-S02 1 · P0-S05 1 = **2.5** | P0-S03 1 · P0-S04 1 · P0-S05 (pair) 0.5 = **2.5** |
+| 0 | P0-S01 0.5 · P0-S02 1 · P0-S05 1 · P0-S06-A 2 = **4.5** | P0-S03 1 · P0-S04 1 · P0-S05 (pair) 0.5 · P0-S06-B 2 = **4.5** |
 | 1 | P1-S01 2.5 · P1-S02 2 · P1-S03 3 = **7.5** | P1-S04 2 · P1-S05 2 · P1-S06 3 · P1-S07 0.5 = **7.5** |
 | 2 | P2-S01 2.5 · P2-S02 3 · P2-S03 3 · P2-S07 1 = **9.5** | P2-S04 3.5 · P2-S05 1.5 · P2-S06 1.5 = **6.5** |
 | 3 | P3-S01 4 · P3-S02 2.5 = **6.5** | P3-S03 4 · P3-S04 2.5 = **6.5** |
 | 4 | P4-S02 2 = **2** | P4-S01 2 · P4-S03 1.5 = **3.5** |
 | 5 | P5-S01 3 · P5-S02 2 · P5-S05 2.5 = **7.5** | P5-S03 3 · P5-S04 2 = **5** |
 | 6 | P6-S01 2.5 · P6-S04 2.5 (half of paper) = **5** | P6-S02 3 · P6-S03 2.5 · P6-S04 2.5 = **8** |
-| **Total** | **40.5** | **39.5** |
+| **Total** | **42.5** | **41.5** |
 
 **Analysis**
 - Totals are within 3% of each other. By phase they differ, by design: Rafique carries more in Phase 2 (graph + retrieval is the research core), Ruhan carries more in Phase 6 (CI, deployment, UI polish).

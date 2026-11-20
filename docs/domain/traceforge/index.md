@@ -52,4 +52,12 @@ Taskfile.yml
 ```
 
 ## Phase status
-Planning complete; no code yet. Execution manual: `docs/plans/README.md` (7 phases, 35 steps, task IDs `P<n>-S<nn>`; the old TRAC-1…32 card numbers are kept only as references).
+Phase 0 in progress: backend skeleton (`/health`, Postgres, Alembic, Taskfile) and the five contracts with samples are on `main`. Next: P0-S06 feasibility prototype (find model and retrieval limits first). Execution manual: `docs/plans/README.md` (7 phases, 36 steps, task IDs `P<n>-S<nn>`; the old TRAC-1…32 card numbers are kept only as references).
+
+## Design choices from the feasibility review (21 Nov 2026)
+- Retrieval baselines: ripgrep (R0) and a trace-only reference alongside L and G; embeddings optional.
+- Edits are search/replace blocks (≤60 changed lines, ≤2 files, no test files), converted to a diff for storage; provisional until P0-S06 confirms.
+- Context per prompt is capped at the *measured* usable size, not the advertised window.
+- A code map (outline of files and function signatures) is available identically in both retrieval arms.
+- The graph keeps reverse edges so the report lists what else a patch could affect.
+- Log format varies across cases (plain, JSON, access log, none); results are broken down by format.

@@ -6,10 +6,11 @@ From the current state (repo + docs + board, no code) to the final Assignment 4 
 | ID | Task | Card | Owner | Reviewer | Depends on | Effort (d) | Status |
 |---|---|---|---|---|---|---|---|
 | P0-S01 | Repository and collaboration setup | — | Rafique | Ruhan | — | 0.5 | IN PROGRESS |
-| P0-S02 | Backend scaffold | TRAC-1 | Rafique | Ruhan | P0-S01 | 1 | NOT STARTED |
+| P0-S02 | Backend scaffold | TRAC-1 | Rafique | Ruhan | P0-S01 | 1 | COMPLETED |
 | P0-S03 | Frontend scaffold | TRAC-2 | Ruhan | Rafique | P0-S01 | 1 | NOT STARTED |
 | P0-S04 | Proposal update and supervisor approval | TRAC-3 | Ruhan | Rafique | — | 1 | NOT STARTED |
-| P0-S05 | Shared contracts + samples | TRAC-4 | Rafique (+Ruhan) | Both | P0-S02 | 1 | NOT STARTED |
+| P0-S05 | Shared contracts + samples | TRAC-4 | Rafique (+Ruhan) | Both | P0-S02 | 1 | NEEDS REVIEW |
+| P0-S06 | Feasibility prototype (retrieval spike + model probe) | — | Rafique (A) + Ruhan (B) | optional | P0-S02 | 2 + 2 | NOT STARTED |
 | P1-S01 | Lab fixtures | TRAC-5 | Rafique | Ruhan | P0-S02 | 2.5 | NOT STARTED |
 | P1-S02 | Sandbox test runner | TRAC-6 | Rafique | Ruhan | P0-S05 | 2 | NOT STARTED |
 | P1-S03 | Fault generator + 4 seed cases | TRAC-7 | Rafique | Ruhan | P1-S01, P1-S02 | 3 | NOT STARTED |
@@ -54,7 +55,7 @@ From the current state (repo + docs + board, no code) to the final Assignment 4 
 
 ## Parallel lanes
 ```
-Phase 0  R: S01 → S02 ──► S05(pair)            U: S03, S04 ─────► S05(pair)
+Phase 0  R: S01 → S02 ──► S05(pair), S06-A      U: S03, S04 ─────► S05(pair), S06-B
 Phase 1  R: S01 → S02 → S03 ─┐                 U: S04 → S05 → S06 ─┐
                               └──────── S07 Sync 1 (U) ◄────────────┘
 Phase 2  R: S01, S02 → S03 ──┐                 U: S04 → S05, S06 ──┐
@@ -88,7 +89,7 @@ About 25 person-days along Rafique's lane. **Track A is the critical path for As
 - **Ruhan's access:** until he is a GitHub collaborator he cannot push; merges no longer need his approval.
 
 ## Milestone acceptance
-- **M0:** P0-S02 and P0-S03 health checks pass on both laptops; P0-S05 samples validate; revised proposal sent.
+- **M0:** P0-S02 and P0-S03 health checks pass on both laptops; P0-S05 samples validate; P0-S06 limits report written; revised proposal sent.
 - **M1:** `task agent:run` on 4 seed cases produces schema-valid records; `task dataset:validate` green.
 - **M2:** one command runs 4 cases end to end with real evidence/context; config + code reach `TEST_VERIFIED_IN_LAB` or have documented failures; decoy and abstain behave correctly.
 - **M3:** frozen manifest with ≥60/60/12/12 test + ≥30 dev, ≥50% distance ≥1; UI flow clickable; dev-split run resumable.

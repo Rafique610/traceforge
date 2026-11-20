@@ -41,6 +41,11 @@ Produce the held-out evaluation set that satisfies rubric D1 (≥50 labelled exa
 
 Edge cases: a variant that doesn't reproduce → drop it, never "fix" the label; families too easy (always distance 0) → add structural variants rather than rewording.
 
+**Additions from the feasibility review (21 Nov 2026; see D18–D24)**
+- Spread `log_format` across the test split (each format ≥15% of cases, including `none`) so results can be broken down by format (D24).
+- Split by `variant_group`: all variants of one template stay in the same split, so test cases are never near-copies of dev cases.
+- Ruhan writes or blind-reviews at least 25% of the fault templates before the graph is tuned, so faults aren't shaped around Rafique's own graph (Q12).
+
 ## F. Checklist
 - [ ] ≥10 fault families implemented
 - [ ] ≥60 config, ≥60 code, ≥12 runtime_dependency, ≥12 insufficient_evidence in test
@@ -51,6 +56,9 @@ Edge cases: a variant that doesn't reproduce → drop it, never "fix" the label;
 - [ ] Peer check of 10 cases commented by Ruhan
 - [ ] Freeze hash written and committed
 - [ ] Stats pasted on TRAC-19
+- [ ] Log formats spread across the test split
+- [ ] Split by variant_group verified
+- [ ] ≥25% of templates written or reviewed by Ruhan
 
 ## G. Expected deliverables
 Modified/new: `datasets/generation/templates/*`, `datasets/cases/*`, `datasets/hidden_tests/*`, `datasets/manifests/{dev,test}.jsonl`, `datasets/manifests/test.sha256`, `Taskfile.yml` (`dataset:freeze`, `dataset:stats`).
@@ -60,6 +68,7 @@ Modified/new: `datasets/generation/templates/*`, `datasets/cases/*`, `datasets/h
 - Acceptance: no gold label text in any model-visible file (leakage scan).
 
 ## I. Dependencies and integration
+- **Informed by:** P0-S06 limits report.
 - **Depends on:** P1-S03, P2-S02.
 - **Unblocks:** P4-S01 (test-split runs), P2-S03 weight tuning on dev, P5-S03.
 

@@ -46,6 +46,10 @@ Build the typed, provenance-carrying graph that links runtime evidence to code a
 
 Edge cases: syntax error in a file → skip with a warning node; same function name in two modules → qualnames keep them distinct; circular imports → fine in a graph.
 
+**Additions from the feasibility review (21 Nov 2026; see D18–D24)**
+- Store reverse edges (imported-by, called-by, config-key-read-by) and expose `impact(symbol) -> list[symbol]` for the report (D23).
+- Export the code map (file → classes/functions with signatures, no bodies) from the same AST pass (D22).
+
 ## F. Checklist
 - [ ] Node and edge type definitions with ID scheme
 - [ ] AST symbols, imports, static calls
@@ -59,6 +63,8 @@ Edge cases: syntax error in a file → skip with a warning node; same function n
 - [ ] Seed manifests updated with computed distance
 - [ ] Fixture-package tests for every edge type
 - [ ] Stats pasted on TRAC-13
+- [ ] Reverse edges + `impact()`
+- [ ] Code map export with a token count
 
 ## G. Expected deliverables
 New: `backend/traceforge/codeintel/{python_ast,config_refs,compose_graph,tests_map,trace_map,graph}.py`, fixture package and tests. Modified: seed manifests, `Taskfile.yml`, `README.md`. Interfaces: `build_graph()`, `distance()`, `symbol_at()`.
@@ -69,6 +75,7 @@ New: `backend/traceforge/codeintel/{python_ast,config_refs,compose_graph,tests_m
 - Acceptance: unknown-edge count reported; no edge without `source`.
 
 ## I. Dependencies and integration
+- **Informed by:** P0-S06 limits report.
 - **Depends on:** P1-S01.
 - **Unblocks:** P2-S03 (graph ranker), P3-S01 (distance labels), P1-S06's `get_neighbors` tool (real implementation at Sync 2), P5-S01 (deeper edges).
 

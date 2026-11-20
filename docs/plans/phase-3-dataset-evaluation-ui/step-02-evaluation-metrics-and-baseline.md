@@ -43,6 +43,9 @@ Every number shown in the demo is computed here from saved records (rubric D2, D
 5. Taxonomy (from the architecture doc): `BAD_TRACE_MAPPING`, `DYNAMIC_DISPATCH_NOT_RESOLVED`, `MISBOUND_CONFIG_KEY`, `SIMILAR_SYMPTOM_WRONG_CAUSE`, `MISSED_DEPENDENCY`, `LOW_RETRIEVAL_RECALL`, `HALLUCINATED_CONTRACT`, `PATCH_FAILS_APPLY`, `TEST_ENVIRONMENT_FAILURE`, `TEST_OVERFIT`, `MISLEADING_LOG_INJECTION`, `INSUFFICIENT_EVIDENCE_NO_ABSTENTION`, `COST_OR_TIMEOUT`.
 6. Unit tests with hand-computed examples for every metric (including edge cases: no gold in top-k → reciprocal rank 0; n=0 bucket → reported as n=0, not 0%).
 
+**Additions from the feasibility review (21 Nov 2026; see D18–D24)**
+- Also report: invalid-edit rate, lines changed per patch, new ruff errors, parse failures, signature-change rate, and every metric broken down by `log_format` as well as `distance`.
+
 ## F. Checklist
 - [ ] Retrieval metrics
 - [ ] Diagnosis metrics incl. abstention and runtime_dependency
@@ -54,6 +57,8 @@ Every number shown in the demo is computed here from saved records (rubric D2, D
 - [ ] Failure export with taxonomy column
 - [ ] Unit tests with hand-computed values
 - [ ] Baseline scored on dev; table pasted on TRAC-20
+- [ ] Edit-quality metrics
+- [ ] Breakdown by log format
 
 ## G. Expected deliverables
 New: `backend/traceforge/evaluation/{metrics/*,baselines/rules.py,report.py,failures.py}`, tests. Modified: contracts (additive), `Taskfile.yml`, `README.md`.
@@ -63,6 +68,7 @@ New: `backend/traceforge/evaluation/{metrics/*,baselines/rules.py,report.py,fail
 - Acceptance: every metric's denominator is printed next to it.
 
 ## I. Dependencies and integration
+- **Informed by:** P0-S06 limits report.
 - **Depends on:** P0-S05.
 - **Unblocks:** P3-S04 (results page), P4-S01, P4-S02, P5-S02.
 
