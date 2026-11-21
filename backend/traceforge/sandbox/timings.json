@@ -1,0 +1,31 @@
+{
+  "ok": true,
+  "checks": {
+    "pass": true,
+    "fail": true,
+    "no_network": true,
+    "timeout": true,
+    "no_container_left": true
+  },
+  "runs": 10,
+  "median_wall_ms": 2163,
+  "median_container_start_ms": 2086,
+  "median_pytest_ms": 96,
+  "all_wall_ms": [
+    1905,
+    1952,
+    2046,
+    2281,
+    1983,
+    1875,
+    3077,
+    2953,
+    3312,
+    2875
+  ],
+  "image": "traceforge-sandbox:a6a63ca0709f",
+  "docker_server": "29.5.3",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "command": "backend\\.venv\\Scripts\\python.exe -m traceforge.sandbox.selftest --runs 10",
+  "note": "visible suite of a 1-test project; wall = docker run incl. start; start = wall - pytest time; one container at a time"
+}

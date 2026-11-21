@@ -1,0 +1,21 @@
+x-base: &base
+  command: python -m svc
+  environment:
+    SHARED_KEY: "1"
+
+services:
+  api:
+    build: ./svc
+    command: python -m svc
+    env_file: .env.example
+    environment:
+      REDIS_HOST: ${REDIS_HOST}
+      DB_POOL: "5"
+      APP_LOG_LEVEL: info
+    depends_on:
+      - cache
+  cache:
+    image: redis:7
+  worker:
+    <<: *base
+    build: ./svc

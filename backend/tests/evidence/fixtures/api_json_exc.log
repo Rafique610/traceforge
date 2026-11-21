@@ -1,0 +1,5 @@
+{"ts": "2026-11-21T10:20:11.250Z", "level": "info", "msg": "order created", "request_id": "req-7f3a9c21"}
+{"ts": "2026-11-21T10:20:12.001Z", "level": "error", "msg": "unhandled error", "request_id": "req-7f3a9c22", "exc_info": "Traceback (most recent call last):\n  File \"/app/app/routes/orders.py\", line 30, in order_total_route\n    return orders.order_total(items)\n  File \"/app/app/orders.py\", line 21, in order_total\n    first = items[0]\nIndexError: list index out of range"}
+{"ts": "2026-11-21T10:20:13.000Z", "level": "error", "msg": "structured frames", "stack": [{"filename": "/app/app/pricing.py", "lineno": 12, "name": "money"}, {"filename": 5, "lineno": 1}]}
+{"ts": "2026-11-21T10:20:14.000Z", "level": "info", "msg": "Authorization: Bearer abcdef1234567890abcdef", "token": "plain-secret-value"}
+{not valid json at all

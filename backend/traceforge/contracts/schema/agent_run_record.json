@@ -78,11 +78,8 @@
       "type": "string"
     },
     "provider": {
-      "enum": [
-        "mistral",
-        "ollama",
-        "groq"
-      ],
+      "description": "Gateway provider profile, e.g. ollama, openrouter, mistral",
+      "pattern": "^[a-z0-9_-]+$",
       "title": "Provider",
       "type": "string"
     },
@@ -185,6 +182,52 @@
     "git_sha": {
       "title": "Git Sha",
       "type": "string"
+    },
+    "replicate": {
+      "default": 0,
+      "description": "Replicate index (cache key, D26)",
+      "minimum": 0,
+      "title": "Replicate",
+      "type": "integer"
+    },
+    "temperature": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Sampling temperature used",
+      "title": "Temperature"
+    },
+    "seed": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Seed"
+    },
+    "failure_reason": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Why the run ended without a verified patch, if it did",
+      "title": "Failure Reason"
     }
   },
   "required": [

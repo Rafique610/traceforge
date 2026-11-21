@@ -2,6 +2,9 @@ from logging.config import fileConfig
 
 from alembic import context
 from traceforge.database import Base, engine
+from traceforge.incidents import models as _incidents  # noqa: F401  (register tables)
+from traceforge.repair import models as _repair  # noqa: F401
+from traceforge.reviews import models as _reviews  # noqa: F401
 
 if context.config.config_file_name is not None:
     fileConfig(context.config.config_file_name)

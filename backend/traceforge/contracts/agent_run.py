@@ -30,9 +30,12 @@ class Diagnosis(BaseModel):
 class AgentRunRecord(BaseModel):
     run_id: str
     case_id: str
-    condition: Literal["L0", "G0", "L1", "G1"]
+    condition: Literal["L0", "G0", "L1", "G1", "RULES"]  # RULES = rule-based baseline (B13)
     model_id: str
-    provider: Literal["mistral", "ollama", "groq"]
+    provider: str = Field(
+        pattern=r"^[a-z0-9_-]+$",
+        description="Gateway provider profile, e.g. ollama, openrouter, mistral",
+    )
     prompt_hash: str = Field(pattern=r"^[0-9a-f]{64}$")
     diagnosis: Diagnosis
     patch_sha256: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
@@ -49,6 +52,13 @@ class AgentRunRecord(BaseModel):
     cache_hits: int = Field(ge=0)
     dataset_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     git_sha: str
+    # Additive fields (P0-S05 confirmation, 2026-11-21): reproducibility and failure reasons.
+    replicate: int = Field(default=0, ge=0, description="Replicate index (cache key, D26)")
+    temperature: float | None = Field(default=None, ge=0, description="Sampling temperature used")
+    seed: int | None = None
+    failure_reason: str | None = Field(
+        default=None, description="Why the run ended without a verified patch, if it did"
+    )
 
     @model_validator(mode="after")
     def _outcome_consistent(self) -> Self:

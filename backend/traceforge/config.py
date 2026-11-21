@@ -21,6 +21,35 @@ class Settings(BaseSettings):
     db_user: str = "traceforge"
     db_password: SecretStr = SecretStr("")
 
+    # LLM gateway: any OpenAI-compatible provider
+    llm_provider: Literal["ollama", "openrouter", "mistral", "groq"] = "ollama"
+    llm_model: str = "qwen2.5-coder:7b"
+    # Hard guard against paid use: only allowlisted providers, openrouter ids must end ':free'.
+    llm_free_only: bool = True
+    llm_free_allowlist: frozenset[str] = frozenset({"ollama", "openrouter"})
+    llm_max_output_tokens: int = 4096  # reasoning models spend part of this on hidden reasoning
+    llm_allow_ollama_cloud: bool = False  # cloud-tagged Ollama models are billed per token
+    ollama_base_url: str = "http://localhost:11434/v1"
+    openrouter_api_key: SecretStr = SecretStr("")
+    mistral_api_key: SecretStr = SecretStr("")
+    groq_api_key: SecretStr = SecretStr("")
+    llm_cache_dir: Path = Path(".cache/llm")
+    llm_call_log: Path = Path("runs/llm_calls.jsonl")
+    llm_max_rps: float = 1.0
+    llm_max_prompt_chars: int = 400_000
+    manifest: str | None = None  # dataset manifest for GET /evaluation/report
+    showcase_mode: bool = False  # read-only public showcase: non-GET requests get 403
+    agent_context_budget_chars: int = 12000  # D20 placeholder until the P0-S06 measured limit
+    # model id -> (USD per 1M input tokens, USD per 1M output tokens), list-price equivalent
+    llm_prices: dict[str, tuple[float, float]] = {}
+
+    # GitHub intake: read-only token optional; empty allowlist means every URL is refused.
+    # Entries are "owner" or "owner/repo".
+    github_token: SecretStr | None = None
+    github_allowed_owners: list[str] = []
+    github_api_base: str = "https://api.github.com"
+    github_timeout_s: float = 10.0
+
     @property
     def database_url(self) -> URL:
         return URL.create(

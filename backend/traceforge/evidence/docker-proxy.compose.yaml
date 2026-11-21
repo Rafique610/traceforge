@@ -1,0 +1,34 @@
+# Read-only Docker API proxy for the evidence collector (AS8).
+# Only GET on /containers/* is allowed (CONTAINERS=1; POST, EXEC, IMAGES, ... stay at the image default 0).
+# The raw socket is mounted read-only into THIS container only, never into lab/sandbox containers.
+# The collector talks to http://127.0.0.1:2375 (loopback only). Up: docker compose -f <this file> up -d --wait
+name: traceforge-evidence-proxy
+
+services:
+  docker_proxy:
+    image: tecnativa/docker-socket-proxy:latest
+    environment:
+      CONTAINERS: "1"
+      POST: "0"
+      EXEC: "0"
+      IMAGES: "0"
+      NETWORKS: "0"
+      VOLUMES: "0"
+      SECRETS: "0"
+      SERVICES: "0"
+      INFO: "0"
+      AUTH: "0"
+      BUILD: "0"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    ports:
+      - "127.0.0.1:2375:2375"
+    networks: [proxy_net]
+    mem_limit: 64m
+    pids_limit: 64
+    security_opt: ["no-new-privileges:true"]
+    restart: "no"
+
+networks:
+  proxy_net:
+    name: traceforge-evidence-proxy-net

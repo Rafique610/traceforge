@@ -1,0 +1,12 @@
+{
+  "name": "G1",
+  "alias": "G1F1",
+  "retrieval": "G",
+  "feedback": true,
+  "model_id": "devstral-small-latest",
+  "provider": "mistral",
+  "temperature": 0.0,
+  "max_attempts": 3,
+  "context_budget_chars": 12000,
+  "prompt_hash": "4e218bd9f4e0cde41e66116f5b05e4a6cb04045d1198448ac0dc5f7fd2e65565"
+}

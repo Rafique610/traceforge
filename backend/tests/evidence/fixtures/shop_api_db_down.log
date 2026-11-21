@@ -1,0 +1,205 @@
+2026-11-21T16:13:12.394120631Z INFO:     Started server process [1]
+2026-11-21T16:13:12.394256568Z INFO:     Waiting for application startup.
+2026-11-21T16:13:12.848142599Z INFO:     Application startup complete.
+2026-11-21T16:13:12.848996378Z INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+2026-11-21T16:13:15.511214339Z INFO:     127.0.0.1:51734 - "GET /health/live HTTP/1.1" 200 OK
+2026-11-21T16:13:21.463823691Z INFO:     127.0.0.1:51748 - "GET /health/live HTTP/1.1" 200 OK
+2026-11-21T16:13:26.754593449Z INFO:     172.21.0.1:44666 - "GET /health HTTP/1.1" 200 OK
+2026-11-21T16:13:27.037909400Z INFO:     127.0.0.1:38672 - "GET /health/live HTTP/1.1" 200 OK
+2026-11-21T16:13:27.135133285Z INFO:     172.21.0.1:44680 - "GET /products HTTP/1.1" 200 OK
+2026-11-21T16:13:32.134829819Z INFO:     172.21.0.1:44696 - "POST /orders HTTP/1.1" 201 Created
+2026-11-21T16:13:32.682145112Z INFO:     127.0.0.1:38688 - "GET /health/live HTTP/1.1" 200 OK
+2026-11-21T16:13:38.161582196Z INFO:     127.0.0.1:32996 - "GET /health/live HTTP/1.1" 200 OK
+2026-11-21T16:13:41.400333747Z INFO:     172.21.0.1:44708 - "GET /products HTTP/1.1" 500 Internal Server Error
+2026-11-21T16:13:41.448663120Z ERROR:    Exception in ASGI application
+2026-11-21T16:13:41.448710273Z Traceback (most recent call last):
+2026-11-21T16:13:41.448716224Z   File "/opt/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1402, in _checkout
+2026-11-21T16:13:41.448721264Z     raise exc.InvalidatePoolError()
+2026-11-21T16:13:41.448772214Z sqlalchemy.exc.InvalidatePoolError: ()
+2026-11-21T16:13:41.448781663Z 
+2026-11-21T16:13:41.448786402Z During handling of the above exception, another exception occurred:
+2026-11-21T16:13:41.448790991Z 
+2026-11-21T16:13:41.448795279Z Traceback (most recent call last):
+2026-11-21T16:13:41.448799388Z   File "/opt/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 154, in __init__
+2026-11-21T16:13:41.448803846Z     self._dbapi_connection = engine.raw_connection()
+2026-11-21T16:13:41.448808055Z                              ^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-21T16:13:41.448812383Z   File "/opt/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3303, in raw_connection
+2026-11-21T16:13:41.448816952Z     return self.pool.connect()
+2026-11-21T16:13:41.448821611Z            ^^^^^^^^^^^^^^^^^^^
+2026-11-21T16:13:41.448826110Z   File "/opt/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 460, in connect
+2026-11-21T16:13:41.448830008Z     return _ConnectionFairy._checkout(self)
+2026-11-21T16:13:41.448834046Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-21T16:13:41.448838564Z   File "/opt/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1436, in _checkout
+2026-11-21T16:13:41.448842692Z     with util.safe_reraise():
+2026-11-21T16:13:41.449279109Z          ^^^^^^^^^^^^^^^^^^^
+2026-11-21T16:13:41.449288627Z   File "/opt/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 166, in __exit__
+2026-11-21T16:13:41.449292264Z     raise exc_value.with_traceback(exc_tb)
+2026-11-21T16:13:41.449295571Z   File "/opt/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1433, in _checkout
+2026-11-21T16:13:41.449298547Z     fairy._connection_record.get_connection()
+2026-11-21T16:13:41.449301453Z   File "/opt/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 879, in get_connection
+2026-11-21T16:13:41.449304759Z     self.__connect()
+2026-11-21T16:13:41.449307695Z   File "/opt/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 947, in __connect
+2026-11-21T16:13:41.449310711Z     with util.safe_reraise():
+2026-11-21T16:13:41.449313496Z          ^^^^^^^^^^^^^^^^^^^
+2026-11-21T16:13:41.449316522Z   File "/opt/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 166, in __exit__
+2026-11-21T16:13:41.449320069Z     raise exc_value.with_traceback(exc_tb)
+2026-11-21T16:13:41.449323846Z   File "/opt/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 943, in __connect
+2026-11-21T16:13:41.449326943Z     self.dbapi_connection = connection = pool._invoke_creator(self)
+2026-11-21T16:13:41.449329908Z                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-21T16:13:41.449336050Z   File "/opt/venv/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 645, in connect
+2026-11-21T16:13:41.449339217Z     return dialect.connect(*cargs_tup, **cparams)
+2026-11-21T16:13:41.449342072Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-21T16:13:41.449344968Z   File "/opt/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 869, in connect
+2026-11-21T16:13:41.449348094Z     return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+2026-11-21T16:13:41.449356350Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-21T16:13:41.449359516Z   File "/opt/venv/lib/python3.12/site-packages/psycopg/connection.py", line 100, in connect
+2026-11-21T16:13:41.449362793Z     attempts = conninfo_attempts(params)
+2026-11-21T16:13:41.449365648Z                ^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-21T16:13:41.449368684Z   File "/opt/venv/lib/python3.12/site-packages/psycopg/_conninfo_attempts.py", line 55, in conninfo_attempts
+2026-11-21T16:13:41.449371710Z     raise last_exc
+2026-11-21T16:13:41.449374646Z psycopg.OperationalError: failed to resolve host 'lab_db': [Errno -2] Name or service not known
+2026-11-21T16:13:41.449377993Z 
+2026-11-21T16:13:41.449380808Z The above exception was the direct cause of the following exception:
+2026-11-21T16:13:41.449383594Z 
+2026-11-21T16:13:41.449386199Z Traceback (most recent call last):
+2026-11-21T16:13:41.449403843Z   File "/opt/venv/lib/python3.12/site-packages/uvicorn/protocols/http/h11_impl.py", line 411, in run_asgi
+2026-11-21T16:13:41.449410326Z     result = await app(  # type: ignore[func-returns-value]
+2026-11-21T16:13:41.449413522Z              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-21T16:13:41.449416358Z   File "/opt/venv/lib/python3.12/site-packages/uvicorn/middleware/proxy_headers.py", line 63, in __call__
+2026-11-21T16:13:41.449419324Z     return await self.app(scope, receive, send)
+2026-11-21T16:13:41.449422139Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-21T16:13:41.449430075Z   File "/opt/venv/lib/python3.12/site-packages/fastapi/applications.py", line 1224, in __call__
+2026-11-21T16:13:41.449434904Z     await super().__call__(scope, receive, send)
+2026-11-21T16:13:41.449438010Z   File "/opt/venv/lib/python3.12/site-packages/starlette/applications.py", line 96, in __call__
+2026-11-21T16:13:41.449441117Z     await self.middleware_stack(scope, receive, send)
+2026-11-21T16:13:41.449444413Z   File "/opt/venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 186, in __call__
+2026-11-21T16:13:41.449447519Z     raise exc
+2026-11-21T16:13:41.449450405Z   File "/opt/venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 164, in __call__
+2026-11-21T16:13:41.449453491Z     await self.app(scope, receive, _send)
+2026-11-21T16:13:41.449456276Z   File "/opt/venv/lib/python3.12/site-packages/fastapi/telemetry/_asgi.py", line 151, in __call__
+2026-11-21T16:13:41.449459302Z     await self.app(scope, receive, send)
+2026-11-21T16:13:41.449463671Z   File "/opt/venv/lib/python3.12/site-packages/fastapi/_body_limit.py", line 80, in __call__
+2026-11-21T16:13:41.449466827Z     await self.app(scope, receive, send)
+2026-11-21T16:13:41.449469883Z   File "/opt/venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+2026-11-21T16:13:41.449473109Z     await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+2026-11-21T16:13:41.449475975Z   File "/opt/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+2026-11-21T16:13:41.449479181Z     raise exc
+2026-11-21T16:13:41.449481967Z   File "/opt/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+2026-11-21T16:13:41.449485023Z     await app(scope, receive, sender)
+2026-11-21T16:13:41.449487888Z   File "/opt/venv/lib/python3.12/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+2026-11-21T16:13:41.449490934Z     await self.app(scope, receive, send)
+2026-11-21T16:13:41.449493790Z   File "/opt/venv/lib/python3.12/site-packages/starlette/routing.py", line 683, in __call__
+2026-11-21T16:13:41.449496826Z     await self.middleware_stack(scope, receive, send)
+2026-11-21T16:13:41.449499691Z   File "/opt/venv/lib/python3.12/site-packages/fastapi/routing.py", line 2929, in app
+2026-11-21T16:13:41.449509721Z     await route.handle(scope, receive, send)
+2026-11-21T16:13:41.449512797Z   File "/opt/venv/lib/python3.12/site-packages/fastapi/routing.py", line 1916, in handle
+2026-11-21T16:13:41.449515553Z     await self.original_router.handle(scope, receive, send)
+2026-11-21T16:13:41.449518208Z   File "/opt/venv/lib/python3.12/site-packages/fastapi/routing.py", line 3015, in handle
+2026-11-21T16:13:41.449520943Z     await included_router._handle_selected(scope, receive, send)
+2026-11-21T16:13:41.449523548Z   File "/opt/venv/lib/python3.12/site-packages/fastapi/routing.py", line 1945, in _handle_selected
+2026-11-21T16:13:41.449526314Z     await original_route.handle(scope, receive, send)
+2026-11-21T16:13:41.449528899Z   File "/opt/venv/lib/python3.12/site-packages/fastapi/routing.py", line 1373, in handle
+2026-11-21T16:13:41.449531604Z     await effective_context.app(scope, receive, send)
+2026-11-21T16:13:41.449534199Z   File "/opt/venv/lib/python3.12/site-packages/fastapi/routing.py", line 175, in app
+2026-11-21T16:13:41.449536904Z     await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+2026-11-21T16:13:41.449539530Z   File "/opt/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+2026-11-21T16:13:41.449542255Z     raise exc
+2026-11-21T16:13:41.449544810Z   File "/opt/venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+2026-11-21T16:13:41.449547565Z     await app(scope, receive, sender)
+2026-11-21T16:13:41.449551353Z   File "/opt/venv/lib/python3.12/site-packages/fastapi/routing.py", line 161, in app
+2026-11-21T16:13:41.449554118Z     response = await f(request)
+2026-11-21T16:13:41.449556693Z                ^^^^^^^^^^^^^^^^
+2026-11-21T16:13:41.449559268Z   File "/opt/venv/lib/python3.12/site-packages/fastapi/routing.py", line 762, in app
+2026-11-21T16:13:41.449561944Z     raw_response = await run_endpoint_function(
+2026-11-21T16:13:41.449564539Z                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-21T16:13:41.449567124Z   File "/opt/venv/lib/python3.12/site-packages/fastapi/routing.py", line 383, in run_endpoint_function
+2026-11-21T16:13:41.449569869Z     return await run_in_threadpool(
+2026-11-21T16:13:41.449572484Z            ^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-21T16:13:41.449575089Z   File "/opt/venv/lib/python3.12/site-packages/starlette/concurrency.py", line 34, in run_in_threadpool
+2026-11-21T16:13:41.449577825Z     return await anyio.to_thread.run_sync(func)
+2026-11-21T16:13:41.449580430Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-21T16:13:41.449583265Z   File "/opt/venv/lib/python3.12/site-packages/anyio/to_thread.py", line 65, in run_sync
+2026-11-21T16:13:41.449585971Z     return await get_async_backend().run_sync_in_worker_thread(
+2026-11-21T16:13:41.449588616Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-21T16:13:41.449595169Z   File "/opt/venv/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 2779, in run_sync_in_worker_thread
+2026-11-21T16:13:41.449598004Z     return await future
+2026-11-21T16:13:41.449600609Z            ^^^^^^^^^^^^
+2026-11-21T16:13:41.449603174Z   File "/opt/venv/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 1124, in run
+2026-11-21T16:13:41.449605930Z     result = context.run(func, *args)
+2026-11-21T16:13:41.449608535Z              ^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-21T16:13:41.449611140Z   File "/opt/venv/lib/python3.12/site-packages/fastapi/telemetry/_api.py", line 244, in _run_sync_endpoint
+2026-11-21T16:13:41.449613865Z     return function(**arguments)
+2026-11-21T16:13:41.449616340Z            ^^^^^^^^^^^^^^^^^^^^^
+2026-11-21T16:13:41.449618935Z   File "/app/app/routes/products.py", line 13, in list_products
+2026-11-21T16:13:41.449621771Z     return catalog.list_products(session)
+2026-11-21T16:13:41.449624476Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-21T16:13:41.449627342Z   File "/app/app/catalog.py", line 9, in list_products
+2026-11-21T16:13:41.449630398Z     return list(session.scalars(select(Product).order_by(Product.id)))
+2026-11-21T16:13:41.449633043Z                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-21T16:13:41.449635939Z   File "/opt/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2676, in scalars
+2026-11-21T16:13:41.449639185Z     return self._execute_internal(
+2026-11-21T16:13:41.449641940Z            ^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-21T16:13:41.449644586Z   File "/opt/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2432, in _execute_internal
+2026-11-21T16:13:41.449648253Z     conn = self._connection_for_bind(bind)
+2026-11-21T16:13:41.449651329Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-21T16:13:41.449654154Z   File "/opt/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2255, in _connection_for_bind
+2026-11-21T16:13:41.449657331Z     return trans._connection_for_bind(engine, execution_options)
+2026-11-21T16:13:41.449660016Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-21T16:13:41.449662942Z   File "<sqlalchemy generated _go() wrapper for sqlalchemy.orm.session.SessionTransaction._connection_for_bind>", line 2, in _connection_for_bind
+2026-11-21T16:13:41.449666449Z     return target(fn, self, bind, execution_options)
+2026-11-21T16:13:41.449673593Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-21T16:13:41.449676679Z   File "/opt/venv/lib/python3.12/site-packages/sqlalchemy/orm/state_changes.py", line 137, in _go
+2026-11-21T16:13:41.449685706Z     ret_value = fn(self, *arg, **kw)
+2026-11-21T16:13:41.449689273Z                 ^^^^^^^^^^^^^^^^^^^^
+2026-11-21T16:13:41.449698812Z   File "/opt/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 1282, in _connection_for_bind
+2026-11-21T16:13:41.449702289Z     conn = bind.connect()
+2026-11-21T16:13:41.449705094Z            ^^^^^^^^^^^^^^
+2026-11-21T16:13:41.449708030Z   File "/opt/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3279, in connect
+2026-11-21T16:13:41.449711467Z     return self._connection_cls(self)
+2026-11-21T16:13:41.449714192Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-21T16:13:41.449717208Z   File "/opt/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 156, in __init__
+2026-11-21T16:13:41.449720334Z     Connection._handle_dbapi_exception_noconnection(
+2026-11-21T16:13:41.449723260Z   File "/opt/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2436, in _handle_dbapi_exception_noconnection
+2026-11-21T16:13:41.449726607Z     raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+2026-11-21T16:13:41.449729572Z   File "/opt/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 154, in __init__
+2026-11-21T16:13:41.449732328Z     self._dbapi_connection = engine.raw_connection()
+2026-11-21T16:13:41.449735043Z                              ^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-21T16:13:41.449741416Z   File "/opt/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3303, in raw_connection
+2026-11-21T16:13:41.449746896Z     return self.pool.connect()
+2026-11-21T16:13:41.449750133Z            ^^^^^^^^^^^^^^^^^^^
+2026-11-21T16:13:41.449752658Z   File "/opt/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 460, in connect
+2026-11-21T16:13:41.449755203Z     return _ConnectionFairy._checkout(self)
+2026-11-21T16:13:41.449758058Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-21T16:13:41.449760794Z   File "/opt/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1436, in _checkout
+2026-11-21T16:13:41.449764731Z     with util.safe_reraise():
+2026-11-21T16:13:41.449767497Z          ^^^^^^^^^^^^^^^^^^^
+2026-11-21T16:13:41.449770493Z   File "/opt/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 166, in __exit__
+2026-11-21T16:13:41.449773499Z     raise exc_value.with_traceback(exc_tb)
+2026-11-21T16:13:41.449776194Z   File "/opt/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1433, in _checkout
+2026-11-21T16:13:41.449779080Z     fairy._connection_record.get_connection()
+2026-11-21T16:13:41.449781935Z   File "/opt/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 879, in get_connection
+2026-11-21T16:13:41.449785001Z     self.__connect()
+2026-11-21T16:13:41.449790722Z   File "/opt/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 947, in __connect
+2026-11-21T16:13:41.449797145Z     with util.safe_reraise():
+2026-11-21T16:13:41.449800051Z          ^^^^^^^^^^^^^^^^^^^
+2026-11-21T16:13:41.449813788Z   File "/opt/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 166, in __exit__
+2026-11-21T16:13:41.449819429Z     raise exc_value.with_traceback(exc_tb)
+2026-11-21T16:13:41.449828507Z   File "/opt/venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 943, in __connect
+2026-11-21T16:13:41.449837895Z     self.dbapi_connection = connection = pool._invoke_creator(self)
+2026-11-21T16:13:41.449841191Z                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-21T16:13:41.449843997Z   File "/opt/venv/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 645, in connect
+2026-11-21T16:13:41.449847083Z     return dialect.connect(*cargs_tup, **cparams)
+2026-11-21T16:13:41.449849858Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-21T16:13:41.449852804Z   File "/opt/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 869, in connect
+2026-11-21T16:13:41.449855620Z     return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+2026-11-21T16:13:41.449859046Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-21T16:13:41.449862002Z   File "/opt/venv/lib/python3.12/site-packages/psycopg/connection.py", line 100, in connect
+2026-11-21T16:13:41.449865008Z     attempts = conninfo_attempts(params)
+2026-11-21T16:13:41.449868375Z                ^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-21T16:13:41.449871320Z   File "/opt/venv/lib/python3.12/site-packages/psycopg/_conninfo_attempts.py", line 55, in conninfo_attempts
+2026-11-21T16:13:41.449874387Z     raise last_exc
+2026-11-21T16:13:41.449877202Z sqlalchemy.exc.OperationalError: (psycopg.OperationalError) failed to resolve host 'lab_db': [Errno -2] Name or service not known
+2026-11-21T16:13:41.449880458Z (Background on this error at: https://sqlalche.me/e/21/e3q8)
+2026-11-21T16:13:43.714960185Z INFO:     127.0.0.1:33002 - "GET /health/live HTTP/1.1" 200 OK
+2026-11-21T16:13:45.730239344Z INFO:     172.21.0.1:36514 - "GET /health HTTP/1.1" 503 Service Unavailable
+2026-11-21T16:13:49.210005614Z INFO:     127.0.0.1:50322 - "GET /health/live HTTP/1.1" 200 OK

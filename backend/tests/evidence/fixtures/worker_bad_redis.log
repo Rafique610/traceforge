@@ -1,0 +1,63 @@
+2026-11-21T16:14:56.513086998Z 2026-11-21 16:14:56,512 WARNING worker.queue redis lab_redis_typo:6379 not reachable: Error -2 connecting to lab_redis_typo:6379. Name or service not known.
+2026-11-21T16:14:56.513130772Z 2026-11-21 16:14:56,512 INFO worker.retry attempt 1 failed (ConnectionError); retrying in 1.0s
+2026-11-21T16:15:44.326498123Z 2026-11-21 16:15:44,325 WARNING worker.queue redis lab_redis_typo:6379 not reachable: Error -2 connecting to lab_redis_typo:6379. Name or service not known.
+2026-11-21T16:15:44.326755496Z 2026-11-21 16:15:44,326 INFO worker.retry attempt 2 failed (ConnectionError); retrying in 2.0s
+2026-11-21T16:16:33.748847127Z 2026-11-21 16:16:33,748 WARNING worker.queue redis lab_redis_typo:6379 not reachable: Error -2 connecting to lab_redis_typo:6379. Name or service not known.
+2026-11-21T16:16:33.748881444Z 2026-11-21 16:16:33,748 INFO worker.retry attempt 3 failed (ConnectionError); retrying in 4.0s
+2026-11-21T16:17:24.292819457Z 2026-11-21 16:17:24,292 WARNING worker.queue redis lab_redis_typo:6379 not reachable: Error -2 connecting to lab_redis_typo:6379. Name or service not known.
+2026-11-21T16:17:24.294045561Z Traceback (most recent call last):
+2026-11-21T16:17:24.294082183Z   File "/opt/venv/lib/python3.12/site-packages/redis/connection.py", line 1055, in connect_check_health
+2026-11-21T16:17:24.295949618Z     sock = self._connect()
+2026-11-21T16:17:24.295981680Z            ^^^^^^^^^^^^^^^
+2026-11-21T16:17:24.296109565Z   File "/opt/venv/lib/python3.12/site-packages/redis/connection.py", line 1581, in _connect
+2026-11-21T16:17:24.296875915Z     for res in socket.getaddrinfo(
+2026-11-21T16:17:24.296895433Z                ^^^^^^^^^^^^^^^^^^^
+2026-11-21T16:17:24.296901084Z   File "/usr/local/lib/python3.12/socket.py", line 978, in getaddrinfo
+2026-11-21T16:17:24.297399239Z     for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+2026-11-21T16:17:24.297529383Z                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-21T16:17:24.297648878Z socket.gaierror: [Errno -2] Name or service not known
+2026-11-21T16:17:24.297658847Z 
+2026-11-21T16:17:24.297662685Z During handling of the above exception, another exception occurred:
+2026-11-21T16:17:24.297666292Z 
+2026-11-21T16:17:24.297670580Z Traceback (most recent call last):
+2026-11-21T16:17:24.297674969Z   File "<frozen runpy>", line 198, in _run_module_as_main
+2026-11-21T16:17:24.297679978Z   File "<frozen runpy>", line 88, in _run_code
+2026-11-21T16:17:24.297684527Z   File "/app/worker/main.py", line 36, in <module>
+2026-11-21T16:17:24.297843318Z     main()
+2026-11-21T16:17:24.297856093Z   File "/app/worker/main.py", line 28, in main
+2026-11-21T16:17:24.297974720Z     client = queue.connect_with_retry(settings)
+2026-11-21T16:17:24.298002264Z              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-21T16:17:24.298181775Z   File "/app/worker/queue.py", line 41, in connect_with_retry
+2026-11-21T16:17:24.298332666Z     with_backoff(ping, retries=settings.connect_attempts, base=settings.backoff_base_s, sleep=sleep)
+2026-11-21T16:17:24.298579413Z   File "/app/worker/retry.py", line 18, in with_backoff
+2026-11-21T16:17:24.298589563Z     return fn()
+2026-11-21T16:17:24.298593851Z            ^^^^
+2026-11-21T16:17:24.298596567Z   File "/app/worker/queue.py", line 36, in ping
+2026-11-21T16:17:24.298892090Z     client.ping()
+2026-11-21T16:17:24.298919734Z   File "/opt/venv/lib/python3.12/site-packages/redis/commands/core.py", line 2037, in ping
+2026-11-21T16:17:24.300391244Z     return self.execute_command("PING", **kwargs)
+2026-11-21T16:17:24.300411624Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-21T16:17:24.300415010Z   File "/opt/venv/lib/python3.12/site-packages/redis/client.py", line 867, in execute_command
+2026-11-21T16:17:24.301158415Z     return self._execute_command(*args, **options)
+2026-11-21T16:17:24.301175739Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-21T16:17:24.301178434Z   File "/opt/venv/lib/python3.12/site-packages/redis/client.py", line 873, in _execute_command
+2026-11-21T16:17:24.301577963Z     conn = self.connection or pool.get_connection()
+2026-11-21T16:17:24.301591068Z                               ^^^^^^^^^^^^^^^^^^^^^
+2026-11-21T16:17:24.301594185Z   File "/opt/venv/lib/python3.12/site-packages/redis/utils.py", line 258, in wrapper
+2026-11-21T16:17:24.302353614Z     return func(*args, **kwargs)
+2026-11-21T16:17:24.302365136Z            ^^^^^^^^^^^^^^^^^^^^^
+2026-11-21T16:17:24.302368473Z   File "/opt/venv/lib/python3.12/site-packages/redis/connection.py", line 3273, in get_connection
+2026-11-21T16:17:24.303599041Z     connection.connect()
+2026-11-21T16:17:24.303621845Z   File "/opt/venv/lib/python3.12/site-packages/redis/connection.py", line 1028, in connect
+2026-11-21T16:17:24.303879987Z     self.retry.call_with_retry(
+2026-11-21T16:17:24.303898043Z   File "/opt/venv/lib/python3.12/site-packages/redis/retry.py", line 132, in call_with_retry
+2026-11-21T16:17:24.304110081Z     raise error
+2026-11-21T16:17:24.304117355Z   File "/opt/venv/lib/python3.12/site-packages/redis/retry.py", line 120, in call_with_retry
+2026-11-21T16:17:24.304120622Z     return do()
+2026-11-21T16:17:24.304299872Z            ^^^^
+2026-11-21T16:17:24.304309431Z   File "/opt/venv/lib/python3.12/site-packages/redis/connection.py", line 1029, in <lambda>
+2026-11-21T16:17:24.304519131Z     lambda: self.connect_check_health(
+2026-11-21T16:17:24.304525944Z             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-21T16:17:24.304528369Z   File "/opt/venv/lib/python3.12/site-packages/redis/connection.py", line 1077, in connect_check_health
+2026-11-21T16:17:24.304809289Z     raise e
+2026-11-21T16:17:24.304829899Z redis.exceptions.ConnectionError: Error -2 connecting to lab_redis_typo:6379. Name or service not known.

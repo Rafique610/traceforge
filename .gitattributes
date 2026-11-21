@@ -3,3 +3,4 @@
 *.pdf binary
 *.png binary
 *.jpg binary
+lab/** text eol=lf

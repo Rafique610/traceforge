@@ -5,9 +5,14 @@ description = "Evidence-guided root-cause diagnosis and verified repair for Dock
 requires-python = ">=3.12,<3.13"
 dependencies = [
     "alembic>=1.20.1",
+    "docker>=7.2.0",
     "fastapi>=0.165.0",
+    "networkx>=3.7",
+    "openai>=3.57.0",
     "psycopg[binary]>=3.3.9",
     "pydantic-settings>=2.16.3",
+    "pyyaml>=6.0.3",
+    "rank-bm25>=0.2.2",
     "sqlalchemy>=2",
     "uvicorn[standard]>=0.54.0",
 ]
@@ -29,6 +34,7 @@ select = ["E", "F", "I", "B", "UP"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+markers = ["docker: runs real Docker containers", "e2e: needs real Docker/model resources"]
 
 [dependency-groups]
 dev = [

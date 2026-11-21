@@ -1,0 +1,6 @@
+2026-11-21T10:00:00.000000000Z ERROR:    Exception in ASGI application
+2026-11-21T10:00:00.000100000Z Traceback (most recent call last):
+2026-11-21T10:00:00.000200000Z   File "/app/app/orders.py", line 21, in order_total
+2026-11-21T10:00:00.000300000Z     first = items[0]
+2026-11-21T10:00:00.000400000Z   File "/app/app/pricing.py", line x, in broken
+2026-11-21T10:00:01.000000000Z INFO:     127.0.0.1:1 - "GET /health/live HTTP/1.1" 200 OK
