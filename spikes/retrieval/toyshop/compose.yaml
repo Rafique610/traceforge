@@ -1,0 +1,15 @@
+services:
+  api:
+    build: .
+    environment:
+      DB_POOL_SIZE: ${DB_POOL_SIZE}
+      TAX_RATE: ${TAX_RATE}
+      DISCOUNT_CAP: ${DISCOUNT_CAP}
+  worker:
+    build: .
+    command: python -m worker
+    environment:
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+  redis:
+    image: redis:7

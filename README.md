@@ -37,6 +37,7 @@ Check it works: open http://localhost:8000/docs, expand `GET /health`, click *Tr
 | `task db:migrate` | Apply Alembic migrations |
 | `task db:revision NAME=...` | Create a migration from model changes |
 | `task contracts:schema` | Regenerate JSON Schema for the contracts |
+| `task spike:retrieval` | Rerun the P0-S06 retrieval spike (needs ripgrep: `winget install BurntSushi.ripgrep.MSVC`); results in `docs/research/limits-report.md` |
 
 ## Layout
 
