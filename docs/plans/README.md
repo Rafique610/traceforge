@@ -52,10 +52,10 @@ This folder is the team's execution manual: what to build, why, how, who owns it
 ## How to track progress
 0. `git fetch origin`; if your branch is behind, `git pull --ff-only` before anything else.
 1. Pick the next step in your lane from [TEAM_WORK_DISTRIBUTION.md](TEAM_WORK_DISTRIBUTION.md). Check its prerequisites are done.
-2. Set its Status to IN PROGRESS; create the branch named in the step document from an up-to-date `main`.
+2. Set its Status to IN PROGRESS. Work on an up-to-date `main` (no step branches; the Branch field in older step documents is ignored).
 3. Tick checklist boxes in the step document **in the same commit as the work** (`[ ]` → `[x]`). Only tick what is actually done and verified.
 4. Change the step's **Status** line: NOT STARTED → IN PROGRESS → NEEDS REVIEW → COMPLETED (or BLOCKED with a reason).
-5. Merge to `main` (directly or via a self-merged PR) when you judge it ready; the other member may review afterwards.
+5. Commit on `main` and push straight to `origin/main` (no pull requests). The other member pulls and checks it.
 6. **Before every commit**, update section 0 "Progress at a glance" in [TEAM_WORK_DISTRIBUTION.md](TEAM_WORK_DISTRIBUTION.md) for both members, in the same commit. After merge, update the status column in the phase README.
 
 Status labels used everywhere: **NOT STARTED, IN PROGRESS, BLOCKED, NEEDS REVIEW, COMPLETED**.

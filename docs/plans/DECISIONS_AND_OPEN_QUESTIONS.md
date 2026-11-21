@@ -40,6 +40,7 @@ Three kinds of entries, never mixed:
 | D30 | Sandbox reuses a warm image per `base_sha`; container start and test time measured; P5-S03 time budget comes from those medians | Gap Q14; P1-S02, P5-S03 |
 | D31 | Anti-overfitting: hidden tests use different inputs; patches adding visible-test literals are rejected (`test_literal`); rejections reported by reason | Gap Q15; P2-S04, P3-S01, P3-S02 |
 | D32 | Anchor only the innermost 2 project trace frames; other frames are normal candidates with a bonus; E1 reports Recall@5 and @10. Graph uses edge-type weights, hub down-weighting and a returned-value edge, tuned on dev only. **Provisional** | P0-S06 Part A findings 2–4; P2-S02, P2-S03 |
+| D33 | No pull requests or step branches: commit on `main`, push straight to `origin/main`; both members pull to check each other's work; never force-push | User, 21 Nov 2026; `docs/invariants/processes.md` |
 
 ## Assumptions (to confirm)
 | # | Assumption | Used in | Confirm by |

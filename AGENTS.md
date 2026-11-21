@@ -132,8 +132,9 @@ to skim, so where things stand is never buried in scrollback.
 - Destructive actions. Always confirm before pushing, deleting, or
   rebuilding containers.
 - Commits. The agent commits a step itself once the user has approved it,
-  and pushes that branch to `origin` straight after. Never commit or push unapproved work. Merging into `main`,
-  force-pushing and tagging still need a yes each time.
+  on `main`, and pushes it straight to `origin/main` (no pull requests, no
+  step branches). Never commit or push unapproved work. Force-pushing and
+  tagging still need a yes each time.
 - Co-author. Never add the AI/agent's name as co-author.
 
 ## Git

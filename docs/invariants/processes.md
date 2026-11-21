@@ -1,7 +1,7 @@
 # Processes
 
 ## Sync before work
-- Before starting any work: `git fetch origin`, then `git status -sb`. If the branch is behind `origin`, `git pull --ff-only` first. Start a new step branch from an up-to-date `main`.
+- Before starting any work: `git fetch origin`, then `git status -sb`. If `main` is behind `origin/main`, `git pull --ff-only` first. Work happens on `main`.
 
 ## Steps
 - The plan is the execution manual in `docs/plans/` (phase folders, one step document per task, IDs `P<n>-S<nn>`). Synverk is not used for this project; the TRAC-n numbers in step documents are historical references only.
@@ -11,12 +11,12 @@
 - Track status in the step document (Status line + checklist) and the phase README. Set NEEDS REVIEW and give the check output in chat. Only the user approves. Wait for approval before the next step.
 
 ## Commits and merging
-- After approval the agent commits the step and pushes the branch to `origin`.
+- **No pull requests and no step branches.** After approval, commit on `main` and push straight to `origin/main`. Both members pull to see what changed (sync rule above).
 - **Before every commit** (by either member or the agent), update `docs/plans/TEAM_WORK_DISTRIBUTION.md` section 0 "Progress at a glance" for **both** members: done counts, working on, next up, waiting on, the per-step status rows, and the "Last updated" line. Tick the section 3 checklist items this commit finishes. The update goes in the same commit, so both people see progress side by side without asking.
 - One commit per approved step (or explicitly batched group). Subject under 72 chars, e.g. `feat(retrieval): add BM25 baseline`. Covers only that diff. No bulleted essay body.
 - Never add an AI/agent co-author or "generated with" line.
-- No peer approval is required. Either member may merge their own work into `main` (directly or via a self-merged PR) when they judge it ready; the other member fixes or follows up afterwards if needed. A PR review by the other member is welcome but optional.
-- `main` still blocks force pushes and deletion. For the agent: merging into `main`, force-pushing and tagging need a yes each time.
+- No peer approval is required. The other member checks the work after pulling and fixes or follows up if needed. If a push is rejected because `origin/main` moved, `git pull --rebase` and push again; never force-push.
+- `main` still blocks force pushes and deletion. For the agent: force-pushing and tagging need a yes each time.
 
 ## README
 - Update `README.md` on every step: new capabilities, paths and commands. Every commit carries an up-to-date README.
