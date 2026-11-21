@@ -64,3 +64,127 @@ tasks:
     dir: backend
     cmds:
       - uv run python -m traceforge.contracts.export_schema
+
+  web:
+    desc: Start the frontend dev server on http://localhost:5173 (proxies /api to :8000)
+    cmds:
+      - pnpm --dir frontend dev
+
+  web:test:
+    desc: Run frontend tests once
+    cmds:
+      - pnpm --dir frontend test -- --run
+
+  web:build:
+    desc: Type-check and build the frontend
+    cmds:
+      - pnpm --dir frontend build
+
+  llm:smoke:
+    desc: "One tool-call round trip + cache check: task llm:smoke PROVIDER=ollama"
+    dir: backend
+    requires:
+      vars: [PROVIDER]
+    cmds:
+      - uv run python -m traceforge.agent.smoke --provider {{.PROVIDER}} {{.CLI_ARGS}}
+
+  agent:run:
+    desc: "Run the pipeline agent on sample cases: task agent:run CASE=all CONDITION=G0"
+    dir: backend
+    vars:
+      CONDITION: '{{.CONDITION | default "G0"}}'
+      CASE: '{{.CASE | default "all"}}'
+    cmds:
+      - uv run python -m traceforge.agent.run {{.CASE}} --condition {{.CONDITION}}
+
+  eval:run:
+    desc: "Run one condition over a manifest: task eval:run MANIFEST=... CONDITION=G0 RUN_ID=dev-g0 [SPLIT=dev]"
+    dir: backend
+    requires:
+      vars: [MANIFEST, CONDITION, RUN_ID]
+    cmds:
+      - uv run python -m traceforge.evaluation.runner --manifest {{.MANIFEST}} --condition {{.CONDITION}} --run-id {{.RUN_ID}} --split {{.SPLIT | default "dev"}} --out ../runs {{.CLI_ARGS}}
+
+  spike:probe:
+    desc: "Model probe (P0-S06 Part B): task spike:probe PROVIDER=ollama MODEL=qwen2.5-coder-7b-ctx16k"
+    dir: backend
+    requires:
+      vars: [PROVIDER, MODEL]
+    cmds:
+      - .venv/Scripts/python.exe ../spikes/model_probe/probe.py --provider {{.PROVIDER}} --model {{.MODEL}} {{.CLI_ARGS}}
+
+  eval:report:
+    desc: "Compute metrics from saved runs: task eval:report RUNS=runs MANIFEST=datasets/manifests/dev.json"
+    dir: backend
+    requires:
+      vars: [RUNS, MANIFEST]
+    cmds:
+      - uv run python -m traceforge.evaluation.analysis.report --runs-dir {{.RUNS}} --manifest {{.MANIFEST}} --out report.json
+
+  lab:up:
+    desc: Start the victim lab (shop_api, worker, Postgres, Redis)
+    cmds:
+      - docker compose -f lab/compose.yaml up -d --wait --build
+
+  lab:down:
+    desc: Stop the lab
+    cmds:
+      - docker compose -f lab/compose.yaml down
+
+  lab:seed:
+    desc: Seed the lab database with products
+    cmds:
+      - docker compose -f lab/compose.yaml exec -T shop_api python -m app.seed
+
+  lab:test:
+    desc: Run the lab's visible unit tests (no Docker needed)
+    cmds:
+      - backend/.venv/Scripts/python.exe -m pytest lab -q
+
+  lab:test:integration:
+    desc: Run lab integration tests (needs `task lab:up`)
+    cmds:
+      - backend/.venv/Scripts/python.exe -m pytest lab -m integration -q
+
+  sandbox:selftest:
+    desc: Real-container self test of the sandbox runner (pass, fail, timeout, no network)
+    cmds:
+      - backend/.venv/Scripts/python.exe -m traceforge.sandbox.selftest
+
+  sandbox:test:
+    desc: Sandbox tests that run real Docker containers
+    cmds:
+      - backend/.venv/Scripts/python.exe -m pytest backend/tests/sandbox -m docker -q
+
+  graph:build:
+    desc: "Build the code graph and print counts + code map: task graph:build REPO=lab"
+    cmds:
+      - backend/.venv/Scripts/python.exe -m traceforge.codeintel {{.REPO}} --map
+
+  evidence:proxy-up:
+    desc: Start the read-only Docker socket proxy the evidence collector uses
+    cmds:
+      - docker compose -f backend/traceforge/evidence/docker-proxy.compose.yaml up -d --wait
+
+  evidence:proxy-down:
+    desc: Stop the read-only Docker socket proxy
+    cmds:
+      - docker compose -f backend/traceforge/evidence/docker-proxy.compose.yaml down
+
+  eval:retrieval:
+    desc: "E1 retrieval benchmark: task eval:retrieval SPLIT=dev EVIDENCE=runs/evidence"
+    dir: backend
+    requires:
+      vars: [EVIDENCE]
+    cmds:
+      - .venv/Scripts/python.exe -m traceforge.retrieval.e1 --manifest ../datasets/manifests/{{.SPLIT | default "dev"}}.json --repo-root ../datasets/cases --evidence-dir ../{{.EVIDENCE}} --out-dir ../runs/e1
+
+  dataset:generate:
+    desc: Regenerate the seed cases and datasets/manifests/dev.json (deterministic)
+    cmds:
+      - backend/.venv/Scripts/python.exe -m traceforge.faultgen.generate
+
+  dataset:validate:
+    desc: "Validate cases in the real sandbox (3x each; ~3 min per repairable case): task dataset:validate -- --case shop_api-001"
+    cmds:
+      - backend/.venv/Scripts/python.exe -m traceforge.faultgen.validate {{.CLI_ARGS}}

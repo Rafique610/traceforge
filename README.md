@@ -8,7 +8,7 @@ AI-4009 Generative AI semester project (FAST-NUCES), R&D Product track.
 
 ## Status
 
-Phase 0 (foundation). What runs today: the backend skeleton (`GET /health`), Postgres in Docker, and the five shared contracts with sample JSON. The plan is in [`docs/plans/README.md`](docs/plans/README.md).
+Phase 0-2 work on Track B (agent side) is in progress: health, contracts, incidents API, model gateway, pipeline agent and repair-loop core exist with tests; the lab, sandbox, evidence collector and retrieval (Track A) are not in this tree yet. Live status: [`docs/plans/RUHAN_CHECKLIST.md`](docs/plans/RUHAN_CHECKLIST.md). Explanation for newcomers: [`docs/guide/TraceForge-Explained.md`](docs/guide/TraceForge-Explained.md). The plan is in [`docs/plans/README.md`](docs/plans/README.md).
 
 ## Setup (Windows, PowerShell)
 
@@ -38,6 +38,30 @@ Check it works: open http://localhost:8000/docs, expand `GET /health`, click *Tr
 | `task db:revision NAME=...` | Create a migration from model changes |
 | `task contracts:schema` | Regenerate JSON Schema for the contracts |
 | `task spike:retrieval` | Rerun the P0-S06 retrieval spike (needs ripgrep: `winget install BurntSushi.ripgrep.MSVC`); results in `docs/research/limits-report.md` |
+| `task llm:smoke PROVIDER=ollama` | One tool-call round trip through the gateway, then a cache-hit check |
+| `task agent:run CASE=all CONDITION=G0` | Run the pipeline agent on the sample cases (needs a model; see `.env.example`) |
+
+## Frontend
+
+Vite + React + TypeScript in `frontend/` (pnpm). Needs Node LTS and pnpm (`corepack enable`, or `npm i -g pnpm` if that needs admin).
+
+```powershell
+pnpm --dir frontend install
+task dev        # API on :8000 (in one terminal)
+task web        # UI on http://localhost:5173, /api is proxied to :8000
+task web:test   # Vitest
+task web:build  # type check + production build
+```
+
+The header badge shows "API ok", "API degraded" (database down) or "API unreachable", straight from `/health`. `VITE_API_URL` overrides the API base.
+
+## Incidents API
+
+`/docs` lists `POST /incidents`, `GET /incidents`, `GET /incidents/{id}`, `/events` and `/evidence`. Incident states are guarded; an illegal move returns 409. Apply the migration with `task db:migrate` (needs Postgres: `task db:up`).
+
+## Working with Claude Code
+
+Session entry point: [`PROMPT.md`](PROMPT.md); orchestration files in [`docs/orchestration/`](docs/orchestration/); my checklist: [`docs/plans/RUHAN_CHECKLIST.md`](docs/plans/RUHAN_CHECKLIST.md).
 
 ## Layout
 

@@ -1,0 +1,66 @@
+name: traceforge-prod
+
+# Production-style stack. All values come from the environment / git-ignored .env.
+services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${TRACEFORGE_DB_USER:?set TRACEFORGE_DB_USER}
+      POSTGRES_PASSWORD: ${TRACEFORGE_DB_PASSWORD:?set TRACEFORGE_DB_PASSWORD}
+      POSTGRES_DB: ${TRACEFORGE_DB_NAME:?set TRACEFORGE_DB_NAME}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    mem_limit: 512m
+    cpus: 1.0
+
+  api:
+    build:
+      context: backend
+    image: traceforge-api:${TRACEFORGE_IMAGE_TAG:-local}
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      TRACEFORGE_ENV: prod
+      TRACEFORGE_SHOWCASE_MODE: ${TRACEFORGE_SHOWCASE_MODE:-true}
+      TRACEFORGE_DB_HOST: db
+      TRACEFORGE_DB_PORT: "5432"
+      TRACEFORGE_DB_USER: ${TRACEFORGE_DB_USER:?set TRACEFORGE_DB_USER}
+      TRACEFORGE_DB_PASSWORD: ${TRACEFORGE_DB_PASSWORD:?set TRACEFORGE_DB_PASSWORD}
+      TRACEFORGE_DB_NAME: ${TRACEFORGE_DB_NAME:?set TRACEFORGE_DB_NAME}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request as u; u.urlopen('http://localhost:8000/health', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+    mem_limit: 512m
+    cpus: 1.0
+
+  web:
+    build:
+      context: frontend
+    image: traceforge-web:${TRACEFORGE_IMAGE_TAG:-local}
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "${TRACEFORGE_WEB_PORT:-8080}:8080"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8080/"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    mem_limit: 128m
+    cpus: 0.5
+
+volumes:
+  db-data:

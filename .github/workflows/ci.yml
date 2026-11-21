@@ -1,0 +1,111 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+# Tests run offline: no LLM provider keys are configured anywhere in this file.
+jobs:
+  backend:
+    name: backend (ruff + pytest)
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: ci
+          POSTGRES_PASSWORD: ci-ephemeral
+          POSTGRES_DB: traceforge
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U ci -d traceforge"
+          --health-interval 3s --health-timeout 3s --health-retries 20
+    env:
+      TRACEFORGE_ENV: test
+      TRACEFORGE_DB_HOST: localhost
+      TRACEFORGE_DB_USER: ci
+      TRACEFORGE_DB_PASSWORD: ci-ephemeral
+      TRACEFORGE_DB_NAME: traceforge
+      TRACEFORGE_LLM_PROVIDER: ollama
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+          cache-dependency-glob: backend/uv.lock
+      - run: uv sync --frozen
+      - run: uv run ruff check .
+      - run: uv run ruff format --check .
+      - run: uv run alembic upgrade head
+      - run: uv run pytest
+
+  frontend:
+    name: frontend (test + build)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: frontend/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm test -- --run
+      - run: pnpm build
+
+  contracts:
+    name: contracts (schema drift)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+          cache-dependency-glob: backend/uv.lock
+      - uses: arduino/setup-task@v2
+        with:
+          version: 3.x
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - run: uv sync --frozen
+        working-directory: backend
+      - run: task contracts:schema
+      - run: git diff --exit-code -- backend/traceforge/contracts/schema
+
+  docker:
+    name: docker (build images, no push)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/build-push-action@v6
+        with:
+          context: backend
+          push: false
+          tags: traceforge-api:ci
+          cache-from: type=gha,scope=api
+          cache-to: type=gha,scope=api,mode=max
+      - uses: docker/build-push-action@v6
+        with:
+          context: frontend
+          push: false
+          tags: traceforge-web:ci
+          cache-from: type=gha,scope=web
+          cache-to: type=gha,scope=web,mode=max

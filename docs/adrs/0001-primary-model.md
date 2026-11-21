@@ -1,0 +1,30 @@
+# ADR 0001 — Primary model and provider strategy
+
+Status: **PROPOSED — not final.** Q1 (exact Devstral ID and free access) is still open, so the primary model cannot be pinned yet. Date: 2026-11-21. Author: Ruhan's working session (Claude Code assisted). Reversible: yes.
+
+## Context
+The plan (D5/D21) names Mistral's Devstral as the primary cloud model and local Qwen2.5-Coder-7B as the comparator, at a USD 0 budget. Findings on 2026-11-21 (sources in `docs/research/free-model-providers.md`, decisions B4, B7, B11, B12):
+- Devstral 2 needs paid Mistral API access; whether the free Experiment plan serves `devstral-small-latest` is unverified (needs Ruhan's console).
+- OpenRouter lists only `mistralai/devstral-2512` at a paid price; no `:free` Devstral.
+- Ollama Cloud's official `devstral-small-2:24b-cloud` exists, but cloud models are billed per token and no free allowance is documented; the third-party `zerocopia/...` copy is unreviewed.
+- Local `qwen2.5-coder:7b` (via a 16k-context Ollama variant) works on the 6 GB GPU but is slow and weak at multi-line edits.
+- Live results so far: local Qwen and OpenRouter `nvidia/nemotron-3-ultra-550b-a55b:free` (experimental only) in `docs/research/limits-report.md`; **no Devstral run exists**.
+
+Update 2026-11-21 (B14, re-investigated): Ollama's lifecycle page lists `devstral-small-2:24b` and `devstral-2:123b` as retired on 2026-07-15 and the account's live cloud catalog has no Devstral, so the official cloud Devstral is unavailable at any price (account allowance also $0). Nothing was requested. Devstral remains the intended model but has no working $0 route today.
+
+Update 2026-11-21 (B15): the cloud service itself returns HTTP 410 for `devstral-small-2:24b-cloud` ("retired on July 15, 2026"); see `docs/research/DEVSTRAL_OLLAMA_INVESTIGATION.md`. Devstral stays the intended model in configuration; there is no route to it via Ollama Cloud.
+
+## Decision (provisional)
+1. **Intended primary cloud model: Devstral** (`devstral-small-latest`, provider `mistral`), unchanged in `evaluation/conditions/*.json`. It is not pinned to a dated ID and not usable at $0 yet.
+2. **Local `qwen2.5-coder:7b` is the reproducible baseline** and the only model that can currently run all four conditions at $0.
+3. **Nemotron `:free` (OpenRouter) is experimental only**, never the primary; its numbers are not Devstral's.
+4. **The gateway is provider-agnostic with a free-only guard:** non-`:free` OpenRouter IDs, non-allowlisted providers, and Ollama `-cloud` models are refused unless explicitly enabled. Experiments run at temperature 0 with the cache key including provider, model, prompt, tools, max_tokens, seed and replicate index.
+5. A provider/model change for the experiment needs a new ADR (ml.md). One experiment never mixes models.
+
+## Consequences
+- The 2×2 experiment can run on local Qwen now; a Devstral run waits for confirmed free access.
+- Model comparison (Devstral vs Qwen, same cases and conditions) is **NOT RUN**.
+- ADR must be finalised when Q1 closes: exact model ID, date, observed limits, data terms.
+
+## Conditions for reconsideration
+Free Devstral access confirmed (Mistral Experiment plan or otherwise) → pin it and re-run the probe on identical cases; Ollama Cloud shows a non-zero included balance with no payment path → consider the official `devstral-small-2:24b-cloud`; the supervisor decides to allow a paid model (explicit approval needed).

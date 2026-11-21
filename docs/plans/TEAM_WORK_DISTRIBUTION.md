@@ -5,21 +5,21 @@ Members come from the project docs: **Muhammad Rafique** and **Muhammad Ruhan Ka
 The split follows one rule: **each person owns whole folders**, and the two halves exchange data only through the five shared contracts (P0-S05). That lets both work at the same time with almost no waiting.
 
 ## 0. Progress at a glance
-**Updated before every commit by whoever commits** (rule in `docs/invariants/processes.md`). Last updated: 21 Nov 2026, with the commit that moved work to direct pushes on `main` (D33).
+**Updated before every commit by whoever commits** (rule in `docs/invariants/processes.md`). Last updated: 22 Nov 2026, with the commit that adds Ruhan's Track B work and the Track A prerequisites he needed (see section 7).
 
 | | Muhammad Rafique (Track A) | Muhammad Ruhan Kamran (Track B) |
 |---|---|---|
 | **Steps done** | 1 / 19 | 0 / 20 |
-| **Working on** | P0-S06 Part A done and on `main`; Ruhan to pull and check | — |
-| **Next up** | P1-S01 lab fixtures | Clone repo (closes P0-S01); confirm P0-S05 fields; pull and check P0-S06 Part A; P0-S06 Part B (model probe); P0-S03; P0-S04 |
-| **Waiting on the other** | Ruhan: P0-S05 field check, review of P0-S06 Part A, P0-S06 Part B | — |
+| **Working on** | P0-S06 Part A done and on `main`; Ruhan to pull and check | Steps 1-6 below are implemented and awaiting Ruhan's approval; Phase 3-6 experiments wait on the frozen dataset and a usable model |
+| **Next up** | Review the lab, sandbox, seed cases, evidence collector, code graph, retrieval and metrics that Ruhan's session implemented for him (section 7); P3-S01 dataset freeze | Review P0-S03, P1-S04, P2-S06 (`docs/review/REVIEW_PACKAGE.md`); P0-S04 proposal + supervisor reply; pick the experiment model |
+| **Waiting on the other** | Ruhan: approval/review of the Track A prerequisites implemented in his session | Rafique: review of the `AgentRunRecord` additive change (B9, B13) and of the Track A components |
 
 | Phase | Rafique | Status | Ruhan | Status |
 |---|---|---|---|---|
-| 0 | P0-S01 Repo setup | IN PROGRESS (Ruhan's clone left) | P0-S03 Frontend scaffold | NOT STARTED |
-| 0 | P0-S02 Backend scaffold | COMPLETED | P0-S04 Proposal update | NOT STARTED |
-| 0 | P0-S05 Contracts (primary) | NEEDS REVIEW (Ruhan to confirm) | P0-S05 Contracts (confirm fields) | NOT STARTED |
-| 0 | P0-S06 Part A retrieval spike | DONE (on `main`, Ruhan to check) | P0-S06 Part B model probe | NOT STARTED |
+| 0 | P0-S01 Repo setup | IN PROGRESS (Ruhan's clone left) | P0-S03 Frontend scaffold | IMPLEMENTED, AWAITING REVIEW |
+| 0 | P0-S02 Backend scaffold | COMPLETED | P0-S04 Proposal update | DRAFTED; BLOCKED (PDF, supervisor reply) |
+| 0 | P0-S05 Contracts (primary) | NEEDS REVIEW (Ruhan to confirm) | P0-S05 Contracts (confirm fields) | ADDITIVE CHANGE PROPOSED (B9, B13) |
+| 0 | P0-S06 Part A retrieval spike | DONE (on `main`, Ruhan to check) | P0-S06 Part B model probe | IMPLEMENTED, PARTLY RUN (local + Nemotron only) |
 | 1 | 0 / 3 done | NOT STARTED | 0 / 4 done | NOT STARTED |
 | 2 | 0 / 4 done | NOT STARTED | 0 / 3 done | NOT STARTED |
 | 3 | 0 / 2 done | NOT STARTED | 0 / 2 done | NOT STARTED |
@@ -141,3 +141,19 @@ Effort is in **person-days**, a planning estimate from task size, not a measurem
 
 ## 6. Ownership consistency
 The owners above are the same in [IMPLEMENTATION_ROADMAP.md](IMPLEMENTATION_ROADMAP.md), every phase README and every step document. The Synverk card titles name the same owner. Cards are **not assigned in Synverk yet** because Ruhan is not a project member; see [DECISIONS_AND_OPEN_QUESTIONS.md](DECISIONS_AND_OPEN_QUESTIONS.md#open-questions).
+
+
+## 7. Implementation record (who actually implemented what; added 2026-11-21, uncommitted)
+Ownership above is unchanged (it is the plan). On 2026-11-21 Ruhan authorised a Claude-assisted session to implement, for Ruhan, the Track A components his tasks depend on. Nothing of Rafique's existing work was overwritten. Details and evidence: `DEPENDENCY_MAP_RAFIQUE.md` section D.
+| Step | Original owner | Implemented by | State |
+|---|---|---|---|
+| P1-S01 Lab fixtures | Rafique | Claude-assisted, for Ruhan | implemented, verified on real stack; realism fix in progress |
+| P1-S02 Sandbox | Rafique | same | implemented, verified in real containers |
+| P1-S03 Seed cases | Rafique | same | 4 dev cases validated in real sandbox |
+| P2-S01 Evidence collector | Rafique | same | implemented, verified on real lab |
+| P2-S02 Code graph | Rafique | same | implemented, tested |
+| P2-S03 Retrieval | Rafique | same | implemented; E1 not meaningful yet |
+| P3-S02 Metrics + baseline | Rafique | same | implemented; run on real records |
+| P3-S01 Dataset freeze | Rafique | — | not done |
+| Contract `AgentRunRecord` (B9, B13) | shared | Claude-assisted | additive change; **Rafique must review** |
+All Ruhan-track steps: implemented by the Claude-assisted session for Ruhan; none is approved yet (only Ruhan approves). The checklist is `RUHAN_CHECKLIST.md`; the evidence audit is `RUHAN_AUDIT.md`.

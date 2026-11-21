@@ -5,10 +5,15 @@
 # Agent session memory
 .memory/
 
-# Secrets
+# Secrets: every .env (root, lab/, anywhere) is ignored; only *.env.example files are tracked
 .env
+**/.env
 .env.*
+**/.env.*
 !.env.example
+!**/.env.example
+*.pem
+*.key
 
 # Python
 __pycache__/
@@ -26,3 +31,10 @@ dist/
 Thumbs.db
 .vscode/
 .idea/
+
+# LLM response cache and run logs
+.cache/
+runs/
+spikes/model_probe/.cache/
+AItmp*/
+backend/AItmp*/
