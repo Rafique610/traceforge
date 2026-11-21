@@ -1,0 +1,14 @@
+{
+  "template": "config.settings_default",
+  "params": {
+    "field": "redis_host",
+    "bad_value": "redis-broker.internal"
+  },
+  "distance_source": "manual",
+  "base_sha": "e595ecc559230fa2eeaed9fa16c30d34110ff88b",
+  "runtime": {},
+  "notes": "distance is a manual estimate: connection fails in app/queue.py, value comes from app/settings.py",
+  "gold_fix": "reverse of mutation.patch",
+  "allowed_shared": {},
+  "allowed_terms": {}
+}

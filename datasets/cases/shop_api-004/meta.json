@@ -1,0 +1,14 @@
+{
+  "template": "insufficient.suppressed_logs",
+  "params": {},
+  "distance_source": "manual",
+  "base_sha": "e595ecc559230fa2eeaed9fa16c30d34110ff88b",
+  "runtime": {
+    "logs": "suppressed",
+    "symptom": "intermittent"
+  },
+  "notes": "no cause is determinable: logs withheld, contract silent on heartbeat lapses",
+  "gold_fix": "reverse of mutation.patch",
+  "allowed_shared": {},
+  "allowed_terms": {}
+}

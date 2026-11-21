@@ -1,0 +1,96 @@
+# TraceForge lab: the victim system faults are injected into. Own project, own Postgres.
+# Usage: copy .env.example to .env, then `docker compose -f lab/compose.yaml --env-file lab/.env up -d --wait`
+name: traceforge-lab
+
+x-app: &app
+  restart: "no"
+  read_only: true
+  tmpfs: [/tmp]
+  cap_drop: [ALL]
+  security_opt: ["no-new-privileges:true"]
+  pids_limit: 128
+  mem_limit: 256m
+  user: "10001"
+  environment: &app-env
+    DB_HOST: lab_db
+    DB_PORT: "5432"
+    DB_NAME: ${LAB_DB_NAME:?set LAB_DB_NAME in lab/.env}
+    DB_USER: ${LAB_DB_USER:?set LAB_DB_USER in lab/.env}
+    DB_PASSWORD: ${LAB_DB_PASSWORD:?set LAB_DB_PASSWORD in lab/.env}
+    DB_POOL_SIZE: "5"
+    REDIS_HOST: lab_redis
+    REDIS_PORT: "6379"
+    ORDER_QUEUE: orders:confirm
+
+services:
+  lab_db:
+    image: postgres:16
+    user: postgres
+    environment:
+      POSTGRES_USER: ${LAB_DB_USER:?set LAB_DB_USER in lab/.env}
+      POSTGRES_PASSWORD: ${LAB_DB_PASSWORD:?set LAB_DB_PASSWORD in lab/.env}
+      POSTGRES_DB: ${LAB_DB_NAME:?set LAB_DB_NAME in lab/.env}
+    volumes:
+      - lab-db-data:/var/lib/postgresql/data
+    security_opt: ["no-new-privileges:true"]
+    pids_limit: 200
+    mem_limit: 384m
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  lab_redis:
+    image: redis:7
+    user: redis
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    ports:
+      - "127.0.0.1:${LAB_REDIS_PORT:-6380}:6379"
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    pids_limit: 64
+    mem_limit: 128m
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  shop_api:
+    <<: *app
+    image: traceforge-lab/shop_api:dev
+    build:
+      context: .
+      dockerfile: shop_api/Dockerfile
+    depends_on:
+      lab_db: {condition: service_healthy}
+      lab_redis: {condition: service_healthy}
+    ports:
+      - "127.0.0.1:${LAB_API_PORT:-8100}:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request as u; u.urlopen('http://127.0.0.1:8000/health/live', timeout=2)"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 5s
+
+  worker:
+    <<: *app
+    image: traceforge-lab/worker:dev
+    build:
+      context: .
+      dockerfile: worker/Dockerfile
+    depends_on:
+      lab_db: {condition: service_healthy}
+      lab_redis: {condition: service_healthy}
+      shop_api: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "python", "-m", "worker.heartbeat"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 8s
+
+volumes:
+  lab-db-data:

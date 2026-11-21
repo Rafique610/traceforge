@@ -1,0 +1,19 @@
+{
+  "template": "runtime.stop_dependency",
+  "params": {
+    "stop": [
+      "lab_redis"
+    ]
+  },
+  "distance_source": "manual",
+  "base_sha": "e595ecc559230fa2eeaed9fa16c30d34110ff88b",
+  "runtime": {
+    "stop": [
+      "lab_redis"
+    ]
+  },
+  "notes": "diagnose only: no code or config change exists; reproducer passes on original and 'broken'",
+  "gold_fix": "reverse of mutation.patch",
+  "allowed_shared": {},
+  "allowed_terms": {}
+}

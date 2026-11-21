@@ -1,0 +1,11 @@
+--- a/lab/shop_api/app/schemas.py
++++ b/lab/shop_api/app/schemas.py
+@@ -14,7 +14,7 @@
+ 
+ class OrderItemIn(BaseModel):
+     product_id: int = Field(gt=0)
+-    quantity: int = Field(gt=0, le=100)
++    quantity: int = Field(gt=0, lt=100)
+ 
+ 
+ class OrderIn(BaseModel):

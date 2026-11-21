@@ -1,0 +1,15 @@
+{
+  "template": "code.quantity_upper_bound",
+  "params": {
+    "site": "quantity_upper_bound"
+  },
+  "distance_source": "manual",
+  "base_sha": "e595ecc559230fa2eeaed9fa16c30d34110ff88b",
+  "runtime": {},
+  "notes": "distance is a manual estimate (hops from the failing endpoint to the mutated site)",
+  "gold_fix": "reverse of mutation.patch",
+  "allowed_shared": {
+    "100": "contract boundary value: the fault is exactly at quantity 100"
+  },
+  "allowed_terms": {}
+}
