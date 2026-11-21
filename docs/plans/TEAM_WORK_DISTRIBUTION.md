@@ -5,21 +5,21 @@ Members come from the project docs: **Muhammad Rafique** and **Muhammad Ruhan Ka
 The split follows one rule: **each person owns whole folders**, and the two halves exchange data only through the five shared contracts (P0-S05). That lets both work at the same time with almost no waiting.
 
 ## 0. Progress at a glance
-**Updated before every commit by whoever commits** (rule in `docs/invariants/processes.md`). Last updated: 21 Nov 2026, with the commit that added this section.
+**Updated before every commit by whoever commits** (rule in `docs/invariants/processes.md`). Last updated: 21 Nov 2026, with the P0-S06 Part A (retrieval spike) commit.
 
 | | Muhammad Rafique (Track A) | Muhammad Ruhan Kamran (Track B) |
 |---|---|---|
 | **Steps done** | 1 / 19 | 0 / 20 |
-| **Working on** | P0-S06 Part A (retrieval spike), not started | — |
-| **Next up** | P1-S01 lab fixtures | Confirm P0-S05 fields; clone repo (closes P0-S01); P0-S06 Part B (model probe) |
-| **Waiting on the other** | Ruhan's P0-S05 field check | — |
+| **Working on** | P0-S06 Part A done; waiting for Ruhan's review | — |
+| **Next up** | P1-S01 lab fixtures | Clone repo (closes P0-S01); confirm P0-S05 fields; review P0-S06 Part A; P0-S06 Part B (model probe); P0-S03; P0-S04 |
+| **Waiting on the other** | Ruhan: P0-S05 field check, review of P0-S06 Part A, P0-S06 Part B | — |
 
 | Phase | Rafique | Status | Ruhan | Status |
 |---|---|---|---|---|
 | 0 | P0-S01 Repo setup | IN PROGRESS (Ruhan's clone left) | P0-S03 Frontend scaffold | NOT STARTED |
 | 0 | P0-S02 Backend scaffold | COMPLETED | P0-S04 Proposal update | NOT STARTED |
 | 0 | P0-S05 Contracts (primary) | NEEDS REVIEW (Ruhan to confirm) | P0-S05 Contracts (confirm fields) | NOT STARTED |
-| 0 | P0-S06 Part A retrieval spike | NOT STARTED | P0-S06 Part B model probe | NOT STARTED |
+| 0 | P0-S06 Part A retrieval spike | DONE (in review) | P0-S06 Part B model probe | NOT STARTED |
 | 1 | 0 / 3 done | NOT STARTED | 0 / 4 done | NOT STARTED |
 | 2 | 0 / 4 done | NOT STARTED | 0 / 3 done | NOT STARTED |
 | 3 | 0 / 2 done | NOT STARTED | 0 / 2 done | NOT STARTED |

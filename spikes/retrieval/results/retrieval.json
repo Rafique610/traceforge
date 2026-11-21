@@ -1,0 +1,459 @@
+{
+  "python": "3.12.13",
+  "ripgrep": "ripgrep 15.2.0 (rev e89fff89ac)",
+  "faults": [
+    {
+      "fault": "F1-empty-cart",
+      "class": "application_code",
+      "declared_distance": 0,
+      "graph_distance_from_trace": 0,
+      "gold": "fn:orders.py::order_total",
+      "error_line": "IndexError: list index out of range",
+      "trace_nodes": [
+        "fn:orders.py::order_total",
+        "fn:orders.py::checkout",
+        "fn:api.py::checkout_handler"
+      ],
+      "query_terms": [
+        "index",
+        "error",
+        "list",
+        "out",
+        "range",
+        "order",
+        "total",
+        "orders",
+        "checkout",
+        "handler",
+        "api"
+      ],
+      "grep_terms": [
+        "order_total",
+        "checkout",
+        "checkout_handler",
+        "IndexError",
+        "list",
+        "index",
+        "out",
+        "range"
+      ],
+      "methods": {
+        "R0_ripgrep": {
+          "rank": 6,
+          "top5": [
+            "fn:api.py::checkout_handler",
+            "fn:orders.py::checkout",
+            "fn:api.py::list_products",
+            "fn:db.py::all_products",
+            "fn:db.py::make_pool"
+          ],
+          "ms": 94.92
+        },
+        "trace_only": {
+          "rank": 1,
+          "top5": [
+            "fn:orders.py::order_total",
+            "fn:orders.py::checkout",
+            "fn:api.py::checkout_handler"
+          ],
+          "ms": 3.25
+        },
+        "L_bm25_anchor": {
+          "rank": 1,
+          "top5": [
+            "fn:orders.py::order_total",
+            "fn:orders.py::checkout",
+            "fn:api.py::checkout_handler",
+            "fn:api.py::list_products",
+            "fn:db.py::make_pool"
+          ],
+          "ms": 3.07
+        },
+        "G_graph": {
+          "rank": 1,
+          "top5": [
+            "fn:orders.py::order_total",
+            "fn:orders.py::checkout",
+            "fn:api.py::checkout_handler",
+            "fn:queue_client.py::send_order_email",
+            "fn:pricing.py::line_total"
+          ],
+          "ms": 3.19
+        }
+      }
+    },
+    {
+      "fault": "F2-zero-qty",
+      "class": "application_code",
+      "declared_distance": 0,
+      "graph_distance_from_trace": 0,
+      "gold": "fn:pricing.py::unit_price",
+      "error_line": "ZeroDivisionError: division by zero",
+      "trace_nodes": [
+        "fn:pricing.py::unit_price",
+        "fn:api.py::price_quote"
+      ],
+      "query_terms": [
+        "zero",
+        "division",
+        "error",
+        "by",
+        "unit",
+        "price",
+        "pricing",
+        "quote",
+        "api"
+      ],
+      "grep_terms": [
+        "unit_price",
+        "price_quote",
+        "ZeroDivisionError",
+        "division",
+        "zero"
+      ],
+      "methods": {
+        "R0_ripgrep": {
+          "rank": 2,
+          "top5": [
+            "fn:api.py::price_quote",
+            "fn:pricing.py::unit_price"
+          ],
+          "ms": 70.57
+        },
+        "trace_only": {
+          "rank": 1,
+          "top5": [
+            "fn:pricing.py::unit_price",
+            "fn:api.py::price_quote"
+          ],
+          "ms": 3.3
+        },
+        "L_bm25_anchor": {
+          "rank": 1,
+          "top5": [
+            "fn:pricing.py::unit_price",
+            "fn:api.py::price_quote",
+            "fn:pricing.py::line_total",
+            "fn:db.py::make_pool",
+            "fn:orders.py::order_total"
+          ],
+          "ms": 4.25
+        },
+        "G_graph": {
+          "rank": 1,
+          "top5": [
+            "fn:pricing.py::unit_price",
+            "fn:api.py::price_quote",
+            "fn:pricing.py::line_total",
+            "fn:db.py::make_pool",
+            "fn:orders.py::order_total"
+          ],
+          "ms": 5.57
+        }
+      }
+    },
+    {
+      "fault": "F3-redis-host",
+      "class": "configuration",
+      "declared_distance": 1,
+      "graph_distance_from_trace": 1,
+      "gold": "cfg:REDIS_HOST",
+      "error_line": "socket.gaierror: [Errno 11001] getaddrinfo failed",
+      "trace_nodes": [
+        "fn:queue_client.py::connect",
+        "fn:queue_client.py::enqueue",
+        "fn:queue_client.py::send_order_email",
+        "fn:api.py::resend_email"
+      ],
+      "query_terms": [
+        "socket",
+        "gaierror",
+        "errno",
+        "11001",
+        "getaddrinfo",
+        "failed",
+        "connect",
+        "queue",
+        "client",
+        "enqueue",
+        "send",
+        "order",
+        "email",
+        "resend",
+        "api"
+      ],
+      "grep_terms": [
+        "connect",
+        "enqueue",
+        "send_order_email",
+        "resend_email",
+        "socket",
+        "gaierror",
+        "Errno",
+        "11001",
+        "getaddrinfo",
+        "failed"
+      ],
+      "methods": {
+        "R0_ripgrep": {
+          "rank": null,
+          "top5": [
+            "fn:api.py::resend_email",
+            "fn:queue_client.py::connect",
+            "fn:queue_client.py::enqueue",
+            "fn:queue_client.py::send_order_email",
+            "fn:api.py::checkout_handler"
+          ],
+          "ms": 93.18
+        },
+        "trace_only": {
+          "rank": null,
+          "top5": [
+            "fn:queue_client.py::connect",
+            "fn:queue_client.py::enqueue",
+            "fn:queue_client.py::send_order_email",
+            "fn:api.py::resend_email"
+          ],
+          "ms": 7.89
+        },
+        "L_bm25_anchor": {
+          "rank": null,
+          "top5": [
+            "fn:queue_client.py::connect",
+            "fn:queue_client.py::enqueue",
+            "fn:queue_client.py::send_order_email",
+            "fn:api.py::resend_email",
+            "fn:api.py::checkout_handler"
+          ],
+          "ms": 6.32
+        },
+        "G_graph": {
+          "rank": 6,
+          "top5": [
+            "fn:queue_client.py::connect",
+            "fn:queue_client.py::enqueue",
+            "fn:queue_client.py::send_order_email",
+            "fn:api.py::resend_email",
+            "fn:api.py::checkout_handler"
+          ],
+          "ms": 5.46
+        }
+      }
+    },
+    {
+      "fault": "F4-pool-size",
+      "class": "configuration",
+      "declared_distance": 1,
+      "graph_distance_from_trace": 1,
+      "gold": "cfg:DB_POOL_SIZE",
+      "error_line": "ValueError: pool size must be positive, got 0",
+      "trace_nodes": [
+        "fn:db.py::make_pool",
+        "fn:db.py::get_pool",
+        "fn:db.py::all_products",
+        "fn:api.py::list_products"
+      ],
+      "query_terms": [
+        "value",
+        "error",
+        "pool",
+        "size",
+        "must",
+        "be",
+        "positive",
+        "got",
+        "make",
+        "db",
+        "get",
+        "all",
+        "products",
+        "list",
+        "api"
+      ],
+      "grep_terms": [
+        "make_pool",
+        "get_pool",
+        "all_products",
+        "list_products",
+        "ValueError",
+        "pool",
+        "size",
+        "must",
+        "positive",
+        "got"
+      ],
+      "methods": {
+        "R0_ripgrep": {
+          "rank": 5,
+          "top5": [
+            "fn:db.py::get_pool",
+            "fn:db.py::make_pool",
+            "fn:api.py::list_products",
+            "fn:db.py::all_products",
+            "cfg:DB_POOL_SIZE"
+          ],
+          "ms": 68.41
+        },
+        "trace_only": {
+          "rank": null,
+          "top5": [
+            "fn:db.py::make_pool",
+            "fn:db.py::get_pool",
+            "fn:db.py::all_products",
+            "fn:api.py::list_products"
+          ],
+          "ms": 2.78
+        },
+        "L_bm25_anchor": {
+          "rank": 5,
+          "top5": [
+            "fn:db.py::make_pool",
+            "fn:db.py::get_pool",
+            "fn:db.py::all_products",
+            "fn:api.py::list_products",
+            "cfg:DB_POOL_SIZE"
+          ],
+          "ms": 3.66
+        },
+        "G_graph": {
+          "rank": 5,
+          "top5": [
+            "fn:db.py::make_pool",
+            "fn:db.py::get_pool",
+            "fn:db.py::all_products",
+            "fn:api.py::list_products",
+            "cfg:DB_POOL_SIZE"
+          ],
+          "ms": 4.13
+        }
+      }
+    },
+    {
+      "fault": "F5-qty-string",
+      "class": "application_code",
+      "declared_distance": 2,
+      "graph_distance_from_trace": 2,
+      "gold": "fn:cart.py::parse_qty",
+      "error_line": "TypeError: can't multiply sequence by non-int of type 'float'",
+      "trace_nodes": [
+        "fn:pricing.py::line_total",
+        "fn:orders.py::order_total",
+        "fn:orders.py::checkout",
+        "fn:api.py::checkout_handler"
+      ],
+      "query_terms": [
+        "type",
+        "error",
+        "can",
+        "multiply",
+        "sequence",
+        "by",
+        "non",
+        "int",
+        "float",
+        "line",
+        "total",
+        "pricing",
+        "order",
+        "orders",
+        "checkout",
+        "handler",
+        "api"
+      ],
+      "grep_terms": [
+        "line_total",
+        "order_total",
+        "checkout",
+        "checkout_handler",
+        "TypeError",
+        "can",
+        "multiply",
+        "sequence",
+        "non",
+        "int",
+        "type",
+        "float"
+      ],
+      "methods": {
+        "R0_ripgrep": {
+          "rank": null,
+          "top5": [
+            "fn:settings.py::settings",
+            "fn:api.py::checkout_handler",
+            "fn:orders.py::checkout",
+            "fn:orders.py::order_total",
+            "fn:cart.py::parse_price"
+          ],
+          "ms": 66.52
+        },
+        "trace_only": {
+          "rank": null,
+          "top5": [
+            "fn:pricing.py::line_total",
+            "fn:orders.py::order_total",
+            "fn:orders.py::checkout",
+            "fn:api.py::checkout_handler"
+          ],
+          "ms": 3.3
+        },
+        "L_bm25_anchor": {
+          "rank": null,
+          "top5": [
+            "fn:pricing.py::line_total",
+            "fn:orders.py::order_total",
+            "fn:orders.py::checkout",
+            "fn:api.py::checkout_handler",
+            "fn:settings.py::settings"
+          ],
+          "ms": 4.13
+        },
+        "G_graph": {
+          "rank": 16,
+          "top5": [
+            "fn:pricing.py::line_total",
+            "fn:orders.py::order_total",
+            "fn:orders.py::checkout",
+            "fn:api.py::checkout_handler",
+            "fn:settings.py::settings"
+          ],
+          "ms": 4.31
+        }
+      }
+    }
+  ],
+  "summary": {
+    "R0_ripgrep": {
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.4,
+      "recall_at_10": 0.6,
+      "mrr": 0.173,
+      "median_ms": 70.57
+    },
+    "trace_only": {
+      "recall_at_1": 0.4,
+      "recall_at_5": 0.4,
+      "recall_at_10": 0.4,
+      "mrr": 0.4,
+      "median_ms": 3.3
+    },
+    "L_bm25_anchor": {
+      "recall_at_1": 0.4,
+      "recall_at_5": 0.6,
+      "recall_at_10": 0.6,
+      "mrr": 0.44,
+      "median_ms": 4.13
+    },
+    "G_graph": {
+      "recall_at_1": 0.4,
+      "recall_at_5": 0.6,
+      "recall_at_10": 0.8,
+      "mrr": 0.486,
+      "median_ms": 4.31
+    }
+  },
+  "code_map": {
+    "text": "api.py\n  def checkout_handler(body)\n  def price_quote(body)\n  def list_products()\n  def resend_email(body)\ncart.py\n  def parse_qty(raw)\n  def parse_price(raw)\n  def load_items(body)\ndb.py\n  def make_pool(size)\n  def get_pool()\n  def all_products()\n  def find_product(sku)\norders.py\n  def order_total(items)\n  def checkout(items, discount)\npricing.py\n  def line_total(price, qty)\n  def unit_price(total, qty)\n  def apply_discount(amount, fraction)\n  def add_tax(amount)\nqueue_client.py\n  def connect()\n  def enqueue(job_name, payload)\n  def send_order_email(order_id)\nsettings.py\n  def env(key, default)\n  def settings()\ncompose.yaml: DB_POOL_SIZE, TAX_RATE, DISCOUNT_CAP, REDIS_HOST, REDIS_PORT",
+    "chars": 694,
+    "approx_tokens_chars_div_4": 173
+  }
+}

@@ -12,7 +12,7 @@
 | Reviewer | optional |
 | Priority | High (decides edit format, context budget, primary model) |
 | Effort | 2 days each, in parallel |
-| Status | NOT STARTED |
+| Status | IN PROGRESS (Part A done 21 Nov: see `docs/research/limits-report.md`; Part B not started) |
 | Branch | `rafique/P0-S06-retrieval-spike`, `ruhan/P0-S06-model-probe` |
 
 ## B. Objective
@@ -49,14 +49,14 @@ Measure, with real numbers, where the approach breaks **before** building Phase 
 7. Save raw results as JSON in `spikes/*/results/` and write `docs/research/limits-report.md`: one table per part, real numbers only, and a recommendation for D19 (edit format), D20 (context budget per prompt), D21 (primary model).
 
 ## F. Checklist
-- [ ] 5 hand-made faults with known distance (Part A)
-- [ ] R0, L, G (and optionally M) ranked and scored (Part A)
+- [x] 5 hand-made faults with known distance (Part A)
+- [x] R0, trace-only, L, G ranked and scored (Part A; M with a model deferred to Part B)
 - [ ] Read-limit curve for both models (Part B)
 - [ ] Write-limit and edit-validity numbers for both models (Part B)
 - [ ] Diff vs search/replace comparison (Part B)
 - [ ] Free-tier limits measured from real calls (Part B)
-- [ ] Raw results saved; no invented numbers
-- [ ] `docs/research/limits-report.md` written with recommendations
+- [ ] Raw results saved; no invented numbers (Part A done: `spikes/retrieval/results/retrieval.json`)
+- [ ] `docs/research/limits-report.md` written with recommendations (Part A written)
 - [ ] D19–D21 updated from "provisional" to decided (or changed) in DECISIONS_AND_OPEN_QUESTIONS.md
 
 ## G. Expected deliverables

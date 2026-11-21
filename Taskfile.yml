@@ -54,6 +54,11 @@ tasks:
     cmds:
       - uv run alembic revision --autogenerate -m "{{.NAME}}"
 
+  spike:retrieval:
+    desc: "P0-S06 Part A: rank 5 real faults with ripgrep, trace-only, L and G; writes spikes/retrieval/results/retrieval.json"
+    cmds:
+      - uv run --no-project --python 3.12 python spikes/retrieval/run.py
+
   contracts:schema:
     desc: Write JSON Schema for every shared contract to backend/traceforge/contracts/schema/
     dir: backend
