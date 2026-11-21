@@ -1,0 +1,55 @@
+{
+  "id": "cfg_direct_pool_size",
+  "title": "Startup fails: invalid DB pool size (key named in the log)",
+  "category": "config_direct",
+  "cause_class": "configuration",
+  "target": "DB_POOL_SIZE",
+  "must_cite": [
+    "EV-0001",
+    "EV-0003"
+  ],
+  "expected_tool_calls": [
+    {
+      "tool": "submit_diagnosis",
+      "contains": "DB_POOL_SIZE"
+    }
+  ],
+  "context": [
+    {
+      "path": "lab/shop_api/db.py",
+      "qualname": "make_pool"
+    }
+  ],
+  "gold_patch": "<<<<<<< SEARCH lab/shop_api/settings.env\nDB_POOL_SIZE=0\n=======\nDB_POOL_SIZE=10\n>>>>>>> REPLACE\n",
+  "misleading_ids": [],
+  "decoy_targets": [],
+  "injection": null,
+  "service": "shop_api",
+  "visible_check": "cfg_direct_pool_size/tests/visible_check.py",
+  "hidden_check": "cfg_direct_pool_size/hidden_check.py",
+  "evidence": [
+    {
+      "id": "EV-0001",
+      "kind": "log",
+      "content": "2026-03-02 09:14:01 ERROR shop_api.startup Failed to initialise: ValueError: DB_POOL_SIZE must be >= 1, got 0\n2026-03-02 09:14:01 ERROR shop_api.startup exiting with code 1"
+    },
+    {
+      "id": "EV-0002",
+      "kind": "trace_frame",
+      "path": "lab/shop_api/db.py",
+      "line": 22,
+      "content": "File lab/shop_api/db.py, line 22, in make_pool\n    raise ValueError(f\"DB_POOL_SIZE must be >= 1, got {size}\")"
+    },
+    {
+      "id": "EV-0003",
+      "kind": "config",
+      "path": "lab/shop_api/settings.env",
+      "content": "# shop_api runtime settings\nAPP_ENV=production\nDB_URL=postgresql://shop:***@db:5432/shop\nDB_POOL_SIZE=0\nDB_POOL_TIMEOUT_S=10\nLOG_LEVEL=INFO\n"
+    },
+    {
+      "id": "EV-0004",
+      "kind": "health",
+      "content": "shop_api: unhealthy (process exited 3 times in 60s)\ndb: healthy"
+    }
+  ]
+}

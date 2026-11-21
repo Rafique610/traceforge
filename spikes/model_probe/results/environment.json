@@ -1,0 +1,19 @@
+{
+  "model": "qwen2.5-coder-7b-ctx16k",
+  "provider": "ollama",
+  "ctx": 16384,
+  "hardware": {
+    "os": "win32",
+    "free_ram_mb_at_start": 1038,
+    "gpu": "NVIDIA GeForce GTX 1660 SUPER, 6144 MiB, 621.14",
+    "ollama_loaded": [
+      {
+        "name": "qwen2.5-coder-7b-ctx16k:latest",
+        "size": 5835377867,
+        "size_vram": 4257312931,
+        "context_length": 16384
+      }
+    ]
+  },
+  "date": "2026-11-21 18:53"
+}

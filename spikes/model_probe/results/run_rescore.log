@@ -1,0 +1,62 @@
+== rate
+{
+ "experiment": "rate_latency",
+ "model": "qwen2.5-coder-7b-ctx16k",
+ "provider": "ollama",
+ "n_calls": 37,
+ "vram": {
+  "read_limit": {
+   "vram_baseline_mib": 5624,
+   "vram_peak_mib": 5855
+  },
+  "write_limit": {
+   "vram_baseline_mib": 5658,
+   "vram_peak_mib": 5842
+  },
+  "format_comparison": {
+   "vram_baseline_mib": 5064,
+   "vram_peak_mib": 5073
+  }
+ },
+ "rate_limit_observed": null,
+ "rate_limit_note": "local Ollama has no request or token rate limit; free-tier cloud limits (RPM/TPM/retry-after) were NOT measured (no keys, no cloud calls).",
+ "latency_s": {
+  "p50": 19.1,
+  "p95": 284.0,
+  "max": 1018.0
+ },
+ "end_to_end_output_tokens_per_s": {
+  "p50": 10.3,
+  "p95": 15.0
+ },
+ "tokens_in_total": 97617,
+ "tokens_out_total": 16841,
+ "failures": 0,
+ "by_prompt_size": {
+  "<2k": {
+   "n": 27,
+   "latency_p50_s": 14.8,
+   "latency_max_s": 259.9
+  },
+  "2k-6k": {
+   "n": 5,
+   "latency_p50_s": 43.5,
+   "latency_max_s": 380.7
+  },
+  "6k-12k": {
+   "n": 2,
+   "latency_p50_s": 550.1,
+   "latency_max_s": 1018.0
+  },
+  ">12k": {
+   "n": 3,
+   "latency_p50_s": 202.0,
+   "latency_max_s": 204.9
+  }
+ },
+ "gateway_log": {
+  "records": 66,
+  "failed": 0,
+  "cache_hits": 29
+ }
+}

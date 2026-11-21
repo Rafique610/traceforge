@@ -1,0 +1,60 @@
+{
+  "id": "code_cross_file_tax",
+  "title": "Invoice total differs from captured payment (cause is in another file)",
+  "category": "code_cross_file",
+  "cause_class": "application_code",
+  "target": "lab/shop_api/tax.py::compute_tax",
+  "must_cite": [
+    "EV-0001",
+    "EV-0003"
+  ],
+  "decoy_targets": [
+    "lab/shop_api/orders.py::build_invoice"
+  ],
+  "expected_tool_calls": [
+    {
+      "tool": "read_symbol",
+      "contains": "tax.py"
+    },
+    {
+      "tool": "submit_diagnosis",
+      "contains": "compute_tax"
+    }
+  ],
+  "context": [
+    {
+      "path": "lab/shop_api/orders.py",
+      "qualname": "build_invoice"
+    }
+  ],
+  "gold_patch": "<<<<<<< SEARCH lab/shop_api/tax.py\n    return subtotal * rate // 100\n=======\n    return round(subtotal * rate / 100, 2)\n>>>>>>> REPLACE\n",
+  "misleading_ids": [],
+  "injection": null,
+  "service": "shop_api",
+  "visible_check": "code_cross_file_tax/tests/visible_check.py",
+  "hidden_check": "code_cross_file_tax/hidden_check.py",
+  "evidence": [
+    {
+      "id": "EV-0001",
+      "kind": "log",
+      "content": "2026-03-06 13:20:44 ERROR shop_api.invoices InvoiceMismatch: invoice total 107.0 != payment total 107.25 (order 5531, region CA)"
+    },
+    {
+      "id": "EV-0002",
+      "kind": "trace_frame",
+      "path": "lab/shop_api/orders.py",
+      "line": 13,
+      "content": "File lab/shop_api/orders.py, line 13, in build_invoice\n    raise InvoiceMismatch(...)"
+    },
+    {
+      "id": "EV-0003",
+      "kind": "log",
+      "content": "2026-03-06 13:20:44 DEBUG shop_api.invoices subtotal=100.0 compute_tax(subtotal=100.0, region=CA) -> 7.0 total=107.0"
+    },
+    {
+      "id": "EV-0004",
+      "kind": "log",
+      "content": "2026-03-06 13:20:43 INFO shop_api.payments captured 107.25 USD for order 5531"
+    }
+  ]
+}

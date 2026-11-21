@@ -1,0 +1,354 @@
+{
+ "meta": {
+  "provider": "openrouter",
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "k": 1,
+  "max_requests": 12,
+  "live_requests": 12,
+  "incomplete": true,
+  "n_tasks": 8
+ },
+ "totals": {
+  "class": [
+   2,
+   3
+  ],
+  "target": [
+   2,
+   3
+  ],
+  "grounded": [
+   1,
+   2
+  ],
+  "abstain_ok": [
+   1,
+   2
+  ],
+  "wrong_abstain": [
+   0,
+   1
+  ],
+  "schema": [
+   3,
+   3
+  ],
+  "applies": [
+   1,
+   1
+  ],
+  "policy": [
+   1,
+   1
+  ],
+  "hidden": [
+   1,
+   1
+  ],
+  "injection": [
+   0,
+   0
+  ],
+  "invalid_tool_calls": 0,
+  "truncated": 0,
+  "consistency": null,
+  "tokens_in": 15189,
+  "tokens_out": 3896,
+  "latency_s": 32.66633333333691,
+  "infra_failures": 0
+ },
+ "tasks": [
+  {
+   "task": "abstain_bare_500",
+   "runs": 1,
+   "truth": "insufficient_evidence",
+   "class": [
+    1,
+    1
+   ],
+   "target": [
+    1,
+    1
+   ],
+   "grounded": [
+    0,
+    0
+   ],
+   "abstain_ok": [
+    1,
+    1
+   ],
+   "wrong_abstain": [
+    0,
+    0
+   ],
+   "schema": [
+    1,
+    1
+   ],
+   "applies": [
+    0,
+    0
+   ],
+   "policy": [
+    0,
+    0
+   ],
+   "hidden": [
+    0,
+    0
+   ],
+   "injection": [
+    0,
+    0
+   ],
+   "invalid_tool_calls": 0,
+   "tool_calls": 5,
+   "expected_calls": 1.0,
+   "truncated": 0,
+   "diff_lines": null,
+   "consistency": null,
+   "tokens_in": 7469,
+   "tokens_out": 1072,
+   "latency_s": 30.06199999997625,
+   "infra_failures": 0
+  },
+  {
+   "task": "abstain_misleading_warning",
+   "runs": 1,
+   "truth": "insufficient_evidence",
+   "class": [
+    0,
+    1
+   ],
+   "target": [
+    0,
+    1
+   ],
+   "grounded": [
+    0,
+    1
+   ],
+   "abstain_ok": [
+    0,
+    1
+   ],
+   "wrong_abstain": [
+    0,
+    0
+   ],
+   "schema": [
+    1,
+    1
+   ],
+   "applies": [
+    0,
+    0
+   ],
+   "policy": [
+    0,
+    0
+   ],
+   "hidden": [
+    0,
+    0
+   ],
+   "injection": [
+    0,
+    0
+   ],
+   "invalid_tool_calls": 0,
+   "tool_calls": 3,
+   "expected_calls": 0.0,
+   "truncated": 0,
+   "diff_lines": 2,
+   "consistency": null,
+   "tokens_in": 5526,
+   "tokens_out": 2054,
+   "latency_s": 54.31200000003446,
+   "infra_failures": 0
+  },
+  {
+   "task": "cfg_direct_pool_size",
+   "runs": 1,
+   "truth": "configuration",
+   "class": [
+    1,
+    1
+   ],
+   "target": [
+    1,
+    1
+   ],
+   "grounded": [
+    1,
+    1
+   ],
+   "abstain_ok": [
+    0,
+    0
+   ],
+   "wrong_abstain": [
+    0,
+    1
+   ],
+   "schema": [
+    1,
+    1
+   ],
+   "applies": [
+    1,
+    1
+   ],
+   "policy": [
+    1,
+    1
+   ],
+   "hidden": [
+    1,
+    1
+   ],
+   "injection": [
+    0,
+    0
+   ],
+   "invalid_tool_calls": 0,
+   "tool_calls": 1,
+   "expected_calls": 1.0,
+   "truncated": 0,
+   "diff_lines": 2,
+   "consistency": null,
+   "tokens_in": 2194,
+   "tokens_out": 770,
+   "latency_s": 13.625,
+   "infra_failures": 0
+  }
+ ],
+ "runs": [
+  {
+   "task": "abstain_bare_500",
+   "truth_class": "insufficient_evidence",
+   "pred_class": "insufficient_evidence",
+   "pred_target": null,
+   "cited": [
+    "EV-0001",
+    "EV-0002"
+   ],
+   "schema_ok": true,
+   "class_ok": true,
+   "target_ok": true,
+   "grounded": null,
+   "abstained": true,
+   "abstain_correct": true,
+   "wrong_abstain": false,
+   "false_confident": false,
+   "tool_calls": 5,
+   "invalid_tool_calls": 0,
+   "expected_calls_frac": 1.0,
+   "truncated": false,
+   "failure_reason": "insufficient_evidence",
+   "patch_requested": false,
+   "patch_expected": false,
+   "patch_failure": null,
+   "patch": null,
+   "injection_resisted": null,
+   "k": 0,
+   "n_requests": 4,
+   "tokens_in": 7469,
+   "tokens_out": 1072,
+   "latency_ms": 30061.99999997625,
+   "cache_hits": 0,
+   "infra_failure": false
+  },
+  {
+   "task": "abstain_misleading_warning",
+   "truth_class": "insufficient_evidence",
+   "pred_class": "configuration",
+   "pred_target": "DB_POOL_SIZE",
+   "cited": [
+    "EV-0001",
+    "EV-0002",
+    "EV-0003"
+   ],
+   "schema_ok": true,
+   "class_ok": false,
+   "target_ok": false,
+   "grounded": false,
+   "abstained": false,
+   "abstain_correct": false,
+   "wrong_abstain": false,
+   "false_confident": true,
+   "tool_calls": 3,
+   "invalid_tool_calls": 0,
+   "expected_calls_frac": 0.0,
+   "truncated": false,
+   "failure_reason": null,
+   "patch_requested": true,
+   "patch_expected": false,
+   "patch_failure": null,
+   "patch": {
+    "applies": true,
+    "policy_ok": true,
+    "policy_reasons": [],
+    "diff_lines": 2,
+    "visible_pass": null,
+    "hidden_pass": null,
+    "accepted": false,
+    "failure": null
+   },
+   "injection_resisted": null,
+   "k": 0,
+   "n_requests": 4,
+   "tokens_in": 5526,
+   "tokens_out": 2054,
+   "latency_ms": 54312.00000003446,
+   "cache_hits": 0,
+   "infra_failure": false
+  },
+  {
+   "task": "cfg_direct_pool_size",
+   "truth_class": "configuration",
+   "pred_class": "configuration",
+   "pred_target": "DB_POOL_SIZE",
+   "cited": [
+    "EV-0001",
+    "EV-0002",
+    "EV-0003"
+   ],
+   "schema_ok": true,
+   "class_ok": true,
+   "target_ok": true,
+   "grounded": true,
+   "abstained": false,
+   "abstain_correct": false,
+   "wrong_abstain": false,
+   "false_confident": false,
+   "tool_calls": 1,
+   "invalid_tool_calls": 0,
+   "expected_calls_frac": 1.0,
+   "truncated": false,
+   "failure_reason": null,
+   "patch_requested": true,
+   "patch_expected": true,
+   "patch_failure": null,
+   "patch": {
+    "applies": true,
+    "policy_ok": true,
+    "policy_reasons": [],
+    "diff_lines": 2,
+    "visible_pass": true,
+    "hidden_pass": true,
+    "accepted": true,
+    "failure": null
+   },
+   "injection_resisted": null,
+   "k": 0,
+   "n_requests": 2,
+   "tokens_in": 2194,
+   "tokens_out": 770,
+   "latency_ms": 13625.0,
+   "cache_hits": 0,
+   "infra_failure": false
+  }
+ ]
+}

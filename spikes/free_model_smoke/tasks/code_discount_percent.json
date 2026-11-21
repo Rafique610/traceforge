@@ -1,0 +1,49 @@
+{
+  "id": "code_discount_percent",
+  "title": "Negative order totals after applying a coupon",
+  "category": "code_single_file",
+  "cause_class": "application_code",
+  "target": "lab/shop_api/pricing.py::apply_discount",
+  "must_cite": [
+    "EV-0001",
+    "EV-0002"
+  ],
+  "expected_tool_calls": [
+    {
+      "tool": "submit_diagnosis",
+      "contains": "apply_discount"
+    }
+  ],
+  "context": [
+    {
+      "path": "lab/shop_api/pricing.py",
+      "qualname": "apply_discount"
+    }
+  ],
+  "gold_patch": "<<<<<<< SEARCH lab/shop_api/pricing.py\n    return round(price - price * percent, 2)\n=======\n    return round(price - price * percent / 100, 2)\n>>>>>>> REPLACE\n",
+  "misleading_ids": [],
+  "decoy_targets": [],
+  "injection": null,
+  "service": "shop_api",
+  "visible_check": "code_discount_percent/tests/visible_check.py",
+  "hidden_check": "code_discount_percent/hidden_check.py",
+  "evidence": [
+    {
+      "id": "EV-0001",
+      "kind": "log",
+      "content": "2026-03-05 10:41:09 ERROR shop_api.orders order 8812 rejected: AssertionError: negative total -1799.1 (items=1, coupon=SAVE10)"
+    },
+    {
+      "id": "EV-0002",
+      "kind": "trace_frame",
+      "path": "lab/shop_api/pricing.py",
+      "line": 8,
+      "content": "File lab/shop_api/pricing.py, line 8, in apply_discount\n    return round(price - price * percent, 2)   # returned -1799.1 for price=199.9 percent=10"
+    },
+    {
+      "id": "EV-0003",
+      "kind": "log",
+      "content": "2026-03-05 10:41:09 INFO shop_api.orders coupon SAVE10 -> percent=10 applied to sku A-100 (unit 199.9)"
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "id": "cfg_indirect_payment_timeout",
+  "title": "Checkout charges time out (failing key never named in the logs)",
+  "category": "config_indirect",
+  "cause_class": "configuration",
+  "target": "PAYMENT_TIMEOUT_MS",
+  "must_cite": [
+    "EV-0001",
+    "EV-0004",
+    "EV-0005"
+  ],
+  "decoy_targets": [
+    "RETRY_MAX",
+    "SHIPPING_TIMEOUT_MS"
+  ],
+  "expected_tool_calls": [
+    {
+      "tool": "submit_diagnosis",
+      "contains": "PAYMENT_TIMEOUT_MS"
+    }
+  ],
+  "context": [
+    {
+      "path": "lab/shop_api/payments.py",
+      "qualname": "charge"
+    }
+  ],
+  "gold_patch": "<<<<<<< SEARCH lab/shop_api/settings.env\nPAYMENT_TIMEOUT_MS=40\n=======\nPAYMENT_TIMEOUT_MS=2000\n>>>>>>> REPLACE\n",
+  "misleading_ids": [],
+  "injection": null,
+  "service": "shop_api",
+  "visible_check": "cfg_indirect_payment_timeout/tests/visible_check.py",
+  "hidden_check": "cfg_indirect_payment_timeout/hidden_check.py",
+  "evidence": [
+    {
+      "id": "EV-0001",
+      "kind": "log",
+      "content": "2026-03-04 16:02:11 ERROR shop_api.checkout charge failed for order 7743: PaymentTimeout: payment gateway did not answer within 0.040s"
+    },
+    {
+      "id": "EV-0002",
+      "kind": "log",
+      "content": "2026-03-04 16:02:11 WARNING shop_api.checkout retrying charge, attempt 2/2\n2026-03-04 16:02:11 ERROR shop_api.checkout giving up on order 7743"
+    },
+    {
+      "id": "EV-0003",
+      "kind": "health",
+      "content": "payments upstream: healthy, p50 latency 240 ms, p99 410 ms, 0 errors in 15 min"
+    },
+    {
+      "id": "EV-0004",
+      "kind": "trace_frame",
+      "path": "lab/shop_api/payments.py",
+      "line": 22,
+      "content": "File lab/shop_api/payments.py, line 22, in charge\n    return _remote_charge(amount_cents, timeout_s)"
+    },
+    {
+      "id": "EV-0005",
+      "kind": "config",
+      "path": "lab/shop_api/settings.env",
+      "content": "# shop_api runtime settings\nAPP_ENV=production\nPAYMENT_BASE_URL=http://payments:8080\nPAYMENT_TIMEOUT_MS=40\nSHIPPING_TIMEOUT_MS=3000\nRETRY_MAX=2\n"
+    }
+  ]
+}

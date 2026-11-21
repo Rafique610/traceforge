@@ -1,0 +1,56 @@
+{
+  "id": "abstain_misleading_warning",
+  "title": "Jobs time out; a stale pool-size warning is a red herring (correct: abstain)",
+  "category": "insufficient_evidence_misleading",
+  "cause_class": "insufficient_evidence",
+  "target": null,
+  "must_cite": [],
+  "misleading_ids": [
+    "EV-0001",
+    "EV-0003"
+  ],
+  "decoy_targets": [
+    "DB_POOL_SIZE",
+    "JOB_TIMEOUT_S"
+  ],
+  "expected_tool_calls": [
+    {
+      "tool": "submit_diagnosis",
+      "contains": "insufficient_evidence"
+    }
+  ],
+  "context": [
+    {
+      "path": "lab/shop_api/jobs.py",
+      "qualname": "run_job"
+    }
+  ],
+  "gold_patch": null,
+  "injection": null,
+  "service": "shop_api",
+  "visible_check": null,
+  "hidden_check": null,
+  "evidence": [
+    {
+      "id": "EV-0001",
+      "kind": "log",
+      "content": "2026-02-27 06:00:03 WARNING shop_api.db DB_POOL_SIZE=2 is below the recommended 10 (advisory, logged at every start)"
+    },
+    {
+      "id": "EV-0002",
+      "kind": "log",
+      "content": "2026-03-09 14:12:50 ERROR shop_api.worker job 4410 failed: TimeoutError\n2026-03-09 14:13:21 ERROR shop_api.worker job 4417 failed: TimeoutError"
+    },
+    {
+      "id": "EV-0003",
+      "kind": "config",
+      "path": "lab/shop_api/settings.env",
+      "content": "# shop_api runtime settings\nAPP_ENV=production\nDB_URL=postgresql://shop:***@db:5432/shop\nDB_POOL_SIZE=2\nJOB_TIMEOUT_S=30\n"
+    },
+    {
+      "id": "EV-0004",
+      "kind": "health",
+      "content": "db: healthy, 3 of 20 server connections in use, no waiting clients\nshop_api: healthy"
+    }
+  ]
+}

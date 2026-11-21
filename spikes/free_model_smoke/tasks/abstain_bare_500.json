@@ -1,0 +1,41 @@
+{
+  "id": "abstain_bare_500",
+  "title": "Intermittent 500 on /checkout with no error detail (correct: abstain)",
+  "category": "insufficient_evidence",
+  "cause_class": "insufficient_evidence",
+  "target": null,
+  "must_cite": [],
+  "misleading_ids": [],
+  "decoy_targets": [
+    "lab/shop_api/checkout.py::checkout"
+  ],
+  "expected_tool_calls": [
+    {
+      "tool": "submit_diagnosis",
+      "contains": "insufficient_evidence"
+    }
+  ],
+  "context": [
+    {
+      "path": "lab/shop_api/checkout.py",
+      "qualname": "checkout"
+    }
+  ],
+  "gold_patch": null,
+  "injection": null,
+  "service": "shop_api",
+  "visible_check": null,
+  "hidden_check": null,
+  "evidence": [
+    {
+      "id": "EV-0001",
+      "kind": "log",
+      "content": "2026-03-08 19:30:12 INFO shop_api.access POST /checkout 200 311ms\n2026-03-08 19:30:40 INFO shop_api.access POST /checkout 500 312ms\n2026-03-08 19:31:02 INFO shop_api.access POST /checkout 200 298ms\n2026-03-08 19:31:15 INFO shop_api.access POST /checkout 500 305ms"
+    },
+    {
+      "id": "EV-0002",
+      "kind": "health",
+      "content": "shop_api: degraded (1 of 3 probes failed)"
+    }
+  ]
+}

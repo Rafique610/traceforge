@@ -1,0 +1,32 @@
+== write
+{
+ "experiment": "write_limit",
+ "model": "qwen2.5-coder-7b-ctx16k",
+ "provider": "ollama",
+ "ctx": 16384,
+ "max_output_tokens": 6000,
+ "vram_baseline_mib": 5658,
+ "vram_peak_mib": 5842,
+ "vram_samples": 931
+}
+== format
+{
+ "search_replace": {
+  "n": 10,
+  "applies_cleanly": 10,
+  "fix_correct": 7,
+  "recount_ok": null,
+  "touched_test_file": 10,
+  "new_ruff_errors": 2,
+  "ast_parse_fail": 0
+ },
+ "unified_diff": {
+  "n": 10,
+  "applies_cleanly": 0,
+  "fix_correct": 0,
+  "recount_ok": 0,
+  "touched_test_file": 0,
+  "new_ruff_errors": 0,
+  "ast_parse_fail": 0
+ }
+}

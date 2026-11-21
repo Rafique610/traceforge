@@ -1,0 +1,62 @@
+{
+  "id": "dep_cache_down",
+  "title": "Catalogue 500s because the cache container is down (correct: diagnose, no patch)",
+  "category": "runtime_dependency",
+  "cause_class": "runtime_dependency",
+  "target": null,
+  "must_cite": [
+    "EV-0001",
+    "EV-0003",
+    "EV-0004"
+  ],
+  "misleading_ids": [],
+  "decoy_targets": [
+    "CACHE_URL",
+    "CACHE_TTL_S"
+  ],
+  "expected_tool_calls": [
+    {
+      "tool": "submit_diagnosis",
+      "contains": "runtime_dependency"
+    }
+  ],
+  "context": [
+    {
+      "path": "lab/shop_api/cache.py",
+      "qualname": "get_product"
+    }
+  ],
+  "gold_patch": null,
+  "injection": null,
+  "service": "shop_api",
+  "visible_check": null,
+  "hidden_check": null,
+  "evidence": [
+    {
+      "id": "EV-0001",
+      "kind": "log",
+      "content": "2026-03-07 08:55:02 ERROR shop_api.catalog GET /products/17 -> 500: redis.exceptions.ConnectionError: Error 111 connecting to cache:6379. Connection refused."
+    },
+    {
+      "id": "EV-0002",
+      "kind": "log",
+      "content": "2026-03-07 08:55:09 ERROR shop_api.catalog GET /products/18 -> 500: redis.exceptions.ConnectionError: Error 111 connecting to cache:6379. Connection refused."
+    },
+    {
+      "id": "EV-0003",
+      "kind": "health",
+      "content": "cache: DOWN (connection refused since 08:51)\nshop_api: degraded\ndb: healthy"
+    },
+    {
+      "id": "EV-0004",
+      "kind": "compose",
+      "content": "service cache: image redis:7-alpine state=exited exit_code=137 oom_killed=true restarts=0\nservice shop_api: state=running"
+    },
+    {
+      "id": "EV-0005",
+      "kind": "config",
+      "path": "lab/shop_api/settings.env",
+      "content": "# shop_api runtime settings\nAPP_ENV=production\nCACHE_URL=redis://cache:6379/0\nCACHE_TTL_S=300\nDB_URL=postgresql://shop:***@db:5432/shop\n"
+    }
+  ]
+}

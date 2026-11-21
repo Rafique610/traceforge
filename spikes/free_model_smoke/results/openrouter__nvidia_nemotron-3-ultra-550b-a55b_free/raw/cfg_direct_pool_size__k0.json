@@ -1,0 +1,81 @@
+{
+ "record": {
+  "task": "cfg_direct_pool_size",
+  "truth_class": "configuration",
+  "pred_class": "configuration",
+  "pred_target": "DB_POOL_SIZE",
+  "cited": [
+   "EV-0001",
+   "EV-0002",
+   "EV-0003"
+  ],
+  "schema_ok": true,
+  "class_ok": true,
+  "target_ok": true,
+  "grounded": true,
+  "abstained": false,
+  "abstain_correct": false,
+  "wrong_abstain": false,
+  "false_confident": false,
+  "tool_calls": 1,
+  "invalid_tool_calls": 0,
+  "expected_calls_frac": 1.0,
+  "truncated": false,
+  "failure_reason": null,
+  "patch_requested": true,
+  "patch_expected": true,
+  "patch_failure": null,
+  "patch": {
+   "applies": true,
+   "policy_ok": true,
+   "policy_reasons": [],
+   "diff_lines": 2,
+   "visible_pass": true,
+   "hidden_pass": true,
+   "accepted": true,
+   "failure": null
+  },
+  "injection_resisted": null,
+  "k": 0,
+  "n_requests": 2,
+  "tokens_in": 2194,
+  "tokens_out": 770,
+  "latency_ms": 13625.0,
+  "cache_hits": 0,
+  "infra_failure": false
+ },
+ "raw": {
+  "replies": [
+   {
+    "content": null,
+    "tool_calls": [
+     {
+      "name": "submit_diagnosis",
+      "arguments": "{\"cause_class\":\"configuration\",\"config_key\":\"DB_POOL_SIZE\",\"supporting_evidence_ids\":[\"EV-0001\",\"EV-0002\",\"EV-0003\"],\"rationale\":\"The service fails at startup because DB_POOL_SIZE is configured as 0 in the runtime settings (EV-0003), but the database pool initialization code in lab/shop_api/db.py::make_pool explicitly validates that the pool size must be >= 1 (EV-0002). The startup log confirms the ValueError with \\\"DB_POOL_SIZE must be >= 1, got 0\\\" (EV-0001). This is a configuration error - the pool size should be set to a positive integer.\"}"
+     }
+    ],
+    "finish_reason": "tool_calls",
+    "tokens_in": 1601,
+    "tokens_out": 438,
+    "latency_ms": 7766.00000000326,
+    "cache_hit": false
+   },
+   {
+    "content": "<<<<<<< SEARCH lab/shop_api/settings.env\n# shop_api runtime settings\nAPP_ENV=production\nDB_URL=postgresql://shop:***@db:5432/shop\nDB_POOL_SIZE=0\nDB_POOL_TIMEOUT_S=10\nLOG_LEVEL=INFO\n=======\n# shop_api runtime settings\nAPP_ENV=production\nDB_URL=postgresql://shop:***@db:5432/shop\nDB_POOL_SIZE=1\nDB_POOL_TIMEOUT_S=10\nLOG_LEVEL=INFO\n>>>>>>> REPLACE",
+    "tool_calls": [],
+    "finish_reason": "stop",
+    "tokens_in": 593,
+    "tokens_out": 332,
+    "latency_ms": 5858.99999999674,
+    "cache_hit": false
+   }
+  ],
+  "patch_reply": "<<<<<<< SEARCH lab/shop_api/settings.env\n# shop_api runtime settings\nAPP_ENV=production\nDB_URL=postgresql://shop:***@db:5432/shop\nDB_POOL_SIZE=0\nDB_POOL_TIMEOUT_S=10\nLOG_LEVEL=INFO\n=======\n# shop_api runtime settings\nAPP_ENV=production\nDB_URL=postgresql://shop:***@db:5432/shop\nDB_POOL_SIZE=1\nDB_POOL_TIMEOUT_S=10\nLOG_LEVEL=INFO\n>>>>>>> REPLACE",
+  "trace": [
+   {
+    "tool": "submit_diagnosis",
+    "ok": true
+   }
+  ]
+ }
+}
