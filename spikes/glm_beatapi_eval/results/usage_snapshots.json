@@ -1,0 +1,17 @@
+[
+ {
+  "label": "start",
+  "time": "2026-11-22T05:58:44",
+  "credit_balance": 0,
+  "credits_settled": 0,
+  "total_tasks": 3,
+  "by_model": [
+   {
+    "media_type": "text",
+    "model": "glm-5.3-flash-free",
+    "tasks": 3,
+    "credits_settled": 0
+   }
+  ]
+ }
+]

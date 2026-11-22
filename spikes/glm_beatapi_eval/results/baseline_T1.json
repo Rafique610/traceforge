@@ -1,0 +1,57 @@
+{
+ "task": "T1",
+ "hidden": [
+  "test_unverified_repairable_incident_is_not_labelled_verified",
+  "test_verified_incident_keeps_the_verified_caveat"
+ ],
+ "buggy": {
+  "passed": 11,
+  "failed": 1,
+  "error": null,
+  "hidden": {
+   "test_unverified_repairable_incident_is_not_labelled_verified": "failed",
+   "test_verified_incident_keeps_the_verified_caveat": "passed"
+  },
+  "failing": [
+   "test_unverified_repairable_incident_is_not_labelled_verified"
+  ]
+ },
+ "buggy_passing": [
+  "test_every_id_resolves",
+  "test_incident_without_diagnosis_is_not_reported_as_supported",
+  "test_insufficient_evidence_lists_missing",
+  "test_markdown_format",
+  "test_report_404_and_bad_format",
+  "test_report_code_never_touches_llm_or_network",
+  "test_report_is_deterministic",
+  "test_runtime_dependency_names_dependency_and_evidence",
+  "test_unverified_report_with_patch_and_no_runs",
+  "test_verified_incident_keeps_the_verified_caveat",
+  "test_verified_report_has_patch_hash_impact_and_validation"
+ ],
+ "fixed": {
+  "passed": 12,
+  "failed": 0,
+  "error": null,
+  "hidden": {
+   "test_unverified_repairable_incident_is_not_labelled_verified": "passed",
+   "test_verified_incident_keeps_the_verified_caveat": "passed"
+  },
+  "failing": []
+ },
+ "fixed_passing": [
+  "test_every_id_resolves",
+  "test_incident_without_diagnosis_is_not_reported_as_supported",
+  "test_insufficient_evidence_lists_missing",
+  "test_markdown_format",
+  "test_report_404_and_bad_format",
+  "test_report_code_never_touches_llm_or_network",
+  "test_report_is_deterministic",
+  "test_runtime_dependency_names_dependency_and_evidence",
+  "test_unverified_repairable_incident_is_not_labelled_verified",
+  "test_unverified_report_with_patch_and_no_runs",
+  "test_verified_incident_keeps_the_verified_caveat",
+  "test_verified_report_has_patch_hash_impact_and_validation"
+ ],
+ "reproduces": true
+}

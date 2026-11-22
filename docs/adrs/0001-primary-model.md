@@ -14,8 +14,11 @@ Update 2026-11-21 (B14, re-investigated): Ollama's lifecycle page lists `devstra
 
 Update 2026-11-21 (B15): the cloud service itself returns HTTP 410 for `devstral-small-2:24b-cloud` ("retired on July 15, 2026"); see `docs/research/DEVSTRAL_OLLAMA_INVESTIGATION.md`. Devstral stays the intended model in configuration; there is no route to it via Ollama Cloud.
 
+Update 2026-11-22 (B17, owner decision): the agent model is now **AxForge `glm-5.3-flash`** (`https://api.axforge.ai/v1`), free allowance of 3M tokens per 30 days, no card. Evidence so far is thin: one 31-token connection check and one live `agent:run` on the sample `code` case (diagnosis produced, 3 tool calls, 0 invalid; not sandbox-verified). No head-to-head against Qwen/Nemotron was run, by instruction. Open risks: reasoning tokens count toward `max_tokens`, latency 20-140 s per call at effort high, the free/paid split is not observable through the API (safety rests on a zero prepaid balance), and a BeatAPI-served GLM was stopped before any coding score. This ADR stays PROPOSED until a probe on identical cases exists.
+
 ## Decision (provisional)
-1. **Intended primary cloud model: Devstral** (`devstral-small-latest`, provider `mistral`), unchanged in `evaluation/conditions/*.json`. It is not pinned to a dated ID and not usable at $0 yet.
+0. **Owner-selected working model (2026-11-22): AxForge `glm-5.3-flash`**, guarded by `agent/axforge.py` (exact id, fixed host, one attempt, no fallback).
+1. **Previously intended primary cloud model: Devstral** (`devstral-small-latest`, provider `mistral`), unchanged in `evaluation/conditions/*.json`. It is not pinned to a dated ID and not usable at $0 yet.
 2. **Local `qwen2.5-coder:7b` is the reproducible baseline** and the only model that can currently run all four conditions at $0.
 3. **Nemotron `:free` (OpenRouter) is experimental only**, never the primary; its numbers are not Devstral's.
 4. **The gateway is provider-agnostic with a free-only guard:** non-`:free` OpenRouter IDs, non-allowlisted providers, and Ollama `-cloud` models are refused unless explicitly enabled. Experiments run at temperature 0 with the cache key including provider, model, prompt, tools, max_tokens, seed and replicate index.

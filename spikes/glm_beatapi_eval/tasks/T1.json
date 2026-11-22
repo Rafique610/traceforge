@@ -1,0 +1,47 @@
+{
+ "title": "Report claims verification that never happened",
+ "kind": "repair",
+ "bug_report": "Incident report (from an end-to-end run of the pipeline on a real incident).\n\nAn incident whose cause class was `configuration` was diagnosed, a patch was proposed, but no patch ever passed the hidden test suite, so the incident never reached the VERIFIED state. When I fetched `GET /incidents/{id}/report`, the `limitations` field said: \"Verified only by the lab test suites on a snapshot. Not deployed. Review the diff.\" That is wrong for this incident: the report states a verification that never took place, and a reviewer could trust an unconfirmed hypothesis. A properly verified incident should still carry that caveat.\n\nObserved by reading the JSON returned by the report endpoint after the run.",
+ "gold": {
+  "files": [
+   "backend/traceforge/reports/builder.py"
+  ],
+  "functions": [
+   "_limitation"
+  ],
+  "mechanism": [
+   [
+    "\\bverified\\b|VERIFIED"
+   ],
+   [
+    "not\\b.{0,40}verified|never reach|unverified|without verif|did not reach|regardless|whether"
+   ]
+  ]
+ },
+ "injections": [
+  {
+   "file": "backend/traceforge/reports/builder.py",
+   "old": "def _limitation(cause: str | None, verified: bool) -> str:\n    \"\"\"Only claim 'verified' when the incident really reached VERIFIED.\"\"\"\n    if cause in (\"configuration\", \"application_code\") and not verified:\n        return _UNVERIFIED\n    return LIMITATIONS.get(cause or \"\", DEFAULT_LIMITATION)\n",
+   "new": "def _limitation(cause: str | None) -> str:\n    return LIMITATIONS.get(cause or \"\", DEFAULT_LIMITATION)\n"
+  },
+  {
+   "file": "backend/traceforge/reports/builder.py",
+   "old": "        limitations=_limitation(cause, any(e.to_state is State.VERIFIED for e in events)),\n",
+   "new": "        limitations=_limitation(cause),\n"
+  }
+ ],
+ "hidden": [
+  {
+   "file": "backend/tests/reports/test_report.py",
+   "names": [
+    "test_unverified_repairable_incident_is_not_labelled_verified",
+    "test_verified_incident_keeps_the_verified_caveat"
+   ]
+  }
+ ],
+ "package_tests": [
+  "tests/reports"
+ ],
+ "ask": "diagnose and fix",
+ "id": "T1"
+}

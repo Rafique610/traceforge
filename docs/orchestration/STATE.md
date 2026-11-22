@@ -23,3 +23,4 @@ Updated 2026-11-21 (end of session 1, final update). Branch `ruhan/stage-b-work`
 - Model position: Devstral retired (B15); Nemotron 3 Ultra `:free` recommended (provisional, awaiting Ruhan): partial smoke 2/3 (fell for a misleading-warning abstain case); OpenRouter free quota 50/day (7 left at last read), key re-added by Ruhan; Ollama key removed from .env again (not needed).
 - Pending decisions for Ruhan: approve primary/backup model; commit strategy; Mistral console check; proposal PDF + supervisor email.
 - Not done: frozen dataset (P3-S01), P4–P6 experiments/paper, CI run on GitHub, compose.prod stack run.
+- 2026-11-22 model switch (B17): agent model is AxForge `glm-5.3-flash` (free allowance only; stop on any 402/error). Qwen/Nemotron/BeatAPI results preserved; BeatAPI smoke stopped at a 429 (pacing gap, fix proposed, not applied). Suite: 577 passed + 23 new-test additions; P1-S04 unknown `case_id` → 422 when a manifest is configured.

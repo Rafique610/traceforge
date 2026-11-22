@@ -1,0 +1,50 @@
+{
+ "title": "Never-diagnosed incident reported as SUPPORTED",
+ "kind": "repair",
+ "bug_report": "Found during a live UI walkthrough. I created a brand-new incident (symptom \"boom\", service shop_api) and did not run any diagnosis on it, so it sits in state CREATED with no cause class and no diagnosis data. `GET /incidents/{id}/report` nevertheless returns `root_cause.status` = \"SUPPORTED\", and the UI shows a green 'supported' root cause for an incident nobody has analysed. Expected: the report must not present an undiagnosed incident as having a supported root cause.\n\nObserved in the JSON of the report endpoint and in the UI badge.",
+ "gold": {
+  "files": [
+   "backend/traceforge/reports/builder.py",
+   "backend/traceforge/reports/schemas.py"
+  ],
+  "functions": [
+   "build_report"
+  ],
+  "mechanism": [
+   [
+    "NOT_DIAGNOSED|not.diagnosed|undiagnosed|never diagnosed"
+   ],
+   [
+    "SUPPORTED"
+   ],
+   [
+    "status"
+   ]
+  ]
+ },
+ "injections": [
+  {
+   "file": "backend/traceforge/reports/builder.py",
+   "old": "    status = \"SUPPORTED\" if (cause or diag) else \"NOT_DIAGNOSED\"\n",
+   "new": "    status = \"SUPPORTED\"\n"
+  },
+  {
+   "file": "backend/traceforge/reports/schemas.py",
+   "old": "RootCauseStatus = Literal[\"SUPPORTED\", \"INCONCLUSIVE\", \"RUNTIME_DEPENDENCY\", \"NOT_DIAGNOSED\"]\n",
+   "new": "RootCauseStatus = Literal[\"SUPPORTED\", \"INCONCLUSIVE\", \"RUNTIME_DEPENDENCY\"]\n"
+  }
+ ],
+ "hidden": [
+  {
+   "file": "backend/tests/reports/test_report.py",
+   "names": [
+    "test_incident_without_diagnosis_is_not_reported_as_supported"
+   ]
+  }
+ ],
+ "package_tests": [
+  "tests/reports"
+ ],
+ "ask": "diagnose and fix",
+ "id": "T2"
+}

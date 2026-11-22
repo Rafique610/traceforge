@@ -1,0 +1,69 @@
+{
+ "started_utc": "2026-11-21T21:31:59.426489Z",
+ "before": {
+  "usage": 0,
+  "limit": 0,
+  "limit_remaining": 0,
+  "free_model_daily_requests": {
+   "used": 49,
+   "limit": 50,
+   "remaining": 1
+  }
+ },
+ "requests": [
+  {
+   "model": "z-ai/glm-5.2:free",
+   "http_status": 404,
+   "latency_ms": 97,
+   "body": {
+    "error": {
+     "message": "This model is unavailable for free. The paid version is available now - use this slug instead: z-ai/glm-5.2",
+     "code": 404
+    }
+   }
+  },
+  {
+   "model": "qwen/qwen3-coder:free",
+   "http_status": 404,
+   "latency_ms": 85,
+   "body": {
+    "error": {
+     "message": "This model is unavailable for free. The paid version is available now - use this slug instead: qwen/qwen3-coder",
+     "code": 404
+    }
+   }
+  },
+  {
+   "model": "deepseek/deepseek-v4-flash:free",
+   "http_status": 404,
+   "latency_ms": 80,
+   "body": {
+    "error": {
+     "message": "This model is unavailable for free. The paid version is available now - use this slug instead: deepseek/deepseek-v4-flash",
+     "code": 404
+    }
+   }
+  },
+  {
+   "model": "deepseek/deepseek-v4.1-flash-1017:free",
+   "http_status": 404,
+   "latency_ms": 101,
+   "body": {
+    "error": {
+     "message": "This model is unavailable for free. The paid version is available now - use this slug instead: deepseek/deepseek-v4.1-flash-1017",
+     "code": 404
+    }
+   }
+  }
+ ],
+ "after": {
+  "usage": 0,
+  "limit": 0,
+  "limit_remaining": 0,
+  "free_model_daily_requests": {
+   "used": 49,
+   "limit": 50,
+   "remaining": 1
+  }
+ }
+}

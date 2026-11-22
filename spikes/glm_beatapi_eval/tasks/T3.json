@@ -1,0 +1,73 @@
+{
+ "title": "Truncated patch reply reported as no_edit",
+ "kind": "repair",
+ "bug_report": "Seen when running the pipeline with a reasoning model (one that spends many tokens on hidden reasoning before answering). The patch stage fails and the pipeline records the failure reason `no_edit`, which suggests the model produced no usable SEARCH/REPLACE block. Looking at the provider response and the call log: the patch request actually returned an EMPTY reply with finish_reason 'length', and the call log shows tokens_out equal to the output cap (1024). So the real cause was that the reply was cut off at the output-token cap, but nothing in the pipeline says so; operators wasted time prompt-engineering. Expected: a clear truncation reason instead of `no_edit`, and the output-token cap should not be a hard-coded value.\n\nObserved in the call log (runs/llm_calls.jsonl) and the stored failure reason.",
+ "gold": {
+  "files": [
+   "backend/traceforge/agent/gateway.py",
+   "backend/traceforge/agent/patch.py",
+   "backend/traceforge/config.py"
+  ],
+  "functions": [
+   "ask_patch",
+   "request_patch",
+   "chat"
+  ],
+  "mechanism": [
+   [
+    "finish_reason|length|truncat"
+   ],
+   [
+    "max_tokens|1024|output.token|llm_max"
+   ],
+   [
+    "no_edit"
+   ]
+  ]
+ },
+ "injections": [
+  {
+   "file": "backend/traceforge/agent/gateway.py",
+   "old": "class OutputTruncated(GatewayError):\n    \"\"\"The reply hit the output-token cap (finish_reason 'length') and has no usable content.\n    Reasoning models can spend the whole budget on hidden reasoning; raise llm_max_output_tokens.\"\"\"\n\n\n",
+   "new": ""
+  },
+  {
+   "file": "backend/traceforge/agent/gateway.py",
+   "old": "\"max_tokens\": max_tokens or s.llm_max_output_tokens,",
+   "new": "\"max_tokens\": max_tokens or 1024,"
+  },
+  {
+   "file": "backend/traceforge/agent/patch.py",
+   "old": "from traceforge.agent.gateway import GatewayError, OutputTruncated\n",
+   "new": "from traceforge.agent.gateway import GatewayError\n"
+  },
+  {
+   "file": "backend/traceforge/agent/patch.py",
+   "old": "    if resp.finish_reason == \"length\" and not (resp.content or \"\").strip():\n        raise OutputTruncated(\"patch reply truncated at the output-token cap with no content\")\n",
+   "new": ""
+  },
+  {
+   "file": "backend/traceforge/agent/patch.py",
+   "old": "    except OutputTruncated:\n        return None, None, \"output_truncated\"\n",
+   "new": ""
+  },
+  {
+   "file": "backend/traceforge/config.py",
+   "old": "    llm_max_output_tokens: int = 4096  # reasoning models spend part of this on hidden reasoning\n",
+   "new": ""
+  }
+ ],
+ "hidden": [
+  {
+   "file": "backend/tests/agent/test_pipeline.py",
+   "names": [
+    "test_empty_truncated_patch_reply_is_reported_as_output_truncated"
+   ]
+  }
+ ],
+ "package_tests": [
+  "tests/agent"
+ ],
+ "ask": "diagnose and fix",
+ "id": "T3"
+}

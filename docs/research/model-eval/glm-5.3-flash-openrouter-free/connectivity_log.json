@@ -1,0 +1,42 @@
+{
+ "time_utc": "2026-11-21T22:12:11.871593+00:00",
+ "catalog_check": {
+  "z-ai/glm-5.3-flash:free in /api/v1/models": false,
+  "endpoints_listed": 0,
+  "paid_sibling_listed_price_per_token": {
+   "prompt": 3.99e-08,
+   "completion": 7.84e-08
+  }
+ },
+ "before": {
+  "usage": 0,
+  "limit": 0,
+  "limit_remaining": 0,
+  "free_model_daily_requests": {
+   "used": 49,
+   "limit": 50,
+   "remaining": 1
+  }
+ },
+ "request": {
+  "model": "z-ai/glm-5.3-flash:free",
+  "http_status": 404,
+  "latency_ms": 98,
+  "body": {
+   "error": {
+    "message": "This model is unavailable for free. The paid version is available now - use this slug instead: z-ai/glm-5.3-flash",
+    "code": 404
+   }
+  }
+ },
+ "after": {
+  "usage": 0,
+  "limit": 0,
+  "limit_remaining": 0,
+  "free_model_daily_requests": {
+   "used": 49,
+   "limit": 50,
+   "remaining": 1
+  }
+ }
+}

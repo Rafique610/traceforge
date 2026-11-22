@@ -1,0 +1,5 @@
+[T1] baseline reproduces=True
+[T1] agent run (live so far 0/60)
+STOP: model endpoint error at request 1: beatapi call failed (503): InternalServerError; not retried | retry-after=None | body={'message': 'The generation took too long and was stopped on our side. Retry in a moment. (request id: 202611212311332511058158268d9d6DtglTAPa)', 'type': 'beatapi_error', 'param': '', 'code': 'upstream_timeout'}
+worktrees left: []
+exit 2

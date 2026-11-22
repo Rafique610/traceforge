@@ -1,0 +1,40 @@
+{
+ "authorised": "exactly one additional live request, original 6000-token config",
+ "usage_before": {
+  "note": "script read the wrong JSON level (nulls); the guard check passed (no violations)"
+ },
+ "waited_for_interval_s": 204,
+ "sent_at_utc": "2026-11-21T23:26:33.001147+00:00",
+ "result": "success",
+ "wall_s": 3.62,
+ "response": {
+  "model": "glm-5.3-flash-free",
+  "finish_reason": "tool_calls",
+  "tokens_in": 1055,
+  "tokens_out": 53,
+  "latency_ms": 3625,
+  "content_chars": 0,
+  "content_head": "",
+  "tool_calls": [
+   {
+    "name": "list_dir",
+    "arguments": "{\"path\":\"backend/traceforge\"}"
+   },
+   {
+    "name": "grep",
+    "arguments": "{\"path\":\"backend/traceforge\",\"pattern\":\"Verified only by the lab test suites\"}"
+   }
+  ]
+ },
+ "usage_after": {
+  "credit_balance": 0,
+  "credits_settled": 0,
+  "credits_refunded": 0,
+  "total_tasks": 3,
+  "models": [
+   "glm-5.3-flash-free"
+  ],
+  "verified_directly_after_run": true
+ },
+ "usage_violations_after": []
+}

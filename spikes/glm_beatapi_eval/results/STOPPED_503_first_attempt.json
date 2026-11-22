@@ -1,0 +1,5 @@
+{
+ "reason": "model endpoint error at request 1: beatapi call failed (503): InternalServerError; not retried | retry-after=None | body={'message': 'The generation took too long and was stopped on our side. Retry in a moment. (request id: 202611212311332511058158268d9d6DtglTAPa)', 'type': 'beatapi_error', 'param': '', 'code': 'upstream_timeout'}",
+ "time": "2026-11-22 04:13:37",
+ "live_requests": 0
+}

@@ -1,0 +1,41 @@
+{
+ "title": "Gateway crashes when a provider omits finish_reason (+ write regression test)",
+ "kind": "repair_and_test",
+ "bug_report": "Some OpenAI-compatible providers omit `finish_reason` from a response choice. When that happens, `traceforge.agent.gateway.chat(...)` crashes while building its `ModelResponse` with `AttributeError: ... object has no attribute 'finish_reason'`, instead of returning a response (the reply content and tool calls were perfectly fine). Observed via a provider whose JSON choice has only `index` and `message`; several tests in the existing gateway test file also fail with the same AttributeError.\n\nAdditional deliverable for this task: besides finding the root cause and fixing it, write your OWN regression test in a NEW file `backend/tests/agent/test_finish_reason_regression.py`. It must fail on the buggy code and pass once the bug is fixed.",
+ "gold": {
+  "files": [
+   "backend/traceforge/agent/gateway.py"
+  ],
+  "functions": [
+   "chat"
+  ],
+  "mechanism": [
+   [
+    "finish_reason"
+   ],
+   [
+    "AttributeError|getattr|missing|omit|lacks|absent|no attribute"
+   ]
+  ]
+ },
+ "injections": [
+  {
+   "file": "backend/traceforge/agent/gateway.py",
+   "old": "        finish_reason=getattr(raw.choices[0], \"finish_reason\", None),\n",
+   "new": "        finish_reason=raw.choices[0].finish_reason,\n"
+  }
+ ],
+ "hidden": [],
+ "hidden_extra_files": {
+  "backend/tests/agent/test_zz_hidden.py": "\"\"\"Scorer-only check: a provider choice without finish_reason must not crash chat().\"\"\"\nfrom types import SimpleNamespace\n\nfrom traceforge.agent.gateway import chat\nfrom traceforge.config import Settings\n\n\nclass _Client:\n    def __init__(self):\n        self.chat = SimpleNamespace(completions=SimpleNamespace(create=self._create))\n\n    def _create(self, **kw):\n        msg = SimpleNamespace(content=\"hello\", tool_calls=None)\n        return SimpleNamespace(\n            choices=[SimpleNamespace(message=msg)],  # no finish_reason attribute at all\n            usage=SimpleNamespace(prompt_tokens=3, completion_tokens=2),\n        )\n\n\ndef test_choice_without_finish_reason(tmp_path):\n    s = Settings(_env_file=None, llm_cache_dir=tmp_path / \"c\", llm_call_log=tmp_path / \"l.jsonl\",\n                 llm_max_rps=1000)\n    r = chat([{\"role\": \"user\", \"content\": \"hi\"}], settings=s, client=_Client())\n    assert r.content == \"hello\" and r.finish_reason is None\n"
+ },
+ "hidden_ids": [
+  "test_choice_without_finish_reason"
+ ],
+ "package_tests": [
+  "tests/agent"
+ ],
+ "required_test_file": "backend/tests/agent/test_finish_reason_regression.py",
+ "ask": "diagnose, fix, and write a regression test",
+ "id": "T4"
+}

@@ -113,6 +113,14 @@ tasks:
     cmds:
       - .venv/Scripts/python.exe ../spikes/model_probe/probe.py --provider {{.PROVIDER}} --model {{.MODEL}} {{.CLI_ARGS}}
 
+  gateway:probe:
+    desc: "Alias of spike:probe (P1-S05): task gateway:probe PROVIDER=axforge MODEL=glm-5.3-flash"
+    dir: backend
+    requires:
+      vars: [PROVIDER, MODEL]
+    cmds:
+      - .venv/Scripts/python.exe ../spikes/model_probe/probe.py --provider {{.PROVIDER}} --model {{.MODEL}} {{.CLI_ARGS}}
+
   eval:report:
     desc: "Compute metrics from saved runs: task eval:report RUNS=runs MANIFEST=datasets/manifests/dev.json"
     dir: backend

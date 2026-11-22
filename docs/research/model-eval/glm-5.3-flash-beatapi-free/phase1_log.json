@@ -1,0 +1,98 @@
+{
+ "time_utc": "2026-11-21T22:48:13.621556+00:00",
+ "model": "glm-5.3-flash-free",
+ "results": [
+  {
+   "test": "minimal_chat",
+   "base": "https://direct.beatapi.io/v1",
+   "http_status": 200,
+   "latency_s": 2.32,
+   "unreachable": null,
+   "headers": {
+    "Content-Type": "application/json"
+   },
+   "response_model": "glm-5.3-flash-free",
+   "usage": {
+    "prompt_tokens": 19,
+    "completion_tokens": 46,
+    "total_tokens": 65,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 46
+    }
+   },
+   "error": null,
+   "finish_reason": "stop",
+   "content": "ok",
+   "reasoning_present": true,
+   "tool_calls": null,
+   "cost_fields": {}
+  },
+  {
+   "test": "tool_call",
+   "base": "https://direct.beatapi.io/v1",
+   "http_status": 429,
+   "latency_s": 1.08,
+   "unreachable": null,
+   "headers": {
+    "Content-Type": "application/json; charset=utf-8",
+    "Retry-After": "60"
+   },
+   "response_model": null,
+   "usage": null,
+   "error": {
+    "code": "rate_limit_exceeded",
+    "message": "Rate limit exceeded: this model allows at most 1 successful requests per minute per account. Retry after 60 seconds. After your first top-up, this free model allows up to 10 successful requests per minute. Your top-up balance can also be used for paid models, billed by usage with no monthly subscription. Top up: https://beatapi.io/dashboard/billing",
+    "retryable": true,
+    "request_id": "202611212248295498678498268d9d60siKikHd",
+    "retry_after_seconds": 60
+   },
+   "finish_reason": null,
+   "content": "",
+   "reasoning_present": false,
+   "tool_calls": null,
+   "cost_fields": {}
+  },
+  {
+   "test": "tool_call_after_retry_after",
+   "base": "https://direct.beatapi.io/v1",
+   "http_status": 200,
+   "latency_s": 2.3,
+   "unreachable": null,
+   "headers": {
+    "Content-Type": "application/json"
+   },
+   "response_model": "glm-5.3-flash-free",
+   "usage": {
+    "prompt_tokens": 164,
+    "completion_tokens": 40,
+    "total_tokens": 204,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 28
+    }
+   },
+   "error": null,
+   "finish_reason": "tool_calls",
+   "content": "",
+   "reasoning_present": true,
+   "tool_calls": [
+    {
+     "id": "8167052f-f233-463c-b717-16c99a0c3aee",
+     "type": "function",
+     "function": {
+      "name": "get_service_status",
+      "arguments": "{\"service\":\"worker\"}"
+     }
+    }
+   ],
+   "cost_fields": {}
+  }
+ ],
+ "stopped_early": false,
+ "tool_call_run_utc": "2026-11-21T22:48:28.230287+00:00"
+}
