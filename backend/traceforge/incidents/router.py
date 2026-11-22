@@ -1,10 +1,13 @@
+import json
 import uuid
+from pathlib import Path
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, FastAPI, HTTPException, Query, Request
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
+from traceforge.config import get_settings
 from traceforge.database import get_db
 from traceforge.incidents import repository, service
 from traceforge.incidents.schemas import (
@@ -28,6 +31,14 @@ def register_handlers(app: FastAPI) -> None:
         return JSONResponse(status_code=409, content={"detail": str(exc), "state": exc.current})
 
 
+def _known_case_ids() -> set[str] | None:
+    """Case ids of the configured dataset manifest; None (no check) when no manifest is set."""
+    path = get_settings().manifest
+    if not path:
+        return None
+    return {c["case_id"] for c in json.loads(Path(path).read_text(encoding="utf-8"))}
+
+
 def _get_or_404(db: Session, incident_id: uuid.UUID):
     incident = repository.get_incident(db, incident_id)
     if incident is None:
@@ -37,6 +48,11 @@ def _get_or_404(db: Session, incident_id: uuid.UUID):
 
 @router.post("", status_code=201, response_model=IncidentOut)
 def create_incident(body: IncidentCreate, db: Db):
+    known = _known_case_ids()
+    if body.case_id and known is not None and body.case_id not in known:
+        raise HTTPException(
+            422, f"unknown case_id {body.case_id!r}: not in the configured manifest"
+        )
     return service.create_incident(db, body)
 
 

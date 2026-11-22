@@ -82,3 +82,15 @@ def test_illegal_transition_maps_to_409_and_writes_nothing(client):
     assert len(client.get(events).json()) == 2
     assert t.post(f"/t/{inc['id']}/DIAGNOSED").status_code == 409
     assert len(client.get(events).json()) == 2
+
+
+def test_unknown_case_id_is_422_when_manifest_configured(client, monkeypatch, tmp_path):
+    from traceforge import config
+    from traceforge.incidents import router
+
+    manifest = tmp_path / "m.json"
+    manifest.write_text('[{"case_id": "shop_api-001"}]', encoding="utf-8")
+    monkeypatch.setattr(router, "get_settings", lambda: config.Settings(manifest=str(manifest)))
+    assert client.post("/incidents", json={"case_id": "nope-9"}).status_code == 422
+    assert client.post("/incidents", json={"case_id": "shop_api-001"}).status_code == 201
+    assert client.get("/incidents").json()["total"] == 1  # nothing written for the rejected one
