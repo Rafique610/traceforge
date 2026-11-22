@@ -1,0 +1,11 @@
+--- a/lab/shop_api/app/settings.py
++++ b/lab/shop_api/app/settings.py
+@@ -23,7 +23,7 @@
+     # pricing rules (see app/quote.py)
+     tax_rate: Decimal = Decimal("0.17")
+     shipping_fee: Decimal = Decimal("4.99")
+-    free_shipping_over: Decimal = Decimal("50.00")
++    free_shipping_over: Decimal = Decimal("5.00")
+     max_discount_pct: int = 30
+     coupon_codes: str = "WELCOME10=10,BULK20=20,STAFF50=50"
+     coupons_valid_until: str = "2099-12-31"

@@ -1,6 +1,6 @@
 --- a/lab/shop_api/app/settings.py
 +++ b/lab/shop_api/app/settings.py
-@@ -16,7 +16,7 @@
+@@ -17,7 +17,7 @@
      db_user: str
      db_password: SecretStr
      db_pool_size: int = 5
@@ -8,4 +8,4 @@
 +    redis_host: str = "redis-broker.internal"
      redis_port: int = 6379
      order_queue: str = "orders:confirm"
- 
+     # pricing rules (see app/quote.py)

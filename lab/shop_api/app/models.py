@@ -17,6 +17,7 @@ class Product(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(120))
     price: Mapped[Decimal] = mapped_column(Numeric(10, 2))
+    stock: Mapped[int] = mapped_column(default=500)
 
 
 class Order(Base):

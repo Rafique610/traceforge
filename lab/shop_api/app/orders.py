@@ -4,7 +4,7 @@ from decimal import Decimal
 
 from sqlalchemy.orm import Session
 
-from app import catalog
+from app import catalog, inventory
 from app.models import Order, OrderItem
 from app.pricing import ZERO, average_unit_price, line_total, money
 from app.schemas import OrderIn
@@ -39,12 +39,19 @@ def order_average_price(items: list[OrderItem]) -> Decimal:
 
 
 def create_order(session: Session, payload: OrderIn) -> Order:
-    """Persist a pending order with price snapshots. Raises UnknownProduct."""
+    """Persist a pending order with price snapshots and reserve stock.
+
+    Raises UnknownProduct or inventory.OutOfStock (nothing is saved then)."""
     order = Order(customer_email=payload.customer_email, status="pending")
     for line in payload.items:
         product = catalog.get_product(session, line.product_id)
         if product is None:
             raise UnknownProduct(line.product_id)
+        try:
+            inventory.reserve(product, line.quantity)
+        except inventory.OutOfStock:
+            session.rollback()
+            raise
         order.items.append(
             OrderItem(
                 product_id=product.id,

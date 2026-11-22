@@ -1,0 +1,8 @@
+--- a/lab/shop_api/app/pricing.py
++++ b/lab/shop_api/app/pricing.py
+@@ -17,4 +17,4 @@
+ 
+ def average_unit_price(total: Decimal, quantity: int) -> Decimal:
+     """Average price per unit across an order (total / units)."""
+-    return money(total / quantity)
++    return money(total / (quantity - 1))

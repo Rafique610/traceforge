@@ -1,0 +1,9 @@
+--- a/lab/shop_api/app/quote.py
++++ b/lab/shop_api/app/quote.py
+@@ -31,5 +31,5 @@
+         "goods": goods,
+         "shipping": ship,
+         "tax": tax,
+-        "grand_total": money(goods + ship + tax),
++        "grand_total": money(goods + tax),
+     }

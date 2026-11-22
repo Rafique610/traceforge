@@ -30,6 +30,23 @@ class OrderOut(BaseModel):
     total: Decimal
 
 
+class QuoteOut(BaseModel):
+    order_id: int
+    subtotal: Decimal
+    discount_pct: int
+    goods: Decimal
+    shipping: Decimal
+    tax: Decimal
+    grand_total: Decimal
+
+
+class StockOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    id: int
+    name: str
+    stock: int
+
+
 class OrderTotalOut(BaseModel):
     order_id: int
     total: Decimal

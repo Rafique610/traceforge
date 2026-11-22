@@ -1,5 +1,6 @@
 """Shop API configuration. All env access in the service goes through here."""
 
+from decimal import Decimal
 from functools import lru_cache
 
 from pydantic import SecretStr
@@ -19,6 +20,14 @@ class Settings(BaseSettings):
     redis_host: str = "localhost"
     redis_port: int = 6379
     order_queue: str = "orders:confirm"
+    # pricing rules (see app/quote.py)
+    tax_rate: Decimal = Decimal("0.17")
+    shipping_fee: Decimal = Decimal("4.99")
+    free_shipping_over: Decimal = Decimal("50.00")
+    max_discount_pct: int = 30
+    coupon_codes: str = "WELCOME10=10,BULK20=20,STAFF50=50"
+    coupons_valid_until: str = "2099-12-31"
+    low_stock_level: int = 3
 
     @property
     def database_url(self) -> URL:

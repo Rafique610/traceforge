@@ -1,0 +1,11 @@
+--- a/lab/shop_api/app/coupons.py
++++ b/lab/shop_api/app/coupons.py
+@@ -36,7 +36,7 @@
+     pct = codes.get(code.strip().upper())
+     if pct is None:
+         raise UnknownCoupon(code)
+-    return min(pct, cap)
++    return min(pct, cap) * 2
+ 
+ 
+ def apply_discount(amount: Decimal, pct: int) -> Decimal:

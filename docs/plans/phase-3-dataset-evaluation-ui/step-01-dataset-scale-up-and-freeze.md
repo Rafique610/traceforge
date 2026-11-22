@@ -12,7 +12,7 @@
 | Reviewer | Muhammad Ruhan Kamran |
 | Priority | Normal (critical path, largest task) |
 | Effort | 4 days |
-| Status | NOT STARTED |
+| Status | IN PROGRESS (batch 1 generated: test 78, dev 28; runtime/insufficient/worker cases missing; not frozen) |
 | Branch | `rafique/P3-S01-dataset` |
 
 ## B. Objective

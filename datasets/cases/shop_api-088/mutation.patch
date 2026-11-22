@@ -1,0 +1,11 @@
+--- a/lab/shop_api/app/quote.py
++++ b/lab/shop_api/app/quote.py
+@@ -23,7 +23,7 @@
+             today or date.today(),
+         )
+     goods = coupons.apply_discount(subtotal, pct)
+-    ship = shipping.shipping_fee(goods, s.shipping_fee, s.free_shipping_over)
++    ship = shipping.shipping_fee(goods + subtotal, s.shipping_fee, s.free_shipping_over)
+     tax = shipping.tax_amount(goods, s.tax_rate)
+     return {
+         "subtotal": subtotal,

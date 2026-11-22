@@ -1,0 +1,11 @@
+--- a/lab/shop_api/app/settings.py
++++ b/lab/shop_api/app/settings.py
+@@ -22,7 +22,7 @@
+     order_queue: str = "orders:confirm"
+     # pricing rules (see app/quote.py)
+     tax_rate: Decimal = Decimal("0.17")
+-    shipping_fee: Decimal = Decimal("4.99")
++    shipping_fee: Decimal = Decimal("0.49")
+     free_shipping_over: Decimal = Decimal("50.00")
+     max_discount_pct: int = 30
+     coupon_codes: str = "WELCOME10=10,BULK20=20,STAFF50=50"

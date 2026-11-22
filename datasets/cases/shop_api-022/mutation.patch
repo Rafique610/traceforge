@@ -1,0 +1,8 @@
+--- a/lab/shop_api/app/shipping.py
++++ b/lab/shop_api/app/shipping.py
+@@ -12,4 +12,4 @@
+ 
+ def tax_amount(amount: Decimal, rate: Decimal) -> Decimal:
+     """Sales tax on goods only (shipping is not taxed)."""
+-    return money(amount * rate)
++    return money(amount / rate)

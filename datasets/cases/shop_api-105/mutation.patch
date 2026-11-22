@@ -1,0 +1,11 @@
+--- a/lab/shop_api/app/settings.py
++++ b/lab/shop_api/app/settings.py
+@@ -21,7 +21,7 @@
+     redis_port: int = 6379
+     order_queue: str = "orders:confirm"
+     # pricing rules (see app/quote.py)
+-    tax_rate: Decimal = Decimal("0.17")
++    tax_rate: Decimal = Decimal("0.017")
+     shipping_fee: Decimal = Decimal("4.99")
+     free_shipping_over: Decimal = Decimal("50.00")
+     max_discount_pct: int = 30

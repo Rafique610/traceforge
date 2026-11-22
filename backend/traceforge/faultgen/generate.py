@@ -3,7 +3,7 @@
 
 Writes, per case: datasets/cases/<id>/{mutation.patch,runtime.yaml,meta.json} (generator side, never
 model-visible), datasets/reproducers/<id>/ (visible), datasets/hidden_tests/<id>/ (hidden), and
-datasets/manifests/dev.json (JSON list of CaseManifest, split "dev").
+datasets/manifests/{dev,test}.json (JSON lists of CaseManifest, split by variant group; see catalogue.py).
 """
 
 import argparse
@@ -14,7 +14,6 @@ from pathlib import Path
 from traceforge.faultgen import lab_tree
 from traceforge.faultgen.model import BuiltCase, CaseDraft, build_case
 from traceforge.faultgen.patching import apply_patch
-from traceforge.faultgen.seeds import seed_drafts
 
 
 def _yaml(data: dict) -> str:
@@ -84,10 +83,16 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--case")
     args = ap.parse_args(argv)
     lab = lab_tree.repo_root() / "lab"
-    builts = [build_case(d, lab, split="dev") for d in seed_drafts(lab)]
+    from traceforge.faultgen.catalogue import all_drafts  # lazy: catalogue -> scenarios -> generate
+
+    builts = [build_case(d, lab, split=split) for d, split in all_drafts(lab)]
     for b in builts:
         write_case(b, args.datasets)
-    write_manifest(builts, args.datasets / "manifests" / "dev.json")
+    for split in ("dev", "test"):
+        write_manifest(
+            [b for b in builts if b.manifest.split == split],
+            args.datasets / "manifests" / f"{split}.json",
+        )
     print(f"base_sha={builts[0].manifest.base_sha}")
     for b in builts:
         m = b.manifest

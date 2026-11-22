@@ -3,11 +3,12 @@ import logging
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from app import orders
+from app import coupons, inventory, orders
 from app.db import get_session
 from app.models import Order
 from app.queue import OrderQueue, get_queue
-from app.schemas import OrderIn, OrderOut, OrderTotalOut
+from app.quote import quote
+from app.schemas import OrderIn, OrderOut, OrderTotalOut, QuoteOut
 
 logger = logging.getLogger("app.orders")
 router = APIRouter(prefix="/orders", tags=["orders"])
@@ -30,6 +31,9 @@ def create_order(
         order = orders.create_order(session, payload)
     except orders.UnknownProduct as exc:
         raise HTTPException(status_code=404, detail=f"product {exc} not found") from exc
+    except inventory.OutOfStock as exc:
+        logger.warning("order rejected: %s", exc)
+        raise HTTPException(status_code=409, detail="not enough stock") from exc
     total = orders.order_total(order.items)
     try:
         queue.enqueue_confirmation(order.id, total)
@@ -57,3 +61,17 @@ def get_order_total(order_id: int, session: Session = Depends(get_session)):
         average_unit_price=orders.order_average_price(order.items),
         headline=orders.order_headline(order.items),
     )
+
+
+@router.get("/{order_id}/quote", response_model=QuoteOut)
+def get_order_quote(
+    order_id: int, coupon: str | None = None, session: Session = Depends(get_session)
+):
+    order = _load(session, order_id)
+    try:
+        q = quote(order.items, coupon)
+    except coupons.UnknownCoupon as exc:
+        raise HTTPException(status_code=404, detail="unknown coupon") from exc
+    except coupons.ExpiredCoupon as exc:
+        raise HTTPException(status_code=410, detail="coupon expired") from exc
+    return QuoteOut(order_id=order.id, **q)

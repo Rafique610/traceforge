@@ -1,0 +1,11 @@
+--- a/lab/shop_api/app/orders.py
++++ b/lab/shop_api/app/orders.py
+@@ -30,7 +30,7 @@
+ 
+ 
+ def unit_count(items: list[OrderItem]) -> int:
+-    return sum(item.quantity for item in items)
++    return sum(1 for item in items if item.quantity)
+ 
+ 
+ def order_average_price(items: list[OrderItem]) -> Decimal:

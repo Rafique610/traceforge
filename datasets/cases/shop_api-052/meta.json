@@ -1,0 +1,15 @@
+{
+  "template": "code.average_divisor",
+  "params": {
+    "site": "average_divisor"
+  },
+  "distance_source": "manual",
+  "base_sha": "5ec94a43f8b9f5728a5d11bb40639588b7495296",
+  "runtime": {},
+  "notes": "distance is a manual estimate (hops from the failing endpoint to the mutated site)",
+  "gold_fix": "reverse of mutation.patch",
+  "allowed_shared": {},
+  "allowed_terms": {
+    "average_unit_price": "public response field (CONTRACT.md) the symptom is read from"
+  }
+}

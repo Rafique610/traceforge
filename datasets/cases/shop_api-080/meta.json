@@ -1,0 +1,14 @@
+{
+  "template": "sites.price",
+  "params": {
+    "site": "discount_cap",
+    "variant": 1
+  },
+  "distance_source": "manual",
+  "base_sha": "5ec94a43f8b9f5728a5d11bb40639588b7495296",
+  "runtime": {},
+  "notes": "distance: manual estimate (hops from endpoint handler to site)",
+  "gold_fix": "reverse of mutation.patch",
+  "allowed_shared": {},
+  "allowed_terms": {}
+}
