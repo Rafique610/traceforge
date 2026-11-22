@@ -5,15 +5,15 @@ Members come from the project docs: **Muhammad Rafique** and **Muhammad Ruhan Ka
 The split follows one rule: **each person owns whole folders**, and the two halves exchange data only through the five shared contracts (P0-S05). That lets both work at the same time with almost no waiting.
 
 ## 0. Progress at a glance
-**Updated before every commit by whoever commits** (rule in `docs/invariants/processes.md`). Last updated: 22 Nov 2026, with the validated and frozen dataset.
+**Updated before every commit by whoever commits** (rule in `docs/invariants/processes.md`). Last updated: 23 Nov 2026, with P1-S03 and P3-S01 approved.
 
 "Done" = approved by the step's owner. "Implemented" = code on `main` that its owner has not yet approved (much of Track A was written by Ruhan's Claude-assisted session; see section 7).
 
 | | Muhammad Rafique (Track A) | Muhammad Ruhan Kamran (Track B) |
 |---|---|---|
-| **Steps done** | 2 / 19 (P0-S02, P0-S05); P0-S06 Part A done | 0 / 20 approved; 5 implemented (P0-S03, P1-S04, P1-S05 partial, P1-S06, P2-S04 core) |
-| **Working on** | Dataset FROZEN: test 151 (60/67/12/12), dev 33, 184/184 validated; awaiting owner approval | Review own steps; P0-S04 proposal; pick the experiment model (ADR 0001) |
-| **Next up** | Dataset to ≥144 test + ≥30 dev and freeze; re-run lab + sandbox live; evidence/graph/retrieval gaps | P1-S07 Sync 1 once more cases exist; P2-S05, P2-S06 |
+| **Steps done** | 4 / 19 (P0-S02, P0-S05, P1-S03, P3-S01); P0-S06 Part A done | 0 / 20 approved; 5 implemented (P0-S03, P1-S04, P1-S05 partial, P1-S06, P2-S04 core) |
+| **Working on** | Dataset frozen and approved: test 151 (60/67/12/12), dev 33, 184/184 validated | Review own steps; P0-S04 proposal; pick the experiment model (ADR 0001) |
+| **Next up** | Review P1-S01/S02, P2-S01…S03; real E1 retrieval run on the dev split; P3-S02 metrics on real runs | P1-S07 Sync 1 once more cases exist; P2-S05, P2-S06 |
 | **Waiting on the other** | Ruhan: model decision for experiments | — (frozen dataset now on `main`: unblocks P1-S07, P3-S04, P4-S01, P5-S03/S04) |
 
 | Phase | Rafique | Status | Ruhan | Status |
@@ -24,13 +24,13 @@ The split follows one rule: **each person owns whole folders**, and the two halv
 | 0 | P0-S06 Part A retrieval spike | DONE | P0-S06 Part B model probe | IMPLEMENTED, PARTLY RUN (no Devstral run) |
 | 1 | P1-S01 Lab fixtures | IMPLEMENTED; extended by Rafique (stock, coupons, shipping, quote) | P1-S04 Incidents API | IMPLEMENTED, NEEDS REVIEW |
 | 1 | P1-S02 Sandbox | IMPLEMENTED; self-test passes on Rafique's laptop | P1-S05 Model gateway | IMPLEMENTED, PARTLY VERIFIED |
-| 1 | P1-S03 Seed cases | NEEDS REVIEW: 184 cases validated | P1-S06 Pipeline agent | IMPLEMENTED (fake gateway tests) |
+| 1 | P1-S03 Seed cases | COMPLETED: 184 cases validated | P1-S06 Pipeline agent | IMPLEMENTED (fake gateway tests) |
 | 1 | — | — | P1-S07 Sync 1 | NOT STARTED (needs cases) |
 | 2 | P2-S01 Evidence collector | IMPLEMENTED; 66 tests pass with pinned proxy | P2-S04 Repair loop | CORE IMPLEMENTED |
 | 2 | P2-S02 Code graph | IMPLEMENTED, not reviewed | P2-S05 Report + review | NOT STARTED |
 | 2 | P2-S03 Retrieval L/G | IMPLEMENTED; E1 not meaningful yet | P2-S06 GitHub intake | NOT STARTED |
 | 2 | P2-S07 Sync 2 | NOT STARTED | — | — |
-| 3 | P3-S01 Dataset freeze | NEEDS REVIEW: test split frozen (sha256 881f2887…) | P3-S03 Reviewer UI | NOT STARTED |
+| 3 | P3-S01 Dataset freeze | COMPLETED: test split frozen (sha256 881f2887…) | P3-S03 Reviewer UI | NOT STARTED |
 | 3 | P3-S02 Metrics + baseline | IMPLEMENTED; needs real runs | P3-S04 Runner + results page | NOT STARTED |
 | 4 | 0 / 1 done | NOT STARTED | 0 / 2 done | NOT STARTED |
 | 5 | 0 / 3 done | NOT STARTED | 0 / 2 done | NOT STARTED |
@@ -79,12 +79,12 @@ Shared (PR approved by both): `backend/traceforge/contracts/`, `main.py`, `confi
 - [ ] [P0-S06](phase-0-foundation/step-06-feasibility-prototype.md) Feasibility prototype, Part A: retrieval spike
 - [ ] [P1-S01](phase-1-core-components/step-01-lab-fixtures.md) Lab fixtures (TRAC-5)
 - [ ] [P1-S02](phase-1-core-components/step-02-sandbox-test-runner.md) Sandbox test runner (TRAC-6)
-- [ ] [P1-S03](phase-1-core-components/step-03-fault-generator-and-seed-cases.md) Fault generator + 4 seed cases (TRAC-7)
+- [x] [P1-S03](phase-1-core-components/step-03-fault-generator-and-seed-cases.md) Fault generator + 4 seed cases (TRAC-7)
 - [ ] [P2-S01](phase-2-evidence-to-repair/step-01-evidence-collector.md) Evidence collector (TRAC-12)
 - [ ] [P2-S02](phase-2-evidence-to-repair/step-02-code-graph.md) Code graph (TRAC-13)
 - [ ] [P2-S03](phase-2-evidence-to-repair/step-03-retrieval-l-and-g.md) Retrieval L and G + E1 (TRAC-14)
 - [ ] [P2-S07](phase-2-evidence-to-repair/step-07-sync-2-full-pipeline.md) Sync 2, primary owner (TRAC-18)
-- [ ] [P3-S01](phase-3-dataset-evaluation-ui/step-01-dataset-scale-up-and-freeze.md) Dataset scale-up and freeze (TRAC-19)
+- [x] [P3-S01](phase-3-dataset-evaluation-ui/step-01-dataset-scale-up-and-freeze.md) Dataset scale-up and freeze (TRAC-19)
 - [ ] [P3-S02](phase-3-dataset-evaluation-ui/step-02-evaluation-metrics-and-baseline.md) Metrics + rule baseline (TRAC-20)
 - [ ] [P4-S02](phase-4-a3-delivery/step-02-failure-analysis-and-results.md) Failure analysis and results (TRAC-23)
 - [ ] [P5-S01](phase-5-research-completion/step-01-deeper-graph.md) Deeper graph (TRAC-24)

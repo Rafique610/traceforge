@@ -12,7 +12,7 @@
 | Reviewer | Muhammad Ruhan Kamran |
 | Priority | Normal (critical path) |
 | Effort | 3 days |
-| Status | NEEDS REVIEW (generator, validator and 184 validated cases done; see `docs/research/dataset-catalogue.md`) |
+| Status | COMPLETED (approved 23 Nov 2026; 184 validated cases, see `docs/research/dataset-catalogue.md`) |
 | Branch | `rafique/P1-S03-fault-generator` |
 
 ## B. Objective

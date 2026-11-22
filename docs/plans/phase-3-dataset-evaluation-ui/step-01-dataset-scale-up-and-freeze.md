@@ -12,7 +12,7 @@
 | Reviewer | Muhammad Ruhan Kamran |
 | Priority | Normal (critical path, largest task) |
 | Effort | 4 days |
-| Status | NEEDS REVIEW (test split frozen 22 Nov: 151 cases, sha256 881f2887…; D28 and peer check not done) |
+| Status | COMPLETED (approved 23 Nov 2026; test split frozen 22 Nov: 151 cases, sha256 881f2887…; D28 and peer check not done, recorded as threats to validity) |
 | Branch | `rafique/P3-S01-dataset` |
 
 ## B. Objective
