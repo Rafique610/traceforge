@@ -5,13 +5,15 @@ import os
 from collections import Counter
 from pathlib import Path
 
+from traceforge.config import Settings
 from traceforge.contracts.agent_run import AgentRunRecord
 
 RUN_ID_RE = r"^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$"
 
 
 def runs_dir() -> Path:
-    return Path(os.environ.get("TRACEFORGE_RUNS_DIR", "runs"))
+    """Read fresh (not the cached settings) so a changed TRACEFORGE_RUNS_DIR applies at once."""
+    return Settings().runs_dir
 
 
 def record_path(run_dir: Path, case_id: str, replicate: int) -> Path:

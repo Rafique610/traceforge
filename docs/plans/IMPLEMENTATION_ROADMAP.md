@@ -9,7 +9,7 @@ From the current state (repo + docs + board, no code) to the final Assignment 4 
 | P0-S02 | Backend scaffold | TRAC-1 | Rafique | Ruhan | P0-S01 | 1 | COMPLETED |
 | P0-S03 | Frontend scaffold | TRAC-2 | Ruhan | Rafique | P0-S01 | 1 | NOT STARTED |
 | P0-S04 | Proposal update and supervisor approval | TRAC-3 | Ruhan | Rafique | — | 1 | NOT STARTED |
-| P0-S05 | Shared contracts + samples | TRAC-4 | Rafique (+Ruhan) | Both | P0-S02 | 1 | NEEDS REVIEW |
+| P0-S05 | Shared contracts + samples | TRAC-4 | Rafique (+Ruhan) | Both | P0-S02 | 1 | COMPLETED |
 | P0-S06 | Feasibility prototype (retrieval spike + model probe) | — | Rafique (A) + Ruhan (B) | optional | P0-S02 | 2 + 2 | IN PROGRESS (A done) |
 | P1-S01 | Lab fixtures | TRAC-5 | Rafique | Ruhan | P0-S02 | 2.5 | NOT STARTED |
 | P1-S02 | Sandbox test runner | TRAC-6 | Rafique | Ruhan | P0-S05 | 2 | NOT STARTED |

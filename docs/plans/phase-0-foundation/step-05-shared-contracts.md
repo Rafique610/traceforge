@@ -12,7 +12,7 @@
 | Reviewer | Both approve |
 | Priority | High |
 | Effort | 1 day (pair) |
-| Status | NEEDS REVIEW (fields drafted by Rafique; Ruhan to confirm) |
+| Status | COMPLETED (Ruhan's additive change approved by Rafique 22 Nov 2026, D35) |
 | Branch | `rafique/P0-S02-S05-backend-and-contracts` (batched with P0-S02) |
 
 ## B. Objective
@@ -42,7 +42,7 @@ Fix the five data shapes the two tracks exchange, with realistic samples, so tha
 10. README: "Changing a contract" rule (own PR, both approve, additive within a phase).
 
 ## F. Checklist
-- [ ] Ruhan confirms the field list (pair session or a read of the samples)
+- [x] Ruhan confirmed the field list (additive change B9/B13, approved 22 Nov)
 - [x] Five contract modules created
 - [x] Validators (repairable needs target; tokens within budget; abstain/outcome consistency)
 - [x] Repo-relative POSIX paths documented in docstrings (and Windows paths rejected)
@@ -50,7 +50,7 @@ Fix the five data shapes the two tracks exchange, with realistic samples, so tha
 - [x] Sample round-trip test
 - [x] JSON Schema export task
 - [x] README rule
-- [ ] Ruhan confirms he can start Phase 1 from the samples
+- [x] Ruhan built Phase 1–3 consumers against the contracts
 
 ## G. Expected deliverables
 New: `backend/traceforge/contracts/*.py`, `contracts/samples/*.json`, `contracts/schema/*.json`, `backend/tests/test_contract_samples.py`. Modified: `Taskfile.yml`, `README.md`.

@@ -1,16 +1,16 @@
 """Read-only GET /evaluation/report?run_ids=a&run_ids=b (orchestrator registers `router`).
 
-The manifest is server-side config (env TRACEFORGE_MANIFEST); clients never supply paths.
-TODO(config): move the env read into Settings when the orchestrator adds a manifest setting.
+The manifest is server-side config (`Settings.manifest`, env TRACEFORGE_MANIFEST); clients never
+supply paths.
 """
 
-import os
 from pathlib import Path
 from typing import Annotated
 
 from fastapi import APIRouter, HTTPException, Query
 from pydantic import StringConstraints, ValidationError
 
+from traceforge.config import Settings
 from traceforge.evaluation import store
 from traceforge.evaluation.analysis.report import DatasetMismatch, load_runs, report
 from traceforge.evaluation.runner import load_manifest
@@ -25,7 +25,7 @@ def get_report(
         Query(min_length=1, max_length=20),
     ],
 ) -> dict:
-    manifest = os.environ.get("TRACEFORGE_MANIFEST")
+    manifest = Settings().manifest  # fresh read, like store.runs_dir()
     if not manifest:
         raise HTTPException(503, "TRACEFORGE_MANIFEST is not configured")
     try:

@@ -54,6 +54,12 @@ class Settings(BaseSettings):
     llm_max_rps: float = 1.0
     llm_max_prompt_chars: int = 400_000
     manifest: str | None = None  # dataset manifest for GET /evaluation/report
+    runs_dir: Path = Path("runs")  # saved experiment runs (TRACEFORGE_RUNS_DIR)
+    # Scratch space for live end-to-end evidence runs; git-ignored under .cache by default.
+    e2e_scratch_dir: Path = Field(
+        default=Path(__file__).resolve().parents[2] / ".cache" / "e2e",
+        validation_alias=AliasChoices("TRACEFORGE_E2E_SCRATCH_DIR", "TF_E2E_SCRATCH"),
+    )
     showcase_mode: bool = False  # read-only public showcase: non-GET requests get 403
     agent_context_budget_chars: int = 12000  # D20 placeholder until the P0-S06 measured limit
     # model id -> (USD per 1M input tokens, USD per 1M output tokens), list-price equivalent

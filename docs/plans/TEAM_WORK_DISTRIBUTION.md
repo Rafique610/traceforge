@@ -5,29 +5,38 @@ Members come from the project docs: **Muhammad Rafique** and **Muhammad Ruhan Ka
 The split follows one rule: **each person owns whole folders**, and the two halves exchange data only through the five shared contracts (P0-S05). That lets both work at the same time with almost no waiting.
 
 ## 0. Progress at a glance
-**Updated before every commit by whoever commits** (rule in `docs/invariants/processes.md`). Last updated: 22 Nov 2026, with the commit that adds Ruhan's Track B work and the Track A prerequisites he needed (see section 7).
+**Updated before every commit by whoever commits** (rule in `docs/invariants/processes.md`). Last updated: 22 Nov 2026, with Rafique's review fixes (Settings paths, proxy pin, contract approval).
+
+"Done" = approved by the step's owner. "Implemented" = code on `main` that its owner has not yet approved (much of Track A was written by Ruhan's Claude-assisted session; see section 7).
 
 | | Muhammad Rafique (Track A) | Muhammad Ruhan Kamran (Track B) |
 |---|---|---|
-| **Steps done** | 1 / 19 | 0 / 20 |
-| **Working on** | P0-S06 Part A done and on `main`; Ruhan to pull and check | Steps 1-6 below are implemented and awaiting Ruhan's approval; Phase 3-6 experiments wait on the frozen dataset and a usable model |
-| **Next up** | Review the lab, sandbox, seed cases, evidence collector, code graph, retrieval and metrics that Ruhan's session implemented for him (section 7); P3-S01 dataset freeze | Review P0-S03, P1-S04, P2-S06 (`docs/review/REVIEW_PACKAGE.md`); P0-S04 proposal + supervisor reply; pick the experiment model |
-| **Waiting on the other** | Ruhan: approval/review of the Track A prerequisites implemented in his session | Rafique: review of the `AgentRunRecord` additive change (B9, B13) and of the Track A components |
+| **Steps done** | 2 / 19 (P0-S02, P0-S05); P0-S06 Part A done | 0 / 20 approved; 5 implemented (P0-S03, P1-S04, P1-S05 partial, P1-S06, P2-S04 core) |
+| **Working on** | Reviewed Ruhan's push; next: grow and freeze the dataset (P1-S03 → P3-S01) | Review own steps; P0-S04 proposal; pick the experiment model (ADR 0001) |
+| **Next up** | Dataset to ≥144 test + ≥30 dev and freeze; re-run lab + sandbox live; evidence/graph/retrieval gaps | P1-S07 Sync 1 once more cases exist; P2-S05, P2-S06 |
+| **Waiting on the other** | Ruhan: model decision for experiments; 10-label peer check after dataset | Rafique: frozen dataset (blocks P1-S07, P3-S04, P4-S01, P5-S03/S04) |
 
 | Phase | Rafique | Status | Ruhan | Status |
 |---|---|---|---|---|
-| 0 | P0-S01 Repo setup | IN PROGRESS (Ruhan's clone left) | P0-S03 Frontend scaffold | IMPLEMENTED, AWAITING REVIEW |
-| 0 | P0-S02 Backend scaffold | COMPLETED | P0-S04 Proposal update | DRAFTED; BLOCKED (PDF, supervisor reply) |
-| 0 | P0-S05 Contracts (primary) | NEEDS REVIEW (Ruhan to confirm) | P0-S05 Contracts (confirm fields) | ADDITIVE CHANGE PROPOSED (B9, B13) |
-| 0 | P0-S06 Part A retrieval spike | DONE (on `main`, Ruhan to check) | P0-S06 Part B model probe | IMPLEMENTED, PARTLY RUN (local + Nemotron only) |
-| 1 | 0 / 3 done | NOT STARTED | 0 / 4 done | NOT STARTED |
-| 2 | 0 / 4 done | NOT STARTED | 0 / 3 done | NOT STARTED |
-| 3 | 0 / 2 done | NOT STARTED | 0 / 2 done | NOT STARTED |
+| 0 | P0-S01 Repo setup | IN PROGRESS (Ruhan's clone left) | P0-S03 Frontend scaffold | IMPLEMENTED, NEEDS REVIEW |
+| 0 | P0-S02 Backend scaffold | COMPLETED | P0-S04 Proposal update | DRAFTED; blocked on PDF + supervisor |
+| 0 | P0-S05 Contracts | COMPLETED (change approved, D35) | P0-S05 Contracts (confirm) | COMPLETED |
+| 0 | P0-S06 Part A retrieval spike | DONE | P0-S06 Part B model probe | IMPLEMENTED, PARTLY RUN (no Devstral run) |
+| 1 | P1-S01 Lab fixtures | IMPLEMENTED (Ruhan's session), not reviewed live | P1-S04 Incidents API | IMPLEMENTED, NEEDS REVIEW |
+| 1 | P1-S02 Sandbox | IMPLEMENTED; self-test passes on Rafique's laptop | P1-S05 Model gateway | IMPLEMENTED, PARTLY VERIFIED |
+| 1 | P1-S03 Seed cases | PARTIAL: 4 dev cases | P1-S06 Pipeline agent | IMPLEMENTED (fake gateway tests) |
+| 1 | — | — | P1-S07 Sync 1 | NOT STARTED (needs cases) |
+| 2 | P2-S01 Evidence collector | IMPLEMENTED; 66 tests pass with pinned proxy | P2-S04 Repair loop | CORE IMPLEMENTED |
+| 2 | P2-S02 Code graph | IMPLEMENTED, not reviewed | P2-S05 Report + review | NOT STARTED |
+| 2 | P2-S03 Retrieval L/G | IMPLEMENTED; E1 not meaningful yet | P2-S06 GitHub intake | NOT STARTED |
+| 2 | P2-S07 Sync 2 | NOT STARTED | — | — |
+| 3 | P3-S01 Dataset freeze | NOT STARTED (critical path) | P3-S03 Reviewer UI | NOT STARTED |
+| 3 | P3-S02 Metrics + baseline | IMPLEMENTED; needs real runs | P3-S04 Runner + results page | NOT STARTED |
 | 4 | 0 / 1 done | NOT STARTED | 0 / 2 done | NOT STARTED |
 | 5 | 0 / 3 done | NOT STARTED | 0 / 2 done | NOT STARTED |
 | 6 | 0 / 2 done | NOT STARTED | 0 / 3 done | NOT STARTED |
 
-When a phase starts, replace its count row with one row per step, as Phase 0 shows.
+When a phase starts, replace its count row with one row per step, as Phases 0–3 show.
 
 ## 1. Team overview
 | Member | Primary role | Assigned modules | Main responsibilities |
@@ -66,7 +75,7 @@ Shared (PR approved by both): `backend/traceforge/contracts/`, `main.py`, `confi
 ### Muhammad Rafique
 - [ ] [P0-S01](phase-0-foundation/step-01-repository-and-collaboration-setup.md) Repository and collaboration setup
 - [x] [P0-S02](phase-0-foundation/step-02-backend-scaffold.md) Backend scaffold (TRAC-1)
-- [ ] [P0-S05](phase-0-foundation/step-05-shared-contracts.md) Shared contracts, primary owner (TRAC-4)
+- [x] [P0-S05](phase-0-foundation/step-05-shared-contracts.md) Shared contracts, primary owner (TRAC-4)
 - [ ] [P0-S06](phase-0-foundation/step-06-feasibility-prototype.md) Feasibility prototype, Part A: retrieval spike
 - [ ] [P1-S01](phase-1-core-components/step-01-lab-fixtures.md) Lab fixtures (TRAC-5)
 - [ ] [P1-S02](phase-1-core-components/step-02-sandbox-test-runner.md) Sandbox test runner (TRAC-6)

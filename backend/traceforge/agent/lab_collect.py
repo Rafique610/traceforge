@@ -17,7 +17,6 @@ disposable copy only that variable is removed from the compose file (documented 
 
 import argparse
 import json
-import os
 import re
 import socket
 import subprocess
@@ -27,6 +26,7 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
+from traceforge.config import Settings
 from traceforge.contracts.case_manifest import CaseManifest
 from traceforge.contracts.evidence import EvidenceBundle
 from traceforge.evidence import EvidenceCollector
@@ -34,7 +34,9 @@ from traceforge.evidence.model import EvidenceConfig
 
 REPO = Path(__file__).resolve().parents[3]
 PROXY_FILE = REPO / "backend/traceforge/evidence/docker-proxy.compose.yaml"
-SCRATCH = Path(os.environ.get("TF_E2E_SCRATCH", "D:/AI/tmp/e2e"))
+SCRATCH = (
+    Settings().e2e_scratch_dir
+)  # default <repo>/.cache/e2e; override TRACEFORGE_E2E_SCRATCH_DIR
 
 
 def sh(args: list[str], timeout: int = 600, check: bool = True) -> subprocess.CompletedProcess:
