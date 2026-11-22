@@ -68,7 +68,8 @@
         "L0",
         "G0",
         "L1",
-        "G1"
+        "G1",
+        "RULES"
       ],
       "title": "Condition",
       "type": "string"
