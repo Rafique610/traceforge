@@ -8,7 +8,7 @@ AI-4009 Generative AI semester project (FAST-NUCES), R&D Product track.
 
 ## Status
 
-Phase 0-2 work on Track B (agent side) is in progress: health, contracts, incidents API, model gateway, pipeline agent and repair-loop core exist with tests; the lab, sandbox, evidence collector and retrieval (Track A) are not in this tree yet. Live status: [`docs/plans/RUHAN_CHECKLIST.md`](docs/plans/RUHAN_CHECKLIST.md). Explanation for newcomers: [`docs/guide/TraceForge-Explained.md`](docs/guide/TraceForge-Explained.md). The plan is in [`docs/plans/README.md`](docs/plans/README.md).
+The pipeline runs end to end on the lab cases: incidents API with an audited state machine, model gateway, pipeline agent, repair loop with sandbox verification, evidence report with hash-bound review, GitHub intake and the reviewer UI, on top of the victim lab, Docker sandbox, fault generator (4 validated development cases), evidence collector, code graph, retrieval and metrics. Still open: the frozen evaluation dataset and the full 2x2 experiments. Progress and ownership: [`docs/plans/TEAM_WORK_DISTRIBUTION.md`](docs/plans/TEAM_WORK_DISTRIBUTION.md). Explanation for newcomers: [`docs/guide/TraceForge-Explained.md`](docs/guide/TraceForge-Explained.md). The plan is in [`docs/plans/README.md`](docs/plans/README.md).
 
 ## Setup (Windows, PowerShell)
 
@@ -58,10 +58,6 @@ The header badge shows "API ok", "API degraded" (database down) or "API unreacha
 ## Incidents API
 
 `/docs` lists `POST /incidents`, `GET /incidents`, `GET /incidents/{id}`, `/events` and `/evidence`. Incident states are guarded; an illegal move returns 409. Apply the migration with `task db:migrate` (needs Postgres: `task db:up`).
-
-## Working with Claude Code
-
-Session entry point: [`PROMPT.md`](PROMPT.md); orchestration files in [`docs/orchestration/`](docs/orchestration/); my checklist: [`docs/plans/RUHAN_CHECKLIST.md`](docs/plans/RUHAN_CHECKLIST.md).
 
 ## Layout
 
