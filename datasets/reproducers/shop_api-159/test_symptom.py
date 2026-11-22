@@ -8,4 +8,4 @@ def test_price_1(client, session):
 
 
 def test_price_2(client, session):
-    assert observe_price(client, session, [("12.00", 1), ("52.40", 3)], "staff50") == [200, '138.57']
+    assert observe_price(client, session, []) == [200, '4.99']

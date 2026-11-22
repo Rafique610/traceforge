@@ -5,7 +5,7 @@
          with_backoff(
              lambda: handler(job),
 -            retries=settings.max_retries,
-+            retries=0,
++            retries=settings.max_retries - 1,
              base=settings.backoff_base_s,
              sleep=sleep,
          )

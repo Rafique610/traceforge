@@ -3,8 +3,8 @@
   "params": {
     "group": "lab_db:health",
     "ports": [
-      6394,
-      5494
+      6393,
+      5493
     ]
   },
   "distance_source": "manual",

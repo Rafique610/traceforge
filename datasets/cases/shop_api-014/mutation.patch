@@ -1,11 +1,11 @@
---- a/lab/worker/retry.py
-+++ b/lab/worker/retry.py
-@@ -14,7 +14,7 @@
+--- a/lab/shop_api/app/inventory.py
++++ b/lab/shop_api/app/inventory.py
+@@ -20,7 +20,7 @@
+     """Take units off the shelf. Raises OutOfStock and leaves stock untouched if short."""
+     if not can_fulfil(product, quantity):
+         raise OutOfStock(product.id, quantity, product.stock)
+-    product.stock -= quantity
++    product.stock = quantity
  
-     Total calls = retries + 1. The last exception propagates.
-     """
--    for attempt in range(retries + 1):
-+    for attempt in range(retries):
-         try:
-             return fn()
-         except Exception as exc:
+ 
+ def low_stock(products: list[Product], level: int) -> list[Product]:

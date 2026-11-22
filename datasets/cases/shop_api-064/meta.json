@@ -1,9 +1,9 @@
 {
-  "template": "sites.job",
+  "template": "sites.price",
   "params": {
-    "field": "order_queue",
-    "bad_value": "orders-confirm",
-    "service": "worker"
+    "field": "free_shipping_over",
+    "bad_value": "0.00",
+    "service": "shop_api"
   },
   "distance_source": "manual",
   "base_sha": "5ec94a43f8b9f5728a5d11bb40639588b7495296",

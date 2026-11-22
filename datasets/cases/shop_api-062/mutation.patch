@@ -1,9 +1,11 @@
---- a/lab/shop_api/app/quote.py
-+++ b/lab/shop_api/app/quote.py
-@@ -31,5 +31,5 @@
-         "goods": goods,
-         "shipping": ship,
-         "tax": tax,
--        "grand_total": money(goods + ship + tax),
-+        "grand_total": money(goods + tax),
-     }
+--- a/lab/worker/retry.py
++++ b/lab/worker/retry.py
+@@ -18,7 +18,7 @@
+         try:
+             return fn()
+         except Exception as exc:
+-            if attempt == retries:
++            if attempt == retries - 1:
+                 raise
+             delay = base * 2**attempt
+             log.info(

@@ -1,0 +1,11 @@
+--- a/lab/worker/queue.py
++++ b/lab/worker/queue.py
+@@ -78,7 +78,7 @@
+ 
+ 
+ def dead_letter(client, settings: WorkerSettings, job: dict, error: str) -> None:
+-    client.lpush(settings.dead_queue, json.dumps({**job, "error": error}))
++    return None
+ 
+ 
+ def consume_once(

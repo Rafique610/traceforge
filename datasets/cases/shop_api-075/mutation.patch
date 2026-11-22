@@ -1,11 +1,11 @@
---- a/lab/shop_api/app/shipping.py
-+++ b/lab/shop_api/app/shipping.py
-@@ -7,7 +7,7 @@
+--- a/lab/shop_api/app/pricing.py
++++ b/lab/shop_api/app/pricing.py
+@@ -8,7 +8,7 @@
  
- def shipping_fee(amount: Decimal, fee: Decimal, free_over: Decimal) -> Decimal:
-     """Flat fee, waived when the (discounted) amount reaches the free-shipping threshold."""
--    return ZERO if amount >= free_over else money(fee)
-+    return ZERO if amount >= free_over * 2 else money(fee)
+ def money(value: Decimal) -> Decimal:
+     """Round to 2 dp, half up."""
+-    return value.quantize(CENT, rounding=ROUND_HALF_UP)
++    return value.quantize(Decimal("0.1"), rounding=ROUND_HALF_UP)
  
  
- def tax_amount(amount: Decimal, rate: Decimal) -> Decimal:
+ def line_total(unit_price: Decimal, quantity: int) -> Decimal:

@@ -1,4 +1,4 @@
-"""Order totals and counts as shown on the order summary."""
+"""Acceptance checks. Order totals and counts as shown on the order summary."""
 
 from conftest import observe_total
 

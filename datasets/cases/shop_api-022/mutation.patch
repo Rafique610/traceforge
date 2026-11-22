@@ -1,11 +1,11 @@
---- a/lab/shop_api/app/quote.py
-+++ b/lab/shop_api/app/quote.py
-@@ -23,7 +23,7 @@
-             today or date.today(),
-         )
-     goods = coupons.apply_discount(subtotal, pct)
--    ship = shipping.shipping_fee(goods, s.shipping_fee, s.free_shipping_over)
-+    ship = shipping.shipping_fee(goods + subtotal, s.shipping_fee, s.free_shipping_over)
-     tax = shipping.tax_amount(goods, s.tax_rate)
-     return {
-         "subtotal": subtotal,
+--- a/lab/shop_api/app/coupons.py
++++ b/lab/shop_api/app/coupons.py
+@@ -36,7 +36,7 @@
+     pct = codes.get(code.strip().upper())
+     if pct is None:
+         raise UnknownCoupon(code)
+-    return min(pct, cap)
++    return min(pct, cap - 10)
+ 
+ 
+ def apply_discount(amount: Decimal, pct: int) -> Decimal:

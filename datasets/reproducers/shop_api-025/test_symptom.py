@@ -1,7 +1,7 @@
-"""Reproducer: some orders are refused with 503 and the same order succeeds when retried."""
+"""Shelf stock: orders take units off the shelf; low shelves are reported."""
+
+from conftest import observe_stock
 
 
-def test_retry_of_a_refused_order_succeeds(flaky_client, products):
-    body = {"customer_email": "bo@example.net", "items": [{"product_id": products[0].id, "quantity": 1}]}
-    codes = [flaky_client.post("/orders", json=body).status_code for _ in range(4)]
-    assert 503 in codes and codes[-1] == 201
+def test_stock_1(client, session):
+    assert observe_stock(client, session, 3, 3) == [201, 0, True]

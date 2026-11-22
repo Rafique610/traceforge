@@ -1,11 +1,11 @@
---- a/lab/shop_api/app/settings.py
-+++ b/lab/shop_api/app/settings.py
-@@ -24,7 +24,7 @@
-     tax_rate: Decimal = Decimal("0.17")
-     shipping_fee: Decimal = Decimal("4.99")
-     free_shipping_over: Decimal = Decimal("50.00")
--    max_discount_pct: int = 30
-+    max_discount_pct: int = 100
-     coupon_codes: str = "WELCOME10=10,BULK20=20,STAFF50=50"
-     coupons_valid_until: str = "2099-12-31"
-     low_stock_level: int = 3
+--- a/lab/shop_api/app/coupons.py
++++ b/lab/shop_api/app/coupons.py
+@@ -36,7 +36,7 @@
+     pct = codes.get(code.strip().upper())
+     if pct is None:
+         raise UnknownCoupon(code)
+-    return min(pct, cap)
++    return max(pct, cap)
+ 
+ 
+ def apply_discount(amount: Decimal, pct: int) -> Decimal:

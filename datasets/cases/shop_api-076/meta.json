@@ -1,13 +1,13 @@
 {
-  "template": "sites.total",
+  "template": "config.settings_default",
   "params": {
-    "site": "rounding_mode",
-    "variant": 3
+    "field": "redis_port",
+    "bad_value": "63790"
   },
   "distance_source": "manual",
   "base_sha": "5ec94a43f8b9f5728a5d11bb40639588b7495296",
   "runtime": {},
-  "notes": "distance: manual estimate (hops from the failing entry point to the site)",
+  "notes": "distance is a manual estimate: connection fails in app/queue.py, value comes from app/settings.py; the lab's own default-value test also fails for redis_port",
   "gold_fix": "reverse of mutation.patch",
   "allowed_shared": {},
   "allowed_terms": {}

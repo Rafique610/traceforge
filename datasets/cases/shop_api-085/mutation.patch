@@ -1,8 +1,11 @@
---- a/lab/shop_api/app/inventory.py
-+++ b/lab/shop_api/app/inventory.py
-@@ -25,4 +25,4 @@
- 
- def low_stock(products: list[Product], level: int) -> list[Product]:
-     """Products at or below the reorder level, fewest units first."""
--    return sorted((p for p in products if p.stock <= level), key=lambda p: (p.stock, p.id))
-+    return sorted((p for p in products if p.stock >= level), key=lambda p: (p.stock, p.id))
+--- a/lab/shop_api/app/quote.py
++++ b/lab/shop_api/app/quote.py
+@@ -24,7 +24,7 @@
+         )
+     goods = coupons.apply_discount(subtotal, pct)
+     ship = shipping.shipping_fee(goods, s.shipping_fee, s.free_shipping_over)
+-    tax = shipping.tax_amount(goods, s.tax_rate)
++    tax = shipping.tax_amount(ship, s.tax_rate)
+     return {
+         "subtotal": subtotal,
+         "discount_pct": pct,

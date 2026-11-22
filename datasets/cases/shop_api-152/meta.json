@@ -1,14 +1,20 @@
 {
-  "template": "sites.job",
+  "template": "outages.runtime",
   "params": {
-    "field": "backoff_base_s",
-    "bad_value": "0.1",
-    "service": "worker"
+    "group": "lab_db:catalogue",
+    "ports": [
+      6393,
+      5493
+    ]
   },
   "distance_source": "manual",
   "base_sha": "5ec94a43f8b9f5728a5d11bb40639588b7495296",
-  "runtime": {},
-  "notes": "distance 1 (manual): the failing code reads the field; the wrong value is its default",
+  "runtime": {
+    "stop": [
+      "lab_db"
+    ]
+  },
+  "notes": "diagnose only: no code or config change exists; reproducer passes on original and 'broken'",
   "gold_fix": "reverse of mutation.patch",
   "allowed_shared": {},
   "allowed_terms": {}

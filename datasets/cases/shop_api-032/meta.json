@@ -1,8 +1,8 @@
 {
-  "template": "sites.price",
+  "template": "sites.stock",
   "params": {
-    "field": "free_shipping_over",
-    "bad_value": "500.00",
+    "field": "low_stock_level",
+    "bad_value": "1",
     "service": "shop_api"
   },
   "distance_source": "manual",

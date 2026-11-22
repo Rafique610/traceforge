@@ -1,11 +1,11 @@
-"""Shelf stock: orders take units off the shelf; low shelves are reported."""
+"""Order confirmation jobs: retries, backoff and dead letters."""
 
-from conftest import observe_stock
-
-
-def test_stock_1(client, session):
-    assert observe_stock(client, session, 4, 2) == [201, 2, True]
+from conftest import observe_job
 
 
-def test_stock_2(client, session):
-    assert observe_stock(client, session, 4, 1) == [201, 3, True]
+def test_job_1():
+    assert observe_job(11, 0) == [True, 1, [], 0, 0]
+
+
+def test_job_2():
+    assert observe_job(12, 1) == [True, 2, [1.0], 0, 0]

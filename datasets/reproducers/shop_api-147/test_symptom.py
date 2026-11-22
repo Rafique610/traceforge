@@ -1,11 +1,7 @@
-"""Order totals and counts as shown on the order summary."""
+"""Order confirmation jobs: retries, backoff and dead letters."""
 
-from conftest import observe_total
-
-
-def test_total_1(client, session):
-    assert observe_total(client, session, [("12.00", 4), ("18.75", 3)]) == [200, '104.25', 7, '14.89', 'Item 1']
+from conftest import observe_job
 
 
-def test_total_2(client, session):
-    assert observe_total(client, session, [("24.10", 4), ("33.33", 2), ("3.20", 3)]) == [200, '172.66', 9, '19.18', 'Item 1']
+def test_job_1():
+    assert observe_job(14, 4) == [True, 4, [1.0, 2.0, 4.0], 1, 0]

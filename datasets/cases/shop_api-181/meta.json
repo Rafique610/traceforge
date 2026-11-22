@@ -2,7 +2,7 @@
   "template": "sites.job",
   "params": {
     "field": "order_queue",
-    "bad_value": "confirm",
+    "bad_value": "orders:confirm:v2",
     "service": "worker"
   },
   "distance_source": "manual",

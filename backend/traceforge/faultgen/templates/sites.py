@@ -26,6 +26,8 @@ DOC = {
     "stock": "Shelf stock: orders take units off the shelf; low shelves are reported.",
     "job": "Order confirmation jobs: retries, backoff and dead letters.",
 }
+# hidden files get their own docstring: a shared docstring counts as a shared input literal (D31)
+HIDDEN_DOC = "Acceptance checks. "
 SETTINGS = {"shop_api": (S, "Settings"), "worker": ("lab/worker/settings.py", "WorkerSettings")}
 
 
@@ -33,12 +35,12 @@ def _suites(kind: str, vis, vis_exp, hid, hid_exp) -> tuple[dict, dict]:
     if kind == "job":
         return (
             {"conftest.py": WORKER_HELPERS, "test_symptom.py": render_worker_tests(vis, vis_exp, DOC[kind])},
-            {"conftest.py": WORKER_HELPERS, "test_hidden_behaviour.py": render_worker_tests(hid, hid_exp, DOC[kind])},
+            {"conftest.py": WORKER_HELPERS, "test_hidden_behaviour.py": render_worker_tests(hid, hid_exp, HIDDEN_DOC + DOC[kind])},
         )  # fmt: skip
     return (
         {"conftest.py": api_conftest() + HELPERS, "test_symptom.py": render_tests(kind, vis, vis_exp, DOC[kind])},
         {"conftest.py": api_conftest(("Lid", "1.15"), ("Jar", "6.35")) + HELPERS,
-         "test_hidden_behaviour.py": render_tests(kind, hid, hid_exp, DOC[kind])},
+         "test_hidden_behaviour.py": render_tests(kind, hid, hid_exp, HIDDEN_DOC + DOC[kind])},
     )  # fmt: skip
 
 

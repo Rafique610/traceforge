@@ -1,22 +1,15 @@
-from decimal import Decimal
+"""Acceptance checks. Shelf stock: orders take units off the shelf; low shelves are reported."""
 
-from app.models import Order, OrderItem
-from app.orders import order_headline
-
-
-def test_headline_of_no_lines_and_of_several():
-    assert order_headline([]) is None
-    lines = [
-        OrderItem(product_name="Tea", unit_price=Decimal("4.20"), quantity=1),
-        OrderItem(product_name="Jam", unit_price=Decimal("2.00"), quantity=2),
-    ]
-    assert order_headline(lines) == "Tea"
+from conftest import observe_stock
 
 
-def test_empty_orders_over_http(client, session):
-    for email in ("walkin@shop.test", "phone@shop.test"):
-        order = Order(customer_email=email, status="pending")
-        session.add(order)
-        session.commit()
-        body = client.get(f"/orders/{order.id}/total").json()
-        assert body["headline"] is None and body["item_count"] == 0
+def test_stock_1(client, session):
+    assert observe_stock(client, session, 6, 7) == [409, 6, False]
+
+
+def test_stock_2(client, session):
+    assert observe_stock(client, session, 9, 2) == [201, 7, False]
+
+
+def test_stock_3(client, session):
+    assert observe_stock(client, session, 11, 6) == [201, 5, False]

@@ -1,11 +1,11 @@
---- a/lab/shop_api/app/settings.py
-+++ b/lab/shop_api/app/settings.py
-@@ -18,7 +18,7 @@
-     db_password: SecretStr
-     db_pool_size: int = 5
-     redis_host: str = "localhost"
--    redis_port: int = 6379
-+    redis_port: int = 6380
-     order_queue: str = "orders:confirm"
-     # pricing rules (see app/quote.py)
-     tax_rate: Decimal = Decimal("0.17")
+--- a/lab/worker/queue.py
++++ b/lab/worker/queue.py
+@@ -73,7 +73,7 @@
+         return parse_job(raw)
+     except MalformedJob:
+         log.error("dead-lettering malformed job")
+-        client.lpush(settings.dead_queue, raw)
++        pass
+         return None
+ 
+ 

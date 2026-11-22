@@ -1,11 +1,8 @@
-"""Order confirmation jobs: retries, backoff and dead letters."""
-
-from conftest import observe_job
+"""Reproducer: orders are accepted and queued, yet customers say some confirmations never arrive."""
 
 
-def test_job_1():
-    assert observe_job(13, 2) == [True, 3, [1.0, 2.0], 0, 0]
-
-
-def test_job_2():
-    assert observe_job(14, 4) == [True, 4, [1.0, 2.0, 4.0], 1, 0]
+def test_orders_are_accepted_and_queued(client, products, queue):
+    for email in ("di@example.io", "second.di@example.io"):
+        body = {"customer_email": email, "items": [{"product_id": products[1].id, "quantity": 2}]}
+        assert client.post("/orders", json=body).status_code == 201
+    assert len(queue.jobs) == 2

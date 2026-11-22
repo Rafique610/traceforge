@@ -4,8 +4,8 @@ from conftest import observe_stock
 
 
 def test_stock_1(client, session):
-    assert observe_stock(client, session, 10, 1) == [201, 9, False]
+    assert observe_stock(client, session, 3, 3) == [201, 0, True]
 
 
 def test_stock_2(client, session):
-    assert observe_stock(client, session, 12, 4) == [201, 8, False]
+    assert observe_stock(client, session, 4, 2) == [201, 2, True]

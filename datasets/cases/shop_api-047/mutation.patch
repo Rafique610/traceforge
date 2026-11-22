@@ -1,11 +1,11 @@
---- a/lab/worker/retry.py
-+++ b/lab/worker/retry.py
-@@ -20,7 +20,7 @@
-         except Exception as exc:
-             if attempt == retries:
-                 raise
--            delay = base * 2**attempt
-+            delay = base ** attempt
-             log.info(
-                 "attempt %s failed (%s); retrying in %.1fs",
-                 attempt + 1,
+--- a/lab/shop_api/app/pricing.py
++++ b/lab/shop_api/app/pricing.py
+@@ -12,7 +12,7 @@
+ 
+ 
+ def line_total(unit_price: Decimal, quantity: int) -> Decimal:
+-    return money(unit_price * quantity)
++    return money(unit_price * (quantity - 1))
+ 
+ 
+ def average_unit_price(total: Decimal, quantity: int) -> Decimal:

@@ -2,7 +2,7 @@
   "template": "sites.job",
   "params": {
     "field": "max_retries",
-    "bad_value": "2",
+    "bad_value": "-1",
     "service": "worker"
   },
   "distance_source": "manual",

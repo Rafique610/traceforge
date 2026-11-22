@@ -2,7 +2,7 @@
   "template": "sites.price",
   "params": {
     "field": "coupon_codes",
-    "bad_value": "WELCOME10=10,BULK20=02O,STAFF50=50",
+    "bad_value": "WELCOME10:10,BULK20:20,STAFF50:50",
     "service": "shop_api"
   },
   "distance_source": "manual",

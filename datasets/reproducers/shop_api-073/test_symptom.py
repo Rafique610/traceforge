@@ -1,9 +1,12 @@
-"""Reproducer: the health endpoint alternates between healthy and degraded."""
+"""Reproducer: an order that has no lines still has a summary."""
+
+from app.models import Order
 
 
-def test_health_alternates(client, queue):
-    seen = []
-    for alive in (True, False, True, False):
-        queue.alive = alive
-        seen.append(client.get("/health").status_code)
-    assert seen == [200, 503, 200, 503]
+def test_summary_of_an_order_without_lines(client, session):
+    order = Order(customer_email="buyer@example.com", status="pending")
+    session.add(order)
+    session.commit()
+    r = client.get(f"/orders/{order.id}/total")
+    assert r.status_code == 200
+    assert r.json()["headline"] is None

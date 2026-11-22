@@ -5,7 +5,7 @@
      # pricing rules (see app/quote.py)
      tax_rate: Decimal = Decimal("0.17")
 -    shipping_fee: Decimal = Decimal("4.99")
-+    shipping_fee: Decimal = Decimal("-4.99")
++    shipping_fee: Decimal = Decimal("4.90")
      free_shipping_over: Decimal = Decimal("50.00")
      max_discount_pct: int = 30
      coupon_codes: str = "WELCOME10=10,BULK20=20,STAFF50=50"

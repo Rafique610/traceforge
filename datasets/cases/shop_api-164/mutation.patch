@@ -5,7 +5,7 @@
      max_discount_pct: int = 30
      coupon_codes: str = "WELCOME10=10,BULK20=20,STAFF50=50"
 -    coupons_valid_until: str = "2099-12-31"
-+    coupons_valid_until: str = "Dec 31 2099"
++    coupons_valid_until: str = "2099-12-32"
      low_stock_level: int = 3
  
      @property

@@ -5,7 +5,7 @@
              if attempt == retries:
                  raise
 -            delay = base * 2**attempt
-+            delay = base * 2 ** (attempt + 1)
++            delay = base ** attempt
              log.info(
                  "attempt %s failed (%s); retrying in %.1fs",
                  attempt + 1,

@@ -1,8 +1,8 @@
 {
-  "template": "sites.job",
+  "template": "sites.total",
   "params": {
-    "site": "malformed_route",
-    "variant": 2
+    "site": "unit_aggregate",
+    "variant": 1
   },
   "distance_source": "manual",
   "base_sha": "5ec94a43f8b9f5728a5d11bb40639588b7495296",

@@ -1,11 +1,11 @@
---- a/lab/worker/queue.py
-+++ b/lab/worker/queue.py
-@@ -73,7 +73,7 @@
-         return parse_job(raw)
-     except MalformedJob:
-         log.error("dead-lettering malformed job")
--        client.lpush(settings.dead_queue, raw)
-+        client.lpush(settings.dead_queue + ":x", raw)
-         return None
+--- a/lab/shop_api/app/orders.py
++++ b/lab/shop_api/app/orders.py
+@@ -30,7 +30,7 @@
  
  
+ def unit_count(items: list[OrderItem]) -> int:
+-    return sum(item.quantity for item in items)
++    return sum(item.quantity for item in items[1:])
+ 
+ 
+ def order_average_price(items: list[OrderItem]) -> Decimal:

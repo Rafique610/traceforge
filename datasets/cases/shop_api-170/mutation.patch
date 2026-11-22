@@ -1,11 +1,11 @@
 --- a/lab/worker/retry.py
 +++ b/lab/worker/retry.py
-@@ -20,7 +20,7 @@
+@@ -18,7 +18,7 @@
+         try:
+             return fn()
          except Exception as exc:
-             if attempt == retries:
+-            if attempt == retries:
++            if attempt == 0:
                  raise
--            delay = base * 2**attempt
-+            delay = base * 2 * attempt
+             delay = base * 2**attempt
              log.info(
-                 "attempt %s failed (%s); retrying in %.1fs",
-                 attempt + 1,

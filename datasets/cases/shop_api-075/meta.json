@@ -1,7 +1,7 @@
 {
-  "template": "sites.price",
+  "template": "sites.total",
   "params": {
-    "site": "free_threshold",
+    "site": "rounding_mode",
     "variant": 3
   },
   "distance_source": "manual",

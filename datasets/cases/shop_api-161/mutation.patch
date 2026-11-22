@@ -5,7 +5,7 @@
  
  def dead_letter(client, settings: WorkerSettings, job: dict, error: str) -> None:
 -    client.lpush(settings.dead_queue, json.dumps({**job, "error": error}))
-+    client.lpush(settings.order_queue + ":dead:", json.dumps({**job, "error": error}))
++    client.lpush(settings.order_queue, json.dumps({**job, "error": error}))
  
  
  def consume_once(

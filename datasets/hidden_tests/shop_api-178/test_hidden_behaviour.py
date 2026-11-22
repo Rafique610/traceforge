@@ -1,4 +1,4 @@
-"""Order confirmation jobs: retries, backoff and dead letters."""
+"""Acceptance checks. Order confirmation jobs: retries, backoff and dead letters."""
 
 from conftest import observe_job
 

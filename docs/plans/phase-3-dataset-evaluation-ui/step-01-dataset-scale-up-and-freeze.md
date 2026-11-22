@@ -12,7 +12,7 @@
 | Reviewer | Muhammad Ruhan Kamran |
 | Priority | Normal (critical path, largest task) |
 | Effort | 4 days |
-| Status | IN PROGRESS (counts met: test 151 = 60/67/12/12, dev 33; validation and freeze pending) |
+| Status | NEEDS REVIEW (test split frozen 22 Nov: 151 cases, sha256 881f2887…; D28 and peer check not done) |
 | Branch | `rafique/P3-S01-dataset` |
 
 ## B. Objective

@@ -1,11 +1,6 @@
-"""Price rules: what a customer is charged for an order."""
-
-from conftest import observe_price
+"""Reproducer: browsing the catalogue while the database is unreachable."""
 
 
-def test_price_1(client, session):
-    assert observe_price(client, session, [("7.45", 4), ("41.60", 3)]) == [200, '180.88']
-
-
-def test_price_2(client, session):
-    assert observe_price(client, session, [("7.45", 1)], "staff50") == [200, '11.10']
+def test_catalogue_is_unavailable(real_deps_client):
+    assert real_deps_client.get("/products").status_code == 500
+    assert real_deps_client.get("/health/live").status_code == 200

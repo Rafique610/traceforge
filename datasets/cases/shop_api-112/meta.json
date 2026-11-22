@@ -1,13 +1,14 @@
 {
   "template": "sites.job",
   "params": {
-    "site": "dead_letter_queue",
-    "variant": 0
+    "field": "order_queue",
+    "bad_value": "orders-confirm",
+    "service": "worker"
   },
   "distance_source": "manual",
   "base_sha": "5ec94a43f8b9f5728a5d11bb40639588b7495296",
   "runtime": {},
-  "notes": "distance: manual estimate (hops from the failing entry point to the site)",
+  "notes": "distance 1 (manual): the failing code reads the field; the wrong value is its default",
   "gold_fix": "reverse of mutation.patch",
   "allowed_shared": {},
   "allowed_terms": {}

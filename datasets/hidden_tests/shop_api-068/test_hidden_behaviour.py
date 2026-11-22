@@ -1,15 +1,15 @@
-"""Shelf stock: orders take units off the shelf; low shelves are reported."""
+"""Acceptance checks. Order totals and counts as shown on the order summary."""
 
-from conftest import observe_stock
-
-
-def test_stock_1(client, session):
-    assert observe_stock(client, session, 6, 6) == [201, 0, True]
+from conftest import observe_total
 
 
-def test_stock_2(client, session):
-    assert observe_stock(client, session, 7, 5) == [201, 2, True]
+def test_total_1(client, session):
+    assert observe_total(client, session, [("36.25", 2)]) == [200, '72.50', 2, '36.25', 'Item 1']
 
 
-def test_stock_3(client, session):
-    assert observe_stock(client, session, 8, 5) == [201, 3, True]
+def test_total_2(client, session):
+    assert observe_total(client, session, [("2.85", 2), ("64.80", 6)]) == [200, '394.50', 8, '49.31', 'Item 1']
+
+
+def test_total_3(client, session):
+    assert observe_total(client, session, [("36.25", 2), ("9.99", 2)]) == [200, '92.48', 4, '23.12', 'Item 1']

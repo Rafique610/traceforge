@@ -1,8 +1,11 @@
---- a/lab/shop_api/app/shipping.py
-+++ b/lab/shop_api/app/shipping.py
-@@ -12,4 +12,4 @@
+--- a/lab/worker/settings.py
++++ b/lab/worker/settings.py
+@@ -17,7 +17,7 @@
+     db_user: str
+     db_password: SecretStr
+     db_pool_size: int = 2
+-    max_retries: int = 3
++    max_retries: int = 30
+     backoff_base_s: float = 1.0
+     connect_attempts: int = 10
  
- def tax_amount(amount: Decimal, rate: Decimal) -> Decimal:
-     """Sales tax on goods only (shipping is not taxed)."""
--    return money(amount * rate)
-+    return money(amount / rate)

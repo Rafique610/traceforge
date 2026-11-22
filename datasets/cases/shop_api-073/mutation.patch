@@ -1,0 +1,11 @@
+--- a/lab/shop_api/app/orders.py
++++ b/lab/shop_api/app/orders.py
+@@ -26,7 +26,7 @@
+ 
+ def order_headline(items: list[OrderItem]) -> str | None:
+     """Name of the first line, used in summaries and emails."""
+-    return items[0].product_name if items else None
++    return items[0].product_name
+ 
+ 
+ def unit_count(items: list[OrderItem]) -> int:

@@ -1,11 +1,11 @@
---- a/lab/shop_api/app/coupons.py
-+++ b/lab/shop_api/app/coupons.py
-@@ -36,7 +36,7 @@
-     pct = codes.get(code.strip().upper())
-     if pct is None:
-         raise UnknownCoupon(code)
--    return min(pct, cap)
-+    return pct
- 
- 
- def apply_discount(amount: Decimal, pct: int) -> Decimal:
+--- a/lab/shop_api/app/quote.py
++++ b/lab/shop_api/app/quote.py
+@@ -24,7 +24,7 @@
+         )
+     goods = coupons.apply_discount(subtotal, pct)
+     ship = shipping.shipping_fee(goods, s.shipping_fee, s.free_shipping_over)
+-    tax = shipping.tax_amount(goods, s.tax_rate)
++    tax = shipping.tax_amount(subtotal, s.tax_rate)
+     return {
+         "subtotal": subtotal,
+         "discount_pct": pct,

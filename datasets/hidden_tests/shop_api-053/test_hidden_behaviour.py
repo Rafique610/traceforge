@@ -1,4 +1,4 @@
-"""Shelf stock: orders take units off the shelf; low shelves are reported."""
+"""Acceptance checks. Shelf stock: orders take units off the shelf; low shelves are reported."""
 
 from conftest import observe_stock
 

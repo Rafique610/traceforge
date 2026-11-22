@@ -1,11 +1,11 @@
-"""Shelf stock: orders take units off the shelf; low shelves are reported."""
+"""Price rules: what a customer is charged for an order."""
 
-from conftest import observe_stock
-
-
-def test_stock_1(client, session):
-    assert observe_stock(client, session, 4, 2) == [201, 2, True]
+from conftest import observe_price
 
 
-def test_stock_2(client, session):
-    assert observe_stock(client, session, 4, 1) == [201, 3, True]
+def test_price_1(client, session):
+    assert observe_price(client, session, [("24.10", 2)], "bulk20") == [200, '50.11']
+
+
+def test_price_2(client, session):
+    assert observe_price(client, session, [("3.20", 2), ("24.10", 3), ("3.20", 3)], "bulk20") == [200, '82.65']

@@ -2,7 +2,7 @@
   "template": "sites.price",
   "params": {
     "field": "coupons_valid_until",
-    "bad_value": "Dec 31 2099",
+    "bad_value": "2099-12-32",
     "service": "shop_api"
   },
   "distance_source": "manual",

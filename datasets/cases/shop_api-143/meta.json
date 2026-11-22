@@ -1,8 +1,8 @@
 {
   "template": "sites.price",
   "params": {
-    "field": "tax_rate",
-    "bad_value": "0.27",
+    "field": "coupons_valid_until",
+    "bad_value": "Dec 31 2099",
     "service": "shop_api"
   },
   "distance_source": "manual",

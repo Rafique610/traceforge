@@ -2,7 +2,7 @@
   "template": "sites.job",
   "params": {
     "site": "backoff_formula",
-    "variant": 2
+    "variant": 1
   },
   "distance_source": "manual",
   "base_sha": "5ec94a43f8b9f5728a5d11bb40639588b7495296",

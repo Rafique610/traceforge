@@ -1,7 +1,7 @@
 {
-  "template": "sites.price",
+  "template": "sites.job",
   "params": {
-    "site": "grand_sum",
+    "site": "retry_last",
     "variant": 0
   },
   "distance_source": "manual",
@@ -10,7 +10,5 @@
   "notes": "distance: manual estimate (hops from the failing entry point to the site)",
   "gold_fix": "reverse of mutation.patch",
   "allowed_shared": {},
-  "allowed_terms": {
-    "quote": "public endpoint path /orders/{id}/quote"
-  }
+  "allowed_terms": {}
 }

@@ -1,7 +1,7 @@
 {
   "template": "outages.insufficient",
   "params": {
-    "group": "sporadic_order_503",
+    "group": "health_flaps",
     "variant": 2
   },
   "distance_source": "manual",

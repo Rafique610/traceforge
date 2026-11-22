@@ -1,9 +1,11 @@
---- a/lab/shop_api/app/quote.py
-+++ b/lab/shop_api/app/quote.py
-@@ -31,5 +31,5 @@
-         "goods": goods,
-         "shipping": ship,
-         "tax": tax,
--        "grand_total": money(goods + ship + tax),
-+        "grand_total": money(goods + ship),
-     }
+--- a/lab/worker/settings.py
++++ b/lab/worker/settings.py
+@@ -18,7 +18,7 @@
+     db_password: SecretStr
+     db_pool_size: int = 2
+     max_retries: int = 3
+-    backoff_base_s: float = 1.0
++    backoff_base_s: float = 0.0
+     connect_attempts: int = 10
+ 
+     model_config = SettingsConfigDict(extra="ignore")

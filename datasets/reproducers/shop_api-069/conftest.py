@@ -79,12 +79,12 @@ def real_deps_client(engine, monkeypatch):
     for key in [k for k in os.environ if k.startswith(("REDIS_", "DB_"))]:
         monkeypatch.delenv(key)
     monkeypatch.setenv("REDIS_HOST", "127.0.0.1")
-    monkeypatch.setenv("REDIS_PORT", "6391")
+    monkeypatch.setenv("REDIS_PORT", "6392")
     monkeypatch.setenv("DB_USER", "shopper")
     monkeypatch.setenv("DB_PASSWORD", "unused")
     get_settings.cache_clear()
     get_client.cache_clear()
-    db = _ce(f"postgresql+psycopg://shopper:unused@127.0.0.1:5491/shop", connect_args={"connect_timeout": 2}) if True else engine
+    db = _ce(f"postgresql+psycopg://shopper:unused@127.0.0.1:5492/shop", connect_args={"connect_timeout": 2}) if True else engine
 
     def _session():
         with Session(db, expire_on_commit=False) as s:

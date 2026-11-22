@@ -2,7 +2,7 @@
   "template": "sites.price",
   "params": {
     "field": "shipping_fee",
-    "bad_value": "-4.99",
+    "bad_value": "4.90",
     "service": "shop_api"
   },
   "distance_source": "manual",

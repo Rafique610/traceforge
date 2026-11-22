@@ -1,6 +1,6 @@
 # Dataset catalogue (P1-S03 → P3-S01)
 
-Status: **batches 1 + 2 generated, all count targets met; NOT validated, NOT frozen.** Every number below comes from `python -m traceforge.faultgen.generate` on 22 Nov 2026. Nothing is final until `task dataset:validate` (3 sandbox runs per suite) passes and the test split is hashed.
+Status: **VALIDATED and test split FROZEN on 22 Nov 2026** (`datasets/manifests/test.sha256` = `881f288763a8…`; record in `freeze.json`, per-case results in `validation.json`). Every number below comes from `python -m traceforge.faultgen.generate` on 22 Nov 2026. Nothing is final until `task dataset:validate` (3 sandbox runs per suite) passes and the test split is hashed.
 
 ## How cases are made
 1. **Lab growth (P1-S01 extension).** `shop_api` gained stock reservation (`inventory.py`), coupons (`coupons.py`), shipping and tax (`shipping.py`) and a price quote (`quote.py`). New endpoints are `GET /orders/{id}/quote` and `GET /products/low-stock`, plus a 409 when an order exceeds stock. Seven new settings come with them. This is about 150 lines of app code and 10 public tests, and `CONTRACT.md` is updated.
@@ -31,17 +31,28 @@ Status: **batches 1 + 2 generated, all count targets met; NOT validated, NOT fro
   The live runtime check now supports `lab_db` as well as `lab_redis`.
 - The sandbox runner adds the workdir's parent to `PYTHONPATH`, and the validator picks the sandbox config by service, so worker cases run.
 
-## Still open before freeze
-- **Validate** every case: `task dataset:validate -- --manifest test.json` and `-- --manifest dev.json`. That is about 3 minutes per repairable case, roughly 8–9 hours, run in the background. Live runtime checks need `task lab:build` and `lab/.env`.
-- **Graph distances**: replace manual distances with `codeintel`-computed ones where they differ.
-- **`log_format` is a label only.** The lab does not yet switch formats per case (D24).
-- **D28**: Ruhan writes or blind-reviews at least 25% of the sites before any graph tuning.
-- **Near-duplicates**: settings groups have up to 8 wrong values each. All stay in one split, but analysis should report per group as well as per case.
+## Validation and freeze (22 Nov 2026)
+- **Validator:** `task dataset:validate:shards` runs 4 parallel shards. Every suite runs 3 times on the original, the faulty and the gold-fixed tree, in the locked-down sandbox. Shard 1 holds the live outage checks, because they share one Docker project.
+- **First run** (55 min): 173/184 passed. The 11 rejections were fixed in the generator, not waived:
+  - 8 database-outage cases failed on the original tree because `psycopg` was missing from the sandbox image. It was added.
+  - 3 settings values crashed the app at import time (`Decimal("0,17")`, `"4.99.0"`, `"5O.00"`), so pytest produced no report. They were replaced by request-time wrong values.
+- **Final run** (about 1 h, on the final image): **184/184 passed, 0 flaky, 13/13 live outage checks ok** (real `lab_redis` / `lab_db` stopped and restored).
+- **Frozen test split:** 151 cases. 60 configuration, 67 application_code, 12 runtime_dependency, 12 insufficient_evidence; 35 variant groups; 20 fault families; 115 shop_api and 36 worker; 127 (84%) at distance ≥1. The lab `base_sha` is `5ec94a43f8b9…`. The experiment runner's freeze guard accepts it.
+
+## Still open after the freeze
+- **D28 (author bias) was not done.** All sites were written by Rafique's session; nobody else wrote or blind-reviewed 25% of them. Report it as a threat to validity.
+- **Graph distances are manual estimates.** Computed `codeintel` distances can be added to the analysis as a second column. Changing `test.json` now would break the freeze.
+- **`log_format` is a label only** (D24): the lab does not switch log formats per case.
+- **Near-duplicates:** settings groups have up to 9 wrong values. Report per group as well as per case.
+- **Ruhan's 10-label peer check** is not done (owner decision: all work stays here).
 
 ## Commands
 ```powershell
 task dataset:generate
 ```
 ```powershell
-task dataset:validate -- --manifest test.json
+task dataset:validate:shards
+```
+```powershell
+task dataset:freeze
 ```

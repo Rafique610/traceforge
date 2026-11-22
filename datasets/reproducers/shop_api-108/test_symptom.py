@@ -1,7 +1,9 @@
-"""Reproducer: some orders are refused with 503 and the same order succeeds when retried."""
+"""Reproducer: the health endpoint alternates between healthy and degraded."""
 
 
-def test_retry_of_a_refused_order_succeeds(flaky_client, products):
-    body = {"customer_email": "cy@example.com", "items": [{"product_id": products[0].id, "quantity": 1}]}
-    codes = [flaky_client.post("/orders", json=body).status_code for _ in range(2)]
-    assert 503 in codes and codes[-1] == 201
+def test_health_alternates(client, queue):
+    seen = []
+    for alive in (False, True, False):
+        queue.alive = alive
+        seen.append(client.get("/health").status_code)
+    assert seen == [503, 200, 503]

@@ -1,11 +1,8 @@
---- a/lab/shop_api/app/coupons.py
-+++ b/lab/shop_api/app/coupons.py
-@@ -21,7 +21,7 @@
-         if not entry.strip():
-             continue
-         code, pct = entry.split("=", 1)
--        codes[code.strip().upper()] = int(pct)
-+        codes[code.strip()[:-1].upper()] = int(pct)
-     return codes
+--- a/lab/shop_api/app/inventory.py
++++ b/lab/shop_api/app/inventory.py
+@@ -25,4 +25,4 @@
  
- 
+ def low_stock(products: list[Product], level: int) -> list[Product]:
+     """Products at or below the reorder level, fewest units first."""
+-    return sorted((p for p in products if p.stock <= level), key=lambda p: (p.stock, p.id))
++    return sorted((p for p in products if p.stock >= level), key=lambda p: (p.stock, p.id))

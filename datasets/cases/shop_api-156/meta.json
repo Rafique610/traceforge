@@ -1,20 +1,14 @@
 {
-  "template": "outages.runtime",
+  "template": "sites.price",
   "params": {
-    "group": "lab_redis:health",
-    "ports": [
-      6391,
-      5491
-    ]
+    "field": "coupons_valid_until",
+    "bad_value": "31/12/2099",
+    "service": "shop_api"
   },
   "distance_source": "manual",
   "base_sha": "5ec94a43f8b9f5728a5d11bb40639588b7495296",
-  "runtime": {
-    "stop": [
-      "lab_redis"
-    ]
-  },
-  "notes": "diagnose only: no code or config change exists; reproducer passes on original and 'broken'",
+  "runtime": {},
+  "notes": "distance 1 (manual): the failing code reads the field; the wrong value is its default",
   "gold_fix": "reverse of mutation.patch",
   "allowed_shared": {},
   "allowed_terms": {}

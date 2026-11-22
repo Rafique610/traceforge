@@ -1,8 +1,11 @@
-"""Reproducer: the health endpoint while the job broker is unreachable."""
+"""Order confirmation jobs: retries, backoff and dead letters."""
+
+from conftest import observe_job
 
 
-def test_health_reports_the_broker(real_deps_client):
-    r = real_deps_client.get("/health")
-    assert r.status_code == 503
-    assert r.json()["redis"].startswith("down")
-    assert r.json()["db"] == "ok"
+def test_job_1():
+    assert observe_job(12, 1) == [True, 2, [1.0], 0, 0]
+
+
+def test_job_2():
+    assert observe_job(13, 2) == [True, 3, [1.0, 2.0], 0, 0]

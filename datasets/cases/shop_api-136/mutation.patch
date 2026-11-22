@@ -5,7 +5,7 @@
  def money(value: Decimal) -> Decimal:
      """Round to 2 dp, half up."""
 -    return value.quantize(CENT, rounding=ROUND_HALF_UP)
-+    return value.quantize(CENT)
++    return value.quantize(CENT, rounding="ROUND_DOWN")
  
  
  def line_total(unit_price: Decimal, quantity: int) -> Decimal:

@@ -1,13 +1,16 @@
 {
-  "template": "sites.stock",
+  "template": "outages.insufficient",
   "params": {
-    "site": "stock_check",
-    "variant": 3
+    "group": "health_flaps",
+    "variant": 1
   },
   "distance_source": "manual",
   "base_sha": "5ec94a43f8b9f5728a5d11bb40639588b7495296",
-  "runtime": {},
-  "notes": "distance: manual estimate (hops from the failing entry point to the site)",
+  "runtime": {
+    "logs": "suppressed",
+    "symptom": "intermittent"
+  },
+  "notes": "no cause is determinable: logs withheld and the contract is silent on the intermittent symptom",
   "gold_fix": "reverse of mutation.patch",
   "allowed_shared": {},
   "allowed_terms": {}

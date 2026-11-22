@@ -1,7 +1,7 @@
 {
-  "template": "sites.price",
+  "template": "sites.stock",
   "params": {
-    "site": "code_table_case",
+    "site": "low_stock_filter",
     "variant": 2
   },
   "distance_source": "manual",

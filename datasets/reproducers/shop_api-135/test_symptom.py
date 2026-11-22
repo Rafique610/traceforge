@@ -1,8 +1,11 @@
-"""Reproducer: the health endpoint while the database is unreachable."""
+"""Order totals and counts as shown on the order summary."""
+
+from conftest import observe_total
 
 
-def test_health_reports_the_database(real_deps_client):
-    r = real_deps_client.get("/health")
-    assert r.status_code == 503
-    assert r.json()["db"].startswith("down")
-    assert r.json()["redis"] == "ok"
+def test_total_1(client, session):
+    assert observe_total(client, session, [("7.45", 3), ("41.60", 3)]) == [200, '147.15', 6, '24.53', 'Item 1']
+
+
+def test_total_2(client, session):
+    assert observe_total(client, session, [("49.99", 1), ("7.45", 3)]) == [200, '72.34', 4, '18.09', 'Item 1']

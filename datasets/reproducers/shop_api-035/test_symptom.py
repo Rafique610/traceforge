@@ -1,6 +1,7 @@
-"""Reproducer: browsing the catalogue while the database is unreachable."""
+"""Order confirmation jobs: retries, backoff and dead letters."""
+
+from conftest import observe_job
 
 
-def test_catalogue_is_unavailable(real_deps_client):
-    assert real_deps_client.get("/products").status_code == 500
-    assert real_deps_client.get("/health/live").status_code == 200
+def test_job_1():
+    assert observe_job(14, 4) == [True, 4, [1.0, 2.0, 4.0], 1, 0]

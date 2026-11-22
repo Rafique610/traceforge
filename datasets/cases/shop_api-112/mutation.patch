@@ -1,11 +1,11 @@
---- a/lab/worker/queue.py
-+++ b/lab/worker/queue.py
-@@ -78,7 +78,7 @@
- 
- 
- def dead_letter(client, settings: WorkerSettings, job: dict, error: str) -> None:
--    client.lpush(settings.dead_queue, json.dumps({**job, "error": error}))
-+    client.lpush(settings.order_queue, json.dumps({**job, "error": error}))
- 
- 
- def consume_once(
+--- a/lab/worker/settings.py
++++ b/lab/worker/settings.py
+@@ -10,7 +10,7 @@
+ class WorkerSettings(BaseSettings):
+     redis_host: str = "localhost"
+     redis_port: int = 6379
+-    order_queue: str = "orders:confirm"
++    order_queue: str = "orders-confirm"
+     db_host: str = "localhost"
+     db_port: int = 5432
+     db_name: str = "shop"

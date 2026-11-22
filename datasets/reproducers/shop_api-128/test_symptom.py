@@ -1,8 +1,7 @@
-"""Reproducer: the health endpoint while the database is unreachable."""
+"""Order confirmation jobs: retries, backoff and dead letters."""
+
+from conftest import observe_job
 
 
-def test_health_reports_the_database(real_deps_client):
-    r = real_deps_client.get("/health")
-    assert r.status_code == 503
-    assert r.json()["db"].startswith("down")
-    assert r.json()["redis"] == "ok"
+def test_job_1():
+    assert observe_job('not json', 0) == [False, 0, [], 1, 0]

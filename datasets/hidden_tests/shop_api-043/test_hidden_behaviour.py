@@ -1,4 +1,4 @@
-"""Price rules: what a customer is charged for an order."""
+"""Acceptance checks. Price rules: what a customer is charged for an order."""
 
 from conftest import observe_price
 

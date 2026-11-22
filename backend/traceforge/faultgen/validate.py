@@ -30,7 +30,7 @@ from traceforge.sandbox.config import SandboxConfig
 RunFn = Callable[[TestRunRequest], TestRunResult]
 LAB_REQS = (
     "pytest==8.3.4 fastapi==0.165.0 sqlalchemy==2.1.9 pydantic-settings==2.16.3 "
-    "redis==8.1.0 httpx==0.28.1"
+    "redis==8.1.0 httpx==0.28.1 psycopg[binary]==3.3.9"
 )
 SANDBOX_CFG = SandboxConfig(requirements=LAB_REQS, workdir_rel="lab/shop_api")
 SANDBOX_CFGS = {

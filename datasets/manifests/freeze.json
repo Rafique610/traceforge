@@ -1,0 +1,28 @@
+{
+  "frozen_at": "2026-11-22T17:16:43+00:00",
+  "manifest": "test.json",
+  "manifest_sha256": "881f288763a8b32e15feab7fd6583a1a78baa05864e1736a77ca00a952ba603a",
+  "content_sha256": "6c004192d8fee5698b3bf61005dd89306b6ac806a7a05a10b477a33a2bcfb3e1",
+  "lab_base_sha": "5ec94a43f8b9f5728a5d11bb40639588b7495296",
+  "cases": 151,
+  "by_class": {
+    "configuration": 60,
+    "application_code": 67,
+    "runtime_dependency": 12,
+    "insufficient_evidence": 12
+  },
+  "by_service": {
+    "shop_api": 115,
+    "worker": 36
+  },
+  "variant_groups": 35,
+  "fault_families": 20,
+  "distance_ge_1": 127,
+  "validation": {
+    "runs_per_suite": 3,
+    "reports": 184,
+    "passed": 184,
+    "flaky_rejected": 0,
+    "live_runtime_ok": 13
+  }
+}

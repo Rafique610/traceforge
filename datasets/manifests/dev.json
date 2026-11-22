@@ -236,68 +236,23 @@
     "log_format": "none"
   },
   {
-    "case_id": "shop_api-005",
-    "split": "dev",
-    "cause_class": "configuration",
-    "fault_family": "wrong_unit",
-    "service": "worker",
-    "base_sha": "5ec94a43f8b9f5728a5d11bb40639588b7495296",
-    "gold_config_keys": [
-      "worker.BACKOFF_BASE_S"
-    ],
-    "gold_symbols": [
-      {
-        "path": "lab/worker/settings.py",
-        "qualname": "WorkerSettings.backoff_base_s",
-        "start_line": 21,
-        "end_line": 21
-      }
-    ],
-    "distance": 1,
-    "reproducer_id": "datasets/reproducers/shop_api-005/test_symptom.py::test_job_1",
-    "visible_test_ids": [
-      "lab/worker/tests/test_emails.py::test_render_confirmation",
-      "lab/worker/tests/test_queue.py::test_consume_one_job",
-      "lab/worker/tests/test_queue.py::test_empty_queue_returns_false",
-      "lab/worker/tests/test_queue.py::test_confirm_is_idempotent",
-      "lab/worker/tests/test_queue.py::test_failing_job_retries_three_times_then_dead_letters",
-      "lab/worker/tests/test_queue.py::test_unknown_order_is_dead_lettered",
-      "lab/worker/tests/test_queue.py::test_malformed_payload_is_dead_lettered",
-      "lab/worker/tests/test_queue.py::test_backoff_delays_double",
-      "lab/worker/tests/test_queue.py::test_heartbeat_sets_key_with_15s_ttl",
-      "lab/worker/tests/test_queue.py::test_connect_retries_until_broker_is_up",
-      "lab/worker/tests/test_queue.py::test_connect_gives_up_loudly",
-      "lab/worker/tests/test_settings.py::test_env_overrides",
-      "lab/worker/tests/test_settings.py::test_credentials_required",
-      "lab/worker/tests/test_settings.py::test_defaults_match_the_api_contract"
-    ],
-    "hidden_test_ids": [
-      "datasets/hidden_tests/shop_api-005/test_hidden_behaviour.py::test_job_1",
-      "datasets/hidden_tests/shop_api-005/test_hidden_behaviour.py::test_job_2",
-      "datasets/hidden_tests/shop_api-005/test_hidden_behaviour.py::test_job_3"
-    ],
-    "variant_group": "settings_default:worker:backoff_base_s",
-    "origin": "synthetic",
-    "log_format": "plain"
-  },
-  {
-    "case_id": "shop_api-013",
+    "case_id": "shop_api-011",
     "split": "dev",
     "cause_class": "application_code",
-    "fault_family": "wrong_state_update",
+    "fault_family": "wrong_argument",
     "service": "shop_api",
     "base_sha": "5ec94a43f8b9f5728a5d11bb40639588b7495296",
     "gold_config_keys": [],
     "gold_symbols": [
       {
-        "path": "lab/shop_api/app/inventory.py",
-        "qualname": "reserve",
-        "start_line": 19,
-        "end_line": 23
+        "path": "lab/shop_api/app/quote.py",
+        "qualname": "quote",
+        "start_line": 12,
+        "end_line": 35
       }
     ],
-    "distance": 2,
-    "reproducer_id": "datasets/reproducers/shop_api-013/test_symptom.py::test_stock_1",
+    "distance": 1,
+    "reproducer_id": "datasets/reproducers/shop_api-011/test_symptom.py::test_price_1",
     "visible_test_ids": [
       "lab/shop_api/tests/test_api.py::test_empty_catalogue_returns_empty_list",
       "lab/shop_api/tests/test_api.py::test_list_and_get_product",
@@ -336,9 +291,73 @@
       "lab/shop_api/tests/test_settings.py::test_bad_port_rejected"
     ],
     "hidden_test_ids": [
-      "datasets/hidden_tests/shop_api-013/test_hidden_behaviour.py::test_stock_1",
-      "datasets/hidden_tests/shop_api-013/test_hidden_behaviour.py::test_stock_2",
-      "datasets/hidden_tests/shop_api-013/test_hidden_behaviour.py::test_stock_3"
+      "datasets/hidden_tests/shop_api-011/test_hidden_behaviour.py::test_price_1",
+      "datasets/hidden_tests/shop_api-011/test_hidden_behaviour.py::test_price_2",
+      "datasets/hidden_tests/shop_api-011/test_hidden_behaviour.py::test_price_3"
+    ],
+    "variant_group": "code:tax_base",
+    "origin": "synthetic",
+    "log_format": "uvicorn_access"
+  },
+  {
+    "case_id": "shop_api-014",
+    "split": "dev",
+    "cause_class": "application_code",
+    "fault_family": "wrong_state_update",
+    "service": "shop_api",
+    "base_sha": "5ec94a43f8b9f5728a5d11bb40639588b7495296",
+    "gold_config_keys": [],
+    "gold_symbols": [
+      {
+        "path": "lab/shop_api/app/inventory.py",
+        "qualname": "reserve",
+        "start_line": 19,
+        "end_line": 23
+      }
+    ],
+    "distance": 2,
+    "reproducer_id": "datasets/reproducers/shop_api-014/test_symptom.py::test_stock_1",
+    "visible_test_ids": [
+      "lab/shop_api/tests/test_api.py::test_empty_catalogue_returns_empty_list",
+      "lab/shop_api/tests/test_api.py::test_list_and_get_product",
+      "lab/shop_api/tests/test_api.py::test_missing_product_is_404",
+      "lab/shop_api/tests/test_api.py::test_create_order_enqueues_job_and_reports_total",
+      "lab/shop_api/tests/test_api.py::test_create_order_validates_input",
+      "lab/shop_api/tests/test_api.py::test_create_order_unknown_product_is_404",
+      "lab/shop_api/tests/test_api.py::test_queue_down_returns_503_and_keeps_pending_order",
+      "lab/shop_api/tests/test_api.py::test_order_total_endpoint",
+      "lab/shop_api/tests/test_api.py::test_order_without_lines_totals_zero",
+      "lab/shop_api/tests/test_api.py::test_health_reports_redis_down",
+      "lab/shop_api/tests/test_api.py::test_health_live_always_ok",
+      "lab/shop_api/tests/test_api.py::test_queue_failure_is_logged_with_traceback",
+      "lab/shop_api/tests/test_api.py::test_validation_failure_is_logged_and_keeps_422_body",
+      "lab/shop_api/tests/test_orders.py::test_checkout_total",
+      "lab/shop_api/tests/test_orders.py::test_total_rounds_half_up_to_two_places",
+      "lab/shop_api/tests/test_orders.py::test_empty_order_total_is_zero",
+      "lab/shop_api/tests/test_orders.py::test_line_total_multiplies",
+      "lab/shop_api/tests/test_orders.py::test_headline_and_counts",
+      "lab/shop_api/tests/test_orders.py::test_average_unit_price",
+      "lab/shop_api/tests/test_orders.py::test_average_unit_price_rejects_zero_units",
+      "lab/shop_api/tests/test_pricing_rules.py::test_reserve_takes_units_and_refuses_shortfall",
+      "lab/shop_api/tests/test_pricing_rules.py::test_low_stock_lists_products_at_or_below_level",
+      "lab/shop_api/tests/test_pricing_rules.py::test_coupon_codes_parse_case_insensitively",
+      "lab/shop_api/tests/test_pricing_rules.py::test_coupon_is_capped_and_unknown_or_expired_is_refused",
+      "lab/shop_api/tests/test_pricing_rules.py::test_discount_shipping_and_tax_amounts",
+      "lab/shop_api/tests/test_pricing_rules.py::test_quote_chains_the_rules_with_default_settings",
+      "lab/shop_api/tests/test_pricing_rules.py::test_quote_with_coupon_and_free_shipping",
+      "lab/shop_api/tests/test_pricing_rules.py::test_order_beyond_stock_is_409_and_saves_nothing",
+      "lab/shop_api/tests/test_pricing_rules.py::test_quote_endpoint_and_unknown_coupon",
+      "lab/shop_api/tests/test_pricing_rules.py::test_low_stock_endpoint",
+      "lab/shop_api/tests/test_settings.py::test_loads_from_env",
+      "lab/shop_api/tests/test_settings.py::test_defaults",
+      "lab/shop_api/tests/test_settings.py::test_credentials_are_required",
+      "lab/shop_api/tests/test_settings.py::test_password_is_not_in_repr",
+      "lab/shop_api/tests/test_settings.py::test_bad_port_rejected"
+    ],
+    "hidden_test_ids": [
+      "datasets/hidden_tests/shop_api-014/test_hidden_behaviour.py::test_stock_1",
+      "datasets/hidden_tests/shop_api-014/test_hidden_behaviour.py::test_stock_2",
+      "datasets/hidden_tests/shop_api-014/test_hidden_behaviour.py::test_stock_3"
     ],
     "variant_group": "code:stock_decrement",
     "origin": "synthetic",
@@ -347,17 +366,19 @@
   {
     "case_id": "shop_api-017",
     "split": "dev",
-    "cause_class": "application_code",
-    "fault_family": "wrong_argument",
+    "cause_class": "configuration",
+    "fault_family": "wrong_value",
     "service": "shop_api",
     "base_sha": "5ec94a43f8b9f5728a5d11bb40639588b7495296",
-    "gold_config_keys": [],
+    "gold_config_keys": [
+      "shop_api.MAX_DISCOUNT_PCT"
+    ],
     "gold_symbols": [
       {
-        "path": "lab/shop_api/app/quote.py",
-        "qualname": "quote",
-        "start_line": 12,
-        "end_line": 35
+        "path": "lab/shop_api/app/settings.py",
+        "qualname": "Settings.max_discount_pct",
+        "start_line": 27,
+        "end_line": 27
       }
     ],
     "distance": 1,
@@ -404,12 +425,12 @@
       "datasets/hidden_tests/shop_api-017/test_hidden_behaviour.py::test_price_2",
       "datasets/hidden_tests/shop_api-017/test_hidden_behaviour.py::test_price_3"
     ],
-    "variant_group": "code:tax_base",
+    "variant_group": "settings_default:shop_api:max_discount_pct",
     "origin": "synthetic",
-    "log_format": "uvicorn_access"
+    "log_format": "plain"
   },
   {
-    "case_id": "shop_api-026",
+    "case_id": "shop_api-027",
     "split": "dev",
     "cause_class": "application_code",
     "fault_family": "wrong_state_update",
@@ -425,72 +446,6 @@
       }
     ],
     "distance": 2,
-    "reproducer_id": "datasets/reproducers/shop_api-026/test_symptom.py::test_stock_1",
-    "visible_test_ids": [
-      "lab/shop_api/tests/test_api.py::test_empty_catalogue_returns_empty_list",
-      "lab/shop_api/tests/test_api.py::test_list_and_get_product",
-      "lab/shop_api/tests/test_api.py::test_missing_product_is_404",
-      "lab/shop_api/tests/test_api.py::test_create_order_enqueues_job_and_reports_total",
-      "lab/shop_api/tests/test_api.py::test_create_order_validates_input",
-      "lab/shop_api/tests/test_api.py::test_create_order_unknown_product_is_404",
-      "lab/shop_api/tests/test_api.py::test_queue_down_returns_503_and_keeps_pending_order",
-      "lab/shop_api/tests/test_api.py::test_order_total_endpoint",
-      "lab/shop_api/tests/test_api.py::test_order_without_lines_totals_zero",
-      "lab/shop_api/tests/test_api.py::test_health_reports_redis_down",
-      "lab/shop_api/tests/test_api.py::test_health_live_always_ok",
-      "lab/shop_api/tests/test_api.py::test_queue_failure_is_logged_with_traceback",
-      "lab/shop_api/tests/test_api.py::test_validation_failure_is_logged_and_keeps_422_body",
-      "lab/shop_api/tests/test_orders.py::test_checkout_total",
-      "lab/shop_api/tests/test_orders.py::test_total_rounds_half_up_to_two_places",
-      "lab/shop_api/tests/test_orders.py::test_empty_order_total_is_zero",
-      "lab/shop_api/tests/test_orders.py::test_line_total_multiplies",
-      "lab/shop_api/tests/test_orders.py::test_headline_and_counts",
-      "lab/shop_api/tests/test_orders.py::test_average_unit_price",
-      "lab/shop_api/tests/test_orders.py::test_average_unit_price_rejects_zero_units",
-      "lab/shop_api/tests/test_pricing_rules.py::test_reserve_takes_units_and_refuses_shortfall",
-      "lab/shop_api/tests/test_pricing_rules.py::test_low_stock_lists_products_at_or_below_level",
-      "lab/shop_api/tests/test_pricing_rules.py::test_coupon_codes_parse_case_insensitively",
-      "lab/shop_api/tests/test_pricing_rules.py::test_coupon_is_capped_and_unknown_or_expired_is_refused",
-      "lab/shop_api/tests/test_pricing_rules.py::test_discount_shipping_and_tax_amounts",
-      "lab/shop_api/tests/test_pricing_rules.py::test_quote_chains_the_rules_with_default_settings",
-      "lab/shop_api/tests/test_pricing_rules.py::test_quote_with_coupon_and_free_shipping",
-      "lab/shop_api/tests/test_pricing_rules.py::test_order_beyond_stock_is_409_and_saves_nothing",
-      "lab/shop_api/tests/test_pricing_rules.py::test_quote_endpoint_and_unknown_coupon",
-      "lab/shop_api/tests/test_pricing_rules.py::test_low_stock_endpoint",
-      "lab/shop_api/tests/test_settings.py::test_loads_from_env",
-      "lab/shop_api/tests/test_settings.py::test_defaults",
-      "lab/shop_api/tests/test_settings.py::test_credentials_are_required",
-      "lab/shop_api/tests/test_settings.py::test_password_is_not_in_repr",
-      "lab/shop_api/tests/test_settings.py::test_bad_port_rejected"
-    ],
-    "hidden_test_ids": [
-      "datasets/hidden_tests/shop_api-026/test_hidden_behaviour.py::test_stock_1",
-      "datasets/hidden_tests/shop_api-026/test_hidden_behaviour.py::test_stock_2",
-      "datasets/hidden_tests/shop_api-026/test_hidden_behaviour.py::test_stock_3"
-    ],
-    "variant_group": "code:stock_decrement",
-    "origin": "synthetic",
-    "log_format": "uvicorn_access"
-  },
-  {
-    "case_id": "shop_api-027",
-    "split": "dev",
-    "cause_class": "configuration",
-    "fault_family": "wrong_value",
-    "service": "shop_api",
-    "base_sha": "5ec94a43f8b9f5728a5d11bb40639588b7495296",
-    "gold_config_keys": [
-      "shop_api.LOW_STOCK_LEVEL"
-    ],
-    "gold_symbols": [
-      {
-        "path": "lab/shop_api/app/settings.py",
-        "qualname": "Settings.low_stock_level",
-        "start_line": 30,
-        "end_line": 30
-      }
-    ],
-    "distance": 1,
     "reproducer_id": "datasets/reproducers/shop_api-027/test_symptom.py::test_stock_1",
     "visible_test_ids": [
       "lab/shop_api/tests/test_api.py::test_empty_catalogue_returns_empty_list",
@@ -534,57 +489,77 @@
       "datasets/hidden_tests/shop_api-027/test_hidden_behaviour.py::test_stock_2",
       "datasets/hidden_tests/shop_api-027/test_hidden_behaviour.py::test_stock_3"
     ],
+    "variant_group": "code:stock_decrement",
+    "origin": "synthetic",
+    "log_format": "uvicorn_access"
+  },
+  {
+    "case_id": "shop_api-032",
+    "split": "dev",
+    "cause_class": "configuration",
+    "fault_family": "wrong_value",
+    "service": "shop_api",
+    "base_sha": "5ec94a43f8b9f5728a5d11bb40639588b7495296",
+    "gold_config_keys": [
+      "shop_api.LOW_STOCK_LEVEL"
+    ],
+    "gold_symbols": [
+      {
+        "path": "lab/shop_api/app/settings.py",
+        "qualname": "Settings.low_stock_level",
+        "start_line": 30,
+        "end_line": 30
+      }
+    ],
+    "distance": 1,
+    "reproducer_id": "datasets/reproducers/shop_api-032/test_symptom.py::test_stock_1",
+    "visible_test_ids": [
+      "lab/shop_api/tests/test_api.py::test_empty_catalogue_returns_empty_list",
+      "lab/shop_api/tests/test_api.py::test_list_and_get_product",
+      "lab/shop_api/tests/test_api.py::test_missing_product_is_404",
+      "lab/shop_api/tests/test_api.py::test_create_order_enqueues_job_and_reports_total",
+      "lab/shop_api/tests/test_api.py::test_create_order_validates_input",
+      "lab/shop_api/tests/test_api.py::test_create_order_unknown_product_is_404",
+      "lab/shop_api/tests/test_api.py::test_queue_down_returns_503_and_keeps_pending_order",
+      "lab/shop_api/tests/test_api.py::test_order_total_endpoint",
+      "lab/shop_api/tests/test_api.py::test_order_without_lines_totals_zero",
+      "lab/shop_api/tests/test_api.py::test_health_reports_redis_down",
+      "lab/shop_api/tests/test_api.py::test_health_live_always_ok",
+      "lab/shop_api/tests/test_api.py::test_queue_failure_is_logged_with_traceback",
+      "lab/shop_api/tests/test_api.py::test_validation_failure_is_logged_and_keeps_422_body",
+      "lab/shop_api/tests/test_orders.py::test_checkout_total",
+      "lab/shop_api/tests/test_orders.py::test_total_rounds_half_up_to_two_places",
+      "lab/shop_api/tests/test_orders.py::test_empty_order_total_is_zero",
+      "lab/shop_api/tests/test_orders.py::test_line_total_multiplies",
+      "lab/shop_api/tests/test_orders.py::test_headline_and_counts",
+      "lab/shop_api/tests/test_orders.py::test_average_unit_price",
+      "lab/shop_api/tests/test_orders.py::test_average_unit_price_rejects_zero_units",
+      "lab/shop_api/tests/test_pricing_rules.py::test_reserve_takes_units_and_refuses_shortfall",
+      "lab/shop_api/tests/test_pricing_rules.py::test_low_stock_lists_products_at_or_below_level",
+      "lab/shop_api/tests/test_pricing_rules.py::test_coupon_codes_parse_case_insensitively",
+      "lab/shop_api/tests/test_pricing_rules.py::test_coupon_is_capped_and_unknown_or_expired_is_refused",
+      "lab/shop_api/tests/test_pricing_rules.py::test_discount_shipping_and_tax_amounts",
+      "lab/shop_api/tests/test_pricing_rules.py::test_quote_chains_the_rules_with_default_settings",
+      "lab/shop_api/tests/test_pricing_rules.py::test_quote_with_coupon_and_free_shipping",
+      "lab/shop_api/tests/test_pricing_rules.py::test_order_beyond_stock_is_409_and_saves_nothing",
+      "lab/shop_api/tests/test_pricing_rules.py::test_quote_endpoint_and_unknown_coupon",
+      "lab/shop_api/tests/test_pricing_rules.py::test_low_stock_endpoint",
+      "lab/shop_api/tests/test_settings.py::test_loads_from_env",
+      "lab/shop_api/tests/test_settings.py::test_defaults",
+      "lab/shop_api/tests/test_settings.py::test_credentials_are_required",
+      "lab/shop_api/tests/test_settings.py::test_password_is_not_in_repr",
+      "lab/shop_api/tests/test_settings.py::test_bad_port_rejected"
+    ],
+    "hidden_test_ids": [
+      "datasets/hidden_tests/shop_api-032/test_hidden_behaviour.py::test_stock_1",
+      "datasets/hidden_tests/shop_api-032/test_hidden_behaviour.py::test_stock_2"
+    ],
     "variant_group": "settings_default:shop_api:low_stock_level",
     "origin": "synthetic",
     "log_format": "plain"
   },
   {
-    "case_id": "shop_api-031",
-    "split": "dev",
-    "cause_class": "configuration",
-    "fault_family": "wrong_unit",
-    "service": "worker",
-    "base_sha": "5ec94a43f8b9f5728a5d11bb40639588b7495296",
-    "gold_config_keys": [
-      "worker.BACKOFF_BASE_S"
-    ],
-    "gold_symbols": [
-      {
-        "path": "lab/worker/settings.py",
-        "qualname": "WorkerSettings.backoff_base_s",
-        "start_line": 21,
-        "end_line": 21
-      }
-    ],
-    "distance": 1,
-    "reproducer_id": "datasets/reproducers/shop_api-031/test_symptom.py::test_job_1",
-    "visible_test_ids": [
-      "lab/worker/tests/test_emails.py::test_render_confirmation",
-      "lab/worker/tests/test_queue.py::test_consume_one_job",
-      "lab/worker/tests/test_queue.py::test_empty_queue_returns_false",
-      "lab/worker/tests/test_queue.py::test_confirm_is_idempotent",
-      "lab/worker/tests/test_queue.py::test_failing_job_retries_three_times_then_dead_letters",
-      "lab/worker/tests/test_queue.py::test_unknown_order_is_dead_lettered",
-      "lab/worker/tests/test_queue.py::test_malformed_payload_is_dead_lettered",
-      "lab/worker/tests/test_queue.py::test_backoff_delays_double",
-      "lab/worker/tests/test_queue.py::test_heartbeat_sets_key_with_15s_ttl",
-      "lab/worker/tests/test_queue.py::test_connect_retries_until_broker_is_up",
-      "lab/worker/tests/test_queue.py::test_connect_gives_up_loudly",
-      "lab/worker/tests/test_settings.py::test_env_overrides",
-      "lab/worker/tests/test_settings.py::test_credentials_required",
-      "lab/worker/tests/test_settings.py::test_defaults_match_the_api_contract"
-    ],
-    "hidden_test_ids": [
-      "datasets/hidden_tests/shop_api-031/test_hidden_behaviour.py::test_job_1",
-      "datasets/hidden_tests/shop_api-031/test_hidden_behaviour.py::test_job_2",
-      "datasets/hidden_tests/shop_api-031/test_hidden_behaviour.py::test_job_3"
-    ],
-    "variant_group": "settings_default:worker:backoff_base_s",
-    "origin": "synthetic",
-    "log_format": "plain"
-  },
-  {
-    "case_id": "shop_api-038",
+    "case_id": "shop_api-039",
     "split": "dev",
     "cause_class": "application_code",
     "fault_family": "wrong_formula",
@@ -600,7 +575,7 @@
       }
     ],
     "distance": 2,
-    "reproducer_id": "datasets/reproducers/shop_api-038/test_symptom.py::test_price_1",
+    "reproducer_id": "datasets/reproducers/shop_api-039/test_symptom.py::test_price_1",
     "visible_test_ids": [
       "lab/shop_api/tests/test_api.py::test_empty_catalogue_returns_empty_list",
       "lab/shop_api/tests/test_api.py::test_list_and_get_product",
@@ -639,9 +614,9 @@
       "lab/shop_api/tests/test_settings.py::test_bad_port_rejected"
     ],
     "hidden_test_ids": [
-      "datasets/hidden_tests/shop_api-038/test_hidden_behaviour.py::test_price_1",
-      "datasets/hidden_tests/shop_api-038/test_hidden_behaviour.py::test_price_2",
-      "datasets/hidden_tests/shop_api-038/test_hidden_behaviour.py::test_price_3"
+      "datasets/hidden_tests/shop_api-039/test_hidden_behaviour.py::test_price_1",
+      "datasets/hidden_tests/shop_api-039/test_hidden_behaviour.py::test_price_2",
+      "datasets/hidden_tests/shop_api-039/test_hidden_behaviour.py::test_price_3"
     ],
     "variant_group": "code:discount_formula",
     "origin": "synthetic",
@@ -649,200 +624,6 @@
   },
   {
     "case_id": "shop_api-056",
-    "split": "dev",
-    "cause_class": "configuration",
-    "fault_family": "wrong_value",
-    "service": "shop_api",
-    "base_sha": "5ec94a43f8b9f5728a5d11bb40639588b7495296",
-    "gold_config_keys": [
-      "shop_api.MAX_DISCOUNT_PCT"
-    ],
-    "gold_symbols": [
-      {
-        "path": "lab/shop_api/app/settings.py",
-        "qualname": "Settings.max_discount_pct",
-        "start_line": 27,
-        "end_line": 27
-      }
-    ],
-    "distance": 1,
-    "reproducer_id": "datasets/reproducers/shop_api-056/test_symptom.py::test_price_1",
-    "visible_test_ids": [
-      "lab/shop_api/tests/test_api.py::test_empty_catalogue_returns_empty_list",
-      "lab/shop_api/tests/test_api.py::test_list_and_get_product",
-      "lab/shop_api/tests/test_api.py::test_missing_product_is_404",
-      "lab/shop_api/tests/test_api.py::test_create_order_enqueues_job_and_reports_total",
-      "lab/shop_api/tests/test_api.py::test_create_order_validates_input",
-      "lab/shop_api/tests/test_api.py::test_create_order_unknown_product_is_404",
-      "lab/shop_api/tests/test_api.py::test_queue_down_returns_503_and_keeps_pending_order",
-      "lab/shop_api/tests/test_api.py::test_order_total_endpoint",
-      "lab/shop_api/tests/test_api.py::test_order_without_lines_totals_zero",
-      "lab/shop_api/tests/test_api.py::test_health_reports_redis_down",
-      "lab/shop_api/tests/test_api.py::test_health_live_always_ok",
-      "lab/shop_api/tests/test_api.py::test_queue_failure_is_logged_with_traceback",
-      "lab/shop_api/tests/test_api.py::test_validation_failure_is_logged_and_keeps_422_body",
-      "lab/shop_api/tests/test_orders.py::test_checkout_total",
-      "lab/shop_api/tests/test_orders.py::test_total_rounds_half_up_to_two_places",
-      "lab/shop_api/tests/test_orders.py::test_empty_order_total_is_zero",
-      "lab/shop_api/tests/test_orders.py::test_line_total_multiplies",
-      "lab/shop_api/tests/test_orders.py::test_headline_and_counts",
-      "lab/shop_api/tests/test_orders.py::test_average_unit_price",
-      "lab/shop_api/tests/test_orders.py::test_average_unit_price_rejects_zero_units",
-      "lab/shop_api/tests/test_pricing_rules.py::test_reserve_takes_units_and_refuses_shortfall",
-      "lab/shop_api/tests/test_pricing_rules.py::test_low_stock_lists_products_at_or_below_level",
-      "lab/shop_api/tests/test_pricing_rules.py::test_coupon_codes_parse_case_insensitively",
-      "lab/shop_api/tests/test_pricing_rules.py::test_coupon_is_capped_and_unknown_or_expired_is_refused",
-      "lab/shop_api/tests/test_pricing_rules.py::test_discount_shipping_and_tax_amounts",
-      "lab/shop_api/tests/test_pricing_rules.py::test_quote_chains_the_rules_with_default_settings",
-      "lab/shop_api/tests/test_pricing_rules.py::test_quote_with_coupon_and_free_shipping",
-      "lab/shop_api/tests/test_pricing_rules.py::test_order_beyond_stock_is_409_and_saves_nothing",
-      "lab/shop_api/tests/test_pricing_rules.py::test_quote_endpoint_and_unknown_coupon",
-      "lab/shop_api/tests/test_pricing_rules.py::test_low_stock_endpoint",
-      "lab/shop_api/tests/test_settings.py::test_loads_from_env",
-      "lab/shop_api/tests/test_settings.py::test_defaults",
-      "lab/shop_api/tests/test_settings.py::test_credentials_are_required",
-      "lab/shop_api/tests/test_settings.py::test_password_is_not_in_repr",
-      "lab/shop_api/tests/test_settings.py::test_bad_port_rejected"
-    ],
-    "hidden_test_ids": [
-      "datasets/hidden_tests/shop_api-056/test_hidden_behaviour.py::test_price_1",
-      "datasets/hidden_tests/shop_api-056/test_hidden_behaviour.py::test_price_2",
-      "datasets/hidden_tests/shop_api-056/test_hidden_behaviour.py::test_price_3"
-    ],
-    "variant_group": "settings_default:shop_api:max_discount_pct",
-    "origin": "synthetic",
-    "log_format": "plain"
-  },
-  {
-    "case_id": "shop_api-059",
-    "split": "dev",
-    "cause_class": "application_code",
-    "fault_family": "wrong_argument",
-    "service": "shop_api",
-    "base_sha": "5ec94a43f8b9f5728a5d11bb40639588b7495296",
-    "gold_config_keys": [],
-    "gold_symbols": [
-      {
-        "path": "lab/shop_api/app/quote.py",
-        "qualname": "quote",
-        "start_line": 12,
-        "end_line": 35
-      }
-    ],
-    "distance": 1,
-    "reproducer_id": "datasets/reproducers/shop_api-059/test_symptom.py::test_price_1",
-    "visible_test_ids": [
-      "lab/shop_api/tests/test_api.py::test_empty_catalogue_returns_empty_list",
-      "lab/shop_api/tests/test_api.py::test_list_and_get_product",
-      "lab/shop_api/tests/test_api.py::test_missing_product_is_404",
-      "lab/shop_api/tests/test_api.py::test_create_order_enqueues_job_and_reports_total",
-      "lab/shop_api/tests/test_api.py::test_create_order_validates_input",
-      "lab/shop_api/tests/test_api.py::test_create_order_unknown_product_is_404",
-      "lab/shop_api/tests/test_api.py::test_queue_down_returns_503_and_keeps_pending_order",
-      "lab/shop_api/tests/test_api.py::test_order_total_endpoint",
-      "lab/shop_api/tests/test_api.py::test_order_without_lines_totals_zero",
-      "lab/shop_api/tests/test_api.py::test_health_reports_redis_down",
-      "lab/shop_api/tests/test_api.py::test_health_live_always_ok",
-      "lab/shop_api/tests/test_api.py::test_queue_failure_is_logged_with_traceback",
-      "lab/shop_api/tests/test_api.py::test_validation_failure_is_logged_and_keeps_422_body",
-      "lab/shop_api/tests/test_orders.py::test_checkout_total",
-      "lab/shop_api/tests/test_orders.py::test_total_rounds_half_up_to_two_places",
-      "lab/shop_api/tests/test_orders.py::test_empty_order_total_is_zero",
-      "lab/shop_api/tests/test_orders.py::test_line_total_multiplies",
-      "lab/shop_api/tests/test_orders.py::test_headline_and_counts",
-      "lab/shop_api/tests/test_orders.py::test_average_unit_price",
-      "lab/shop_api/tests/test_orders.py::test_average_unit_price_rejects_zero_units",
-      "lab/shop_api/tests/test_pricing_rules.py::test_reserve_takes_units_and_refuses_shortfall",
-      "lab/shop_api/tests/test_pricing_rules.py::test_low_stock_lists_products_at_or_below_level",
-      "lab/shop_api/tests/test_pricing_rules.py::test_coupon_codes_parse_case_insensitively",
-      "lab/shop_api/tests/test_pricing_rules.py::test_coupon_is_capped_and_unknown_or_expired_is_refused",
-      "lab/shop_api/tests/test_pricing_rules.py::test_discount_shipping_and_tax_amounts",
-      "lab/shop_api/tests/test_pricing_rules.py::test_quote_chains_the_rules_with_default_settings",
-      "lab/shop_api/tests/test_pricing_rules.py::test_quote_with_coupon_and_free_shipping",
-      "lab/shop_api/tests/test_pricing_rules.py::test_order_beyond_stock_is_409_and_saves_nothing",
-      "lab/shop_api/tests/test_pricing_rules.py::test_quote_endpoint_and_unknown_coupon",
-      "lab/shop_api/tests/test_pricing_rules.py::test_low_stock_endpoint",
-      "lab/shop_api/tests/test_settings.py::test_loads_from_env",
-      "lab/shop_api/tests/test_settings.py::test_defaults",
-      "lab/shop_api/tests/test_settings.py::test_credentials_are_required",
-      "lab/shop_api/tests/test_settings.py::test_password_is_not_in_repr",
-      "lab/shop_api/tests/test_settings.py::test_bad_port_rejected"
-    ],
-    "hidden_test_ids": [
-      "datasets/hidden_tests/shop_api-059/test_hidden_behaviour.py::test_price_1",
-      "datasets/hidden_tests/shop_api-059/test_hidden_behaviour.py::test_price_2",
-      "datasets/hidden_tests/shop_api-059/test_hidden_behaviour.py::test_price_3"
-    ],
-    "variant_group": "code:tax_base",
-    "origin": "synthetic",
-    "log_format": "uvicorn_access"
-  },
-  {
-    "case_id": "shop_api-068",
-    "split": "dev",
-    "cause_class": "application_code",
-    "fault_family": "wrong_state_update",
-    "service": "shop_api",
-    "base_sha": "5ec94a43f8b9f5728a5d11bb40639588b7495296",
-    "gold_config_keys": [],
-    "gold_symbols": [
-      {
-        "path": "lab/shop_api/app/inventory.py",
-        "qualname": "reserve",
-        "start_line": 19,
-        "end_line": 23
-      }
-    ],
-    "distance": 2,
-    "reproducer_id": "datasets/reproducers/shop_api-068/test_symptom.py::test_stock_1",
-    "visible_test_ids": [
-      "lab/shop_api/tests/test_api.py::test_empty_catalogue_returns_empty_list",
-      "lab/shop_api/tests/test_api.py::test_list_and_get_product",
-      "lab/shop_api/tests/test_api.py::test_missing_product_is_404",
-      "lab/shop_api/tests/test_api.py::test_create_order_enqueues_job_and_reports_total",
-      "lab/shop_api/tests/test_api.py::test_create_order_validates_input",
-      "lab/shop_api/tests/test_api.py::test_create_order_unknown_product_is_404",
-      "lab/shop_api/tests/test_api.py::test_queue_down_returns_503_and_keeps_pending_order",
-      "lab/shop_api/tests/test_api.py::test_order_total_endpoint",
-      "lab/shop_api/tests/test_api.py::test_order_without_lines_totals_zero",
-      "lab/shop_api/tests/test_api.py::test_health_reports_redis_down",
-      "lab/shop_api/tests/test_api.py::test_health_live_always_ok",
-      "lab/shop_api/tests/test_api.py::test_queue_failure_is_logged_with_traceback",
-      "lab/shop_api/tests/test_api.py::test_validation_failure_is_logged_and_keeps_422_body",
-      "lab/shop_api/tests/test_orders.py::test_checkout_total",
-      "lab/shop_api/tests/test_orders.py::test_total_rounds_half_up_to_two_places",
-      "lab/shop_api/tests/test_orders.py::test_empty_order_total_is_zero",
-      "lab/shop_api/tests/test_orders.py::test_line_total_multiplies",
-      "lab/shop_api/tests/test_orders.py::test_headline_and_counts",
-      "lab/shop_api/tests/test_orders.py::test_average_unit_price",
-      "lab/shop_api/tests/test_orders.py::test_average_unit_price_rejects_zero_units",
-      "lab/shop_api/tests/test_pricing_rules.py::test_reserve_takes_units_and_refuses_shortfall",
-      "lab/shop_api/tests/test_pricing_rules.py::test_low_stock_lists_products_at_or_below_level",
-      "lab/shop_api/tests/test_pricing_rules.py::test_coupon_codes_parse_case_insensitively",
-      "lab/shop_api/tests/test_pricing_rules.py::test_coupon_is_capped_and_unknown_or_expired_is_refused",
-      "lab/shop_api/tests/test_pricing_rules.py::test_discount_shipping_and_tax_amounts",
-      "lab/shop_api/tests/test_pricing_rules.py::test_quote_chains_the_rules_with_default_settings",
-      "lab/shop_api/tests/test_pricing_rules.py::test_quote_with_coupon_and_free_shipping",
-      "lab/shop_api/tests/test_pricing_rules.py::test_order_beyond_stock_is_409_and_saves_nothing",
-      "lab/shop_api/tests/test_pricing_rules.py::test_quote_endpoint_and_unknown_coupon",
-      "lab/shop_api/tests/test_pricing_rules.py::test_low_stock_endpoint",
-      "lab/shop_api/tests/test_settings.py::test_loads_from_env",
-      "lab/shop_api/tests/test_settings.py::test_defaults",
-      "lab/shop_api/tests/test_settings.py::test_credentials_are_required",
-      "lab/shop_api/tests/test_settings.py::test_password_is_not_in_repr",
-      "lab/shop_api/tests/test_settings.py::test_bad_port_rejected"
-    ],
-    "hidden_test_ids": [
-      "datasets/hidden_tests/shop_api-068/test_hidden_behaviour.py::test_stock_1",
-      "datasets/hidden_tests/shop_api-068/test_hidden_behaviour.py::test_stock_2",
-      "datasets/hidden_tests/shop_api-068/test_hidden_behaviour.py::test_stock_3"
-    ],
-    "variant_group": "code:stock_decrement",
-    "origin": "synthetic",
-    "log_format": "uvicorn_access"
-  },
-  {
-    "case_id": "shop_api-074",
     "split": "dev",
     "cause_class": "configuration",
     "fault_family": "wrong_unit",
@@ -860,7 +641,7 @@
       }
     ],
     "distance": 1,
-    "reproducer_id": "datasets/reproducers/shop_api-074/test_symptom.py::test_job_1",
+    "reproducer_id": "datasets/reproducers/shop_api-056/test_symptom.py::test_job_1",
     "visible_test_ids": [
       "lab/worker/tests/test_emails.py::test_render_confirmation",
       "lab/worker/tests/test_queue.py::test_consume_one_job",
@@ -878,81 +659,16 @@
       "lab/worker/tests/test_settings.py::test_defaults_match_the_api_contract"
     ],
     "hidden_test_ids": [
-      "datasets/hidden_tests/shop_api-074/test_hidden_behaviour.py::test_job_1",
-      "datasets/hidden_tests/shop_api-074/test_hidden_behaviour.py::test_job_2",
-      "datasets/hidden_tests/shop_api-074/test_hidden_behaviour.py::test_job_3"
+      "datasets/hidden_tests/shop_api-056/test_hidden_behaviour.py::test_job_1",
+      "datasets/hidden_tests/shop_api-056/test_hidden_behaviour.py::test_job_2",
+      "datasets/hidden_tests/shop_api-056/test_hidden_behaviour.py::test_job_3"
     ],
     "variant_group": "settings_default:worker:backoff_base_s",
     "origin": "synthetic",
     "log_format": "plain"
   },
   {
-    "case_id": "shop_api-081",
-    "split": "dev",
-    "cause_class": "configuration",
-    "fault_family": "wrong_value",
-    "service": "shop_api",
-    "base_sha": "5ec94a43f8b9f5728a5d11bb40639588b7495296",
-    "gold_config_keys": [
-      "shop_api.LOW_STOCK_LEVEL"
-    ],
-    "gold_symbols": [
-      {
-        "path": "lab/shop_api/app/settings.py",
-        "qualname": "Settings.low_stock_level",
-        "start_line": 30,
-        "end_line": 30
-      }
-    ],
-    "distance": 1,
-    "reproducer_id": "datasets/reproducers/shop_api-081/test_symptom.py::test_stock_1",
-    "visible_test_ids": [
-      "lab/shop_api/tests/test_api.py::test_empty_catalogue_returns_empty_list",
-      "lab/shop_api/tests/test_api.py::test_list_and_get_product",
-      "lab/shop_api/tests/test_api.py::test_missing_product_is_404",
-      "lab/shop_api/tests/test_api.py::test_create_order_enqueues_job_and_reports_total",
-      "lab/shop_api/tests/test_api.py::test_create_order_validates_input",
-      "lab/shop_api/tests/test_api.py::test_create_order_unknown_product_is_404",
-      "lab/shop_api/tests/test_api.py::test_queue_down_returns_503_and_keeps_pending_order",
-      "lab/shop_api/tests/test_api.py::test_order_total_endpoint",
-      "lab/shop_api/tests/test_api.py::test_order_without_lines_totals_zero",
-      "lab/shop_api/tests/test_api.py::test_health_reports_redis_down",
-      "lab/shop_api/tests/test_api.py::test_health_live_always_ok",
-      "lab/shop_api/tests/test_api.py::test_queue_failure_is_logged_with_traceback",
-      "lab/shop_api/tests/test_api.py::test_validation_failure_is_logged_and_keeps_422_body",
-      "lab/shop_api/tests/test_orders.py::test_checkout_total",
-      "lab/shop_api/tests/test_orders.py::test_total_rounds_half_up_to_two_places",
-      "lab/shop_api/tests/test_orders.py::test_empty_order_total_is_zero",
-      "lab/shop_api/tests/test_orders.py::test_line_total_multiplies",
-      "lab/shop_api/tests/test_orders.py::test_headline_and_counts",
-      "lab/shop_api/tests/test_orders.py::test_average_unit_price",
-      "lab/shop_api/tests/test_orders.py::test_average_unit_price_rejects_zero_units",
-      "lab/shop_api/tests/test_pricing_rules.py::test_reserve_takes_units_and_refuses_shortfall",
-      "lab/shop_api/tests/test_pricing_rules.py::test_low_stock_lists_products_at_or_below_level",
-      "lab/shop_api/tests/test_pricing_rules.py::test_coupon_codes_parse_case_insensitively",
-      "lab/shop_api/tests/test_pricing_rules.py::test_coupon_is_capped_and_unknown_or_expired_is_refused",
-      "lab/shop_api/tests/test_pricing_rules.py::test_discount_shipping_and_tax_amounts",
-      "lab/shop_api/tests/test_pricing_rules.py::test_quote_chains_the_rules_with_default_settings",
-      "lab/shop_api/tests/test_pricing_rules.py::test_quote_with_coupon_and_free_shipping",
-      "lab/shop_api/tests/test_pricing_rules.py::test_order_beyond_stock_is_409_and_saves_nothing",
-      "lab/shop_api/tests/test_pricing_rules.py::test_quote_endpoint_and_unknown_coupon",
-      "lab/shop_api/tests/test_pricing_rules.py::test_low_stock_endpoint",
-      "lab/shop_api/tests/test_settings.py::test_loads_from_env",
-      "lab/shop_api/tests/test_settings.py::test_defaults",
-      "lab/shop_api/tests/test_settings.py::test_credentials_are_required",
-      "lab/shop_api/tests/test_settings.py::test_password_is_not_in_repr",
-      "lab/shop_api/tests/test_settings.py::test_bad_port_rejected"
-    ],
-    "hidden_test_ids": [
-      "datasets/hidden_tests/shop_api-081/test_hidden_behaviour.py::test_stock_1",
-      "datasets/hidden_tests/shop_api-081/test_hidden_behaviour.py::test_stock_2"
-    ],
-    "variant_group": "settings_default:shop_api:low_stock_level",
-    "origin": "synthetic",
-    "log_format": "plain"
-  },
-  {
-    "case_id": "shop_api-086",
+    "case_id": "shop_api-058",
     "split": "dev",
     "cause_class": "application_code",
     "fault_family": "wrong_argument",
@@ -968,7 +684,7 @@
       }
     ],
     "distance": 1,
-    "reproducer_id": "datasets/reproducers/shop_api-086/test_symptom.py::test_price_1",
+    "reproducer_id": "datasets/reproducers/shop_api-058/test_symptom.py::test_price_1",
     "visible_test_ids": [
       "lab/shop_api/tests/test_api.py::test_empty_catalogue_returns_empty_list",
       "lab/shop_api/tests/test_api.py::test_list_and_get_product",
@@ -1007,16 +723,170 @@
       "lab/shop_api/tests/test_settings.py::test_bad_port_rejected"
     ],
     "hidden_test_ids": [
-      "datasets/hidden_tests/shop_api-086/test_hidden_behaviour.py::test_price_1",
-      "datasets/hidden_tests/shop_api-086/test_hidden_behaviour.py::test_price_2",
-      "datasets/hidden_tests/shop_api-086/test_hidden_behaviour.py::test_price_3"
+      "datasets/hidden_tests/shop_api-058/test_hidden_behaviour.py::test_price_1",
+      "datasets/hidden_tests/shop_api-058/test_hidden_behaviour.py::test_price_2",
+      "datasets/hidden_tests/shop_api-058/test_hidden_behaviour.py::test_price_3"
     ],
     "variant_group": "code:tax_base",
     "origin": "synthetic",
     "log_format": "uvicorn_access"
   },
   {
-    "case_id": "shop_api-089",
+    "case_id": "shop_api-063",
+    "split": "dev",
+    "cause_class": "configuration",
+    "fault_family": "wrong_unit",
+    "service": "worker",
+    "base_sha": "5ec94a43f8b9f5728a5d11bb40639588b7495296",
+    "gold_config_keys": [
+      "worker.BACKOFF_BASE_S"
+    ],
+    "gold_symbols": [
+      {
+        "path": "lab/worker/settings.py",
+        "qualname": "WorkerSettings.backoff_base_s",
+        "start_line": 21,
+        "end_line": 21
+      }
+    ],
+    "distance": 1,
+    "reproducer_id": "datasets/reproducers/shop_api-063/test_symptom.py::test_job_1",
+    "visible_test_ids": [
+      "lab/worker/tests/test_emails.py::test_render_confirmation",
+      "lab/worker/tests/test_queue.py::test_consume_one_job",
+      "lab/worker/tests/test_queue.py::test_empty_queue_returns_false",
+      "lab/worker/tests/test_queue.py::test_confirm_is_idempotent",
+      "lab/worker/tests/test_queue.py::test_failing_job_retries_three_times_then_dead_letters",
+      "lab/worker/tests/test_queue.py::test_unknown_order_is_dead_lettered",
+      "lab/worker/tests/test_queue.py::test_malformed_payload_is_dead_lettered",
+      "lab/worker/tests/test_queue.py::test_backoff_delays_double",
+      "lab/worker/tests/test_queue.py::test_heartbeat_sets_key_with_15s_ttl",
+      "lab/worker/tests/test_queue.py::test_connect_retries_until_broker_is_up",
+      "lab/worker/tests/test_queue.py::test_connect_gives_up_loudly",
+      "lab/worker/tests/test_settings.py::test_env_overrides",
+      "lab/worker/tests/test_settings.py::test_credentials_required",
+      "lab/worker/tests/test_settings.py::test_defaults_match_the_api_contract"
+    ],
+    "hidden_test_ids": [
+      "datasets/hidden_tests/shop_api-063/test_hidden_behaviour.py::test_job_1",
+      "datasets/hidden_tests/shop_api-063/test_hidden_behaviour.py::test_job_2",
+      "datasets/hidden_tests/shop_api-063/test_hidden_behaviour.py::test_job_3"
+    ],
+    "variant_group": "settings_default:worker:backoff_base_s",
+    "origin": "synthetic",
+    "log_format": "plain"
+  },
+  {
+    "case_id": "shop_api-067",
+    "split": "dev",
+    "cause_class": "application_code",
+    "fault_family": "wrong_state_update",
+    "service": "shop_api",
+    "base_sha": "5ec94a43f8b9f5728a5d11bb40639588b7495296",
+    "gold_config_keys": [],
+    "gold_symbols": [
+      {
+        "path": "lab/shop_api/app/inventory.py",
+        "qualname": "reserve",
+        "start_line": 19,
+        "end_line": 23
+      }
+    ],
+    "distance": 2,
+    "reproducer_id": "datasets/reproducers/shop_api-067/test_symptom.py::test_stock_1",
+    "visible_test_ids": [
+      "lab/shop_api/tests/test_api.py::test_empty_catalogue_returns_empty_list",
+      "lab/shop_api/tests/test_api.py::test_list_and_get_product",
+      "lab/shop_api/tests/test_api.py::test_missing_product_is_404",
+      "lab/shop_api/tests/test_api.py::test_create_order_enqueues_job_and_reports_total",
+      "lab/shop_api/tests/test_api.py::test_create_order_validates_input",
+      "lab/shop_api/tests/test_api.py::test_create_order_unknown_product_is_404",
+      "lab/shop_api/tests/test_api.py::test_queue_down_returns_503_and_keeps_pending_order",
+      "lab/shop_api/tests/test_api.py::test_order_total_endpoint",
+      "lab/shop_api/tests/test_api.py::test_order_without_lines_totals_zero",
+      "lab/shop_api/tests/test_api.py::test_health_reports_redis_down",
+      "lab/shop_api/tests/test_api.py::test_health_live_always_ok",
+      "lab/shop_api/tests/test_api.py::test_queue_failure_is_logged_with_traceback",
+      "lab/shop_api/tests/test_api.py::test_validation_failure_is_logged_and_keeps_422_body",
+      "lab/shop_api/tests/test_orders.py::test_checkout_total",
+      "lab/shop_api/tests/test_orders.py::test_total_rounds_half_up_to_two_places",
+      "lab/shop_api/tests/test_orders.py::test_empty_order_total_is_zero",
+      "lab/shop_api/tests/test_orders.py::test_line_total_multiplies",
+      "lab/shop_api/tests/test_orders.py::test_headline_and_counts",
+      "lab/shop_api/tests/test_orders.py::test_average_unit_price",
+      "lab/shop_api/tests/test_orders.py::test_average_unit_price_rejects_zero_units",
+      "lab/shop_api/tests/test_pricing_rules.py::test_reserve_takes_units_and_refuses_shortfall",
+      "lab/shop_api/tests/test_pricing_rules.py::test_low_stock_lists_products_at_or_below_level",
+      "lab/shop_api/tests/test_pricing_rules.py::test_coupon_codes_parse_case_insensitively",
+      "lab/shop_api/tests/test_pricing_rules.py::test_coupon_is_capped_and_unknown_or_expired_is_refused",
+      "lab/shop_api/tests/test_pricing_rules.py::test_discount_shipping_and_tax_amounts",
+      "lab/shop_api/tests/test_pricing_rules.py::test_quote_chains_the_rules_with_default_settings",
+      "lab/shop_api/tests/test_pricing_rules.py::test_quote_with_coupon_and_free_shipping",
+      "lab/shop_api/tests/test_pricing_rules.py::test_order_beyond_stock_is_409_and_saves_nothing",
+      "lab/shop_api/tests/test_pricing_rules.py::test_quote_endpoint_and_unknown_coupon",
+      "lab/shop_api/tests/test_pricing_rules.py::test_low_stock_endpoint",
+      "lab/shop_api/tests/test_settings.py::test_loads_from_env",
+      "lab/shop_api/tests/test_settings.py::test_defaults",
+      "lab/shop_api/tests/test_settings.py::test_credentials_are_required",
+      "lab/shop_api/tests/test_settings.py::test_password_is_not_in_repr",
+      "lab/shop_api/tests/test_settings.py::test_bad_port_rejected"
+    ],
+    "hidden_test_ids": [
+      "datasets/hidden_tests/shop_api-067/test_hidden_behaviour.py::test_stock_1",
+      "datasets/hidden_tests/shop_api-067/test_hidden_behaviour.py::test_stock_2",
+      "datasets/hidden_tests/shop_api-067/test_hidden_behaviour.py::test_stock_3"
+    ],
+    "variant_group": "code:stock_decrement",
+    "origin": "synthetic",
+    "log_format": "uvicorn_access"
+  },
+  {
+    "case_id": "shop_api-071",
+    "split": "dev",
+    "cause_class": "configuration",
+    "fault_family": "wrong_unit",
+    "service": "worker",
+    "base_sha": "5ec94a43f8b9f5728a5d11bb40639588b7495296",
+    "gold_config_keys": [
+      "worker.BACKOFF_BASE_S"
+    ],
+    "gold_symbols": [
+      {
+        "path": "lab/worker/settings.py",
+        "qualname": "WorkerSettings.backoff_base_s",
+        "start_line": 21,
+        "end_line": 21
+      }
+    ],
+    "distance": 1,
+    "reproducer_id": "datasets/reproducers/shop_api-071/test_symptom.py::test_job_1",
+    "visible_test_ids": [
+      "lab/worker/tests/test_emails.py::test_render_confirmation",
+      "lab/worker/tests/test_queue.py::test_consume_one_job",
+      "lab/worker/tests/test_queue.py::test_empty_queue_returns_false",
+      "lab/worker/tests/test_queue.py::test_confirm_is_idempotent",
+      "lab/worker/tests/test_queue.py::test_failing_job_retries_three_times_then_dead_letters",
+      "lab/worker/tests/test_queue.py::test_unknown_order_is_dead_lettered",
+      "lab/worker/tests/test_queue.py::test_malformed_payload_is_dead_lettered",
+      "lab/worker/tests/test_queue.py::test_backoff_delays_double",
+      "lab/worker/tests/test_queue.py::test_heartbeat_sets_key_with_15s_ttl",
+      "lab/worker/tests/test_queue.py::test_connect_retries_until_broker_is_up",
+      "lab/worker/tests/test_queue.py::test_connect_gives_up_loudly",
+      "lab/worker/tests/test_settings.py::test_env_overrides",
+      "lab/worker/tests/test_settings.py::test_credentials_required",
+      "lab/worker/tests/test_settings.py::test_defaults_match_the_api_contract"
+    ],
+    "hidden_test_ids": [
+      "datasets/hidden_tests/shop_api-071/test_hidden_behaviour.py::test_job_1",
+      "datasets/hidden_tests/shop_api-071/test_hidden_behaviour.py::test_job_2",
+      "datasets/hidden_tests/shop_api-071/test_hidden_behaviour.py::test_job_3"
+    ],
+    "variant_group": "settings_default:worker:backoff_base_s",
+    "origin": "synthetic",
+    "log_format": "plain"
+  },
+  {
+    "case_id": "shop_api-080",
     "split": "dev",
     "cause_class": "configuration",
     "fault_family": "wrong_value",
@@ -1034,7 +904,7 @@
       }
     ],
     "distance": 1,
-    "reproducer_id": "datasets/reproducers/shop_api-089/test_symptom.py::test_stock_1",
+    "reproducer_id": "datasets/reproducers/shop_api-080/test_symptom.py::test_stock_1",
     "visible_test_ids": [
       "lab/shop_api/tests/test_api.py::test_empty_catalogue_returns_empty_list",
       "lab/shop_api/tests/test_api.py::test_list_and_get_product",
@@ -1073,13 +943,76 @@
       "lab/shop_api/tests/test_settings.py::test_bad_port_rejected"
     ],
     "hidden_test_ids": [
-      "datasets/hidden_tests/shop_api-089/test_hidden_behaviour.py::test_stock_1",
-      "datasets/hidden_tests/shop_api-089/test_hidden_behaviour.py::test_stock_2",
-      "datasets/hidden_tests/shop_api-089/test_hidden_behaviour.py::test_stock_3"
+      "datasets/hidden_tests/shop_api-080/test_hidden_behaviour.py::test_stock_1",
+      "datasets/hidden_tests/shop_api-080/test_hidden_behaviour.py::test_stock_2"
     ],
     "variant_group": "settings_default:shop_api:low_stock_level",
     "origin": "synthetic",
     "log_format": "plain"
+  },
+  {
+    "case_id": "shop_api-085",
+    "split": "dev",
+    "cause_class": "application_code",
+    "fault_family": "wrong_argument",
+    "service": "shop_api",
+    "base_sha": "5ec94a43f8b9f5728a5d11bb40639588b7495296",
+    "gold_config_keys": [],
+    "gold_symbols": [
+      {
+        "path": "lab/shop_api/app/quote.py",
+        "qualname": "quote",
+        "start_line": 12,
+        "end_line": 35
+      }
+    ],
+    "distance": 1,
+    "reproducer_id": "datasets/reproducers/shop_api-085/test_symptom.py::test_price_1",
+    "visible_test_ids": [
+      "lab/shop_api/tests/test_api.py::test_empty_catalogue_returns_empty_list",
+      "lab/shop_api/tests/test_api.py::test_list_and_get_product",
+      "lab/shop_api/tests/test_api.py::test_missing_product_is_404",
+      "lab/shop_api/tests/test_api.py::test_create_order_enqueues_job_and_reports_total",
+      "lab/shop_api/tests/test_api.py::test_create_order_validates_input",
+      "lab/shop_api/tests/test_api.py::test_create_order_unknown_product_is_404",
+      "lab/shop_api/tests/test_api.py::test_queue_down_returns_503_and_keeps_pending_order",
+      "lab/shop_api/tests/test_api.py::test_order_total_endpoint",
+      "lab/shop_api/tests/test_api.py::test_order_without_lines_totals_zero",
+      "lab/shop_api/tests/test_api.py::test_health_reports_redis_down",
+      "lab/shop_api/tests/test_api.py::test_health_live_always_ok",
+      "lab/shop_api/tests/test_api.py::test_queue_failure_is_logged_with_traceback",
+      "lab/shop_api/tests/test_api.py::test_validation_failure_is_logged_and_keeps_422_body",
+      "lab/shop_api/tests/test_orders.py::test_checkout_total",
+      "lab/shop_api/tests/test_orders.py::test_total_rounds_half_up_to_two_places",
+      "lab/shop_api/tests/test_orders.py::test_empty_order_total_is_zero",
+      "lab/shop_api/tests/test_orders.py::test_line_total_multiplies",
+      "lab/shop_api/tests/test_orders.py::test_headline_and_counts",
+      "lab/shop_api/tests/test_orders.py::test_average_unit_price",
+      "lab/shop_api/tests/test_orders.py::test_average_unit_price_rejects_zero_units",
+      "lab/shop_api/tests/test_pricing_rules.py::test_reserve_takes_units_and_refuses_shortfall",
+      "lab/shop_api/tests/test_pricing_rules.py::test_low_stock_lists_products_at_or_below_level",
+      "lab/shop_api/tests/test_pricing_rules.py::test_coupon_codes_parse_case_insensitively",
+      "lab/shop_api/tests/test_pricing_rules.py::test_coupon_is_capped_and_unknown_or_expired_is_refused",
+      "lab/shop_api/tests/test_pricing_rules.py::test_discount_shipping_and_tax_amounts",
+      "lab/shop_api/tests/test_pricing_rules.py::test_quote_chains_the_rules_with_default_settings",
+      "lab/shop_api/tests/test_pricing_rules.py::test_quote_with_coupon_and_free_shipping",
+      "lab/shop_api/tests/test_pricing_rules.py::test_order_beyond_stock_is_409_and_saves_nothing",
+      "lab/shop_api/tests/test_pricing_rules.py::test_quote_endpoint_and_unknown_coupon",
+      "lab/shop_api/tests/test_pricing_rules.py::test_low_stock_endpoint",
+      "lab/shop_api/tests/test_settings.py::test_loads_from_env",
+      "lab/shop_api/tests/test_settings.py::test_defaults",
+      "lab/shop_api/tests/test_settings.py::test_credentials_are_required",
+      "lab/shop_api/tests/test_settings.py::test_password_is_not_in_repr",
+      "lab/shop_api/tests/test_settings.py::test_bad_port_rejected"
+    ],
+    "hidden_test_ids": [
+      "datasets/hidden_tests/shop_api-085/test_hidden_behaviour.py::test_price_1",
+      "datasets/hidden_tests/shop_api-085/test_hidden_behaviour.py::test_price_2",
+      "datasets/hidden_tests/shop_api-085/test_hidden_behaviour.py::test_price_3"
+    ],
+    "variant_group": "code:tax_base",
+    "origin": "synthetic",
+    "log_format": "uvicorn_access"
   },
   {
     "case_id": "shop_api-096",
@@ -1340,7 +1273,7 @@
     "log_format": "uvicorn_access"
   },
   {
-    "case_id": "shop_api-121",
+    "case_id": "shop_api-120",
     "split": "dev",
     "cause_class": "configuration",
     "fault_family": "wrong_value",
@@ -1358,7 +1291,7 @@
       }
     ],
     "distance": 1,
-    "reproducer_id": "datasets/reproducers/shop_api-121/test_symptom.py::test_stock_1",
+    "reproducer_id": "datasets/reproducers/shop_api-120/test_symptom.py::test_stock_1",
     "visible_test_ids": [
       "lab/shop_api/tests/test_api.py::test_empty_catalogue_returns_empty_list",
       "lab/shop_api/tests/test_api.py::test_list_and_get_product",
@@ -1397,15 +1330,16 @@
       "lab/shop_api/tests/test_settings.py::test_bad_port_rejected"
     ],
     "hidden_test_ids": [
-      "datasets/hidden_tests/shop_api-121/test_hidden_behaviour.py::test_stock_1",
-      "datasets/hidden_tests/shop_api-121/test_hidden_behaviour.py::test_stock_2"
+      "datasets/hidden_tests/shop_api-120/test_hidden_behaviour.py::test_stock_1",
+      "datasets/hidden_tests/shop_api-120/test_hidden_behaviour.py::test_stock_2",
+      "datasets/hidden_tests/shop_api-120/test_hidden_behaviour.py::test_stock_3"
     ],
     "variant_group": "settings_default:shop_api:low_stock_level",
     "origin": "synthetic",
     "log_format": "plain"
   },
   {
-    "case_id": "shop_api-125",
+    "case_id": "shop_api-124",
     "split": "dev",
     "cause_class": "configuration",
     "fault_family": "wrong_value",
@@ -1423,7 +1357,7 @@
       }
     ],
     "distance": 1,
-    "reproducer_id": "datasets/reproducers/shop_api-125/test_symptom.py::test_price_1",
+    "reproducer_id": "datasets/reproducers/shop_api-124/test_symptom.py::test_price_1",
     "visible_test_ids": [
       "lab/shop_api/tests/test_api.py::test_empty_catalogue_returns_empty_list",
       "lab/shop_api/tests/test_api.py::test_list_and_get_product",
@@ -1462,16 +1396,16 @@
       "lab/shop_api/tests/test_settings.py::test_bad_port_rejected"
     ],
     "hidden_test_ids": [
-      "datasets/hidden_tests/shop_api-125/test_hidden_behaviour.py::test_price_1",
-      "datasets/hidden_tests/shop_api-125/test_hidden_behaviour.py::test_price_2",
-      "datasets/hidden_tests/shop_api-125/test_hidden_behaviour.py::test_price_3"
+      "datasets/hidden_tests/shop_api-124/test_hidden_behaviour.py::test_price_1",
+      "datasets/hidden_tests/shop_api-124/test_hidden_behaviour.py::test_price_2",
+      "datasets/hidden_tests/shop_api-124/test_hidden_behaviour.py::test_price_3"
     ],
     "variant_group": "settings_default:shop_api:max_discount_pct",
     "origin": "synthetic",
     "log_format": "plain"
   },
   {
-    "case_id": "shop_api-131",
+    "case_id": "shop_api-130",
     "split": "dev",
     "cause_class": "configuration",
     "fault_family": "wrong_value",
@@ -1489,7 +1423,7 @@
       }
     ],
     "distance": 1,
-    "reproducer_id": "datasets/reproducers/shop_api-131/test_symptom.py::test_stock_1",
+    "reproducer_id": "datasets/reproducers/shop_api-130/test_symptom.py::test_stock_1",
     "visible_test_ids": [
       "lab/shop_api/tests/test_api.py::test_empty_catalogue_returns_empty_list",
       "lab/shop_api/tests/test_api.py::test_list_and_get_product",
@@ -1528,16 +1462,16 @@
       "lab/shop_api/tests/test_settings.py::test_bad_port_rejected"
     ],
     "hidden_test_ids": [
-      "datasets/hidden_tests/shop_api-131/test_hidden_behaviour.py::test_stock_1",
-      "datasets/hidden_tests/shop_api-131/test_hidden_behaviour.py::test_stock_2",
-      "datasets/hidden_tests/shop_api-131/test_hidden_behaviour.py::test_stock_3"
+      "datasets/hidden_tests/shop_api-130/test_hidden_behaviour.py::test_stock_1",
+      "datasets/hidden_tests/shop_api-130/test_hidden_behaviour.py::test_stock_2",
+      "datasets/hidden_tests/shop_api-130/test_hidden_behaviour.py::test_stock_3"
     ],
     "variant_group": "settings_default:shop_api:low_stock_level",
     "origin": "synthetic",
     "log_format": "plain"
   },
   {
-    "case_id": "shop_api-139",
+    "case_id": "shop_api-138",
     "split": "dev",
     "cause_class": "configuration",
     "fault_family": "wrong_value",
@@ -1555,7 +1489,7 @@
       }
     ],
     "distance": 1,
-    "reproducer_id": "datasets/reproducers/shop_api-139/test_symptom.py::test_price_1",
+    "reproducer_id": "datasets/reproducers/shop_api-138/test_symptom.py::test_price_1",
     "visible_test_ids": [
       "lab/shop_api/tests/test_api.py::test_empty_catalogue_returns_empty_list",
       "lab/shop_api/tests/test_api.py::test_list_and_get_product",
@@ -1594,16 +1528,16 @@
       "lab/shop_api/tests/test_settings.py::test_bad_port_rejected"
     ],
     "hidden_test_ids": [
-      "datasets/hidden_tests/shop_api-139/test_hidden_behaviour.py::test_price_1",
-      "datasets/hidden_tests/shop_api-139/test_hidden_behaviour.py::test_price_2",
-      "datasets/hidden_tests/shop_api-139/test_hidden_behaviour.py::test_price_3"
+      "datasets/hidden_tests/shop_api-138/test_hidden_behaviour.py::test_price_1",
+      "datasets/hidden_tests/shop_api-138/test_hidden_behaviour.py::test_price_2",
+      "datasets/hidden_tests/shop_api-138/test_hidden_behaviour.py::test_price_3"
     ],
     "variant_group": "settings_default:shop_api:max_discount_pct",
     "origin": "synthetic",
     "log_format": "plain"
   },
   {
-    "case_id": "shop_api-141",
+    "case_id": "shop_api-140",
     "split": "dev",
     "cause_class": "application_code",
     "fault_family": "wrong_formula",
@@ -1619,7 +1553,7 @@
       }
     ],
     "distance": 2,
-    "reproducer_id": "datasets/reproducers/shop_api-141/test_symptom.py::test_price_1",
+    "reproducer_id": "datasets/reproducers/shop_api-140/test_symptom.py::test_price_1",
     "visible_test_ids": [
       "lab/shop_api/tests/test_api.py::test_empty_catalogue_returns_empty_list",
       "lab/shop_api/tests/test_api.py::test_list_and_get_product",
@@ -1658,16 +1592,16 @@
       "lab/shop_api/tests/test_settings.py::test_bad_port_rejected"
     ],
     "hidden_test_ids": [
-      "datasets/hidden_tests/shop_api-141/test_hidden_behaviour.py::test_price_1",
-      "datasets/hidden_tests/shop_api-141/test_hidden_behaviour.py::test_price_2",
-      "datasets/hidden_tests/shop_api-141/test_hidden_behaviour.py::test_price_3"
+      "datasets/hidden_tests/shop_api-140/test_hidden_behaviour.py::test_price_1",
+      "datasets/hidden_tests/shop_api-140/test_hidden_behaviour.py::test_price_2",
+      "datasets/hidden_tests/shop_api-140/test_hidden_behaviour.py::test_price_3"
     ],
     "variant_group": "code:discount_formula",
     "origin": "synthetic",
     "log_format": "uvicorn_access"
   },
   {
-    "case_id": "shop_api-152",
+    "case_id": "shop_api-151",
     "split": "dev",
     "cause_class": "configuration",
     "fault_family": "wrong_unit",
@@ -1685,7 +1619,7 @@
       }
     ],
     "distance": 1,
-    "reproducer_id": "datasets/reproducers/shop_api-152/test_symptom.py::test_job_1",
+    "reproducer_id": "datasets/reproducers/shop_api-151/test_symptom.py::test_job_1",
     "visible_test_ids": [
       "lab/worker/tests/test_emails.py::test_render_confirmation",
       "lab/worker/tests/test_queue.py::test_consume_one_job",
@@ -1703,16 +1637,16 @@
       "lab/worker/tests/test_settings.py::test_defaults_match_the_api_contract"
     ],
     "hidden_test_ids": [
-      "datasets/hidden_tests/shop_api-152/test_hidden_behaviour.py::test_job_1",
-      "datasets/hidden_tests/shop_api-152/test_hidden_behaviour.py::test_job_2",
-      "datasets/hidden_tests/shop_api-152/test_hidden_behaviour.py::test_job_3"
+      "datasets/hidden_tests/shop_api-151/test_hidden_behaviour.py::test_job_1",
+      "datasets/hidden_tests/shop_api-151/test_hidden_behaviour.py::test_job_2",
+      "datasets/hidden_tests/shop_api-151/test_hidden_behaviour.py::test_job_3"
     ],
     "variant_group": "settings_default:worker:backoff_base_s",
     "origin": "synthetic",
     "log_format": "plain"
   },
   {
-    "case_id": "shop_api-154",
+    "case_id": "shop_api-153",
     "split": "dev",
     "cause_class": "configuration",
     "fault_family": "wrong_unit",
@@ -1730,7 +1664,7 @@
       }
     ],
     "distance": 1,
-    "reproducer_id": "datasets/reproducers/shop_api-154/test_symptom.py::test_job_1",
+    "reproducer_id": "datasets/reproducers/shop_api-153/test_symptom.py::test_job_1",
     "visible_test_ids": [
       "lab/worker/tests/test_emails.py::test_render_confirmation",
       "lab/worker/tests/test_queue.py::test_consume_one_job",
@@ -1748,16 +1682,16 @@
       "lab/worker/tests/test_settings.py::test_defaults_match_the_api_contract"
     ],
     "hidden_test_ids": [
-      "datasets/hidden_tests/shop_api-154/test_hidden_behaviour.py::test_job_1",
-      "datasets/hidden_tests/shop_api-154/test_hidden_behaviour.py::test_job_2",
-      "datasets/hidden_tests/shop_api-154/test_hidden_behaviour.py::test_job_3"
+      "datasets/hidden_tests/shop_api-153/test_hidden_behaviour.py::test_job_1",
+      "datasets/hidden_tests/shop_api-153/test_hidden_behaviour.py::test_job_2",
+      "datasets/hidden_tests/shop_api-153/test_hidden_behaviour.py::test_job_3"
     ],
     "variant_group": "settings_default:worker:backoff_base_s",
     "origin": "synthetic",
     "log_format": "plain"
   },
   {
-    "case_id": "shop_api-159",
+    "case_id": "shop_api-158",
     "split": "dev",
     "cause_class": "configuration",
     "fault_family": "wrong_value",
@@ -1775,7 +1709,7 @@
       }
     ],
     "distance": 1,
-    "reproducer_id": "datasets/reproducers/shop_api-159/test_symptom.py::test_price_1",
+    "reproducer_id": "datasets/reproducers/shop_api-158/test_symptom.py::test_price_1",
     "visible_test_ids": [
       "lab/shop_api/tests/test_api.py::test_empty_catalogue_returns_empty_list",
       "lab/shop_api/tests/test_api.py::test_list_and_get_product",
@@ -1814,9 +1748,9 @@
       "lab/shop_api/tests/test_settings.py::test_bad_port_rejected"
     ],
     "hidden_test_ids": [
-      "datasets/hidden_tests/shop_api-159/test_hidden_behaviour.py::test_price_1",
-      "datasets/hidden_tests/shop_api-159/test_hidden_behaviour.py::test_price_2",
-      "datasets/hidden_tests/shop_api-159/test_hidden_behaviour.py::test_price_3"
+      "datasets/hidden_tests/shop_api-158/test_hidden_behaviour.py::test_price_1",
+      "datasets/hidden_tests/shop_api-158/test_hidden_behaviour.py::test_price_2",
+      "datasets/hidden_tests/shop_api-158/test_hidden_behaviour.py::test_price_3"
     ],
     "variant_group": "settings_default:shop_api:max_discount_pct",
     "origin": "synthetic",
@@ -1885,6 +1819,72 @@
     "variant_group": "code:total_loop",
     "origin": "synthetic",
     "log_format": "uvicorn_access"
+  },
+  {
+    "case_id": "shop_api-171",
+    "split": "dev",
+    "cause_class": "configuration",
+    "fault_family": "wrong_value",
+    "service": "shop_api",
+    "base_sha": "5ec94a43f8b9f5728a5d11bb40639588b7495296",
+    "gold_config_keys": [
+      "shop_api.LOW_STOCK_LEVEL"
+    ],
+    "gold_symbols": [
+      {
+        "path": "lab/shop_api/app/settings.py",
+        "qualname": "Settings.low_stock_level",
+        "start_line": 30,
+        "end_line": 30
+      }
+    ],
+    "distance": 1,
+    "reproducer_id": "datasets/reproducers/shop_api-171/test_symptom.py::test_stock_1",
+    "visible_test_ids": [
+      "lab/shop_api/tests/test_api.py::test_empty_catalogue_returns_empty_list",
+      "lab/shop_api/tests/test_api.py::test_list_and_get_product",
+      "lab/shop_api/tests/test_api.py::test_missing_product_is_404",
+      "lab/shop_api/tests/test_api.py::test_create_order_enqueues_job_and_reports_total",
+      "lab/shop_api/tests/test_api.py::test_create_order_validates_input",
+      "lab/shop_api/tests/test_api.py::test_create_order_unknown_product_is_404",
+      "lab/shop_api/tests/test_api.py::test_queue_down_returns_503_and_keeps_pending_order",
+      "lab/shop_api/tests/test_api.py::test_order_total_endpoint",
+      "lab/shop_api/tests/test_api.py::test_order_without_lines_totals_zero",
+      "lab/shop_api/tests/test_api.py::test_health_reports_redis_down",
+      "lab/shop_api/tests/test_api.py::test_health_live_always_ok",
+      "lab/shop_api/tests/test_api.py::test_queue_failure_is_logged_with_traceback",
+      "lab/shop_api/tests/test_api.py::test_validation_failure_is_logged_and_keeps_422_body",
+      "lab/shop_api/tests/test_orders.py::test_checkout_total",
+      "lab/shop_api/tests/test_orders.py::test_total_rounds_half_up_to_two_places",
+      "lab/shop_api/tests/test_orders.py::test_empty_order_total_is_zero",
+      "lab/shop_api/tests/test_orders.py::test_line_total_multiplies",
+      "lab/shop_api/tests/test_orders.py::test_headline_and_counts",
+      "lab/shop_api/tests/test_orders.py::test_average_unit_price",
+      "lab/shop_api/tests/test_orders.py::test_average_unit_price_rejects_zero_units",
+      "lab/shop_api/tests/test_pricing_rules.py::test_reserve_takes_units_and_refuses_shortfall",
+      "lab/shop_api/tests/test_pricing_rules.py::test_low_stock_lists_products_at_or_below_level",
+      "lab/shop_api/tests/test_pricing_rules.py::test_coupon_codes_parse_case_insensitively",
+      "lab/shop_api/tests/test_pricing_rules.py::test_coupon_is_capped_and_unknown_or_expired_is_refused",
+      "lab/shop_api/tests/test_pricing_rules.py::test_discount_shipping_and_tax_amounts",
+      "lab/shop_api/tests/test_pricing_rules.py::test_quote_chains_the_rules_with_default_settings",
+      "lab/shop_api/tests/test_pricing_rules.py::test_quote_with_coupon_and_free_shipping",
+      "lab/shop_api/tests/test_pricing_rules.py::test_order_beyond_stock_is_409_and_saves_nothing",
+      "lab/shop_api/tests/test_pricing_rules.py::test_quote_endpoint_and_unknown_coupon",
+      "lab/shop_api/tests/test_pricing_rules.py::test_low_stock_endpoint",
+      "lab/shop_api/tests/test_settings.py::test_loads_from_env",
+      "lab/shop_api/tests/test_settings.py::test_defaults",
+      "lab/shop_api/tests/test_settings.py::test_credentials_are_required",
+      "lab/shop_api/tests/test_settings.py::test_password_is_not_in_repr",
+      "lab/shop_api/tests/test_settings.py::test_bad_port_rejected"
+    ],
+    "hidden_test_ids": [
+      "datasets/hidden_tests/shop_api-171/test_hidden_behaviour.py::test_stock_1",
+      "datasets/hidden_tests/shop_api-171/test_hidden_behaviour.py::test_stock_2",
+      "datasets/hidden_tests/shop_api-171/test_hidden_behaviour.py::test_stock_3"
+    ],
+    "variant_group": "settings_default:shop_api:low_stock_level",
+    "origin": "synthetic",
+    "log_format": "plain"
   },
   {
     "case_id": "shop_api-173",

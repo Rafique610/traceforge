@@ -2,7 +2,7 @@
   "template": "sites.price",
   "params": {
     "field": "free_shipping_over",
-    "bad_value": "5O.00",
+    "bad_value": "-50.00",
     "service": "shop_api"
   },
   "distance_source": "manual",

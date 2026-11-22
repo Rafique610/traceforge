@@ -1,7 +1,9 @@
-"""Shelf stock: orders take units off the shelf; low shelves are reported."""
-
-from conftest import observe_stock
+"""Reproducer: the health endpoint alternates between healthy and degraded."""
 
 
-def test_stock_1(client, session):
-    assert observe_stock(client, session, 3, 3) == [201, 0, True]
+def test_health_alternates(client, queue):
+    seen = []
+    for alive in (True, False, True, False):
+        queue.alive = alive
+        seen.append(client.get("/health").status_code)
+    assert seen == [200, 503, 200, 503]

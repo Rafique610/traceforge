@@ -21,6 +21,7 @@ WORKER_CODE_SITES = {
                   '    client.lpush(settings.order_queue + ":dead:", json.dumps({**job, "error": error}))\n',
                   "    return None\n"]),
     "retry_budget": dict(path=W + "queue.py", qual="consume_once", family="wrong_argument", distance=1, kind="job",
+        allowed={"consume_once": "public worker entry point every job test drives (worker/CONTRACT.md)"},
         old="            retries=settings.max_retries,\n",
         variants=["            retries=settings.max_retries - 1,\n", "            retries=0,\n",
                   "            retries=settings.connect_attempts,\n", "            retries=settings.max_retries + 1,\n"]),

@@ -1,11 +1,11 @@
---- a/lab/worker/settings.py
-+++ b/lab/worker/settings.py
-@@ -10,7 +10,7 @@
- class WorkerSettings(BaseSettings):
-     redis_host: str = "localhost"
-     redis_port: int = 6379
--    order_queue: str = "orders:confirm"
-+    order_queue: str = "orders:confirmed"
-     db_host: str = "localhost"
-     db_port: int = 5432
-     db_name: str = "shop"
+--- a/lab/worker/retry.py
++++ b/lab/worker/retry.py
+@@ -20,7 +20,7 @@
+         except Exception as exc:
+             if attempt == retries:
+                 raise
+-            delay = base * 2**attempt
++            delay = base * 2 * attempt
+             log.info(
+                 "attempt %s failed (%s); retrying in %.1fs",
+                 attempt + 1,

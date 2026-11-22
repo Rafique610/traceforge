@@ -1,9 +1,9 @@
 {
-  "template": "sites.job",
+  "template": "sites.price",
   "params": {
-    "field": "max_retries",
-    "bad_value": "100",
-    "service": "worker"
+    "field": "shipping_fee",
+    "bad_value": "49.9",
+    "service": "shop_api"
   },
   "distance_source": "manual",
   "base_sha": "5ec94a43f8b9f5728a5d11bb40639588b7495296",

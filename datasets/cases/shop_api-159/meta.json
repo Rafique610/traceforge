@@ -1,8 +1,8 @@
 {
   "template": "sites.price",
   "params": {
-    "field": "max_discount_pct",
-    "bad_value": "300",
+    "field": "shipping_fee",
+    "bad_value": "9.49",
     "service": "shop_api"
   },
   "distance_source": "manual",

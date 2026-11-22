@@ -1,11 +1,11 @@
---- a/lab/worker/queue.py
-+++ b/lab/worker/queue.py
-@@ -78,7 +78,7 @@
+--- a/lab/worker/settings.py
++++ b/lab/worker/settings.py
+@@ -17,7 +17,7 @@
+     db_user: str
+     db_password: SecretStr
+     db_pool_size: int = 2
+-    max_retries: int = 3
++    max_retries: int = 4
+     backoff_base_s: float = 1.0
+     connect_attempts: int = 10
  
- 
- def dead_letter(client, settings: WorkerSettings, job: dict, error: str) -> None:
--    client.lpush(settings.dead_queue, json.dumps({**job, "error": error}))
-+    return None
- 
- 
- def consume_once(

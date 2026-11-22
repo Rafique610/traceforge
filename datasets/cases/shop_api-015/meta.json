@@ -1,8 +1,8 @@
 {
   "template": "sites.price",
   "params": {
-    "field": "tax_rate",
-    "bad_value": "0.017",
+    "field": "shipping_fee",
+    "bad_value": "499",
     "service": "shop_api"
   },
   "distance_source": "manual",

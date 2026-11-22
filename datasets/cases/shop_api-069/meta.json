@@ -1,10 +1,10 @@
 {
   "template": "outages.runtime",
   "params": {
-    "group": "lab_db:catalogue",
+    "group": "lab_db:health",
     "ports": [
-      6391,
-      5491
+      6392,
+      5492
     ]
   },
   "distance_source": "manual",

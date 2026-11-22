@@ -192,6 +192,18 @@ tasks:
     cmds:
       - backend/.venv/Scripts/python.exe -m traceforge.faultgen.generate
 
+  dataset:validate:shards:
+    desc: "Validate every case in 4 parallel shards (about 1 h); reports in runs/validation/"
+    dir: backend
+    cmds:
+      - for: [1, 2, 3, 4]
+        cmd: .venv/Scripts/python.exe -m traceforge.faultgen.shards --shard {{.ITEM}} --of 4
+
+  dataset:freeze:
+    desc: Freeze the test split (test.sha256 + freeze.json) from passing validation reports
+    cmds:
+      - backend/.venv/Scripts/python.exe -m traceforge.faultgen.freeze
+
   dataset:validate:
     desc: "Validate cases in the real sandbox (3x each; ~3 min per repairable case): task dataset:validate -- --case shop_api-001"
     cmds:

@@ -1,2 +1,2 @@
-stop:
-  - lab_redis
+logs: suppressed
+symptom: intermittent

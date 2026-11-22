@@ -1,8 +1,8 @@
 {
   "template": "sites.price",
   "params": {
-    "field": "free_shipping_over",
-    "bad_value": "5000",
+    "field": "tax_rate",
+    "bad_value": "0.19",
     "service": "shop_api"
   },
   "distance_source": "manual",

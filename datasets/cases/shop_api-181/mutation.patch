@@ -5,7 +5,7 @@
      redis_host: str = "localhost"
      redis_port: int = 6379
 -    order_queue: str = "orders:confirm"
-+    order_queue: str = "confirm"
++    order_queue: str = "orders:confirm:v2"
      db_host: str = "localhost"
      db_port: int = 5432
      db_name: str = "shop"

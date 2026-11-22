@@ -1,8 +1,8 @@
 {
   "template": "sites.price",
   "params": {
-    "field": "coupons_valid_until",
-    "bad_value": "2020-12-31",
+    "field": "coupon_codes",
+    "bad_value": "WELCOME10=10,BULK20=02O,STAFF50=50",
     "service": "shop_api"
   },
   "distance_source": "manual",

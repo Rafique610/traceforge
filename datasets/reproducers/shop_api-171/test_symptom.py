@@ -1,12 +1,11 @@
-"""Reproducer: an order that has no lines still has a summary."""
+"""Shelf stock: orders take units off the shelf; low shelves are reported."""
 
-from app.models import Order
+from conftest import observe_stock
 
 
-def test_summary_of_an_order_without_lines(client, session):
-    order = Order(customer_email="buyer@example.com", status="pending")
-    session.add(order)
-    session.commit()
-    r = client.get(f"/orders/{order.id}/total")
-    assert r.status_code == 200
-    assert r.json()["headline"] is None
+def test_stock_1(client, session):
+    assert observe_stock(client, session, 10, 1) == [201, 9, False]
+
+
+def test_stock_2(client, session):
+    assert observe_stock(client, session, 12, 4) == [201, 8, False]
