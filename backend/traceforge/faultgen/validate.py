@@ -33,6 +33,10 @@ LAB_REQS = (
     "redis==8.1.0 httpx==0.28.1"
 )
 SANDBOX_CFG = SandboxConfig(requirements=LAB_REQS, workdir_rel="lab/shop_api")
+SANDBOX_CFGS = {
+    "shop_api": SANDBOX_CFG,
+    "worker": SandboxConfig(requirements=LAB_REQS, workdir_rel="lab/worker"),
+}
 RUNS = 3
 
 
@@ -100,13 +104,13 @@ def _files(path: Path) -> dict[str, str]:
     )
 
 
-def default_runner_factory(datasets: Path) -> Callable[[Path], RunFn]:
+def default_runner_factory(datasets: Path, service: str = "shop_api") -> Callable[[Path], RunFn]:
     def factory(tree: Path) -> RunFn:
         return make_run_tests(
             tree,
             hidden_dir=datasets / "hidden_tests",
             reproducer_dir=datasets / "reproducers",
-            cfg=SANDBOX_CFG,
+            cfg=SANDBOX_CFGS[service],
         )
 
     return factory
@@ -177,7 +181,7 @@ def validate_case(
     lab = lab or lab_tree.repo_root() / "lab"
     rep = CaseReport(m.case_id, m.cause_class, m.fault_family, m.distance)
     _static_checks(case, rep, lab)
-    factory = runner_factory or default_runner_factory(case.datasets)
+    factory = runner_factory or default_runner_factory(case.datasets, m.service)
     work = Path(tempfile.mkdtemp(prefix="tf-faultgen-", dir=work_root))
     try:
         orig = materialize("", work / "orig", lab)

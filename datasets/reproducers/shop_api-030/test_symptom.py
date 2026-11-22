@@ -1,12 +1,11 @@
-"""Reproducer: an order that has no lines still has a summary."""
+"""Price rules: what a customer is charged for an order."""
 
-from app.models import Order
+from conftest import observe_price
 
 
-def test_summary_of_an_order_without_lines(client, session):
-    order = Order(customer_email="buyer@example.com", status="pending")
-    session.add(order)
-    session.commit()
-    r = client.get(f"/orders/{order.id}/total")
-    assert r.status_code == 200
-    assert r.json()["headline"] is None
+def test_price_1(client, session):
+    assert observe_price(client, session, [("7.45", 4), ("41.60", 3)]) == [200, '180.88']
+
+
+def test_price_2(client, session):
+    assert observe_price(client, session, [("7.45", 1)], "staff50") == [200, '11.10']

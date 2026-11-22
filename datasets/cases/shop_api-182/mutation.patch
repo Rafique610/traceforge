@@ -1,0 +1,11 @@
+--- a/lab/shop_api/app/orders.py
++++ b/lab/shop_api/app/orders.py
+@@ -19,7 +19,7 @@
+     if not items:
+         return ZERO
+     total = ZERO
+-    for item in items:
++    for item in items[:1]:
+         total += line_total(item.unit_price, item.quantity)
+     return money(total)
+ 

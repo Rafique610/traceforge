@@ -1,11 +1,11 @@
---- a/lab/shop_api/app/pricing.py
-+++ b/lab/shop_api/app/pricing.py
-@@ -8,7 +8,7 @@
- 
- def money(value: Decimal) -> Decimal:
-     """Round to 2 dp, half up."""
--    return value.quantize(CENT, rounding=ROUND_HALF_UP)
-+    return value.quantize(CENT, rounding="ROUND_DOWN")
- 
- 
- def line_total(unit_price: Decimal, quantity: int) -> Decimal:
+--- a/lab/worker/queue.py
++++ b/lab/worker/queue.py
+@@ -91,7 +91,7 @@
+     try:
+         with_backoff(
+             lambda: handler(job),
+-            retries=settings.max_retries,
++            retries=settings.connect_attempts,
+             base=settings.backoff_base_s,
+             sleep=sleep,
+         )

@@ -1,9 +1,11 @@
---- a/lab/shop_api/app/quote.py
-+++ b/lab/shop_api/app/quote.py
-@@ -31,5 +31,5 @@
-         "goods": goods,
-         "shipping": ship,
-         "tax": tax,
--        "grand_total": money(goods + ship + tax),
-+        "grand_total": money(subtotal + ship + tax),
-     }
+--- a/lab/shop_api/app/settings.py
++++ b/lab/shop_api/app/settings.py
+@@ -27,7 +27,7 @@
+     max_discount_pct: int = 30
+     coupon_codes: str = "WELCOME10=10,BULK20=20,STAFF50=50"
+     coupons_valid_until: str = "2099-12-31"
+-    low_stock_level: int = 3
++    low_stock_level: int = 0
+ 
+     @property
+     def database_url(self) -> URL:

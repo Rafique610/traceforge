@@ -16,7 +16,7 @@ from pathlib import Path
 
 from traceforge.faultgen.generate import materialize
 from traceforge.faultgen.lab_tree import base_sha
-from traceforge.faultgen.templates.scenario import HELPERS, PROBE
+from traceforge.faultgen.templates.scenario import HELPERS, PROBE, PROBE_WORKER, WORKER_HELPERS
 
 _ORIGINAL: dict[tuple, list] = {}
 
@@ -29,6 +29,9 @@ COUPONS_HIDDEN = [None, None, "BULK20", "welcome10 ", "Staff50"]
 # (stock on the shelf, quantity ordered); ints >= 3 never shared between the two pools (D31)
 STOCK_VISIBLE = [(3, 3), (4, 2), (4, 1), (10, 1), (12, 4), (2, 1), (13, 10), (3, 4)]
 STOCK_HIDDEN = [(6, 6), (7, 5), (8, 5), (6, 7), (9, 2), (11, 6), (15, 8), (5, 1)]
+# worker jobs: (payload = order id or a raw string, handler failures before success)
+JOB_VISIBLE = [(11, 0), (12, 1), (13, 2), (14, 4), ("not json", 0), (15, 0)]
+JOB_HIDDEN = [(21, 0), (22, 1), (23, 3), (24, 5), ('{"type": "order_confirmation"}', 0), (25, 2)]
 
 
 def candidates(kind: str, hidden: bool, n: int = 40, seed: int = 0) -> list[dict]:
@@ -38,6 +41,8 @@ def candidates(kind: str, hidden: bool, n: int = 40, seed: int = 0) -> list[dict
     qtys = QTY_HIDDEN if hidden else QTY_VISIBLE
     if kind == "stock":
         return [{"stock": s, "qty": q} for s, q in (STOCK_HIDDEN if hidden else STOCK_VISIBLE)]
+    if kind == "job":
+        return [{"payload": p, "failures": f} for p, f in (JOB_HIDDEN if hidden else JOB_VISIBLE)]
     out = []
     for _ in range(n):
         items = [[rnd.choice(prices), rnd.choice(qtys)] for _ in range(rnd.choice([0, 1, 1, 2, 3]))]
@@ -49,9 +54,12 @@ def candidates(kind: str, hidden: bool, n: int = 40, seed: int = 0) -> list[dict
 
 
 def probe(tree: Path, kind: str, scenarios: list[dict], service: str = "shop_api") -> list:
-    wd = tree / "lab" / service
+    worker = kind == "job"
+    wd = tree / "lab" if worker else tree / "lab" / service  # worker imports itself as `worker.*`
     script = wd / "_probe_tf.py"
-    script.write_text(HELPERS + PROBE, encoding="utf-8")
+    script.write_text(
+        WORKER_HELPERS + PROBE_WORKER if worker else HELPERS + PROBE, encoding="utf-8"
+    )
     env = {
         k: v for k, v in os.environ.items() if not k.startswith(("DB_", "REDIS_", "TRACEFORGE_"))
     }

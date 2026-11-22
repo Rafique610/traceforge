@@ -1,0 +1,11 @@
+--- a/lab/shop_api/app/settings.py
++++ b/lab/shop_api/app/settings.py
+@@ -26,7 +26,7 @@
+     free_shipping_over: Decimal = Decimal("50.00")
+     max_discount_pct: int = 30
+     coupon_codes: str = "WELCOME10=10,BULK20=20,STAFF50=50"
+-    coupons_valid_until: str = "2099-12-31"
++    coupons_valid_until: str = "2020-12-31"
+     low_stock_level: int = 3
+ 
+     @property

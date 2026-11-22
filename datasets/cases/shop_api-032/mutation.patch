@@ -1,11 +1,11 @@
---- a/lab/shop_api/app/quote.py
-+++ b/lab/shop_api/app/quote.py
-@@ -24,7 +24,7 @@
-         )
-     goods = coupons.apply_discount(subtotal, pct)
-     ship = shipping.shipping_fee(goods, s.shipping_fee, s.free_shipping_over)
--    tax = shipping.tax_amount(goods, s.tax_rate)
-+    tax = shipping.tax_amount(goods + ship, s.tax_rate)
-     return {
-         "subtotal": subtotal,
-         "discount_pct": pct,
+--- a/lab/shop_api/app/settings.py
++++ b/lab/shop_api/app/settings.py
+@@ -23,7 +23,7 @@
+     # pricing rules (see app/quote.py)
+     tax_rate: Decimal = Decimal("0.17")
+     shipping_fee: Decimal = Decimal("4.99")
+-    free_shipping_over: Decimal = Decimal("50.00")
++    free_shipping_over: Decimal = Decimal("500.00")
+     max_discount_pct: int = 30
+     coupon_codes: str = "WELCOME10=10,BULK20=20,STAFF50=50"
+     coupons_valid_until: str = "2099-12-31"

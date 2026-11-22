@@ -11,8 +11,6 @@ generated reproducer/hidden tests, so expected values are exactly what the corre
 Inputs live in call arguments; expected values live only inside `assert` (D31 overlap check).
 """
 
-import json
-
 HELPERS = """
 import pytest
 from decimal import Decimal
@@ -91,7 +89,7 @@ def render_tests(kind: str, scenarios: list[dict], expected: list, doc: str) -> 
             TEST_ONE.replace("@@KIND@@", kind)
             .replace("@@N@@", str(n))
             .replace("@@ARGS@@", args_of(kind, sc))
-            .replace("@@EXPECTED@@", json.dumps(exp))
+            .replace("@@EXPECTED@@", repr(exp))
         )
     return out
 
@@ -136,3 +134,80 @@ for sc in scenarios:
     out.append(obs)
 print(json.dumps(out))
 """
+
+
+# --- worker: one job through consume_once ---------------------------------------------------------
+# A job is pushed onto the queue name in worker/CONTRACT.md ("orders:confirm"), as the shop API does.
+# Observed: [job taken, handler calls, backoff sleeps, dead letters, jobs left on the contract queue].
+WORKER_HELPERS = '''
+import json
+
+from worker.queue import consume_once
+from worker.settings import WorkerSettings
+
+
+class Broker:
+    """In-memory stand-in for the three list calls the worker makes (test double)."""
+
+    def __init__(self):
+        self.lists = {}
+
+    def lpush(self, key, value):
+        self.lists.setdefault(key, []).insert(0, value)
+
+    def brpop(self, key, timeout=0):
+        items = self.lists.get(key) or []
+        return (key, items.pop()) if items else None
+
+
+def observe_job(payload, failures):
+    settings = WorkerSettings(db_user="worker", db_password="unused")
+    broker = Broker()
+    raw = payload if isinstance(payload, str) else json.dumps({"job_id": "j", "type": "order_confirmation", "order_id": payload, "total": "1.00"})
+    broker.lpush("orders:confirm", raw)
+    calls, sleeps = [], []
+
+    def handler(job):
+        calls.append(job["order_id"])
+        if len(calls) <= failures:
+            raise RuntimeError("database busy")
+
+    taken = consume_once(broker, settings, handler, sleep=sleeps.append)
+    dead = sum(len(v) for k, v in broker.lists.items() if k.endswith(":dead"))
+    return [taken, len(calls), sleeps, dead, len(broker.lists.get("orders:confirm", []))]
+'''
+
+WORKER_TEST_ONE = """
+
+def test_job_@@N@@():
+    assert observe_job(@@ARGS@@) == @@EXPECTED@@
+"""
+
+WORKER_TEST_HEAD = '''"""@@DOC@@"""
+
+from conftest import observe_job
+'''
+
+PROBE_WORKER = """
+import json, sys
+kind, scenarios = json.load(sys.stdin)
+out = []
+for sc in scenarios:
+    try:
+        out.append(observe_job(sc["payload"], sc["failures"]))
+    except Exception as e:
+        out.append(["error", type(e).__name__])
+print(json.dumps(out))
+"""
+
+
+def render_worker_tests(scenarios: list[dict], expected: list, doc: str) -> str:
+    out = WORKER_TEST_HEAD.replace("@@DOC@@", doc)
+    for n, (sc, exp) in enumerate(zip(scenarios, expected, strict=True), 1):
+        args = f"{sc['payload']!r}, {sc['failures']}"
+        out += (
+            WORKER_TEST_ONE.replace("@@N@@", str(n))
+            .replace("@@ARGS@@", args)
+            .replace("@@EXPECTED@@", repr(exp))
+        )
+    return out

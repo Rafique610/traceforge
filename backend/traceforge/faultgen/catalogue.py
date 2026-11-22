@@ -11,11 +11,13 @@ from pathlib import Path
 
 from traceforge.faultgen.model import CaseDraft
 from traceforge.faultgen.seeds import seed_drafts
-from traceforge.faultgen.templates import code, config, sites
+from traceforge.faultgen.templates import code, config, outages, sites
+from traceforge.faultgen.templates.worker_site_data import WORKER_CODE_SITES, WORKER_CONFIG_SITES
 
 DEV_GROUPS = {
     "code:total_loop", "code:tax_base", "code:stock_decrement", "code:discount_formula",
     "settings_default:shop_api:max_discount_pct", "settings_default:shop_api:low_stock_level",
+    "code:worker:job_validation", "settings_default:worker:backoff_base_s",
 }  # fmt: skip
 REDIS_BAD = {
     "redis_host": ["lab-redis", "redis.local", "redis-cache"],
@@ -36,6 +38,16 @@ def _specs() -> list[tuple]:
             out.append(("legacy_code", site, 0, "uvicorn_access"))
     for field, bads in REDIS_BAD.items():
         out += [("redis", field, b, "plain") for b in bads]
+    for site, s in WORKER_CODE_SITES.items():
+        out += [("worker_code", site, i, "plain") for i in range(len(s["variants"]))]
+    for field, c in WORKER_CONFIG_SITES.items():
+        out += [("worker_config", field, i, "plain") for i in range(len(c["bad"]))]
+    for group in outages.RUNTIME:
+        out += [("runtime", group, i, "uvicorn_access") for i in range(len(outages.RUNTIME_PORTS))]
+    for group in outages.INSUFFICIENT:
+        out += [
+            ("insufficient", group, i, "none") for i in range(len(outages.INSUFFICIENT_VARIANTS))
+        ]
     return out
 
 
@@ -47,6 +59,14 @@ def _make(case_id: str, spec: tuple, lab: Path) -> CaseDraft | None:
         return sites.make_config(case_id, name, variant, lab, log)
     if kind == "legacy_code":
         return code.make(case_id, site=name, lab=lab)
+    if kind == "worker_code":
+        return sites.make_code(case_id, name, variant, lab, log, service="worker")
+    if kind == "worker_config":
+        return sites.make_config(case_id, name, variant, lab, log, service="worker")
+    if kind == "runtime":
+        return outages.make_runtime(case_id, name, variant)
+    if kind == "insufficient":
+        return outages.make_insufficient(case_id, name, variant)
     return config.make(case_id, field=name, bad_value=variant, log_format=log, lab=lab)
 
 

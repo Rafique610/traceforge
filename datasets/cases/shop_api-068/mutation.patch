@@ -1,11 +1,11 @@
---- a/lab/shop_api/app/settings.py
-+++ b/lab/shop_api/app/settings.py
-@@ -27,7 +27,7 @@
-     max_discount_pct: int = 30
-     coupon_codes: str = "WELCOME10=10,BULK20=20,STAFF50=50"
-     coupons_valid_until: str = "2099-12-31"
--    low_stock_level: int = 3
-+    low_stock_level: int = 10
+--- a/lab/shop_api/app/inventory.py
++++ b/lab/shop_api/app/inventory.py
+@@ -20,7 +20,7 @@
+     """Take units off the shelf. Raises OutOfStock and leaves stock untouched if short."""
+     if not can_fulfil(product, quantity):
+         raise OutOfStock(product.id, quantity, product.stock)
+-    product.stock -= quantity
++    product.stock -= 2 * quantity
  
-     @property
-     def database_url(self) -> URL:
+ 
+ def low_stock(products: list[Product], level: int) -> list[Product]:

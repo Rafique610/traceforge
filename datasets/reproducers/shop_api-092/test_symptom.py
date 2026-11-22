@@ -1,11 +1,14 @@
-"""Price rules: what a customer is charged for an order."""
+"""Reproducer: the average price per unit of an order."""
 
-from conftest import observe_price
+from decimal import Decimal
 
-
-def test_price_1(client, session):
-    assert observe_price(client, session, [("7.45", 1)], "staff50") == [200, "11.10"]
+from app.models import Order, OrderItem
 
 
-def test_price_2(client, session):
-    assert observe_price(client, session, [("24.10", 2)], "bulk20") == [200, "50.11"]
+def test_average_price_of_a_single_line(client, session):
+    order = Order(customer_email="buyer@example.com", status="pending")
+    order.items.append(OrderItem(product_id=1, product_name="Pen", unit_price=Decimal("2.50"), quantity=4))
+    session.add(order)
+    session.commit()
+    body = client.get(f"/orders/{order.id}/total").json()
+    assert body["total"] == "10.00" and body["average_unit_price"] == "2.50"

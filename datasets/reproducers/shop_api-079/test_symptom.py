@@ -1,11 +1,11 @@
-"""Order totals and counts as shown on the order summary."""
+"""Price rules: what a customer is charged for an order."""
 
-from conftest import observe_total
-
-
-def test_total_1(client, session):
-    assert observe_total(client, session, [("18.75", 2)]) == [200, "37.50", 2, "18.75", "Item 1"]
+from conftest import observe_price
 
 
-def test_total_2(client, session):
-    assert observe_total(client, session, [("12.00", 4), ("18.75", 3)]) == [200, "104.25", 7, "14.89", "Item 1"]
+def test_price_1(client, session):
+    assert observe_price(client, session, [("24.10", 2)], "bulk20") == [200, '50.11']
+
+
+def test_price_2(client, session):
+    assert observe_price(client, session, [("3.20", 2), ("24.10", 3), ("3.20", 3)], "bulk20") == [200, '82.65']

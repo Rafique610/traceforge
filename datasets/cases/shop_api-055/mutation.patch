@@ -1,11 +1,9 @@
---- a/lab/shop_api/app/coupons.py
-+++ b/lab/shop_api/app/coupons.py
-@@ -36,7 +36,7 @@
-     pct = codes.get(code.strip().upper())
-     if pct is None:
-         raise UnknownCoupon(code)
--    return min(pct, cap)
-+    return pct
- 
- 
- def apply_discount(amount: Decimal, pct: int) -> Decimal:
+--- a/lab/shop_api/app/quote.py
++++ b/lab/shop_api/app/quote.py
+@@ -31,5 +31,5 @@
+         "goods": goods,
+         "shipping": ship,
+         "tax": tax,
+-        "grand_total": money(goods + ship + tax),
++        "grand_total": money(goods + ship + tax + tax),
+     }

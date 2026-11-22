@@ -1,8 +1,11 @@
---- a/lab/shop_api/app/inventory.py
-+++ b/lab/shop_api/app/inventory.py
-@@ -25,4 +25,4 @@
- 
- def low_stock(products: list[Product], level: int) -> list[Product]:
-     """Products at or below the reorder level, fewest units first."""
--    return sorted((p for p in products if p.stock <= level), key=lambda p: (p.stock, p.id))
-+    return sorted((p for p in products if p.stock >= level), key=lambda p: (p.stock, p.id))
+--- a/lab/worker/settings.py
++++ b/lab/worker/settings.py
+@@ -10,7 +10,7 @@
+ class WorkerSettings(BaseSettings):
+     redis_host: str = "localhost"
+     redis_port: int = 6379
+-    order_queue: str = "orders:confirm"
++    order_queue: str = "orders:confirmed"
+     db_host: str = "localhost"
+     db_port: int = 5432
+     db_name: str = "shop"

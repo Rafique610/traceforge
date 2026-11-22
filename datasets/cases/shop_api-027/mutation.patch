@@ -1,11 +1,11 @@
---- a/lab/shop_api/app/inventory.py
-+++ b/lab/shop_api/app/inventory.py
-@@ -13,7 +13,7 @@
+--- a/lab/shop_api/app/settings.py
++++ b/lab/shop_api/app/settings.py
+@@ -27,7 +27,7 @@
+     max_discount_pct: int = 30
+     coupon_codes: str = "WELCOME10=10,BULK20=20,STAFF50=50"
+     coupons_valid_until: str = "2099-12-31"
+-    low_stock_level: int = 3
++    low_stock_level: int = 10
  
- def can_fulfil(product: Product, quantity: int) -> bool:
-     """True when the shelf holds at least `quantity` units."""
--    return quantity <= product.stock
-+    return quantity < product.stock + 0
- 
- 
- def reserve(product: Product, quantity: int) -> None:
+     @property
+     def database_url(self) -> URL:

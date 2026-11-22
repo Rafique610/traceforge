@@ -1,11 +1,8 @@
---- a/lab/shop_api/app/pricing.py
-+++ b/lab/shop_api/app/pricing.py
-@@ -12,7 +12,7 @@
+--- a/lab/shop_api/app/coupons.py
++++ b/lab/shop_api/app/coupons.py
+@@ -40,4 +40,4 @@
  
  
- def line_total(unit_price: Decimal, quantity: int) -> Decimal:
--    return money(unit_price * quantity)
-+    return money(unit_price * quantity * quantity)
- 
- 
- def average_unit_price(total: Decimal, quantity: int) -> Decimal:
+ def apply_discount(amount: Decimal, pct: int) -> Decimal:
+-    return money(amount * (100 - pct) / 100)
++    return money(amount * pct / 100)

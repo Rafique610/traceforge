@@ -1,11 +1,8 @@
-"""Shelf stock: orders take units off the shelf; low shelves are reported."""
-
-from conftest import observe_stock
+"""Reproducer: the health endpoint while the job broker is unreachable."""
 
 
-def test_stock_1(client, session):
-    assert observe_stock(client, session, 4, 2) == [201, 2, true]
-
-
-def test_stock_2(client, session):
-    assert observe_stock(client, session, 4, 1) == [201, 3, true]
+def test_health_reports_the_broker(real_deps_client):
+    r = real_deps_client.get("/health")
+    assert r.status_code == 503
+    assert r.json()["redis"].startswith("down")
+    assert r.json()["db"] == "ok"

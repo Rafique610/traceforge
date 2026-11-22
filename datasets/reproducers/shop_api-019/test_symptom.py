@@ -1,11 +1,8 @@
-"""Order totals and counts as shown on the order summary."""
-
-from conftest import observe_total
+"""Reproducer: orders are accepted and queued, yet customers say some confirmations never arrive."""
 
 
-def test_total_1(client, session):
-    assert observe_total(client, session, [("18.75", 2)]) == [200, "37.50", 2, "18.75", "Item 1"]
-
-
-def test_total_2(client, session):
-    assert observe_total(client, session, [("12.00", 4), ("18.75", 3)]) == [200, "104.25", 7, "14.89", "Item 1"]
+def test_orders_are_accepted_and_queued(client, products, queue):
+    for email in ("bo@example.net", "second.bo@example.net"):
+        body = {"customer_email": email, "items": [{"product_id": products[1].id, "quantity": 2}]}
+        assert client.post("/orders", json=body).status_code == 201
+    assert len(queue.jobs) == 2

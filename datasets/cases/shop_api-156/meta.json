@@ -1,0 +1,21 @@
+{
+  "template": "outages.runtime",
+  "params": {
+    "group": "lab_redis:health",
+    "ports": [
+      6391,
+      5491
+    ]
+  },
+  "distance_source": "manual",
+  "base_sha": "5ec94a43f8b9f5728a5d11bb40639588b7495296",
+  "runtime": {
+    "stop": [
+      "lab_redis"
+    ]
+  },
+  "notes": "diagnose only: no code or config change exists; reproducer passes on original and 'broken'",
+  "gold_fix": "reverse of mutation.patch",
+  "allowed_shared": {},
+  "allowed_terms": {}
+}

@@ -1,7 +1,7 @@
-"""Price rules: what a customer is charged for an order."""
+"""Order confirmation jobs: retries, backoff and dead letters."""
 
-from conftest import observe_price
+from conftest import observe_job
 
 
-def test_price_1(client, session):
-    assert observe_price(client, session, [("27.90", 2)], "BULK20") == [200, "57.22"]
+def test_job_1():
+    assert observe_job(24, 5) == [True, 4, [1.0, 2.0, 4.0], 1, 0]

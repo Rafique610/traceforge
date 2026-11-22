@@ -1,11 +1,9 @@
-"""Price rules: what a customer is charged for an order."""
-
-from conftest import observe_price
+"""Reproducer: the health endpoint alternates between healthy and degraded."""
 
 
-def test_price_1(client, session):
-    assert observe_price(client, session, [("7.45", 1)], "staff50") == [200, "11.10"]
-
-
-def test_price_2(client, session):
-    assert observe_price(client, session, [("24.10", 2)], "bulk20") == [200, "50.11"]
+def test_health_alternates(client, queue):
+    seen = []
+    for alive in (True, False):
+        queue.alive = alive
+        seen.append(client.get("/health").status_code)
+    assert seen == [200, 503]

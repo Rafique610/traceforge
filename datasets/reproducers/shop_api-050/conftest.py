@@ -66,50 +66,44 @@ def client(engine, queue):
     yield TestClient(app)
     app.dependency_overrides.clear()
 
-import pytest
-from decimal import Decimal
 
-from app.models import Order, OrderItem, Product
-from app.settings import get_settings
+@pytest.fixture
+def real_deps_client(engine, monkeypatch):
+    """Real OrderQueue and/or a real Postgres engine pointed at ports with no listener."""
+    import os
 
+    from app.queue import OrderQueue, get_client
+    from app.settings import get_settings
+    from sqlalchemy import create_engine as _ce
 
-@pytest.fixture(autouse=True)
-def _service_env(monkeypatch):
+    for key in [k for k in os.environ if k.startswith(("REDIS_", "DB_"))]:
+        monkeypatch.delenv(key)
+    monkeypatch.setenv("REDIS_HOST", "127.0.0.1")
+    monkeypatch.setenv("REDIS_PORT", "6392")
     monkeypatch.setenv("DB_USER", "shopper")
     monkeypatch.setenv("DB_PASSWORD", "unused")
     get_settings.cache_clear()
-    yield
+    get_client.cache_clear()
+    db = _ce(f"postgresql+psycopg://shopper:unused@127.0.0.1:5492/shop", connect_args={"connect_timeout": 2}) if False else engine
+
+    def _session():
+        with Session(db, expire_on_commit=False) as s:
+            yield s
+
+    app.dependency_overrides[get_session] = _session
+    app.dependency_overrides[get_queue] = (lambda: OrderQueue()) if True else (lambda: _Up())
+    yield TestClient(app, raise_server_exceptions=False)
+    app.dependency_overrides.clear()
     get_settings.cache_clear()
+    get_client.cache_clear()
 
 
-def _order(session, items):
-    order = Order(customer_email="buyer@example.com", status="pending")
-    for n, (price, qty) in enumerate(items, 1):
-        order.items.append(OrderItem(product_id=n, product_name=f"Item {n}", unit_price=Decimal(price), quantity=qty))
-    session.add(order)
-    session.commit()
-    return order
+class _Up:
+    def enqueue_confirmation(self, order_id, total):
+        return "job"
 
+    def ping(self):
+        return True
 
-def observe_price(client, session, items, coupon=None):
-    order = _order(session, items)
-    url = f"/orders/{order.id}/quote" + (f"?coupon={coupon}" if coupon else "")
-    r = client.get(url)
-    return [r.status_code, r.json().get("grand_total") if r.status_code == 200 else None]
-
-
-def observe_total(client, session, items):
-    r = client.get(f"/orders/{_order(session, items).id}/total")
-    b = r.json()
-    return [r.status_code, b.get("total"), b.get("item_count"), b.get("average_unit_price"), b.get("headline")]
-
-
-def observe_stock(client, session, stock, qty):
-    p = Product(name="Shelf item", price=Decimal("2.00"), stock=stock)
-    session.add(p)
-    session.commit()
-    body = {"customer_email": "buyer@example.com", "items": [{"product_id": p.id, "quantity": qty}]}
-    status = client.post("/orders", json=body).status_code
-    session.refresh(p)
-    low = [row["id"] for row in client.get("/products/low-stock").json()]
-    return [status, p.stock, p.id in low]
+    def worker_alive(self):
+        return True

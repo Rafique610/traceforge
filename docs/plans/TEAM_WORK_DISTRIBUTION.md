@@ -5,14 +5,14 @@ Members come from the project docs: **Muhammad Rafique** and **Muhammad Ruhan Ka
 The split follows one rule: **each person owns whole folders**, and the two halves exchange data only through the five shared contracts (P0-S05). That lets both work at the same time with almost no waiting.
 
 ## 0. Progress at a glance
-**Updated before every commit by whoever commits** (rule in `docs/invariants/processes.md`). Last updated: 22 Nov 2026, with dataset batch 1 (lab growth + scenario-tested sites).
+**Updated before every commit by whoever commits** (rule in `docs/invariants/processes.md`). Last updated: 22 Nov 2026, with dataset batch 2 (worker, outages; all count targets met).
 
 "Done" = approved by the step's owner. "Implemented" = code on `main` that its owner has not yet approved (much of Track A was written by Ruhan's Claude-assisted session; see section 7).
 
 | | Muhammad Rafique (Track A) | Muhammad Ruhan Kamran (Track B) |
 |---|---|---|
 | **Steps done** | 2 / 19 (P0-S02, P0-S05); P0-S06 Part A done | 0 / 20 approved; 5 implemented (P0-S03, P1-S04, P1-S05 partial, P1-S06, P2-S04 core) |
-| **Working on** | Dataset batch 1 generated (78 test / 28 dev, unvalidated); batch 2: worker, runtime, insufficient cases | Review own steps; P0-S04 proposal; pick the experiment model (ADR 0001) |
+| **Working on** | Dataset generated: test 151 (60 config / 67 code / 12 runtime / 12 insufficient), dev 33; next: sandbox validation (~9 h), then freeze | Review own steps; P0-S04 proposal; pick the experiment model (ADR 0001) |
 | **Next up** | Dataset to ≥144 test + ≥30 dev and freeze; re-run lab + sandbox live; evidence/graph/retrieval gaps | P1-S07 Sync 1 once more cases exist; P2-S05, P2-S06 |
 | **Waiting on the other** | Ruhan: model decision for experiments; 10-label peer check after dataset | Rafique: frozen dataset (blocks P1-S07, P3-S04, P4-S01, P5-S03/S04) |
 
@@ -24,13 +24,13 @@ The split follows one rule: **each person owns whole folders**, and the two halv
 | 0 | P0-S06 Part A retrieval spike | DONE | P0-S06 Part B model probe | IMPLEMENTED, PARTLY RUN (no Devstral run) |
 | 1 | P1-S01 Lab fixtures | IMPLEMENTED; extended by Rafique (stock, coupons, shipping, quote) | P1-S04 Incidents API | IMPLEMENTED, NEEDS REVIEW |
 | 1 | P1-S02 Sandbox | IMPLEMENTED; self-test passes on Rafique's laptop | P1-S05 Model gateway | IMPLEMENTED, PARTLY VERIFIED |
-| 1 | P1-S03 Seed cases | IN PROGRESS: 106 generated, not validated | P1-S06 Pipeline agent | IMPLEMENTED (fake gateway tests) |
+| 1 | P1-S03 Seed cases | IN PROGRESS: 184 generated, validation pending | P1-S06 Pipeline agent | IMPLEMENTED (fake gateway tests) |
 | 1 | — | — | P1-S07 Sync 1 | NOT STARTED (needs cases) |
 | 2 | P2-S01 Evidence collector | IMPLEMENTED; 66 tests pass with pinned proxy | P2-S04 Repair loop | CORE IMPLEMENTED |
 | 2 | P2-S02 Code graph | IMPLEMENTED, not reviewed | P2-S05 Report + review | NOT STARTED |
 | 2 | P2-S03 Retrieval L/G | IMPLEMENTED; E1 not meaningful yet | P2-S06 GitHub intake | NOT STARTED |
 | 2 | P2-S07 Sync 2 | NOT STARTED | — | — |
-| 3 | P3-S01 Dataset freeze | IN PROGRESS (batch 1 of 2; critical path) | P3-S03 Reviewer UI | NOT STARTED |
+| 3 | P3-S01 Dataset freeze | IN PROGRESS (counts met; validate + freeze left) | P3-S03 Reviewer UI | NOT STARTED |
 | 3 | P3-S02 Metrics + baseline | IMPLEMENTED; needs real runs | P3-S04 Runner + results page | NOT STARTED |
 | 4 | 0 / 1 done | NOT STARTED | 0 / 2 done | NOT STARTED |
 | 5 | 0 / 3 done | NOT STARTED | 0 / 2 done | NOT STARTED |

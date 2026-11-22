@@ -1,11 +1,11 @@
---- a/lab/shop_api/app/inventory.py
-+++ b/lab/shop_api/app/inventory.py
-@@ -13,7 +13,7 @@
- 
- def can_fulfil(product: Product, quantity: int) -> bool:
-     """True when the shelf holds at least `quantity` units."""
--    return quantity <= product.stock
-+    return quantity + 1 <= product.stock
- 
- 
- def reserve(product: Product, quantity: int) -> None:
+--- a/lab/worker/retry.py
++++ b/lab/worker/retry.py
+@@ -18,7 +18,7 @@
+         try:
+             return fn()
+         except Exception as exc:
+-            if attempt == retries:
++            if attempt >= retries - 1:
+                 raise
+             delay = base * 2**attempt
+             log.info(

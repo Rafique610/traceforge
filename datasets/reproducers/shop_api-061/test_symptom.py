@@ -1,11 +1,7 @@
-"""Order totals and counts as shown on the order summary."""
-
-from conftest import observe_total
+"""Reproducer: some orders are refused with 503 and the same order succeeds when retried."""
 
 
-def test_total_1(client, session):
-    assert observe_total(client, session, [("18.75", 2)]) == [200, "37.50", 2, "18.75", "Item 1"]
-
-
-def test_total_2(client, session):
-    assert observe_total(client, session, [("12.00", 4), ("18.75", 3)]) == [200, "104.25", 7, "14.89", "Item 1"]
+def test_retry_of_a_refused_order_succeeds(flaky_client, products):
+    body = {"customer_email": "ana@example.org", "items": [{"product_id": products[0].id, "quantity": 1}]}
+    codes = [flaky_client.post("/orders", json=body).status_code for _ in range(3)]
+    assert 503 in codes and codes[-1] == 201

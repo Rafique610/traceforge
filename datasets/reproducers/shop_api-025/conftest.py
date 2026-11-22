@@ -66,50 +66,30 @@ def client(engine, queue):
     yield TestClient(app)
     app.dependency_overrides.clear()
 
-import pytest
-from decimal import Decimal
 
-from app.models import Order, OrderItem, Product
-from app.settings import get_settings
+class FlakyQueue(RecordingQueue):
+    """Fails the first `n` enqueues, then works (stand-in for an unexplained transient fault)."""
 
+    def __init__(self, n):
+        super().__init__()
+        self.left = n
 
-@pytest.fixture(autouse=True)
-def _service_env(monkeypatch):
-    monkeypatch.setenv("DB_USER", "shopper")
-    monkeypatch.setenv("DB_PASSWORD", "unused")
-    get_settings.cache_clear()
-    yield
-    get_settings.cache_clear()
-
-
-def _order(session, items):
-    order = Order(customer_email="buyer@example.com", status="pending")
-    for n, (price, qty) in enumerate(items, 1):
-        order.items.append(OrderItem(product_id=n, product_name=f"Item {n}", unit_price=Decimal(price), quantity=qty))
-    session.add(order)
-    session.commit()
-    return order
+    def enqueue_confirmation(self, order_id, total):
+        if self.left:
+            self.left -= 1
+            raise ConnectionError("transient")
+        return super().enqueue_confirmation(order_id, total)
 
 
-def observe_price(client, session, items, coupon=None):
-    order = _order(session, items)
-    url = f"/orders/{order.id}/quote" + (f"?coupon={coupon}" if coupon else "")
-    r = client.get(url)
-    return [r.status_code, r.json().get("grand_total") if r.status_code == 200 else None]
+@pytest.fixture
+def flaky_client(engine):
+    q = FlakyQueue(2)
 
+    def _session():
+        with Session(engine, expire_on_commit=False) as s:
+            yield s
 
-def observe_total(client, session, items):
-    r = client.get(f"/orders/{_order(session, items).id}/total")
-    b = r.json()
-    return [r.status_code, b.get("total"), b.get("item_count"), b.get("average_unit_price"), b.get("headline")]
-
-
-def observe_stock(client, session, stock, qty):
-    p = Product(name="Shelf item", price=Decimal("2.00"), stock=stock)
-    session.add(p)
-    session.commit()
-    body = {"customer_email": "buyer@example.com", "items": [{"product_id": p.id, "quantity": qty}]}
-    status = client.post("/orders", json=body).status_code
-    session.refresh(p)
-    low = [row["id"] for row in client.get("/products/low-stock").json()]
-    return [status, p.stock, p.id in low]
+    app.dependency_overrides[get_session] = _session
+    app.dependency_overrides[get_queue] = lambda: q
+    yield TestClient(app)
+    app.dependency_overrides.clear()

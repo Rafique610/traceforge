@@ -1,11 +1,8 @@
-"""Price rules: what a customer is charged for an order."""
-
-from conftest import observe_price
+"""Reproducer: the health endpoint while the database is unreachable."""
 
 
-def test_price_1(client, session):
-    assert observe_price(client, session, [("7.45", 1)], "staff50") == [200, "11.10"]
-
-
-def test_price_2(client, session):
-    assert observe_price(client, session, []) == [200, "4.99"]
+def test_health_reports_the_database(real_deps_client):
+    r = real_deps_client.get("/health")
+    assert r.status_code == 503
+    assert r.json()["db"].startswith("down")
+    assert r.json()["redis"] == "ok"

@@ -1,11 +1,11 @@
---- a/lab/shop_api/app/orders.py
-+++ b/lab/shop_api/app/orders.py
-@@ -30,7 +30,7 @@
- 
- 
- def unit_count(items: list[OrderItem]) -> int:
--    return sum(item.quantity for item in items)
-+    return max((item.quantity for item in items), default=0)
- 
- 
- def order_average_price(items: list[OrderItem]) -> Decimal:
+--- a/lab/shop_api/app/settings.py
++++ b/lab/shop_api/app/settings.py
+@@ -18,7 +18,7 @@
+     db_password: SecretStr
+     db_pool_size: int = 5
+     redis_host: str = "localhost"
+-    redis_port: int = 6379
++    redis_port: int = 6380
+     order_queue: str = "orders:confirm"
+     # pricing rules (see app/quote.py)
+     tax_rate: Decimal = Decimal("0.17")

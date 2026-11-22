@@ -1,13 +1,20 @@
 {
-  "template": "sites.price",
+  "template": "outages.runtime",
   "params": {
-    "site": "code_table_case",
-    "variant": 0
+    "group": "lab_db:catalogue",
+    "ports": [
+      6394,
+      5494
+    ]
   },
   "distance_source": "manual",
   "base_sha": "5ec94a43f8b9f5728a5d11bb40639588b7495296",
-  "runtime": {},
-  "notes": "distance: manual estimate (hops from endpoint handler to site)",
+  "runtime": {
+    "stop": [
+      "lab_db"
+    ]
+  },
+  "notes": "diagnose only: no code or config change exists; reproducer passes on original and 'broken'",
   "gold_fix": "reverse of mutation.patch",
   "allowed_shared": {},
   "allowed_terms": {}

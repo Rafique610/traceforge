@@ -1,16 +1,14 @@
 {
-  "template": "sites.price",
+  "template": "sites.job",
   "params": {
-    "site": "ship_base",
+    "site": "retry_count",
     "variant": 2
   },
   "distance_source": "manual",
   "base_sha": "5ec94a43f8b9f5728a5d11bb40639588b7495296",
   "runtime": {},
-  "notes": "distance: manual estimate (hops from endpoint handler to site)",
+  "notes": "distance: manual estimate (hops from the failing entry point to the site)",
   "gold_fix": "reverse of mutation.patch",
   "allowed_shared": {},
-  "allowed_terms": {
-    "quote": "public endpoint path /orders/{id}/quote"
-  }
+  "allowed_terms": {}
 }

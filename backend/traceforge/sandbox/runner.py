@@ -177,7 +177,9 @@ def run_tests_timed(
                 return fail("suite dir overlaps the model-visible worktree")
             mounts += _mount(suite_dir, dst)
         tag = ensure_image(cfg)
-        pyp = f"{wd}:{wd}/src"
+        # the workdir, its src/, and its parent (so a service that is itself a package, like
+        # lab/worker importing `worker.*`, resolves)
+        pyp = f"{wd}:{wd}/src:{wd.rsplit('/', 1)[0] or '/'}"
         with tempfile.TemporaryDirectory(prefix="tf-out-") as out:
             outp = Path(out)
             outp.chmod(0o777)  # scratch: the only writable bind mount

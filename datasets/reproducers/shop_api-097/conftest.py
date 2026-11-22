@@ -1,55 +1,115 @@
-"""Test plumbing: a loopback stand-in for the broker (test double, records commands)."""
+"""Test plumbing: in-memory SQLite and a recording queue (test doubles)."""
 
-import socketserver
-import threading
+from decimal import Decimal
 
 import pytest
+from app.db import get_session
+from app.main import app
+from app.models import Base, Product
+from app.queue import get_queue
+from fastapi.testclient import TestClient
+from sqlalchemy import create_engine
+from sqlalchemy.orm import Session
+from sqlalchemy.pool import StaticPool
 
 
-class _Handler(socketserver.StreamRequestHandler):
-    def _command(self):
-        head = self.rfile.readline()
-        if not head:
-            return None
-        parts = []
-        for _ in range(int(head[1:])):
-            size = int(self.rfile.readline()[1:])
-            parts.append(self.rfile.read(size + 2)[:-2].decode())
-        return parts
+class RecordingQueue:
+    def __init__(self):
+        self.jobs = []
+        self.alive = True
 
-    def handle(self):
-        while (cmd := self._command()) is not None:
-            self.server.commands.append(cmd)
-            name = cmd[0].upper()
-            if name == "HELLO":  # RESP3 handshake sent by recent client versions
-                self.wfile.write(b"%2\r\n$6\r\nserver\r\n$4\r\nstub\r\n$5\r\nproto\r\n:3\r\n")
-            elif name == "PING":
-                self.wfile.write(b"+PONG\r\n")
-            elif name == "LPUSH":
-                self.wfile.write(b":1\r\n")
-            else:
-                self.wfile.write(b"+OK\r\n")
-            self.wfile.flush()
+    def enqueue_confirmation(self, order_id, total):
+        self.jobs.append((order_id, total))
+        return "job"
 
+    def ping(self):
+        return True
 
-class _Server(socketserver.ThreadingTCPServer):
-    allow_reuse_address = True
-    daemon_threads = True
+    def worker_alive(self):
+        return self.alive
 
 
 @pytest.fixture
-def broker():
-    """Factory: broker(port) starts a stand-in listening on 127.0.0.1:<port>; returns its command log."""
-    servers = []
+def engine():
+    eng = create_engine("sqlite://", poolclass=StaticPool, connect_args={"check_same_thread": False})
+    Base.metadata.create_all(eng)
+    return eng
 
-    def start(port):
-        srv = _Server(("127.0.0.1", port), _Handler)
-        srv.commands = []
-        threading.Thread(target=srv.serve_forever, daemon=True).start()
-        servers.append(srv)
-        return srv.commands
 
-    yield start
-    for srv in servers:
-        srv.shutdown()
-        srv.server_close()
+@pytest.fixture
+def session(engine):
+    with Session(engine, expire_on_commit=False) as s:
+        yield s
+
+
+@pytest.fixture
+def products(session):
+    rows = [Product(name="Cup", price=Decimal("4.10")), Product(name="Tin", price=Decimal("9.90"))]
+    session.add_all(rows)
+    session.commit()
+    return rows
+
+
+@pytest.fixture
+def queue():
+    return RecordingQueue()
+
+
+@pytest.fixture
+def client(engine, queue):
+    def _session():
+        with Session(engine, expire_on_commit=False) as s:
+            yield s
+
+    app.dependency_overrides[get_session] = _session
+    app.dependency_overrides[get_queue] = lambda: queue
+    yield TestClient(app)
+    app.dependency_overrides.clear()
+
+import pytest
+from decimal import Decimal
+
+from app.models import Order, OrderItem, Product
+from app.settings import get_settings
+
+
+@pytest.fixture(autouse=True)
+def _service_env(monkeypatch):
+    monkeypatch.setenv("DB_USER", "shopper")
+    monkeypatch.setenv("DB_PASSWORD", "unused")
+    get_settings.cache_clear()
+    yield
+    get_settings.cache_clear()
+
+
+def _order(session, items):
+    order = Order(customer_email="buyer@example.com", status="pending")
+    for n, (price, qty) in enumerate(items, 1):
+        order.items.append(OrderItem(product_id=n, product_name=f"Item {n}", unit_price=Decimal(price), quantity=qty))
+    session.add(order)
+    session.commit()
+    return order
+
+
+def observe_price(client, session, items, coupon=None):
+    order = _order(session, items)
+    url = f"/orders/{order.id}/quote" + (f"?coupon={coupon}" if coupon else "")
+    r = client.get(url)
+    return [r.status_code, r.json().get("grand_total") if r.status_code == 200 else None]
+
+
+def observe_total(client, session, items):
+    r = client.get(f"/orders/{_order(session, items).id}/total")
+    b = r.json()
+    return [r.status_code, b.get("total"), b.get("item_count"), b.get("average_unit_price"), b.get("headline")]
+
+
+def observe_stock(client, session, stock, qty):
+    p = Product(name="Shelf item", price=Decimal("2.00"), stock=stock)
+    session.add(p)
+    session.commit()
+    body = {"customer_email": "buyer@example.com", "items": [{"product_id": p.id, "quantity": qty}]}
+    status = client.post("/orders", json=body).status_code
+    session.refresh(p)
+    low = [row["id"] for row in client.get("/products/low-stock").json()]
+    return [status, p.stock, p.id in low]

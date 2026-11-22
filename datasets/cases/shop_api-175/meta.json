@@ -1,0 +1,17 @@
+{
+  "template": "outages.insufficient",
+  "params": {
+    "group": "unconfirmed_orders",
+    "variant": 0
+  },
+  "distance_source": "manual",
+  "base_sha": "5ec94a43f8b9f5728a5d11bb40639588b7495296",
+  "runtime": {
+    "logs": "suppressed",
+    "symptom": "intermittent"
+  },
+  "notes": "no cause is determinable: logs withheld and the contract is silent on the intermittent symptom",
+  "gold_fix": "reverse of mutation.patch",
+  "allowed_shared": {},
+  "allowed_terms": {}
+}

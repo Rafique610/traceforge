@@ -1,11 +1,11 @@
---- a/lab/shop_api/app/shipping.py
-+++ b/lab/shop_api/app/shipping.py
-@@ -7,7 +7,7 @@
+--- a/lab/shop_api/app/coupons.py
++++ b/lab/shop_api/app/coupons.py
+@@ -36,7 +36,7 @@
+     pct = codes.get(code.strip().upper())
+     if pct is None:
+         raise UnknownCoupon(code)
+-    return min(pct, cap)
++    return pct
  
- def shipping_fee(amount: Decimal, fee: Decimal, free_over: Decimal) -> Decimal:
-     """Flat fee, waived when the (discounted) amount reaches the free-shipping threshold."""
--    return ZERO if amount >= free_over else money(fee)
-+    return ZERO if amount >= free_over * 2 else money(fee)
  
- 
- def tax_amount(amount: Decimal, rate: Decimal) -> Decimal:
+ def apply_discount(amount: Decimal, pct: int) -> Decimal:

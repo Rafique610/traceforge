@@ -1,0 +1,11 @@
+--- a/lab/worker/queue.py
++++ b/lab/worker/queue.py
+@@ -73,7 +73,7 @@
+         return parse_job(raw)
+     except MalformedJob:
+         log.error("dead-lettering malformed job")
+-        client.lpush(settings.dead_queue, raw)
++        pass
+         return None
+ 
+ 

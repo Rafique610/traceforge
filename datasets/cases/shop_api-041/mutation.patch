@@ -1,11 +1,11 @@
---- a/lab/shop_api/app/settings.py
-+++ b/lab/shop_api/app/settings.py
+--- a/lab/worker/settings.py
++++ b/lab/worker/settings.py
 @@ -17,7 +17,7 @@
      db_user: str
      db_password: SecretStr
-     db_pool_size: int = 5
--    redis_host: str = "localhost"
-+    redis_host: str = "lab-redis"
-     redis_port: int = 6379
-     order_queue: str = "orders:confirm"
-     # pricing rules (see app/quote.py)
+     db_pool_size: int = 2
+-    max_retries: int = 3
++    max_retries: int = 0
+     backoff_base_s: float = 1.0
+     connect_attempts: int = 10
+ 

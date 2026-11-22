@@ -1,55 +1,36 @@
-"""Test plumbing: a loopback stand-in for the broker (test double, records commands)."""
 
-import socketserver
-import threading
+import json
 
-import pytest
-
-
-class _Handler(socketserver.StreamRequestHandler):
-    def _command(self):
-        head = self.rfile.readline()
-        if not head:
-            return None
-        parts = []
-        for _ in range(int(head[1:])):
-            size = int(self.rfile.readline()[1:])
-            parts.append(self.rfile.read(size + 2)[:-2].decode())
-        return parts
-
-    def handle(self):
-        while (cmd := self._command()) is not None:
-            self.server.commands.append(cmd)
-            name = cmd[0].upper()
-            if name == "HELLO":  # RESP3 handshake sent by recent client versions
-                self.wfile.write(b"%2\r\n$6\r\nserver\r\n$4\r\nstub\r\n$5\r\nproto\r\n:3\r\n")
-            elif name == "PING":
-                self.wfile.write(b"+PONG\r\n")
-            elif name == "LPUSH":
-                self.wfile.write(b":1\r\n")
-            else:
-                self.wfile.write(b"+OK\r\n")
-            self.wfile.flush()
+from worker.queue import consume_once
+from worker.settings import WorkerSettings
 
 
-class _Server(socketserver.ThreadingTCPServer):
-    allow_reuse_address = True
-    daemon_threads = True
+class Broker:
+    """In-memory stand-in for the three list calls the worker makes (test double)."""
+
+    def __init__(self):
+        self.lists = {}
+
+    def lpush(self, key, value):
+        self.lists.setdefault(key, []).insert(0, value)
+
+    def brpop(self, key, timeout=0):
+        items = self.lists.get(key) or []
+        return (key, items.pop()) if items else None
 
 
-@pytest.fixture
-def broker():
-    """Factory: broker(port) starts a stand-in listening on 127.0.0.1:<port>; returns its command log."""
-    servers = []
+def observe_job(payload, failures):
+    settings = WorkerSettings(db_user="worker", db_password="unused")
+    broker = Broker()
+    raw = payload if isinstance(payload, str) else json.dumps({"job_id": "j", "type": "order_confirmation", "order_id": payload, "total": "1.00"})
+    broker.lpush("orders:confirm", raw)
+    calls, sleeps = [], []
 
-    def start(port):
-        srv = _Server(("127.0.0.1", port), _Handler)
-        srv.commands = []
-        threading.Thread(target=srv.serve_forever, daemon=True).start()
-        servers.append(srv)
-        return srv.commands
+    def handler(job):
+        calls.append(job["order_id"])
+        if len(calls) <= failures:
+            raise RuntimeError("database busy")
 
-    yield start
-    for srv in servers:
-        srv.shutdown()
-        srv.server_close()
+    taken = consume_once(broker, settings, handler, sleep=sleeps.append)
+    dead = sum(len(v) for k, v in broker.lists.items() if k.endswith(":dead"))
+    return [taken, len(calls), sleeps, dead, len(broker.lists.get("orders:confirm", []))]

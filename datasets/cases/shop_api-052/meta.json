@@ -1,15 +1,15 @@
 {
-  "template": "code.average_divisor",
+  "template": "sites.price",
   "params": {
-    "site": "average_divisor"
+    "field": "coupon_codes",
+    "bad_value": "WELCOME10=10,BULK20=02O,STAFF50=50",
+    "service": "shop_api"
   },
   "distance_source": "manual",
   "base_sha": "5ec94a43f8b9f5728a5d11bb40639588b7495296",
   "runtime": {},
-  "notes": "distance is a manual estimate (hops from the failing endpoint to the mutated site)",
+  "notes": "distance 1 (manual): the failing code reads the field; the wrong value is its default",
   "gold_fix": "reverse of mutation.patch",
   "allowed_shared": {},
-  "allowed_terms": {
-    "average_unit_price": "public response field (CONTRACT.md) the symptom is read from"
-  }
+  "allowed_terms": {}
 }

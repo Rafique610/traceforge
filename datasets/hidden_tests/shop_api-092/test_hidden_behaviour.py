@@ -1,15 +1,12 @@
-"""Price rules: what a customer is charged for an order."""
+from decimal import Decimal
 
-from conftest import observe_price
-
-
-def test_price_1(client, session):
-    assert observe_price(client, session, [("50.00", 6), ("2.85", 2)], "Staff50") == [200, "250.37"]
+from app.pricing import average_unit_price
 
 
-def test_price_2(client, session):
-    assert observe_price(client, session, [], "welcome10 ") == [200, "4.99"]
+def test_average_over_several_units():
+    assert average_unit_price(Decimal("9.00"), 3) == Decimal("3.00")
+    assert average_unit_price(Decimal("31.00"), 5) == Decimal("6.20")
 
 
-def test_price_3(client, session):
-    assert observe_price(client, session, [("50.00", 2), ("6.15", 5), ("64.80", 2)], "Staff50") == [200, "213.23"]
+def test_single_unit_average_is_the_total():
+    assert average_unit_price(Decimal("7.77"), 1) == Decimal("7.77")

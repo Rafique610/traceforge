@@ -1,0 +1,11 @@
+--- a/lab/worker/queue.py
++++ b/lab/worker/queue.py
+@@ -91,7 +91,7 @@
+     try:
+         with_backoff(
+             lambda: handler(job),
+-            retries=settings.max_retries,
++            retries=settings.max_retries + 1,
+             base=settings.backoff_base_s,
+             sleep=sleep,
+         )

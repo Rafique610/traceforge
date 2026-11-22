@@ -1,11 +1,11 @@
---- a/lab/shop_api/app/coupons.py
-+++ b/lab/shop_api/app/coupons.py
-@@ -33,7 +33,7 @@
-     """Percentage for `code` (case-insensitive), never above `cap`."""
-     if today > expires:
-         raise ExpiredCoupon(code)
--    pct = codes.get(code.strip().upper())
-+    pct = codes.get(code.strip())
-     if pct is None:
-         raise UnknownCoupon(code)
-     return min(pct, cap)
+--- a/lab/worker/settings.py
++++ b/lab/worker/settings.py
+@@ -10,7 +10,7 @@
+ class WorkerSettings(BaseSettings):
+     redis_host: str = "localhost"
+     redis_port: int = 6379
+-    order_queue: str = "orders:confirm"
++    order_queue: str = "orders-confirm"
+     db_host: str = "localhost"
+     db_port: int = 5432
+     db_name: str = "shop"

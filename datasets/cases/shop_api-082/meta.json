@@ -1,16 +1,15 @@
 {
-  "template": "sites.price",
+  "template": "sites.job",
   "params": {
-    "site": "ship_base",
-    "variant": 0
+    "field": "max_retries",
+    "bad_value": "10",
+    "service": "worker"
   },
   "distance_source": "manual",
   "base_sha": "5ec94a43f8b9f5728a5d11bb40639588b7495296",
   "runtime": {},
-  "notes": "distance: manual estimate (hops from endpoint handler to site)",
+  "notes": "distance 1 (manual): the failing code reads the field; the wrong value is its default",
   "gold_fix": "reverse of mutation.patch",
   "allowed_shared": {},
-  "allowed_terms": {
-    "quote": "public endpoint path /orders/{id}/quote"
-  }
+  "allowed_terms": {}
 }

@@ -1,11 +1,11 @@
---- a/lab/shop_api/app/inventory.py
-+++ b/lab/shop_api/app/inventory.py
-@@ -20,7 +20,7 @@
-     """Take units off the shelf. Raises OutOfStock and leaves stock untouched if short."""
-     if not can_fulfil(product, quantity):
-         raise OutOfStock(product.id, quantity, product.stock)
--    product.stock -= quantity
-+    product.stock -= quantity - 1
+--- a/lab/shop_api/app/shipping.py
++++ b/lab/shop_api/app/shipping.py
+@@ -7,7 +7,7 @@
+ 
+ def shipping_fee(amount: Decimal, fee: Decimal, free_over: Decimal) -> Decimal:
+     """Flat fee, waived when the (discounted) amount reaches the free-shipping threshold."""
+-    return ZERO if amount >= free_over else money(fee)
++    return ZERO if amount <= free_over else money(fee)
  
  
- def low_stock(products: list[Product], level: int) -> list[Product]:
+ def tax_amount(amount: Decimal, rate: Decimal) -> Decimal:

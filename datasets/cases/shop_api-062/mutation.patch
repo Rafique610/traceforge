@@ -1,8 +1,9 @@
---- a/lab/shop_api/app/inventory.py
-+++ b/lab/shop_api/app/inventory.py
-@@ -25,4 +25,4 @@
- 
- def low_stock(products: list[Product], level: int) -> list[Product]:
-     """Products at or below the reorder level, fewest units first."""
--    return sorted((p for p in products if p.stock <= level), key=lambda p: (p.stock, p.id))
-+    return sorted((p for p in products if p.stock < level - 1), key=lambda p: (p.stock, p.id))
+--- a/lab/shop_api/app/quote.py
++++ b/lab/shop_api/app/quote.py
+@@ -31,5 +31,5 @@
+         "goods": goods,
+         "shipping": ship,
+         "tax": tax,
+-        "grand_total": money(goods + ship + tax),
++        "grand_total": money(goods + tax),
+     }

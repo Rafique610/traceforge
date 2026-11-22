@@ -1,11 +1,11 @@
---- a/lab/shop_api/app/orders.py
-+++ b/lab/shop_api/app/orders.py
-@@ -30,7 +30,7 @@
+--- a/lab/shop_api/app/shipping.py
++++ b/lab/shop_api/app/shipping.py
+@@ -7,7 +7,7 @@
+ 
+ def shipping_fee(amount: Decimal, fee: Decimal, free_over: Decimal) -> Decimal:
+     """Flat fee, waived when the (discounted) amount reaches the free-shipping threshold."""
+-    return ZERO if amount >= free_over else money(fee)
++    return money(fee)
  
  
- def unit_count(items: list[OrderItem]) -> int:
--    return sum(item.quantity for item in items)
-+    return sum(item.quantity for item in items[1:])
- 
- 
- def order_average_price(items: list[OrderItem]) -> Decimal:
+ def tax_amount(amount: Decimal, rate: Decimal) -> Decimal:

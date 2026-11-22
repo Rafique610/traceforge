@@ -1,11 +1,11 @@
---- a/lab/shop_api/app/settings.py
-+++ b/lab/shop_api/app/settings.py
-@@ -18,7 +18,7 @@
-     db_password: SecretStr
-     db_pool_size: int = 5
-     redis_host: str = "localhost"
--    redis_port: int = 6379
-+    redis_port: int = 6380
-     order_queue: str = "orders:confirm"
-     # pricing rules (see app/quote.py)
-     tax_rate: Decimal = Decimal("0.17")
+--- a/lab/worker/queue.py
++++ b/lab/worker/queue.py
+@@ -78,7 +78,7 @@
+ 
+ 
+ def dead_letter(client, settings: WorkerSettings, job: dict, error: str) -> None:
+-    client.lpush(settings.dead_queue, json.dumps({**job, "error": error}))
++    return None
+ 
+ 
+ def consume_once(

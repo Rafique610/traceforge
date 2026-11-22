@@ -1,11 +1,11 @@
---- a/lab/shop_api/app/quote.py
-+++ b/lab/shop_api/app/quote.py
-@@ -23,7 +23,7 @@
-             today or date.today(),
-         )
-     goods = coupons.apply_discount(subtotal, pct)
--    ship = shipping.shipping_fee(goods, s.shipping_fee, s.free_shipping_over)
-+    ship = shipping.shipping_fee(goods + subtotal, s.shipping_fee, s.free_shipping_over)
-     tax = shipping.tax_amount(goods, s.tax_rate)
-     return {
-         "subtotal": subtotal,
+--- a/lab/worker/retry.py
++++ b/lab/worker/retry.py
+@@ -14,7 +14,7 @@
+ 
+     Total calls = retries + 1. The last exception propagates.
+     """
+-    for attempt in range(retries + 1):
++    for attempt in range(1, retries + 1):
+         try:
+             return fn()
+         except Exception as exc:

@@ -1,11 +1,8 @@
---- a/lab/shop_api/app/quote.py
-+++ b/lab/shop_api/app/quote.py
-@@ -23,7 +23,7 @@
-             today or date.today(),
-         )
-     goods = coupons.apply_discount(subtotal, pct)
--    ship = shipping.shipping_fee(goods, s.shipping_fee, s.free_shipping_over)
-+    ship = shipping.shipping_fee(goods, s.free_shipping_over, s.shipping_fee)
-     tax = shipping.tax_amount(goods, s.tax_rate)
-     return {
-         "subtotal": subtotal,
+--- a/lab/shop_api/app/shipping.py
++++ b/lab/shop_api/app/shipping.py
+@@ -12,4 +12,4 @@
+ 
+ def tax_amount(amount: Decimal, rate: Decimal) -> Decimal:
+     """Sales tax on goods only (shipping is not taxed)."""
+-    return money(amount * rate)
++    return money(amount * rate * 10)
