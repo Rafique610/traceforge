@@ -7,11 +7,13 @@ from typing import Any
 import openai
 from pydantic import BaseModel
 
-from traceforge.agent import cache
+from traceforge.agent import axforge, beatapi, cache
 from traceforge.agent.call_log import log_call
 from traceforge.config import Settings, get_settings
 
 BASE_URLS = {
+    "axforge": axforge.BASE_URL,
+    "beatapi": beatapi.BASE_URL,
     "openrouter": "https://openrouter.ai/api/v1",
     "mistral": "https://api.mistral.ai/v1",
     "groq": "https://api.groq.com/openai/v1",
@@ -72,6 +74,16 @@ def is_ollama_cloud(model: str) -> bool:
 
 
 def check_allowed(s: Settings) -> None:
+    if s.llm_provider == "axforge":  # not switchable: even with llm_free_only=false
+        try:
+            axforge.guard_model(s.llm_model)
+        except axforge.AxForgeRefused as e:
+            raise GatewayError(str(e)) from e
+    if s.llm_provider == "beatapi":  # not switchable: even with llm_free_only=false
+        try:
+            beatapi.guard_model(s.llm_model)
+        except beatapi.BeatApiRefused as e:
+            raise GatewayError(str(e)) from e
     if not s.llm_free_only:
         return
     if s.llm_provider not in s.llm_free_allowlist:
@@ -105,9 +117,50 @@ def _throttle(max_rps: float) -> None:
     _last_call = time.monotonic()
 
 
+def _call_beatapi(client: Any, kwargs: dict[str, Any]) -> Any:
+    """One attempt only: no retry, no model change, no fallback host. Errors stop the caller."""
+    try:
+        beatapi.guard_model(kwargs.get("model", ""))  # last line of defence before the network
+    except beatapi.BeatApiRefused as e:
+        raise GatewayError(str(e)) from e
+    kwargs.pop("seed", None)  # not documented for this provider; temperature 0 is still sent
+    beatapi.pace()
+    try:
+        return client.chat.completions.create(**kwargs)
+    except openai.APIConnectionError as e:
+        raise GatewayError("cannot reach beatapi") from e
+    except Exception as e:
+        status = getattr(e, "status_code", None)
+        raise GatewayError(
+            f"beatapi call failed ({status}): {type(e).__name__}; not retried"
+        ) from e
+
+
+def _call_axforge(client: Any, kwargs: dict[str, Any]) -> Any:
+    """One attempt only: no retry, no model change, no fallback host. Errors stop the caller."""
+    try:
+        axforge.guard_model(kwargs.get("model", ""))
+    except axforge.AxForgeRefused as e:
+        raise GatewayError(str(e)) from e
+    kwargs.pop("seed", None)
+    try:
+        return client.chat.completions.create(**kwargs)
+    except openai.APIConnectionError as e:
+        raise GatewayError("cannot reach axforge") from e
+    except Exception as e:
+        status = getattr(e, "status_code", None)
+        raise GatewayError(
+            f"axforge call failed ({status}): {type(e).__name__}; not retried"
+        ) from e
+
+
 def _call(client: Any, s: Settings, request: dict[str, Any]) -> Any:
     skip = ("provider", "replicate_index")
     kwargs = {k: v for k, v in request.items() if k not in skip and v is not None}
+    if s.llm_provider == "axforge":
+        return _call_axforge(client, kwargs)
+    if s.llm_provider == "beatapi":
+        return _call_beatapi(client, kwargs)
     for attempt in range(MAX_RETRIES):
         _throttle(s.llm_max_rps)
         try:
@@ -152,6 +205,10 @@ def chat(
         "seed": seed,
         "replicate_index": replicate_index,
     }
+    if s.llm_provider == "axforge" and s.llm_reasoning_effort:
+        request["extra_body"] = {
+            "reasoning_effort": s.llm_reasoning_effort
+        }  # part of the cache key
     key = cache.cache_key(request)
     log = {
         "provider": s.llm_provider,

@@ -4,7 +4,7 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Literal
 
-from pydantic import SecretStr
+from pydantic import AliasChoices, Field, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from sqlalchemy import URL
 
@@ -22,17 +22,33 @@ class Settings(BaseSettings):
     db_password: SecretStr = SecretStr("")
 
     # LLM gateway: any OpenAI-compatible provider
-    llm_provider: Literal["ollama", "openrouter", "mistral", "groq"] = "ollama"
+    llm_provider: Literal["ollama", "openrouter", "mistral", "groq", "beatapi", "axforge"] = (
+        "ollama"
+    )
     llm_model: str = "qwen2.5-coder:7b"
     # Hard guard against paid use: only allowlisted providers, openrouter ids must end ':free'.
     llm_free_only: bool = True
-    llm_free_allowlist: frozenset[str] = frozenset({"ollama", "openrouter"})
+    llm_free_allowlist: frozenset[str] = frozenset({"ollama", "openrouter", "beatapi", "axforge"})
     llm_max_output_tokens: int = 4096  # reasoning models spend part of this on hidden reasoning
+    llm_reasoning_effort: Literal["low", "high", "max"] | None = (
+        None  # axforge only; None = provider default
+    )
     llm_allow_ollama_cloud: bool = False  # cloud-tagged Ollama models are billed per token
     ollama_base_url: str = "http://localhost:11434/v1"
     openrouter_api_key: SecretStr = SecretStr("")
     mistral_api_key: SecretStr = SecretStr("")
     groq_api_key: SecretStr = SecretStr("")
+    # BeatAPI free-only profile (only glm-5.3-flash-free; see agent/beatapi.py). The key may be
+    # set as TRACEFORGE_BEATAPI_API_KEY or plain BEATAPI_API_KEY.
+    beatapi_api_key: SecretStr = Field(
+        default=SecretStr(""),
+        validation_alias=AliasChoices("TRACEFORGE_BEATAPI_API_KEY", "BEATAPI_API_KEY"),
+    )
+    # AxForge (only glm-5.3-flash; see agent/axforge.py). key env: AXFORGE_API_KEY
+    axforge_api_key: SecretStr = Field(
+        default=SecretStr(""),
+        validation_alias=AliasChoices("TRACEFORGE_AXFORGE_API_KEY", "AXFORGE_API_KEY"),
+    )
     llm_cache_dir: Path = Path(".cache/llm")
     llm_call_log: Path = Path("runs/llm_calls.jsonl")
     llm_max_rps: float = 1.0
