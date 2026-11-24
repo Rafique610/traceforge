@@ -25,13 +25,13 @@ from pathlib import Path
 from traceforge.agent import gateway
 from traceforge.agent.lab_collect import SCRATCH
 from traceforge.agent.persist import RunLog, save_outcome
+from traceforge.agent.rc2.version import rc2_fingerprint, run_label, select_chat_fn
 from traceforge.agent.real_sources import (
     HiddenLeakGuard,
     make_sandbox_run_tests,
     real_sources,
 )
 from traceforge.agent.repair_run import run_case_with_repair
-from traceforge.agent.rc2.version import rc2_fingerprint, run_label, select_chat_fn
 from traceforge.agent.symptoms import symptom_for
 from traceforge.config import Settings
 from traceforge.contracts.case_manifest import REPAIRABLE, CaseManifest
@@ -246,7 +246,12 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--model", default="qwen2.5-coder-7b-ctx16k")
     ap.add_argument("--replicate", type=int, default=0)
     ap.add_argument("--label", default="")
-    ap.add_argument("--rc", choices=["rc1", "rc2"], default="rc1", help="pipeline version (default rc1, unchanged)")
+    ap.add_argument(
+        "--rc",
+        choices=["rc1", "rc2"],
+        default="rc1",
+        help="pipeline version (default rc1, unchanged)",
+    )
     ap.add_argument("--run-id")
     ap.add_argument("--manifest", type=Path, default=REPO / "datasets/manifests/dev.json")
     ap.add_argument("--evidence-dir", type=Path, default=REPO / "runs/evidence")
