@@ -14,7 +14,14 @@
 | Effort | 1 day |
 | Status | PARTIALLY COMPLETE |
 
-**Status sync 2026-11-25.** Evidence: revised PDF dated 23 Nov at `D:\TraceForge\proposal\TraceForge_Assignment3_Proposal.pdf` and a GCR_Upload pack exist on disk. Approval evidence is only the 18 Nov supervisor feedback email plus a note that approval was verbal; there is NO written approval of the revised scope. Human-only items stay open. Five-fact detail: `docs/plans/RUHAN_TASK_TRACKER.md`.
+**Status sync 2026-11-25.** Evidence: revised PDF dated 23 Nov at `D:\TraceForge\proposal\TraceForge_Assignment3_Proposal.pdf` and a GCR_Upload pack exist on disk. The 18 Nov supervisor email authorises proceeding conditionally (see "Supervisor email (evidence)" below). The label stays PARTIALLY COMPLETE because a human step remains: the supervisor's written confirmation of the revised proposal is not on disk, and the title registration and Rafique review are not evidenced. Five-fact detail: `docs/plans/RUHAN_TASK_TRACKER.md`.
+
+### Supervisor email (evidence)
+- Email from Akhtar Jamil (supervisor) to Ruhan, Wednesday 18 Nov 2026, 10:41 AM, sent after he reviewed the first proposal. It calls TraceForge "an interesting work", the scope "a bit ambitious", asks to narrow the core contribution, and lists 13 recommended changes (obligations list in `docs/plans/PROJECT_REQUIREMENTS.md`).
+- Key sentence: "You may proceed with the project after incorporating the recommended changes."
+- Meaning: conditional written permission to proceed. It is NOT written approval of the revised version, NOT a signature or sign-off, NOT final acceptance, NOT a grade. The revised PDF (dated 23 Nov) incorporates the changes per the proposal's own changelog.
+- The evidence file notes the supervisor also verbally approved continuing with the revised proposal; that is not a signed or written document.
+- Paths (outside the repo): `D:\TraceForge\Assignment_3_TraceForge\Evidence\Supervisor_Email_Response.txt`, `D:\TraceForge\Assignment_3_TraceForge\Evidence\Supervisor_Email_Screenshot.png`, copies `D:\TraceForge\GCR_Upload\2_Supervisor_Approval_Email_Screenshot.png` and `2_Supervisor_Approval_Evidence.txt`.
 
 ## B. Objective
 Make the submitted proposal match what is actually being built, and get written supervisor approval of the revised scope and R&D track. Rubric eligibility checks A1 (approval evidence) and A2 (track declared) depend on it, and the proposal itself is worth 40 marks (stage B).
@@ -41,7 +48,7 @@ The proposal predates four decisions: the two-member team, free models, a narrow
 7. **Fix:** "R&D;" → "R&D" (two places).
 8. **AI-tool declaration:** ChatGPT (drafting) and Claude (review, planning, documentation), with purposes.
 9. Rafique reviews the technical sections against the docs.
-10. Email the supervisor with both members in CC: attach the PDF, list the changes in 5–6 bullets, ask for explicit approval of the revised scope and R&D track.
+10. (Remaining human step) Optionally email the supervisor with both members in CC: attach the revised PDF, list the changes in 5–6 bullets, ask for written confirmation of the revised scope and R&D track. The 18 Nov email already gave conditional permission to proceed.
 11. Register/confirm the title in the Project Titles sheet.
 12. Save the reply (PDF or screenshot) outside the public repo; note on TRAC-3 that it exists.
 
@@ -56,7 +63,8 @@ The proposal predates four decisions: the two-member team, free models, a narrow
 - [ ] AI-tool declaration updated
 - [ ] Rafique reviewed technical accuracy
 - [ ] Every reference link still resolves
-- [ ] Email sent to supervisor (both in CC)
+- [x] Supervisor's 18 Nov email (conditional permission) saved on disk (evidence paths above)
+- [ ] Revised version sent to supervisor for written confirmation (both in CC)
 - [ ] Title registered
 - [ ] Reply saved; TRAC-3 updated
 

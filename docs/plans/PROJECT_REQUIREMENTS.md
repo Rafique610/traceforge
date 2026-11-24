@@ -65,6 +65,22 @@ IDs: `FR-` functional, `NFR-` non-functional, `SR-` security, `IR-` integration,
 | ER-08 | Follow-up (optional): embedding and hybrid arms evaluated against preregistered thresholds; go/no-go recorded in ADR 0003 (PROPOSED). | P5-S07, P5-S08 (P5-S09, P5-S11 conditional) |
 | ER-09 | Follow-up (optional, PROPOSED 25 Nov 2026): root-cause ranking with explanation paths, dependency traversal and a change-impact report with visible-test selection are **evaluated, not guaranteed**, on hand-verified fixtures against preregistered thresholds; each relation carries an evidence class; limits (dynamic dispatch, reflection, test-coverage gaps) are stated; no claim of complete root-cause or impact coverage. | P5-S12, P5-S15, P5-S16 (P5-S13, P5-S14 Tier 2; P5-S17 conditional) |
 
+## Supervisor obligations (email of 18 Nov 2026, Akhtar Jamil to Ruhan; conditional permission to proceed)
+Evidence: `D:\TraceForge\Assignment_3_TraceForge\Evidence\Supervisor_Email_Response.txt`. Recommended changes:
+1. Limit the initial scope to configuration and application-code failures in a controlled Docker environment.
+2. Justify multiple agents versus a single tool-calling agent with a structured workflow.
+3. Explain graph construction, evidence-to-code linking and ranking of files/functions.
+4. Add a comparison isolating graph retrieval and iterative test feedback (the 2x2).
+5. At least 50 labelled evaluation examples per implemented AI component (see Q19).
+6. Clarify SWE-bench/BugsInPy (code repair) versus infrastructure/configuration failures.
+7. Explain how the actual root cause is established, including similar symptoms and insufficient evidence.
+8. Repair = patch generation and isolated validation; no production deployment; keep the approval mechanism.
+9. Independent verification, not only LLM-generated tests.
+10. Defer MoE / SSD expert offloading; prefer a reliable coding model.
+11. Prioritise the complete end-to-end workflow.
+12. Divide work between Assignments 3 and 4 (about 40-45% in A3).
+13. Complete the proposal structure: group details, R&D track, 10-15 verified references, alternatives, deployment costs, business model, team responsibilities.
+
 ## Constraints
 - Python 3.12 + uv; FastAPI; SQLAlchemy 2 + Alembic; PostgreSQL 16; Vite + React + TS with pnpm; Taskfile; Docker Compose; Ollama.
 - Two members; work split into two lanes with separate folders.

@@ -23,7 +23,7 @@
 ## Limits to state out loud
 - Reduced evaluation only (`docs/research/final-evaluation-report.md`, `final-evaluation-stage2.md`); the benchmark is nearly saturated and cannot separate the arms.
 - Investigate has not been verified live with a real provider; the default sandbox factory is untested live.
-- The supervisor's approval of the revised scope was verbal; no written approval exists.
+- Supervisor evidence: the 18 Nov 2026 email (Akhtar Jamil to Ruhan, 10:41 AM) says "You may proceed with the project after incorporating the recommended changes" (conditional written permission to proceed; evidence in `D:\TraceForge\Assignment_3_TraceForge\Evidence\`). It is not written approval or sign-off of the revised proposal, and the supervisor's verbal approval of the revised version is not a written document.
 - No public deployment, no GitHub Actions run so far.
 
 Fallbacks: if the live model is slow (a case can take 2-9 minutes at high reasoning effort), open a saved run from `runs/e2e/` and say so; if Docker is down, show screenshots from `docs/screenshots/`.

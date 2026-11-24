@@ -4,7 +4,7 @@
 | # | Action | Unblocks |
 |---|---|---|
 | R1 | Check whether Mistral's free Experiment plan serves `devstral-small-latest` (console.mistral.ai → API keys / models). If yes, create a key and add it to `.env` with the PowerShell prompt (never in chat) as `TRACEFORGE_MISTRAL_API_KEY`; then tell Claude so the free allowlist can include `mistral` and the Devstral vs Qwen probe can run. If no, decide how to proceed (Devstral stays the intended model; nothing is substituted automatically). | D21, ADR 0001, all model comparison |
-| R2 | Provide the proposal PDF (kept outside the repo) and edit it per `phase-0-foundation/step-04-proposal-update-draft.md`; send the supervisor email. | P0-S04, P4-S03 |
+| R2 | Provide the proposal PDF (kept outside the repo; a revised one dated 23 Nov now exists) and, if wanted, ask the supervisor to confirm the revised version in writing (the 18 Nov email already gives conditional permission to proceed). | P0-S04, P4-S03 |
 | R3 | Approve (or send back) the steps now in NEEDS REVIEW: P0-S03, P1-S04, P3-S03 (and the others once evidence is accepted). AGENTS.md: only Ruhan approves. | checklist closure |
 | R4 | Decide commit strategy when ready (nothing is committed). | delivery |
 | R5 | Rotate the OpenRouter key if the earlier one was not deleted (it appeared in chat). | hygiene |
@@ -22,4 +22,4 @@
 > 9. Model: the primary is still Devstral (`devstral-small-latest`); free access is unconfirmed (see `docs/orchestration/DECISIONS.md` B7/B11).
 
 ## 3. What only the supervisor can do
-Written approval of the revised scope and the R&D Product track (open question Q3). Draft email: `docs/plans/phase-0-foundation/step-04-proposal-update-draft.md`. Blocks P0-S04 and the submission pack (P4-S03).
+Q3 is ANSWERED-CONDITIONAL: the 18 Nov 2026 email gives conditional written permission to proceed (evidence in `D:\TraceForge\Assignment_3_TraceForge\Evidence\`). Still open: written confirmation of the revised proposal and R&D Product track. Optional draft email: `docs/plans/phase-0-foundation/step-04-proposal-update-draft.md` (written before the email arrived, 21 Nov). Keeps P0-S04 PARTIALLY COMPLETE.

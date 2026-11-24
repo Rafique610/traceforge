@@ -45,3 +45,14 @@ calls was not separately inspected). Total real provider attempts by this agent:
 - No code was changed.
 
 Servers (uvicorn, vite) stopped; lab compose projects were torn down by lab_collect.
+
+## Addendum: provider ollama (qwen3.5-4b-ctx12k, local), 2026-11-24
+Server env: `TRACEFORGE_LLM_PROVIDER=ollama TRACEFORGE_LLM_MODEL=qwen3.5-4b-ctx12k` (same manifest/evidence dir); vite proxy as before.
+| run | case | states | time | outcome |
+|---|---|---|---|---|
+| A | shop_api-001 | ... CONTEXT_RETRIEVED, then investigation_failed | 22 s | defect (fixed): DIAGNOSED guard "evidence_ids contains ids not stored" |
+| B | shop_api-001 (approve) | ... CONTEXT_RETRIEVED, DIAGNOSED, REVIEW_PENDING, REVIEWED, CLOSED | 595 s | correct diagnosis: configuration / `shop_api.REDIS_HOST` (4 evidence ids, SUPPORTED); no patch: `failure_reason=malformed_edit` (4B model could not produce a valid edit); reproducer validation run recorded failed (0 pass/1 fail); `patch` null, report limitation "NOT verified" |
+| C | shop_api-017 (reject) | ... CONTEXT_RETRIEVED, INCONCLUSIVE, REVIEW_PENDING, REVIEWED, CLOSED | 635 s | insufficient_evidence (no trace frames in the lab bundle) |
+PATCH_PROPOSED/VERIFIED were not reached: a valid result for this model, not retried. Reject path verified live on a no-patch incident (017); approve live on 001 (no patch). Patch-hash review paths remain unit-test-only.
+Fixes: (1) `investigation.py` `_SymptomPersistingEvidence`: the v5 pipeline stored the raw bundle then appended symptom items, so citing them failed the DIAGNOSED guard; the full bundle is now stored first (test `tests/incidents/test_symptom_evidence.py`). (2) `incidents/router.py` fills `service` from the manifest when an incident is created with only `case_id` (header now shows `shop_api`; symptom stays null: the manifest has none; test in `test_incidents_api.py`). `pytest tests/incidents`: 196 passed.
+Checks: sha256 over all files in `lab/` and `datasets/` identical before/after; no hidden test id or `hidden_tests` string in these reports/events or the uvicorn log (prompts not captured, so only the guard wrapper vouches for them). Servers stopped. Run A's incident cb937469 remains stuck in CONTEXT_RETRIEVED (pre-fix).

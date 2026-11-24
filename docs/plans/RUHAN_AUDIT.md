@@ -40,7 +40,7 @@ Evidence labels: **real-PG** real Postgres 16; **SQLite**; **fake-gw** fake gate
 | Cost recalculated with cited official price | NS | draft cannot cite a Devstral price (B11: no free access found) | Ruhan: check Mistral console, then cite. |
 | Rafique reviewed technical accuracy | NS | no review | Rafique: review draft. |
 | Every reference link still resolves | NS | not re-checked | Ruhan: re-check 13 URLs. |
-| Email to supervisor (both CC), title registered, reply saved, TRAC-3 updated | NS | external | Ruhan sends; supervisor replies (Q3). |
+| Email to supervisor (both CC), title registered, reply saved, TRAC-3 updated | NS | external | Audit-time row (21 Nov). Since then: 18 Nov supervisor email is on disk (conditional permission, Q3 ANSWERED-CONDITIONAL); written confirmation of the revised version, title registration still open. |
 | Acceptance: supervisor reply approves or lists changes | NS | none | supervisor. |
 
 ## P0-S05 Contracts, supporting. Task status: **P**
@@ -276,7 +276,7 @@ Evidence labels: **real-PG** real Postgres 16; **SQLite**; **fake-gw** fake gate
 
 **Rafique (blocking):** P1-S02 sandbox (re-verify P2-S04 on a real sandbox), P1-S03 seed cases (unblocks P1-S07, P2-S04 seed results, P2-S05 real report, P3-S03 walkthrough), P2-S01..S03 evidence/graph/retrieval, P2-S07 Sync 2, P3-S01 frozen dataset, P3-S02 metrics and `eval:report`, P5-S02 stats. Also: be told of the `AgentRunRecord` change (B9), review every Track B PR, enable CI-required branch protection.
 
-**Supervisor / project owner:** Q3 written approval of scope (P0-S04); decision on D21 and on whether Devstral is required or an OpenRouter `:free` / local model may be primary (DECISIONS B4/B7/B11 are unratified); approval of any step (AGENTS.md) and of the `a4-submission` tag.
+**Supervisor / project owner:** Q3 (ANSWERED-CONDITIONAL by the 18 Nov email; written confirmation of the revised scope still open, P0-S04); decision on D21 and on whether Devstral is required or an OpenRouter `:free` / local model may be primary (DECISIONS B4/B7/B11 are unratified); approval of any step (AGENTS.md) and of the `a4-submission` tag.
 
 ## Summary
 Task-level counts (20 tasks); the review-duty line is not counted.

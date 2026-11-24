@@ -39,7 +39,7 @@ Progress claim in `docs/plans/RUHAN_CHECKLIST.md`: **0 / 20 steps verified** (ve
 - Integration of agent outputs into shared files: Taskfile, README, config (STATE.md "Next").
 - Model probe (P0-S06 Part B) once a model is usable; ADR 0001.
 - P2-S04 integration against Rafique's sandbox; until then a fake runner.
-- Supervisor reply (Q3), provider sign-ins (human step).
+- Q3: conditional written permission received 18 Nov (email on disk); written confirmation of the revised proposal still open. Provider sign-ins (human step).
 - Rafique's tracks: P1-S02 sandbox, P1-S03 seed cases, P2-S01..03 evidence/graph/retrieval, P3-S01/02 dataset and metrics.
 - Update README and `docs/plans/TEAM_WORK_DISTRIBUTION.md` section 0 before any commit (process rule), after approval.
 

@@ -38,7 +38,7 @@ Likelihood and impact: Low / Medium / High.
 |---|---|---|---|---|---|
 | S1 | Track A Phase 2 (critical path) slips | Medium | High | Ruhan uses slack to pull UI forward; P3-S02 can be done early on samples | Rafique |
 | S2 | Dataset volume (P3-S01) takes longer than planned | High | High | Parameterized templates from P1-S03; start variants during Phase 2 | Rafique |
-| S3 | Supervisor approval delayed | Medium | Medium | Send P0-S04 in the first days; keep building the agreed scope | Ruhan |
+| S3 | Written confirmation of the revised proposal delayed (the 18 Nov email already gives conditional written permission to proceed) | Medium | Low | Keep the email evidence on file; track the 13 email obligations (>=50 labelled examples per AI component, isolating 2x2 comparison); keep building the agreed scope | Ruhan |
 | S4 | Free-tier rate slows A3 experiments | Medium | Medium | Start runs immediately after freeze; cache; run overnight | Ruhan |
 | S5 | Scope creep: the retrieval study (about 6.5 d Rafique) competes with the existing Track A backlog (reviews, evidence/graph gaps, P5-S01/S02, P6) | Medium | Medium | P5-S09 and P5-S05 are droppable; P5-S11 only after go; P5-S10 needs approval; capacity question Q16(e); no existing task changed | Rafique, project owner |
 | S6 | Scope creep and capacity for the root-cause/impact study (P5-S12 to P5-S17, about 13 d more for Rafique, about 19.5 d with the retrieval study; ASSUMPTION) | Medium | High | MVP only first (S12, S15, S16-reduced, about 12.5 d with S06 to S08); Tier 2 (S13, S14) only after measurable gain; P5-S17 conditional; capacity is an owner/Rafique decision (Q18); no existing task changed | Rafique, project owner |

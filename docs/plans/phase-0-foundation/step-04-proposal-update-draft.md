@@ -1,6 +1,6 @@
 # P0-S04 — proposal update: change list and email draft (DRAFT, not sent)
 
-Status: **drafted 2026-11-21; NOT done.** Needs the proposal PDF (not in the repo), Ruhan's edits to it, Rafique's technical review, and the supervisor's reply (open question Q3). Nothing here has been sent. No roll numbers in this file; they stay in the PDF kept outside the repo.
+Status: **drafted 2026-11-21; NOT done.** Needs the proposal PDF (not in the repo), Ruhan's edits to it, Rafique's technical review, and, if wanted, the supervisor's written confirmation of the revised version (open question Q3 is ANSWERED-CONDITIONAL by the 18 Nov email, which arrived after this draft). Nothing here has been sent. No roll numbers in this file; they stay in the PDF kept outside the repo.
 
 ## Changes to make in the PDF (from step-04 section E, checked against the docs on 2026-11-21)
 | # | Section | Change | Source |

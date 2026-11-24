@@ -54,7 +54,7 @@ Supervisor: Sir Akhtar Jamil. Taha Ahmed appears in the earlier proposal but is 
 
 ## Current status
 
-**Update 2026-11-25:** the table below is the 19 Nov snapshot and is stale (code now exists: backend, frontend, lab, dataset, agent, evaluation). Current status: `RUHAN_TASK_TRACKER.md` and `TEAM_WORK_DISTRIBUTION.md` section 0. Supervisor approval of the revised scope is still NOT in writing (the evidence is the 18 Nov feedback email and a note that approval was verbal). Taha Ahmed is off the team and owns nothing.
+**Update 2026-11-25:** the table below is the 19 Nov snapshot and is stale (code now exists: backend, frontend, lab, dataset, agent, evaluation). Current status: `RUHAN_TASK_TRACKER.md` and `TEAM_WORK_DISTRIBUTION.md` section 0. The 18 Nov supervisor email is conditional written permission to proceed ("You may proceed with the project after incorporating the recommended changes"); it is not written approval of the revised scope or a sign-off, and the noted verbal approval is not a written document (evidence: `D:\TraceForge\Assignment_3_TraceForge\Evidence\`). Taha Ahmed is off the team and owns nothing.
 Verified by repository and board inspection on 19 November 2026:
 
 | Item | State |
@@ -65,5 +65,5 @@ Verified by repository and board inspection on 19 November 2026:
 | Research safeguards in plan | Written; PR #1 open, awaiting Ruhan's review |
 | Ruhan as GitHub collaborator / Synverk member | Not done (collaborators: Rafique610 only; Synverk project has no members) |
 | Backend, frontend, lab, dataset, agent, evaluation | Planned, not implemented (no source code exists) |
-| Supervisor approval of revised scope | Not yet obtained (P0-S04) |
+| Supervisor approval of revised scope | 19 Nov snapshot. Conditional written permission to proceed received 18 Nov (email); written confirmation of the revised scope not on disk (P0-S04) |
 | Primary model ID and Mistral free-tier limits | Not decided (P1-S05) |

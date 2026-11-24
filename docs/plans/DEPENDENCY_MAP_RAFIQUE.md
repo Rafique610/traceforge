@@ -33,7 +33,7 @@ Written 2026-11-21 after the owner's scope clarification: implement ONLY the Raf
 | P0-S01 / P0-S02 | already his and done / pending his collaborator step |
 
 ## C. Genuine external blockers (still)
-- Supervisor written approval (P0-S04, Q3); proposal PDF from Ruhan.
+- Written confirmation of the revised proposal (P0-S04); the 18 Nov supervisor email already gives conditional written permission to proceed (Q3 ANSWERED-CONDITIONAL). Proposal PDF from Ruhan.
 - Devstral free access: Ollama account balance unknown until the API key balance check runs (key now in `.env` as `OLLAMA_API_KEY`); Mistral Experiment plan unchecked.
 - **Claude Code usage limit** hit at ~19:50 local time; resets 9 pm Asia/Karachi. Three implementation agents (lab, sandbox, code graph) stopped mid-work; their saved files must be re-validated, not trusted.
 

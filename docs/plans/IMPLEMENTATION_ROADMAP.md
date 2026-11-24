@@ -8,7 +8,7 @@ From the current state (repo + docs + board, no code) to the final Assignment 4 
 | P0-S01 | Repository and collaboration setup | — | Rafique | Ruhan | — | 0.5 | IN PROGRESS |
 | P0-S02 | Backend scaffold | TRAC-1 | Rafique | Ruhan | P0-S01 | 1 | COMPLETED |
 | P0-S03 | Frontend scaffold | TRAC-2 | Ruhan | Rafique | P0-S01 | 1 | IMPLEMENTED, TESTED; NOT REVIEWED/APPROVED |
-| P0-S04 | Proposal update and supervisor approval | TRAC-3 | Ruhan | Rafique | — | 1 | PARTIALLY COMPLETE (no written approval of revised scope) |
+| P0-S04 | Proposal update and supervisor approval | TRAC-3 | Ruhan | Rafique | — | 1 | PARTIALLY COMPLETE (18 Nov email = conditional written permission to proceed; written confirmation of the revised scope not on disk) |
 | P0-S05 | Shared contracts + samples | TRAC-4 | Rafique (+Ruhan) | Both | P0-S02 | 1 | COMPLETED |
 | P0-S06 | Feasibility prototype (retrieval spike + model probe) | — | Rafique (A) + Ruhan (B) | optional | P0-S02 | 2 + 2 | A DONE; B (Ruhan, supporting) IMPLEMENTED, PARTLY RUN |
 | P1-S01 | Lab fixtures | TRAC-5 | Rafique | Ruhan | P0-S02 | 2.5 | IMPLEMENTED (per TWD; not reviewed by Rafique) |
@@ -98,7 +98,7 @@ About 25 person-days along Rafique's lane. **Track A is the critical path for As
 ## Scheduling bottlenecks
 - **Dataset volume (P3-S01):** 144 validated cases + 30 dev is the largest single task. Mitigation: template parameterization from P1-S03; start variants during Phase 2 if graph work stalls.
 - **Mistral free-tier throughput (superseded: the experiment model is AxForge glm-5.3-flash; Key-1 ledger 152,664 tokens left on 2026-11-25):** L0 vs G0 on ≥50 cases ≈ 100 runs × several calls each. Start P4-S01 runs as soon as the freeze lands; rely on the cache.
-- **Supervisor approval (P0-S04):** external wait; send early.
+- **Supervisor (P0-S04):** the 18 Nov email already gives conditional written permission to proceed (Q3 ANSWERED-CONDITIONAL); written confirmation of the revised proposal remains an external wait.
 - **Ruhan's access:** until he is a GitHub collaborator he cannot push; merges no longer need his approval.
 
 ## Milestone acceptance

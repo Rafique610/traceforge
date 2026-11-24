@@ -79,7 +79,7 @@ Not run. It should measure read limits per file size, write limits, unified diff
 
 From `docs/orchestration/DEPENDENCY_MAP.md`, the handoff notes and the checklist (all **pending**):
 - Q1: which hosted free model, with real limits (blocks experiments).
-- Q3: the supervisor's written approval of the revised proposal (P0-S04).
+- Q3: ANSWERED-CONDITIONAL. The 18 Nov 2026 supervisor email gives written permission to proceed after incorporating 13 changes; written confirmation of the revised proposal itself is not on disk (P0-S04; evidence `D:\TraceForge\Assignment_3_TraceForge\Evidence\Supervisor_Email_Response.txt`).
 - Q7: where to host the public demo.
 - Where the user's extra research concerns ("boundary prototype") live: no step is assigned (checklist, ambiguity 3).
 - All experiments (E1 retrieval-only, L0 vs G0, full 2x2 with 3 replicates, model sensitivity, BugsInPy subset) are Phases 4-5 and blocked on Rafique's tracks and a frozen dataset.

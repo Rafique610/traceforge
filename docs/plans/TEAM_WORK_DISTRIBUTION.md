@@ -21,7 +21,7 @@ The split follows one rule: **each person owns whole folders**, and the two halv
 | Phase | Rafique | Status | Ruhan | Status |
 |---|---|---|---|---|
 | 0 | P0-S01 Repo setup | IN PROGRESS (Ruhan's clone left) | P0-S03 Frontend scaffold | IMPLEMENTED, TESTED; NOT REVIEWED/APPROVED |
-| 0 | P0-S02 Backend scaffold | COMPLETED | P0-S04 Proposal update | PARTIALLY COMPLETE (revised PDF dated 23 Nov exists; no written supervisor approval of the revised scope) |
+| 0 | P0-S02 Backend scaffold | COMPLETED | P0-S04 Proposal update | PARTIALLY COMPLETE (revised PDF dated 23 Nov exists; the 18 Nov supervisor email is conditional written permission to proceed; written confirmation of the revised scope is not on disk) |
 | 0 | P0-S05 Contracts | COMPLETED (change approved, D35) | P0-S05 Contracts (confirm) | supporting; additive change awaits Rafique review |
 | 0 | P0-S06 Part A retrieval spike | DONE | P0-S06 Part B model probe | supporting; IMPLEMENTED, PARTLY RUN (no Devstral run) |
 | 1 | P1-S01 Lab fixtures | IMPLEMENTED; extended by Rafique (stock, coupons, shipping, quote) | P1-S04 Incidents API | IMPLEMENTED, TESTED; NOT REVIEWED/APPROVED |

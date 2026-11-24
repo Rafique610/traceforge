@@ -8,7 +8,7 @@ This folder is the team's execution manual: what to build, why, how, who owns it
 - **Ruhan's 20 primary steps:** 0 COMPLETE & VERIFIED. 11 are IMPLEMENTED NOT VERIFIED (code and tests exist, Rafique has not reviewed, the owner has not approved), 7 are PARTIALLY COMPLETE, 2 are NOT STARTED and conditional (P5-S11, P5-S17). Per-task five-fact status (implemented / tested / integrated / reviewed / approved): [RUHAN_TASK_TRACKER.md](RUHAN_TASK_TRACKER.md). The older [RUHAN_AUDIT.md](RUHAN_AUDIT.md) is superseded.
 - **Rafique's 28 primary steps:** see [TEAM_WORK_DISTRIBUTION.md](TEAM_WORK_DISTRIBUTION.md) section 0 (P0-S02, P0-S05, P1-S03, P3-S01 approved; the rest as listed there).
 - **Evidence:** backend 983 passed / 21 skipped (before 25 Nov); frontend vitest 78; both Docker images build. No GitHub Actions run, no host, no public URL, no live Investigate run against a real provider, no clean-clone dry run.
-- **Open human-only items:** written supervisor approval of the revised scope, Rafique's review, owner approval of steps, hosting decision (Q7), branch protection, the A3-protocol decision (supersede or extend the reduced evaluation in `results/final`).
+- **Open human-only items:** written confirmation of the revised scope (the 18 Nov supervisor email is conditional permission to proceed only), Rafique's review, owner approval of steps, hosting decision (Q7), branch protection, the A3-protocol decision (supersede or extend the reduced evaluation in `results/final`).
 - The step documents' older text ("All application code is NOT implemented") is history; read each step's Status line, which was synced for Ruhan's steps on 2026-11-25.
 - Details: [PROJECT_OVERVIEW.md](PROJECT_OVERVIEW.md#current-status).
 

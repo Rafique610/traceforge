@@ -15,7 +15,7 @@
 | Status | PARTIALLY COMPLETE |
 | Branch | `ruhan/P4-S03-demo-pack` |
 
-**Status sync 2026-11-25.** Evidence: `docs/demo/a3-demo.md` rewritten; pack on disk outside the repo. Dry run NOT done; supervisor approval evidence incomplete (see P0-S04). Five-fact detail: `docs/plans/RUHAN_TASK_TRACKER.md`.
+**Status sync 2026-11-25.** Evidence: `docs/demo/a3-demo.md` rewritten; pack on disk outside the repo. Dry run NOT done; supervisor evidence is the 18 Nov conditional-permission email (paths in P0-S04); written confirmation of the revised proposal is not on disk (see P0-S04). Five-fact detail: `docs/plans/RUHAN_TASK_TRACKER.md`.
 
 ## B. Objective
 A demo that works live with realistic inputs (E1), a presentation where both members present (E2), and a complete submission package (eligibility A1–A5). The clean-clone dry run is the final gate for Assignment 3.

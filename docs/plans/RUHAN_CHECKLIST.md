@@ -16,7 +16,7 @@ Ruhan has exactly **20** primary steps (P0-S03, P0-S04, P1-S04..S07, P2-S04..S06
 | 5 | S03, S04, S10, S11, S17 | S03, S04 PARTIALLY COMPLETE; S10 IMPLEMENTED NOT VERIFIED (opt-in, not validated); S11, S17 NOT STARTED (conditional) | 0/5 |
 | 6 | S02, S03 (supporting: S04) | S02 PARTIALLY COMPLETE (no GitHub run, no host); S03 IMPLEMENTED NOT VERIFIED | 0/2 |
 
-Totals by label: 11 IMPLEMENTED NOT VERIFIED, 7 PARTIALLY COMPLETE, 2 NOT STARTED. Human-only items are NOT done: supervisor written approval, Rafique review, owner approval, public URL, hosting, GitHub CI run, branch protection.
+Totals by label: 11 IMPLEMENTED NOT VERIFIED, 7 PARTIALLY COMPLETE, 2 NOT STARTED. Human-only items are NOT done: written confirmation of the revised proposal by the supervisor (the 18 Nov email is conditional permission to proceed only), Rafique review, owner approval, public URL, hosting, GitHub CI run, branch protection.
 
 Columns per task: Dependencies · Files · Acceptance · Tests · Evidence · Commits · Blockers · Next action. Evidence/commits are empty until work happens.
 
@@ -27,7 +27,7 @@ Columns per task: Dependencies · Files · Acceptance · Tests · Evidence · Co
   - [ ] Implementation [ ] Unit tests [ ] Docs (README) [ ] Acceptance (screenshots)
   - Next: needs Node + pnpm (pnpm **not installed**; `corepack enable`).
 - [ ] **P0-S04** Proposal update + supervisor approval (TRAC-3) — 1 d. Not started.
-  - Deps: none technical; Rafique reviews technical sections. Deliverable: revised PDF (kept outside repo), email, saved reply. Blocker risk: Q3 supervisor approval is external.
+  - Deps: none technical; Rafique reviews technical sections. Deliverable: revised PDF (kept outside repo), email, saved reply. Update 2026-11-25: the 18 Nov supervisor email (conditional written permission to proceed; Q3 ANSWERED-CONDITIONAL) is saved at `D:\TraceForge\Assignment_3_TraceForge\Evidence\`; revised PDF dated 23 Nov exists; written confirmation of the revised version is still external.
   - Source proposal PDF is **not in the repo** (gitignored) — I need it.
 - [ ] **P0-S05** Contracts — supporting. **Confirmation proposed 2026-11-21** (additive, in working tree): `AgentRunRecord.provider` free-form slug (was mistral/ollama/groq); new optional `replicate`, `temperature`, `seed`, `failure_reason`; schema regenerated. Sample tests rerun in full suite (229 pass). Needs Rafique heads-up (shared contract).
   - Files: `backend/traceforge/contracts/**`. Acceptance: all samples validate, round-trip. Tests: `backend/tests/test_contract_samples.py`.
@@ -80,7 +80,7 @@ Verification run today: backend `pytest` **360 passed, 0 skipped** (Postgres 16 
 | Task | State | Evidence / what is missing |
 |---|---|---|
 | P0-S03 | NEEDS REVIEW | tests/build/lint pass; missing: screenshots, live proxy 200 |
-| P0-S04 | DRAFTED, blocked (external) | `phase-0-foundation/step-04-proposal-update-draft.md`; needs proposal PDF, Rafique review, supervisor reply (Q3) |
+| P0-S04 | DRAFTED, blocked (external) | `phase-0-foundation/step-04-proposal-update-draft.md`; (21 Nov log; since then the 18 Nov supervisor email is on disk as conditional permission, Q3 ANSWERED-CONDITIONAL) needs Rafique review and written confirmation of the revised proposal |
 | P0-S05 | Confirmation proposed | additive `AgentRunRecord` fields + free-form `provider`; Rafique not yet told |
 | P0-S06-B | Implemented, partly run | local qwen2.5-coder:7b read/write/format/latency numbers in `docs/research/limits-report.md`; a Nemotron `:free` format test (experimental alternative only; NOT Devstral). **Devstral runs NOT RUN** (no free access found; see DECISIONS B11). NOT RUN: 3k/6k-line read, cloud read/write, free-tier daily limit. D19 supported on Qwen (and on Nemotron); D20 local-only; D21 undecided (Devstral untested) |
 | P1-S04 | NEEDS REVIEW | Postgres verified (migration up/down, 8-way concurrent transition, JSONB). Missing: unknown-`case_id` 422 |

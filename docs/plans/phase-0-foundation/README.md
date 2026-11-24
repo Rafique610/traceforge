@@ -15,7 +15,7 @@
 | [P0-S01](step-01-repository-and-collaboration-setup.md) | Repository and collaboration setup | Rafique | — | IN PROGRESS |
 | [P0-S02](step-02-backend-scaffold.md) | Backend scaffold (TRAC-1) | Rafique | P0-S01 | COMPLETED |
 | [P0-S03](step-03-frontend-scaffold.md) | Frontend scaffold (TRAC-2) | Ruhan | P0-S01 | IMPLEMENTED, TESTED; NOT REVIEWED/APPROVED |
-| [P0-S04](step-04-proposal-update-and-approval.md) | Proposal update and approval (TRAC-3) | Ruhan | — | PARTIALLY COMPLETE (no written approval of revised scope) |
+| [P0-S04](step-04-proposal-update-and-approval.md) | Proposal update and approval (TRAC-3) | Ruhan | — | PARTIALLY COMPLETE (18 Nov email = conditional written permission to proceed; written confirmation of revised scope not on disk) |
 | [P0-S05](step-05-shared-contracts.md) | Shared contracts + samples (TRAC-4) | Rafique (+Ruhan) | P0-S02 | COMPLETED |
 | [P0-S06](step-06-feasibility-prototype.md) | Feasibility prototype: retrieval spike (A) + model probe (B) | Rafique (A) + Ruhan (B) | P0-S02 | IN PROGRESS (Part A done) |
 
