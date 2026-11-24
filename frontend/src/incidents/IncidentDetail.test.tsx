@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { mockRoutes } from '../test-utils'
 import { IncidentDetail } from './IncidentDetail'
@@ -59,9 +59,11 @@ describe('IncidentDetail', () => {
       'Proposed patch',
       'Sandbox verification',
       'Human review',
+      'Audit timeline (0)',
+      'Rate this report',
     ])
     expect(screen.getAllByText('Traceback boom').length).toBeGreaterThan(0)
-    expect(screen.getByRole('button', { name: 'Investigate' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'Investigate' })).toBeEnabled()
     expect(screen.getByLabelText('Unified diff')).toBeInTheDocument()
   })
 
@@ -111,5 +113,83 @@ describe('IncidentDetail', () => {
     mockRoutes({})
     render(<IncidentDetail id="i1" />)
     expect(await screen.findByRole('alert')).toHaveTextContent('Could not load incident')
+  })
+})
+
+describe('IncidentDetail investigate', () => {
+  afterEach(() => vi.useRealTimers())
+  const res = (body: unknown, status = 200) => Promise.resolve({ ok: status < 400, status, json: () => Promise.resolve(body) })
+
+  function setup(post: () => Promise<unknown>, states: string[]) {
+    let i = 0
+    const fn = vi.fn((url: string, init?: RequestInit) => {
+      const path = url.replace(/^\/api/, '')
+      if (init?.method === 'POST') return post()
+      if (path === '/incidents/i1') return res(incident(states[Math.min(i++, states.length - 1)]))
+      if (path === '/incidents/i1/report') return res(baseReport())
+      if (path === '/incidents/i1/evidence') return res(evidence)
+      return res({ detail: 'nope' }, 404)
+    })
+    vi.stubGlobal('fetch', fn)
+    return fn
+  }
+  const click = async () => {
+    fireEvent.click(screen.getByRole('button', { name: 'Investigate' }))
+    await act(async () => {})
+  }
+
+  it('posts, shows progress, polls until the state changes', async () => {
+    const fn = setup(() => res({ status: 'started', incident_id: 'i1' }, 202), ['CREATED', 'CREATED', 'REVIEW_PENDING', 'REVIEW_PENDING'])
+    render(<IncidentDetail id="i1" />)
+    await screen.findByRole('heading', { name: 'Summary' })
+    vi.useFakeTimers()
+    await click()
+    expect(fn.mock.calls.some(([u, init]) => u === '/api/incidents/i1/investigate' && (init as RequestInit)?.method === 'POST')).toBe(true)
+    expect(screen.getByRole('button', { name: 'Investigating…' })).toBeDisabled()
+    await act(async () => { await vi.advanceTimersByTimeAsync(2100) })
+    expect(screen.getByRole('button', { name: 'Investigating…' })).toBeDisabled()
+    await act(async () => { await vi.advanceTimersByTimeAsync(2100) })
+    expect(screen.getByRole('status')).toHaveTextContent('now REVIEW_PENDING')
+    expect(screen.getByRole('button', { name: 'Investigate' })).toBeEnabled()
+  })
+
+  it('explains a 409 in plain language', async () => {
+    setup(() => res({ detail: 'already running' }, 409), ['CREATED'])
+    render(<IncidentDetail id="i1" />)
+    await screen.findByRole('heading', { name: 'Summary' })
+    await click()
+    expect(await screen.findByRole('alert')).toHaveTextContent(/already being investigated/)
+    expect(screen.getByRole('button', { name: 'Investigate' })).toBeEnabled()
+  })
+
+  it('explains a 503 with the server detail', async () => {
+    setup(() => res({ detail: 'OPENROUTER_API_KEY is not set' }, 503), ['CREATED'])
+    render(<IncidentDetail id="i1" />)
+    await screen.findByRole('heading', { name: 'Summary' })
+    await click()
+    const alert = await screen.findByRole('alert')
+    expect(alert).toHaveTextContent(/No model provider is configured/)
+    expect(alert).toHaveTextContent('OPENROUTER_API_KEY is not set')
+  })
+
+  it('shows a network error without a raw stack', async () => {
+    setup(() => Promise.reject(new TypeError('Failed to fetch')), ['CREATED'])
+    render(<IncidentDetail id="i1" />)
+    await screen.findByRole('heading', { name: 'Summary' })
+    await click()
+    expect(await screen.findByRole('alert')).toHaveTextContent(/Could not reach the server/)
+  })
+
+  it('stops polling on unmount', async () => {
+    const fn = setup(() => res({ status: 'started', incident_id: 'i1' }, 202), ['CREATED'])
+    const { unmount } = render(<IncidentDetail id="i1" />)
+    await screen.findByRole('heading', { name: 'Summary' })
+    vi.useFakeTimers()
+    await click()
+    await act(async () => { await vi.advanceTimersByTimeAsync(2100) })
+    unmount()
+    const calls = fn.mock.calls.length
+    await act(async () => { await vi.advanceTimersByTimeAsync(10000) })
+    expect(fn.mock.calls.length).toBe(calls)
   })
 })

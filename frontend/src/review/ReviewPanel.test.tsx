@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { json } from '../test-utils'
@@ -105,4 +105,34 @@ describe('ReviewPanel', () => {
     setup()
     expect(screen.getByRole('note')).toHaveTextContent('Nothing is deployed automatically')
   })
+
+  it('is keyboard operable and moves focus through confirm, cancel and the stored decision', async () => {
+    const f = vi.fn(() =>
+      json({ id: 'r1', incident_id: 'i1', patch_sha256: SHA, decision: 'reject', reviewer: 'Ada', comment: null, created_at: TS }, 201),
+    )
+    vi.stubGlobal('fetch', f)
+    setup()
+    const name = screen.getByLabelText('Reviewer name')
+    expect(name).toBeRequired()
+    await userEvent.type(name, 'Ada')
+    screen.getByRole('button', { name: 'Reject' }).focus()
+    await userEvent.keyboard('{Enter}')
+    expect(screen.getByRole('button', { name: 'Confirm reject' })).toHaveFocus()
+    await userEvent.click(screen.getByRole('button', { name: 'Cancel' }))
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Reject' })).toHaveFocus())
+    await userEvent.keyboard('{Enter}')
+    await userEvent.keyboard('{Enter}')
+    const card = await screen.findByRole('status', { name: 'Stored decision' })
+    expect(card).toHaveFocus()
+  })
+
+  it('marks the reviewer field invalid and focuses it when missing', async () => {
+    vi.stubGlobal('fetch', vi.fn())
+    setup()
+    await userEvent.click(screen.getByRole('button', { name: 'Approve' }))
+    const name = screen.getByLabelText('Reviewer name')
+    expect(name).toBeInvalid()
+    expect(name).toHaveFocus()
+  })
 })
+

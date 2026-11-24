@@ -42,6 +42,8 @@ export function breadcrumbs(r: Route): { label: string; href?: string }[] {
       return [home, { label: 'Incidents', href: '#/incidents' }, { label: r.id.slice(0, 8) }]
     case 'eval-list':
       return [home, { label: 'Evaluation' }]
+    case 'eval-compare':
+      return [home, { label: 'Evaluation', href: '#/evaluation' }, { label: 'Compare conditions' }]
     case 'eval-detail':
       return [home, { label: 'Evaluation', href: '#/evaluation' }, { label: r.id }]
     default:

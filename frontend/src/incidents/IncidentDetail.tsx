@@ -1,12 +1,17 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { ReviewPanel } from '../review/ReviewPanel'
-import { BASE, apiGet, errorMessage } from '../shared/api'
+import { ApiError, BASE, apiGet, apiPost, errorMessage } from '../shared/api'
 import { DiffView, parseDiff } from '../shared/DiffView'
 import { exactTime, shortId } from '../shared/format'
 import { StateBadge } from '../shared/StateBadge'
 import type { AuditEvent, EvidenceItem, Incident, Report } from '../shared/types'
 import { CopyButton, Empty, ErrorBox, PageHeader, Skeleton, Time } from '../shared/ui'
+import { AuditTimeline } from './AuditTimeline'
+import { HitPath, rankedHits } from './HitPath'
+import { RatingForm } from '../review/RatingForm'
 import { deriveStages } from './pipeline'
+import { DevFields } from './DevFields'
+import { ProvenanceTag } from './provenance'
 import { PipelineStepper } from './PipelineStepper'
 
 /** States that still have work ahead of them, so the page polls. CREATED is idle until investigate exists. */
@@ -20,6 +25,18 @@ const POLLING_STATES = new Set([
   'VERIFIED',
 ])
 export const POLL_MS = 2000
+/** Upper bound on investigate polling (about 5 minutes) so a stuck run cannot poll forever. */
+const MAX_INVESTIGATE_POLLS = 150
+
+function investigateErrorText(e: unknown): string {
+  if (e instanceof ApiError) {
+    if (e.status === 409) return 'This incident is already being investigated, or its current state does not allow a new investigation.'
+    if (e.status === 503) return `No model provider is configured, so the investigation could not start. ${e.message}`.trim()
+    if (e.status === 404) return 'This incident no longer exists.'
+    return `The investigation could not be started (error ${e.status}).`
+  }
+  return 'Could not reach the server to start the investigation. Check your connection and try again.'
+}
 
 interface Data {
   report: Report
@@ -92,6 +109,26 @@ export function IncidentDetail({ id }: { id: string }) {
   const [data, setData] = useState<Data | null>(null)
   const [error, setError] = useState<string | null>(null)
   const stateRef = useRef<string | null>(null)
+  const [investigating, setInvestigating] = useState(false)
+  const [investigateError, setInvestigateError] = useState<string | null>(null)
+  const [investigateNote, setInvestigateNote] = useState<string | null>(null)
+  const startState = useRef<string | null>(null)
+  const statusRef = useRef<HTMLDivElement>(null)
+
+  async function investigate() {
+    setInvestigateError(null)
+    setInvestigateNote(null)
+    startState.current = stateRef.current
+    setInvestigating(true)
+    try {
+      await apiPost(`/incidents/${id}/investigate`, {})
+    } catch (e) {
+      setInvestigating(false)
+      setInvestigateError(investigateErrorText(e))
+      return
+    }
+    setInvestigateNote('Investigation started. This page refreshes until the incident state changes.')
+  }
 
   const load = useCallback(async () => {
     try {
@@ -128,6 +165,41 @@ export function IncidentDetail({ id }: { id: string }) {
     }, POLL_MS)
     return () => clearInterval(t)
   }, [id, state, load])
+
+  // After POST /investigate: poll the incident (bounded, stops on unmount) until its state moves.
+  useEffect(() => {
+    if (!investigating) return
+    let polls = 0
+    let stopped = false
+    const t = setInterval(async () => {
+      polls += 1
+      try {
+        const inc = await apiGet<Incident>(`/incidents/${id}`)
+        if (stopped) return
+        if (inc.state !== startState.current) {
+          clearInterval(t)
+          await load()
+          if (stopped) return
+          setInvestigating(false)
+          setInvestigateNote(`Investigation update: the incident is now ${inc.state}.`)
+          statusRef.current?.focus()
+          return
+        }
+      } catch {
+        /* transient; next tick retries */
+      }
+      if (polls >= MAX_INVESTIGATE_POLLS && !stopped) {
+        clearInterval(t)
+        setInvestigating(false)
+        setInvestigateNote(null)
+        setInvestigateError('The investigation is taking longer than expected. Reload the page to check its current state.')
+      }
+    }, POLL_MS)
+    return () => {
+      stopped = true
+      clearInterval(t)
+    }
+  }, [investigating, id, load])
 
   if (error && !data) {
     return (
@@ -188,13 +260,21 @@ export function IncidentDetail({ id }: { id: string }) {
             <a className="btn" href={`${BASE}/incidents/${id}/report?format=md`} target="_blank" rel="noreferrer">
               Report (Markdown)
             </a>
-            <button className="btn btn-primary" disabled title="POST /incidents/{id}/investigate is not available yet (pending P2-S07)">
-              Investigate
+            <button type="button" className="btn btn-primary" disabled={investigating || polling} aria-busy={investigating} onClick={investigate}>
+              {investigating ? 'Investigating…' : 'Investigate'}
             </button>
           </>
         }
       />
       {error && <ErrorBox>Refresh failed: {error}</ErrorBox>}
+      <div ref={statusRef} tabIndex={-1} role="status" aria-live="polite" className="muted">
+        {investigateNote}
+      </div>
+      {investigateError && (
+        <p role="alert" className="error">
+          {investigateError}
+        </p>
+      )}
 
       <section className="card" aria-label="Pipeline">
         <header>
@@ -262,6 +342,7 @@ export function IncidentDetail({ id }: { id: string }) {
                         {e.path ? ` · ${e.path}${e.line != null ? `:${e.line}` : ''}` : ''}
                         {e.ts ? ` · ${exactTime(e.ts)}` : ''}
                       </span>
+                      <ProvenanceTag item={e} />
                       <span className="mono muted" title={e.sha256}>
                         sha {e.sha256.slice(0, 8)}
                       </span>
@@ -294,10 +375,13 @@ export function IncidentDetail({ id }: { id: string }) {
           ) : (
             <p className="muted">No retrieval event recorded for this incident.</p>
           )}
-          <p className="muted" style={{ marginBottom: 0 }}>
-            The retrieved snippets themselves are not exposed by the API yet, so only the hit count is shown.
-          </p>
+          {rankedHits(events).length === 0 && (
+            <p className="muted" style={{ marginBottom: 0 }}>
+              The retrieved snippets themselves are not exposed by the API yet, so only the hit count is shown.
+            </p>
+          )}
         </Pad>
+        {rankedHits(events).length > 0 && <HitPath hits={rankedHits(events)} />}
       </Section>
 
       <Section id="sec-diagnosis" title="Model diagnosis">
@@ -322,6 +406,7 @@ export function IncidentDetail({ id }: { id: string }) {
               </>
             )}
           </dl>
+          <DevFields payloads={(events ?? []).filter((e) => e.to_state === 'DIAGNOSED' || e.to_state === 'INCONCLUSIVE' || e.to_state === 'REVIEW_PENDING').map((e) => e.payload)} />
           {withPath.length > 0 && (
             <>
               <h3 className="plain" style={{ marginTop: 16 }}>
@@ -549,6 +634,14 @@ export function IncidentDetail({ id }: { id: string }) {
         <div style={{ borderTop: '1px solid var(--border)' }}>
           <ReviewPanel incidentId={id} state={incident.state} patchSha256={patch?.sha256 ?? null} review={report.review} onChanged={load} />
         </div>
+      </Section>
+
+      <Section id="sec-audit" title={`Audit timeline (${events?.length ?? 0})`}>
+        {events ? <AuditTimeline events={events} /> : <Pad><p className="muted">The audit trail could not be loaded.</p></Pad>}
+      </Section>
+
+      <Section id="sec-rating" title="Rate this report">
+        <RatingForm incidentId={id} />
       </Section>
     </article>
   )

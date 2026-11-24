@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ApiError, apiPost, errorMessage } from '../shared/api'
 import { exactTime } from '../shared/format'
 import type { ReviewCreate, ReviewOut, ReviewView } from '../shared/types'
@@ -24,9 +24,23 @@ export function ReviewPanel({ incidentId, state, patchSha256, review, onChanged 
   const [confirming, setConfirming] = useState<Decision | null>(null)
 
   const stored = saved ?? review
+  const cardRef = useRef<HTMLDivElement>(null)
+  const confirmRef = useRef<HTMLButtonElement>(null)
+  const approveRef = useRef<HTMLButtonElement>(null)
+  const rejectRef = useRef<HTMLButtonElement>(null)
+  const errorRef = useRef<HTMLInputElement>(null)
+  const lastAsked = useRef<Decision>('approve')
+
+  // Move focus to where the user's attention goes after each state change.
+  useEffect(() => {
+    if (confirming) confirmRef.current?.focus()
+  }, [confirming])
+  useEffect(() => {
+    if (saved) cardRef.current?.focus()
+  }, [saved])
   if (stored) {
     return (
-      <div className="decision-card" aria-label="Stored decision">
+      <div className="decision-card" ref={cardRef} tabIndex={-1} role="status" aria-label="Stored decision">
         <p className="big" style={{ margin: 0 }}>
           <strong>{stored.decision === 'approve' ? 'Approved' : 'Rejected'}</strong>{' '}
           <span className="muted" style={{ fontWeight: 400, fontSize: 14 }}>
@@ -48,8 +62,13 @@ export function ReviewPanel({ incidentId, state, patchSha256, review, onChanged 
   }
 
   function ask(decision: Decision) {
-    if (!reviewer.trim()) return setError('Reviewer name is required.')
+    if (!reviewer.trim()) {
+      setError('Reviewer name is required.')
+      errorRef.current?.focus()
+      return
+    }
     setError(null)
+    lastAsked.current = decision
     setConfirming(decision)
   }
 
@@ -95,7 +114,10 @@ export function ReviewPanel({ incidentId, state, patchSha256, review, onChanged 
       <label className="field">
         Reviewer name
         <input
+          ref={errorRef}
           value={reviewer}
+          aria-required="true"
+          aria-invalid={error === 'Reviewer name is required.' ? true : undefined}
           maxLength={80}
           disabled={confirming !== null}
           onChange={(e) => setReviewer(e.target.value)}
@@ -134,22 +156,31 @@ export function ReviewPanel({ incidentId, state, patchSha256, review, onChanged 
             <button
               type="button"
               className={confirming === 'approve' ? 'btn btn-primary' : 'btn btn-danger solid'}
+              ref={confirmRef}
               disabled={busy}
               onClick={() => submit(confirming)}
             >
               {busy ? 'Saving…' : `Confirm ${confirming}`}
             </button>
-            <button type="button" className="btn" disabled={busy} onClick={() => setConfirming(null)}>
+            <button
+              type="button"
+              className="btn"
+              disabled={busy}
+              onClick={() => {
+                setConfirming(null)
+                setTimeout(() => (lastAsked.current === 'approve' ? approveRef : rejectRef).current?.focus(), 0)
+              }}
+            >
               Cancel
             </button>
           </div>
         </div>
       ) : (
         <div className="decision-bar">
-          <button type="button" className="btn btn-primary" disabled={busy || notReady} onClick={() => ask('approve')}>
+          <button type="button" ref={approveRef} className="btn btn-primary" disabled={busy || notReady} onClick={() => ask('approve')}>
             Approve
           </button>
-          <button type="button" className="btn btn-danger" disabled={busy || notReady} onClick={() => ask('reject')}>
+          <button type="button" ref={rejectRef} className="btn btn-danger" disabled={busy || notReady} onClick={() => ask('reject')}>
             Reject
           </button>
         </div>

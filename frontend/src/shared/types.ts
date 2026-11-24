@@ -71,6 +71,10 @@ export interface EvidenceItem {
   path: string | null
   line: number | null
   ts: string | null
+  /** Provenance labels; not in the API today (backend derives them from kind/path). Used when present. */
+  scope?: string | null
+  basis?: string | null
+  origin?: string | null
 }
 
 export interface GitHubIntake {
