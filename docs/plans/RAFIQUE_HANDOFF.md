@@ -117,3 +117,28 @@ Status of the 12 inconsistencies listed in section 6:
 11. Context-budget figures (D20 ~4,000 vs code): UNRESOLVED, not re-measured today; D20 stays provisional.
 12. Step docs name branches though D33 says none: unchanged; `plans/README.md` already says the Branch field is ignored.
 
+
+## 8. Interim checkpoint handoff (2026-11-25, `origin/main` @ `4e1af6d`)
+
+Pushed so you can work independently while Ruhan finishes his remaining tasks. This is an **interim** checkpoint, not the final merge. `git pull --ff-only` first; nothing of yours was overwritten (the only commits on top of `17ef0f4` are the six listed below).
+
+**What is on `main` now (six commits):** RC2 opt-in fixes (`agent/rc2/`, separate fingerprint); regression/impact layer (`regression/`); frontend Investigate flow and review a11y; CI changes plus eval scripts; backend (investigate route, pipeline v5, evaluation, retrieval, repair, evidence); docs sync (plans, trackers, ADRs, research, demo).
+
+**Your tasks are untouched and NOT STARTED:** P5-S06 to S09, P5-S12 to S16 (owners unchanged). Start with P5-S06 and P5-S07 (parallel, zero tokens), then S08; S12 and S15 can start after S06. Design: `docs/research/retrieval-architecture-review.md`, `docs/research/root-cause-impact-regression-design.md`, ADR 0003 (PROPOSED, decision blank).
+
+**Frozen, do not edit:** the 28 RC1 behaviour files listed in `backend/traceforge/evaluation/fingerprint.py` (`FILES`). RC1 fingerprint must stay `ee3d8d873a6e939451650d031a919799138e621859f79bdd91994af3f6456b51` (verified from a clean export of this commit). Build new code in new modules (for example `traceforge/analysis/`, new retrieval modules) and graph overlays on a copy; do not modify `codeintel/` behaviour in place. Check: `cd backend && .venv/Scripts/python.exe -c "from traceforge.evaluation.fingerprint import code_fingerprint as f; print(f()['sha256'])"`.
+
+**Interfaces to build against**
+- Impact: `traceforge/regression/impact.py` defines `ImpactProvider` (`analyse(base_root, patched_root, *, visible_tests, hidden_paths, seeds)`), the sealed `ImpactReport` (with `impact_sha256`) and a default `GraphImpactProvider` over existing `codeintel` (`impact_set`). Register your P5-S15 provider with `register_impact_provider`; it is loaded lazily from `traceforge.analysis.impact_report.make_provider`. Spec: `docs/research/regression-validation-contract.md`.
+- Retrieval: `regression/retrieval_adapters.py` has a `RetrievalAdapter` registry (RET-L, RET-G registered; register RET-E / RET-LE / RET-LG / RET-LGE from your modules). The downstream experiment check refuses to start unless ADR 0003 says `go` and a token budget is recorded.
+- Test selection and patch history: `regression/selection.py`, `history.py`, `runner.py` (wraps the existing repair runner without editing `repair/loop.py`).
+- Evidence classes `static | observed | inferred | unknown`: the default provider emits static, inferred, unknown; `observed` and the overlay (inheritance, value flow) are yours (P5-S12, S13, S14).
+
+**Local environment notes**
+- Ollama (0.40.17) did not respond until `ollama serve` was started manually. Models present: `qwen3.5:4b-q4_K_M`, `medgemma:4b`, `all-minilm:22m` (384-dim embeddings work, first call ~23 s with model load). No code-specific embedding model is downloaded; picking one is your P5-S08 call. The earlier HTTP 400 was Ollama's default 4096-token context; a variant with `num_ctx 12288` (`qwen3.5-4b-ctx12k`, made with `ollama create`) fixes it.
+- `results/` and `runs/` are git-ignored. The frozen RC1 results, evidence bundles and ledgers exist only on Ruhan's machine. You do not need them for retrieval work: regenerate evidence bundles locally (zero tokens) with `python -m traceforge.agent.lab_collect --manifest datasets/manifests/dev.json --case <id>`; use the dev split only (gold for scoring only, never as input).
+- Run pytest from one test directory per call (the `conftest.py` files collide). Frontend: node and npm only (no pnpm locally).
+
+**Incomplete on Ruhan's side (still in progress after this push):** real end-to-end investigate run with a patch (BeatAPI returned 503s; re-run with local Ollama pending), RC2 dev validation (pending), P5-S04 local-model comparison (pending), research statistics for P4-S01 / P5-S03, final docs sync. Any of these may land as later commits; pull before you push.
+
+**Rules that still apply to everything you add:** no secrets or keys in code or logs (keys come from env or settings only); no hidden-test content in prompts, retrieval inputs or feedback; no AxForge spend without owner approval (retrieval work needs none); normal pushes only, no force-push or history rewrites.
