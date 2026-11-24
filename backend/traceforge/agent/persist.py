@@ -7,6 +7,8 @@ cause_class/base_sha, the frozen Patch (with code-graph impact) and ValidationRu
 touches the repo or lab: the patch only exists as text in the database.
 """
 
+import hashlib
+import json
 import re
 from dataclasses import dataclass, field
 from typing import Any
@@ -14,7 +16,8 @@ from typing import Any
 from sqlalchemy.orm import Session
 
 from traceforge.contracts.test_run import TestRunRequest, TestRunResult
-from traceforge.incidents.models import Incident
+from traceforge.incidents import repository as incidents
+from traceforge.incidents.models import AuditEvent, Incident
 from traceforge.repair import RepairResult
 from traceforge.repair.models import Patch, ValidationRun
 from traceforge.repair.repository import add_patch, add_validation_run
@@ -39,6 +42,11 @@ def diagnosed_payload(diagnosis: Any, submitted: Any, usage: Any) -> dict[str, A
             }
         ],
         "rationale": getattr(submitted, "rationale", None),
+        # pipeline v5 fields (None for the formal v4 diagnosis, which does not produce them)
+        "confidence": getattr(submitted, "confidence", None),
+        "observed_symptom": getattr(submitted, "observed_symptom", None),
+        "reconciliation": getattr(submitted, "reconciliation", None),
+        "sufficient_evidence": getattr(submitted, "sufficient_evidence", None),
         "model_usage": {
             "provider": usage.provider,
             "model": usage.model,
@@ -147,3 +155,50 @@ def save_outcome(
             ),
         )
     db.commit()
+
+
+EXPECTED_KINDS = {
+    "log": "application logs of the failing service",
+    "config": "the service configuration (settings values)",
+    "trace_frame": "a stack trace or failing frame",
+    "health": "dependency health checks",
+}
+
+
+def missing_evidence_for(evidence: Any, reason: str | None = None) -> list[str]:
+    """Deterministic list of what the evidence bundle lacked (no model text, no guessing)."""
+    present = {i.kind for i in getattr(evidence, "items", [])}
+    out = [
+        f"No {k} evidence collected: {why}" for k, why in EXPECTED_KINDS.items() if k not in present
+    ]
+    if not out:
+        out.append(
+            "The collected evidence did not tie any code or config target to the symptom"
+            + (f" ({reason})" if reason else "")
+        )
+    return out
+
+
+def record_missing_evidence(
+    db: Session, inc: Incident, evidence: Any, reason: str | None
+) -> list[str]:
+    """Persist `missing_evidence` for an inconclusive incident as an audit event that the report
+    builder reads (the INCONCLUSIVE transition payload is written by agent/pipeline.py)."""
+    missing = missing_evidence_for(evidence, reason)
+    payload = {"missing_evidence": missing, "reason": reason}
+    incidents.add_event(
+        db,
+        AuditEvent(
+            incident_id=inc.id,
+            actor="agent",
+            event_type="missing_evidence",
+            from_state=inc.state,
+            to_state=None,
+            payload=payload,
+            payload_sha256=hashlib.sha256(
+                json.dumps(payload, sort_keys=True, default=str).encode()
+            ).hexdigest(),
+        ),
+    )
+    db.commit()
+    return missing

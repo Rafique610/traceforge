@@ -4,6 +4,15 @@ from traceforge.agent import axforge, gateway
 from traceforge.config import Settings
 
 
+@pytest.fixture(autouse=True)
+def _ledger(monkeypatch, tmp_path):
+    path = tmp_path / "usage.jsonl"
+    path.write_text("", encoding="utf-8")
+    monkeypatch.setattr(axforge, "LEDGER", path)
+    monkeypatch.setattr(axforge, "_authorized_by", "unit-test")  # gate: see test_axforge_gate.py
+    return path
+
+
 def _s(model: str = "glm-5.3-flash", **kw) -> Settings:
     return Settings(llm_provider="axforge", llm_model=model, axforge_api_key="k", **kw)
 

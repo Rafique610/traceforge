@@ -112,3 +112,27 @@ def test_reviews_patches_runs_are_immutable(db, client):
         with pytest.raises(RuntimeError):
             db.commit()
         db.rollback()
+
+
+def test_approve_unverified_patch_409_but_reject_ok(db, client):
+    from support import unverified_incident
+
+    inc = unverified_incident(db)
+    res = _post(client, inc)
+    assert res.status_code == 409 and "VERIFIED" in res.json()["detail"]
+    assert review_repo.get_review(db, inc.id) is None
+    assert _post(client, inc, decision="reject").status_code == 201
+
+
+def test_corrupt_frozen_patch_refused(db, client):
+    from sqlalchemy import update
+
+    inc = verified_incident(db)
+    db.execute(update(Patch).where(Patch.incident_id == inc.id).values(diff="tampered\n"))
+    db.commit()
+    for decision in ("approve", "reject"):
+        res = _post(client, inc, decision=decision)
+        assert res.status_code == 409 and "corrupt" in res.json()["detail"]
+    db.expire_all()
+    assert review_repo.get_review(db, inc.id) is None
+    assert incidents.get_incident(db, inc.id).state is State.REVIEW_PENDING

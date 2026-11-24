@@ -105,6 +105,13 @@ def list_price(s: Settings, tokens_in: int, tokens_out: int) -> float | None:
 def make_client(s: Settings) -> openai.OpenAI:
     if s.llm_provider == "ollama":
         return openai.OpenAI(base_url=s.ollama_base_url, api_key="ollama", max_retries=0)
+    if s.llm_provider == "axforge":
+        slot = axforge.require_slot(s.axforge_key_slot)  # slot 2 refused unless owner-enabled
+        field = "axforge_api_key" if slot == "1" else "axforge_api_key2"
+        key = getattr(s, field).get_secret_value()
+        if not key and slot == "2":
+            raise axforge.AxForgeRefused(f"axforge: no API key configured for slot {slot}")
+        return openai.OpenAI(base_url=BASE_URLS["axforge"], api_key=key, max_retries=0)
     key = getattr(s, f"{s.llm_provider}_api_key").get_secret_value()
     return openai.OpenAI(base_url=BASE_URLS[s.llm_provider], api_key=key, max_retries=0)
 
@@ -124,41 +131,93 @@ def _call_beatapi(client: Any, kwargs: dict[str, Any]) -> Any:
     except beatapi.BeatApiRefused as e:
         raise GatewayError(str(e)) from e
     kwargs.pop("seed", None)  # not documented for this provider; temperature 0 is still sent
+    if (why := beatapi.halted()) is not None:  # the first failure ended BeatAPI use: no more calls
+        raise GatewayError(f"beatapi halted after the first provider failure ({why}); not retried")
     beatapi.pace()
     try:
-        return client.chat.completions.create(**kwargs)
+        resp = client.chat.completions.create(**kwargs)
     except openai.APIConnectionError as e:
+        beatapi.halt("cannot reach beatapi")
+        beatapi.stamp_done()
         raise GatewayError("cannot reach beatapi") from e
     except Exception as e:
         status = getattr(e, "status_code", None)
+        beatapi.halt(f"{status}: {type(e).__name__}")
+        beatapi.stamp_done()
         raise GatewayError(
             f"beatapi call failed ({status}): {type(e).__name__}; not retried"
         ) from e
+    beatapi.stamp_done()
+    beatapi.record_usage(getattr(resp, "usage", None))
+    return resp
 
 
-def _call_axforge(client: Any, kwargs: dict[str, Any]) -> Any:
-    """One attempt only: no retry, no model change, no fallback host. Errors stop the caller."""
+def _call_axforge(client: Any, kwargs: dict[str, Any], slot: str = "1") -> Any:
+    """One attempt only: no retry, no model change, no fallback host. Errors stop the caller.
+
+    The persistent token ledger is checked before sending (80% safety ceiling, counting requests in
+    flight) and updated after with the usage the provider reported."""
+    if (why := axforge.halted(slot)) is not None:  # first failure ends use of this key slot
+        raise GatewayError(f"axforge halted after the first provider failure ({why}); not retried")
+    est_in = axforge.estimate_input_tokens(kwargs)
+    reserved = est_in + int(kwargs.get("max_tokens") or 4096)  # worst case: input + full output
     try:
         axforge.guard_model(kwargs.get("model", ""))
+        axforge.reserve(reserved, slot=slot)
     except axforge.AxForgeRefused as e:
         raise GatewayError(str(e)) from e
-    kwargs.pop("seed", None)
     try:
-        return client.chat.completions.create(**kwargs)
-    except openai.APIConnectionError as e:
-        raise GatewayError("cannot reach axforge") from e
-    except Exception as e:
-        status = getattr(e, "status_code", None)
-        raise GatewayError(
-            f"axforge call failed ({status}): {type(e).__name__}; not retried"
-        ) from e
+        axforge.pace(
+            slot=slot
+        )  # machine-wide: >= 30 s between request STARTS, one request in flight
+    except axforge.AxForgeRateLimited as e:  # a Retry-After from an earlier 429 has not elapsed
+        axforge.release(reserved, slot)
+        raise GatewayError(str(e)) from e
+    except BaseException:
+        axforge.release(reserved, slot)
+        raise
+    try:
+        if (why := axforge.halted(slot)) is not None:  # a failure happened while this call waited
+            raise GatewayError(f"axforge halted after the first provider failure ({why})")
+        kwargs.pop("seed", None)
+        try:
+            resp = client.chat.completions.create(**kwargs)
+        except openai.APIConnectionError as e:
+            axforge.record_error(
+                None, estimated_tokens=est_in, slot=slot
+            )  # may have reached the server
+            axforge.halt("cannot reach axforge", slot)
+            raise GatewayError("cannot reach axforge") from e
+        except Exception as e:
+            status = getattr(e, "status_code", None)
+            maybe_processed = status is None or status >= 500
+            axforge.halt(
+                f"{status}: {type(e).__name__}", slot
+            )  # the run stops at the first failure
+            if status == 429:  # status, time, redacted headers and Retry-After are recorded
+                info = axforge.record_429(e, slot=slot)
+                raise GatewayError(
+                    f"axforge call failed (429): {type(e).__name__}; not retried; "
+                    f"retry_after={info['retry_after_s']}"
+                ) from e
+            axforge.record_error(
+                status, estimated_tokens=est_in if maybe_processed else 0, slot=slot
+            )
+            raise GatewayError(
+                f"axforge call failed ({status}): {type(e).__name__}; not retried"
+            ) from e
+        axforge.record(getattr(resp, "usage", None), slot=slot)
+        return resp
+    finally:
+        axforge.done_turn(slot=slot)
+        axforge.release(reserved, slot)
 
 
 def _call(client: Any, s: Settings, request: dict[str, Any]) -> Any:
-    skip = ("provider", "replicate_index")
+    skip = ("provider", "replicate_index", "attempt_index")
     kwargs = {k: v for k, v in request.items() if k not in skip and v is not None}
     if s.llm_provider == "axforge":
-        return _call_axforge(client, kwargs)
+        return _call_axforge(client, kwargs, s.axforge_key_slot)
     if s.llm_provider == "beatapi":
         return _call_beatapi(client, kwargs)
     for attempt in range(MAX_RETRIES):
@@ -179,6 +238,11 @@ def _call(client: Any, s: Settings, request: dict[str, Any]) -> Any:
     raise AssertionError("unreachable")
 
 
+def _truncated(reply: dict) -> bool:
+    """Output cap hit with no usable content (reasoning ate the budget): not cacheable."""
+    return reply.get("finish_reason") == "length" and not (reply.get("content") or "").strip()
+
+
 def chat(
     messages: list[dict[str, Any]],
     tools: list[dict[str, Any]] | None = None,
@@ -190,6 +254,7 @@ def chat(
     temperature: float = 0.0,
     seed: int = 0,
     replicate_index: int = 0,
+    attempt_index: int = 0,
 ) -> ModelResponse:
     s = settings or get_settings()
     check_allowed(s)
@@ -205,6 +270,8 @@ def chat(
         "seed": seed,
         "replicate_index": replicate_index,
     }
+    if attempt_index:  # part of the cache key only (never sent): a repair attempt after the first
+        request["attempt_index"] = attempt_index  # is a new request even if its prompt is identical
     if s.llm_provider == "axforge" and s.llm_reasoning_effort:
         request["extra_body"] = {
             "reasoning_effort": s.llm_reasoning_effort
@@ -216,8 +283,13 @@ def chat(
         "key": key,
         "n_messages": len(messages),
     }
+    if s.llm_provider == "axforge":
+        log["slot"] = s.axforge_key_slot  # the slot name only, never the key
 
-    if use_cache and (hit := cache.get(s.llm_cache_dir, s.llm_provider, s.llm_model, key)):
+    hit = cache.get(s.llm_cache_dir, s.llm_provider, s.llm_model, key) if use_cache else None
+    if hit and _truncated(hit):
+        hit = None  # a cached truncated reply is never replayed as if it were a fresh attempt
+    if hit:
         resp = ModelResponse(**{**hit, "cache_hit": True})
         log_call(
             s.llm_call_log,
@@ -255,7 +327,7 @@ def chat(
         list_price_usd=list_price(s, tin, tout),
         finish_reason=getattr(raw.choices[0], "finish_reason", None),
     )
-    if use_cache:
+    if use_cache and not _truncated(resp.model_dump()):
         cache.put(s.llm_cache_dir, s.llm_provider, s.llm_model, key, request, resp.model_dump())
     log_call(
         s.llm_call_log,

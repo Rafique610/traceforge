@@ -72,6 +72,10 @@ def create_from_github(db: Session, body: GitHubIntake, settings: Settings) -> G
     )
     payload = {"github_issue": f"{owner}/{repo}#{number}"}
     repository.add_event(db, _event(incident.id, "system", "created", None, State.CREATED, payload))
-    db.add(EvidenceItemRow(incident_id=incident.id, **item.model_dump()))
+    db.add(
+        EvidenceItemRow(
+            incident_id=incident.id, **item.model_dump(exclude={"scope", "basis", "origin"})
+        )
+    )
     db.commit()
     return GitHubIntakeOut(incident=incident, evidence_id=item.id, evidence_sha256=item.sha256)

@@ -159,3 +159,35 @@ def test_literal_special_case_rejected_in_loop(repo):
         visible_test_sources=["def test_a():\n    assert discount(200, 10) == 180\n"],
     )
     assert r.outcome == "REJECTED" and r.reason == "test_literal:shop.py"
+
+
+def test_diff_that_does_not_apply_is_a_failed_attempt_not_a_crash(repo, monkeypatch):
+    from contextlib import contextmanager
+
+    from traceforge.repair import loop
+    from traceforge.repair.worktree import WorktreeError
+
+    real = loop.worktree
+
+    @contextmanager
+    def broken(repo_path, base_sha, diff=None, **k):
+        if diff:  # only applying a diff fails; the clean baseline worktree still works
+            raise WorktreeError("git apply failed: patch does not apply")
+        with real(repo_path, base_sha, **k) as wt:
+            yield wt
+
+    monkeypatch.setattr(loop, "worktree", broken)
+    fake = Fake()
+    r, p = go(repo, fake, proposals=[CORRECT] * 3)
+    assert r.outcome == "REJECTED" and len(p) == 3 and r.patch_sha256 is None
+    assert all(a.reasons == ["patch_does_not_apply"] for a in r.attempts)
+    assert "hidden" not in fake.calls
+
+
+def test_lf_diff_applies_to_lf_file_regardless_of_platform_newlines(repo):
+    """Regression: git apply input must not be newline-translated (broke on Windows)."""
+    path, sha = repo
+    r, _ = go(repo, real_runner, proposals=[CORRECT])
+    assert r.attempts[0].reasons == [] and r.diff and "\r" not in r.diff
+    with worktree(path, sha, r.diff) as wt:
+        assert (wt / "shop.py").exists()

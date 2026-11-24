@@ -5,11 +5,12 @@ import time
 from collections.abc import Callable
 from dataclasses import dataclass
 from functools import partial
+from typing import Any
 
 from sqlalchemy.orm import Session
 
 from traceforge.agent import gateway, prompting
-from traceforge.agent.diagnose import ChatFn, Usage, diagnose
+from traceforge.agent.diagnose import ChatFn, DiagnoseResult, Usage, diagnose
 from traceforge.agent.patch import request_patch
 from traceforge.agent.persist import diagnosed_payload
 from traceforge.agent.sources import (
@@ -22,7 +23,7 @@ from traceforge.agent.sources import (
 )
 from traceforge.agent.tools import SubmitDiagnosis, ToolContext
 from traceforge.config import Settings, get_settings
-from traceforge.contracts.agent_run import AgentRunRecord
+from traceforge.contracts.agent_run import AgentRunRecord, Diagnosis
 from traceforge.contracts.case_manifest import REPAIRABLE, CaseManifest
 from traceforge.incidents import repository, service
 from traceforge.incidents.models import Incident
@@ -49,6 +50,21 @@ def sample_sources() -> Sources:
 
 def _case_hash(case: CaseManifest) -> str:
     return hashlib.sha256(case.model_dump_json().encode()).hexdigest()
+
+
+def _ranked(ctx: Any, limit: int = 10) -> list[dict]:
+    """Top hits with the reasons they were retrieved (no source text), for the audit view."""
+    return [
+        {
+            "path": h.path,
+            "kind": h.kind,
+            "start_line": h.start_line,
+            "end_line": h.end_line,
+            "score": round(h.score, 4),
+            "reasons": list(h.reasons),
+        }
+        for h in ctx.hits[:limit]
+    ]
 
 
 def _move(db: Session | None, inc: Incident | None, to: State, actor: str, payload=None) -> None:
@@ -87,12 +103,20 @@ def run_case(
     dataset_sha256: str | None = None,
     artifacts: dict | None = None,
     repair: RepairFn | None = None,
+    pipeline: str = "v4",
+    symptom: Any = None,
+    diagnose_only: bool = False,
+    saved: tuple | None = None,
 ) -> AgentRunRecord:
     """Run one case under L0/G0/L1/G1 (retrieval L|G x feedback F0|F1). Needs `db` for incidents.
 
     Without `repair`, one patch request is made (outcome UNVERIFIED). With `repair` (see
     agent/repair_run.py) the repair loop runs and its RepairResult sets the record fields.
     `artifacts`, if given, is filled with `diff`, `submitted` (the diagnosis) and `trace`.
+
+    `saved` = (diagnosis, evidence) from an earlier diagnosis run (pipeline v5 only): the saved
+    diagnosis and the exact evidence it was made on are used as they are; no evidence collection,
+    retrieval or diagnose request happens; the record's tokens are those of the patch stage only.
     """
     s, src = settings or get_settings(), sources or sample_sources()
     t0 = time.monotonic()
@@ -105,25 +129,69 @@ def run_case(
     budget = getattr(s, "agent_context_budget_chars", prompting.DEFAULT_CONTEXT_BUDGET_CHARS)
 
     _move(db, inc, State.SNAPSHOT_LOCKED, "system", {"base_sha": case.base_sha})
-    evidence = src.evidence.collect(incident_id, case.service, case)
-    if db is not None and inc is not None and not repository.list_evidence(db, inc.id):
-        repository.save_evidence_bundle(db, evidence)
-        db.commit()
-    _move(db, inc, State.EVIDENCE_COLLECTED, "system", {"items": len(evidence.items)})
-    ctx = src.context.retrieve(evidence, None, condition[0], budget // 4)
-    _move(db, inc, State.CONTEXT_RETRIEVED, "system", {"hits": len(ctx.hits)})
+    v5 = pipeline == "v5"
+    if saved is not None and not v5:
+        raise ValueError("a saved diagnosis can only be used with pipeline v5")
+    evidence = (
+        saved[1] if saved is not None else src.evidence.collect(incident_id, case.service, case)
+    )
+    if saved is None and db is not None and inc is not None:
+        if not repository.list_evidence(db, inc.id):
+            repository.save_evidence_bundle(db, evidence)
+            db.commit()
+    if saved is None and v5 and symptom is not None and symptom.status in ("ok", "no_failure"):
+        from traceforge.agent.symptom import with_symptom
 
-    usage, tc = Usage(), ToolContext(case, evidence, src.context)
-    dr = diagnose(tc, ctx, chat_fn, usage, budget)
+        evidence = with_symptom(evidence, symptom)  # appended: existing evidence ids unchanged
+    _move(db, inc, State.EVIDENCE_COLLECTED, "system", {"items": len(evidence.items)})
+    usage, tc = Usage(), ToolContext(case, evidence, src.context, v5=v5)
+    if saved is not None:  # the diagnosis is taken as saved: it is not regenerated or changed
+        sub = saved[0]
+        ctx = None
+        reason = saved[2] if len(saved) > 2 else None  # why the source run had no diagnosis
+        dr = DiagnoseResult(
+            Diagnosis(
+                cause_class=sub.cause_class,
+                target=None
+                if sub.cause_class == "insufficient_evidence"
+                else sub.qualified_target(case.service),
+                evidence_ids=sub.supporting_evidence_ids,
+                contradicting_ids=sub.contradicting_evidence_ids,
+                abstained=sub.cause_class == "insufficient_evidence",
+            ),
+            sub if (sub.cause_class != "insufficient_evidence" or reason is None) else None,
+            failure_reason=(reason or "insufficient_evidence")
+            if sub.cause_class == "insufficient_evidence"
+            else None,
+        )
+    else:
+        ctx = src.context.retrieve(evidence, None, condition[0], budget // 4)
+        _move(
+            db, inc, State.CONTEXT_RETRIEVED, "system",
+            {"hits": len(ctx.hits), "ranked": _ranked(ctx)},
+        )  # fmt: skip
+        dr = diagnose(tc, ctx, chat_fn, usage, budget, pipeline)
     d = dr.diagnosis
     failure, sha, patched, diff = dr.failure_reason, None, False, None
     outcome, attempts, hidden = None, 0, None
+    if artifacts is not None:
+        artifacts.update(evidence=evidence, context=ctx, diagnosis_rejected=dr.rejected)
+    if not d.abstained and v5:
+        from traceforge.agent.handoff import validate_target
+
+        if (
+            bad := validate_target(tc, dr.submitted)
+        ) is not None:  # never patch an unjustified target
+            failure = bad
+            d = Diagnosis(cause_class="insufficient_evidence", abstained=True)
     if d.abstained:
         _move(db, inc, State.INCONCLUSIVE, "agent", {"reason": failure})
         _move(db, inc, State.REVIEW_PENDING, "agent", {"reason": failure})
     else:
         _move(db, inc, State.DIAGNOSED, "agent", diagnosed_payload(d, dr.submitted, usage))
-        if d.cause_class in REPAIRABLE:
+        if diagnose_only:
+            failure = "diagnosis_only"  # the diagnosis is the result; no patch is requested
+        elif d.cause_class in REPAIRABLE:
             patched = True
             if repair is None:
                 diff, sha, failure = request_patch(tc, dr.submitted, chat_fn, usage)
@@ -145,7 +213,8 @@ def run_case(
         condition=condition,
         model_id=usage.model or s.llm_model,
         provider=usage.provider or s.llm_provider,
-        prompt_hash=prompting.prompt_hash(),
+        prompt_hash=prompting.prompt_hash(pipeline),
+        pipeline_version=pipeline,
         diagnosis=d,
         patch_sha256=sha,
         attempts=attempts if repair else int(patched),

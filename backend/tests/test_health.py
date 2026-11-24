@@ -42,3 +42,47 @@ def test_health_degraded_when_db_down():
         app.dependency_overrides.clear()
     assert response.status_code == 200
     assert response.json() == {"status": "degraded", "db": "down", "version": "0.1.0"}
+
+
+def test_request_id_echoed_and_generated():
+    assert client.get("/health", headers={"X-Request-ID": "abc-123"}).headers["x-request-id"] == (
+        "abc-123"
+    )
+    generated = client.get("/health", headers={"X-Request-ID": "bad id!\t"}).headers["x-request-id"]
+    assert len(generated) == 32
+
+
+def test_oversized_body_413():
+    body = "x" * 1_100_000
+    res = client.post("/incidents", content=body, headers={"content-type": "application/json"})
+    assert res.status_code == 413 and res.json()["detail"] == "request body too large"
+
+
+def test_unhandled_error_is_generic_500():
+    from fastapi import FastAPI
+
+    from traceforge.health.http import RequestHygieneMiddleware, register_error_handlers
+
+    mini = FastAPI()
+    mini.add_middleware(RequestHygieneMiddleware)
+    register_error_handlers(mini)
+
+    @mini.get("/boom")
+    def boom():
+        raise RuntimeError("password=hunter2")
+
+    res = TestClient(mini, raise_server_exceptions=False).get("/boom")
+    assert res.status_code == 500
+    assert "hunter2" not in res.text and res.json()["request_id"] == res.headers["x-request-id"]
+
+
+def test_config_validation_fails_fast():
+    from pydantic import ValidationError
+
+    from traceforge.config import Settings
+
+    with pytest.raises(ValidationError, match="DB_PASSWORD"):
+        Settings(env="prod", _env_file=None)
+    with pytest.raises(ValidationError, match="CORS"):
+        Settings(env="prod", db_password="x", cors_origins=["*"], _env_file=None)
+    assert Settings(env="dev", _env_file=None).cors_origins == []

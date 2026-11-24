@@ -18,6 +18,11 @@ class EvidenceItem(BaseModel):
     path: str | None = Field(default=None, pattern=r"^[^\\:]+$")
     line: int | None = Field(default=None, ge=1)
     ts: datetime | None = None
+    # Provenance (pipeline v5). Optional so existing bundles stay valid; `evidence_label` in
+    # traceforge/agent/evidence_view.py derives the same labels from kind/path when these are None.
+    scope: Literal["static", "runtime"] | None = None  # written in files vs seen in a run
+    basis: Literal["declared", "observed", "inferred"] | None = None
+    origin: str | None = Field(default=None, max_length=120)  # where the content came from
 
 
 class EvidenceBundle(BaseModel):

@@ -1,6 +1,8 @@
 """Builds the EvidenceBundle. Redaction happens on every text BEFORE it is hashed or stored."""
 
+import ast
 import hashlib
+import http.client
 import subprocess
 import urllib.error
 import urllib.request
@@ -39,6 +41,35 @@ def git_head(cfg: EvidenceConfig) -> str:
     return sha
 
 
+# Provenance labels (pipeline v5): what each kind of item is, so a static declaration is never
+# presented as an observed runtime value.
+_OBS_DOCKER = {
+    "scope": "runtime",
+    "basis": "observed",
+    "origin": "docker inspect (container state)",
+}
+_OBS_PROBE = {
+    "scope": "runtime",
+    "basis": "observed",
+    "origin": "HTTP probe of the running service",
+}
+_OBS_ENV = {
+    "scope": "runtime",
+    "basis": "observed",
+    "origin": "container environment at start (docker inspect); not the app's Settings object",
+}
+_DECLARED_SRC = {
+    "scope": "static",
+    "basis": "declared",
+    "origin": "default declared in the settings source (not a runtime value)",
+}
+_DECLARED_COMPOSE = {
+    "scope": "static",
+    "basis": "declared",
+    "origin": "compose file service definition (declared, not verified as effective)",
+}
+
+
 class _Items:
     def __init__(self, secrets: set[str]) -> None:
         self.items: list[EvidenceItem] = []
@@ -64,7 +95,7 @@ def _probe(url: str, timeout: float) -> str:
             return f"GET {url} -> {r.status} {r.read(2048).decode('utf-8', 'replace')}"
     except urllib.error.HTTPError as e:
         return f"GET {url} -> {e.code} {e.read(2048).decode('utf-8', 'replace')}"
-    except OSError as e:
+    except (OSError, http.client.HTTPException, ValueError) as e:  # timeouts, resets, bad replies
         return f"GET {url} -> unreachable ({type(e).__name__})"
 
 
@@ -99,7 +130,15 @@ class EvidenceCollector:
         names = [s.name for s in compose_mod.service_items(text, cfg)]
         if service not in names:
             raise ValueError(f"unknown service {service!r}; compose has {names}")
-        infos = {n: docker_read.inspect_service(self.client, cfg, n) for n in names}
+        infos: dict[str, docker_read.ContainerInfo | None] = {}
+        unavailable: dict[str, str] = {}  # service -> error type: Docker could not be read
+        for n in names:  # one unreadable container (or no Docker at all) must not lose the rest
+            try:
+                infos[n] = docker_read.inspect_service(self.client, cfg, n)
+            except Exception as e:  # noqa: BLE001  docker SDK/requests raise many types
+                infos[n] = None
+                unavailable[n] = type(e).__name__
+                warnings.append(f"{n}: container state unavailable ({type(e).__name__})")
         secrets: set[str] = set()
         for i in infos.values():
             secrets |= secret_values(i.env) if i else set()
@@ -107,9 +146,16 @@ class EvidenceCollector:
 
         for n in names:  # health: every service (a dependency that is down is evidence too)
             i = infos[n]
-            out.add("health", n, _health_text(i) if i else f"service {n}: absent (no container)")
-        if (url := cfg.probes.get(service)) and infos[service] is not None:
-            out.add("health", service, _probe(url, cfg.probe_timeout_s))
+            if n in unavailable:
+                htext = (
+                    f"service {n}: container state unavailable "
+                    f"(Docker read failed: {unavailable[n]})"
+                )
+            else:
+                htext = _health_text(i) if i else f"service {n}: absent (no container)"
+            out.add("health", n, htext, **_OBS_DOCKER)
+        if (url := cfg.probes.get(service)) and (infos[service] is not None or unavailable):
+            out.add("health", service, _probe(url, cfg.probe_timeout_s), **_OBS_PROBE)
 
         log_format: logs.LogFormat = "none"
         sick = [
@@ -126,15 +172,44 @@ class EvidenceCollector:
 
         if infos[service]:
             for k, v in config_mod.effective_env(infos[service].env, cfg, secrets):
-                out.add("config", service, f"{k}={v}")
+                out.add("config", service, f"{k}={v}", **_OBS_ENV)
         sf = config_mod.find_settings_file(cfg, service)
         if sf:
-            src = (cfg.repo_root / sf).read_text("utf-8")
-            for name, decl, line in config_mod.declared_settings(src):
-                out.add("config", service, f"settings.{name} {decl}", path=sf, line=line)
+            try:
+                src = (cfg.repo_root / sf).read_text("utf-8")
+                ast.parse(src)  # declared_settings() hides a syntax error; surface it here
+                declared = config_mod.declared_settings(src)
+            except (OSError, UnicodeDecodeError, SyntaxError, ValueError) as e:
+                declared = []
+                warnings.append(f"{service}: settings source {sf} unreadable ({type(e).__name__})")
+                where = f" at line {e.lineno}" if isinstance(e, SyntaxError) and e.lineno else ""
+                out.add(
+                    "config",
+                    service,
+                    f"settings source {sf} could not be read or parsed: {type(e).__name__}{where}",
+                    path=sf,
+                    line=e.lineno if isinstance(e, SyntaxError) and e.lineno else None,
+                    **_DECLARED_SRC,
+                )
+            for name, decl, line in declared:
+                out.add(
+                    "config",
+                    service,
+                    f"settings.{name} {decl}",
+                    path=sf,
+                    line=line,
+                    **_DECLARED_SRC,
+                )
 
         for s in compose_mod.service_items(text, cfg, secrets):
-            out.add("compose", s.name, s.content, path=cfg.compose_file, line=s.line)
+            out.add(
+                "compose",
+                s.name,
+                s.content,
+                path=cfg.compose_file,
+                line=s.line,
+                **_DECLARED_COMPOSE,
+            )
 
         base_sha = case.base_sha if case else git_head(cfg)
         bundle = EvidenceBundle(
@@ -146,7 +221,17 @@ class EvidenceCollector:
         self, out: _Items, service: str, warnings: list[str], primary: bool
     ) -> logs.LogFormat:
         cfg = self.cfg
-        raw = docker_read.read_logs(self.client, cfg, service)
+        try:
+            raw = docker_read.read_logs(self.client, cfg, service)
+        except Exception as e:  # noqa: BLE001
+            warnings.append(f"{service}: logs unavailable ({type(e).__name__})")
+            out.add(
+                "health",
+                service,
+                f"service {service}: logs unavailable (Docker read failed: {type(e).__name__})",
+                **_OBS_DOCKER,
+            )
+            return "none"
         lines, cut = logs.window(
             raw, cfg.log_max_lines if primary else cfg.dependency_log_lines, cfg.log_max_bytes
         )

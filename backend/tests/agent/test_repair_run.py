@@ -184,3 +184,86 @@ def test_incident_states(tmp_path, db, patch, mid):
         for e in db.query(AuditEvent).filter_by(incident_id=inc.id).order_by(AuditEvent.id)
     ]
     assert states[-4:] == [State.PATCH_PROPOSED, State.VALIDATING, mid, State.REVIEW_PENDING]
+
+
+@pytest.mark.parametrize("cond", ["L0", "L1"])
+def test_every_patch_attempt_carries_its_own_attempt_index(tmp_path, cond):
+    chat = FakeChat(resp(SUBMIT_CODE), *[resp(content=BAD_CODE)] * 3)
+    rec, _ = go(tmp_path, CODE_FILES, "code", chat, cond, runner=stub_runner)
+    assert rec.attempts == 3
+    assert [k.get("attempt_index") for k in chat.kw] == [
+        None,
+        None,
+        1,
+        2,
+    ]  # diagnose, 1st, 2nd, 3rd
+
+
+def test_f1_feedback_reaches_second_attempt_and_is_visible_output_only(tmp_path):
+    from traceforge.evaluation.real_run import request_recorder
+
+    chat, log = FakeChat(resp(SUBMIT_CODE), *[resp(content=BAD_CODE)] * 3), []
+    rec, _ = go(tmp_path, CODE_FILES, "code", request_recorder(chat, log), "L1", runner=stub_runner)
+    patch = [r for r in log if r["stage"] == "patch"]
+    assert [r["has_feedback"] for r in patch] == [False, True, True]
+    assert "VISIBLE FAIL" in patch[1]["feedback"] and HIDDEN not in json.dumps(log)
+    assert patch[0]["messages_sha256"] != patch[1]["messages_sha256"]  # inputs really differ
+    assert rec.attempts == 3
+
+
+def test_f0_attempts_after_the_first_are_flagged_as_new_requests_with_identical_prompt(tmp_path):
+    from traceforge.evaluation.real_run import request_recorder
+
+    chat, log = FakeChat(resp(SUBMIT_CODE), *[resp(content=BAD_CODE)] * 3), []
+    go(tmp_path, CODE_FILES, "code", request_recorder(chat, log), "L0", runner=stub_runner)
+    patch = [r for r in log if r["stage"] == "patch"]
+    assert [r["attempt_index"] for r in patch] == [0, 1, 2]
+    assert len({r["messages_sha256"] for r in patch}) == 1  # F0: same prompt, distinct attempts
+    assert not any(r["has_feedback"] for r in patch)
+
+
+def test_f1_without_visible_run_gets_no_feedback_documented_limit(tmp_path):
+    """Edits that never apply (no_match) produce no visible-test output, so F1 sends nothing new.
+    This is the current design (feedback = visible test output), recorded as a limit, not a fix."""
+    from traceforge.evaluation.real_run import request_recorder
+
+    miss = edit("shop.py", "    return NOT_IN_FILE", "    return 0")
+    chat, log = FakeChat(resp(SUBMIT_CODE), *[resp(content=miss)] * 3), []
+    rec, _ = go(tmp_path, CODE_FILES, "code", request_recorder(chat, log), "L1")
+    assert rec.attempts == 3 and not any(r["has_feedback"] for r in log)
+
+
+def test_truncated_patch_reply_is_a_recorded_no_patch_not_a_provider_outage(tmp_path):
+    from traceforge.agent.gateway import OutputTruncated
+
+    chat = FakeChat(resp(SUBMIT_CODE), OutputTruncated("patch reply truncated"))
+    rec, _ = go(tmp_path, CODE_FILES, "code", chat)
+    assert rec.outcome == "NO_PATCH" and rec.failure_reason == "output_truncated"
+    assert not (rec.failure_reason or "").startswith("provider_error")  # so the run keeps a record
+
+
+def test_real_provider_failure_in_a_patch_attempt_is_still_a_provider_error(tmp_path):
+    chat = FakeChat(resp(SUBMIT_CODE), PROVIDER_DOWN)
+    rec, _ = go(tmp_path, CODE_FILES, "code", chat)
+    assert (rec.failure_reason or "").startswith("provider_error")
+
+
+def test_patch_requests_use_the_uniform_output_cap():
+    from traceforge.agent.patch import PATCH_MAX_OUTPUT_TOKENS
+
+    assert PATCH_MAX_OUTPUT_TOKENS == 8192
+
+
+def test_v4_second_attempt_prompt_keeps_original_feedback_text(tmp_path):
+    chat = FakeChat(resp(SUBMIT_CODE), *[resp(content=BAD_CODE)] * 3)
+    path, sha = make_repo(tmp_path / "r", CODE_FILES)
+    rec = run_case_with_repair(
+        sources().cases.get("code"), "L1", sources(), repo_path=path, base_sha=sha,
+        run_tests=stub_runner, allowlist=["shop.py"], chat_fn=chat, settings=Settings(),
+        visible_test_sources=[CODE_FILES["tests/test_visible.py"]], pipeline="v4",
+    )  # fmt: skip
+    assert rec.attempts == 3
+    second = chat.messages[2][1]["content"]
+    assert "<visible_test_feedback>" in second and "VISIBLE FAIL" in second
+    assert "your previous edit" not in second and "did not make the visible tests" not in second
+    no_hidden_leak(chat)

@@ -1,0 +1,26 @@
+FF                                                                       [100%]
+=================================== FAILURES ===================================
+_________________________________ test_price_1 _________________________________
+/reproducer/test_symptom.py:7: in test_price_1
+    assert observe_price(client, session, [("7.45", 1)], "staff50") == [200, '11.10']
+E   AssertionError: assert [200, '9.35'] == [200, '11.10']
+E     
+E     At index 1 diff: '9.35' != '11.10'
+E     Use -v to get more diff
+----------------------------- Captured stderr call -----------------------------
+2026-11-24 04:16:14,465 INFO httpx HTTP Request: GET http://testserver/orders/1/quote?coupon=staff50 "HTTP/1.1 200 OK"
+------------------------------ Captured log call -------------------------------
+INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/orders/1/quote?coupon=staff50 "HTTP/1.1 200 OK"
+_________________________________ test_price_2 _________________________________
+/reproducer/test_symptom.py:11: in test_price_2
+    assert observe_price(client, session, [("12.00", 1), ("52.40", 3)], "staff50") == [200, '138.57']
+E   AssertionError: assert [200, '98.98'] == [200, '138.57']
+E     
+E     At index 1 diff: '98.98' != '138.57'
+E     Use -v to get more diff
+----------------------------- Captured stderr call -----------------------------
+2026-11-24 04:16:14,635 INFO httpx HTTP Request: GET http://testserver/orders/1/quote?coupon=staff50 "HTTP/1.1 200 OK"
+------------------------------ Captured log call -------------------------------
+INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/orders/1/quote?coupon=staff50 "HTTP/1.1 200 OK"
+--------------------- generated xml file: /out/report.xml ----------------------
+2 failed, 1 warning in 0.26s

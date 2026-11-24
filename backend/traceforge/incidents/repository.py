@@ -51,6 +51,9 @@ def save_evidence_bundle(db: Session, bundle: EvidenceBundle) -> None:
     """Persist a bundle's items for its incident (caller commits). Re-saving an id is an error."""
     incident_id = uuid.UUID(bundle.incident_id)
     db.add_all(
-        EvidenceItemRow(incident_id=incident_id, **item.model_dump()) for item in bundle.items
+        EvidenceItemRow(
+            incident_id=incident_id, **item.model_dump(exclude={"scope", "basis", "origin"})
+        )
+        for item in bundle.items
     )
     db.flush()

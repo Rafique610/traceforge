@@ -59,6 +59,12 @@ class AgentRunRecord(BaseModel):
     failure_reason: str | None = Field(
         default=None, description="Why the run ended without a verified patch, if it did"
     )
+    pipeline_version: str = Field(
+        default="v4",
+        description="v4 = formal pipeline (patch_v4); v5 = development track (symptom, labelled "
+        "evidence, validated diagnosis). Records without the field are v4/v3 and are never "
+        "reinterpreted.",
+    )
 
     @model_validator(mode="after")
     def _outcome_consistent(self) -> Self:

@@ -21,6 +21,7 @@ from traceforge.evidence.traces import (
     parse_tracebacks,
 )
 
+MAX_LINE_CHARS = 2000  # a single huge line (minified JSON, binary dump) must not erase the window
 LogFormat = Literal["plain", "json", "uvicorn_access", "none"]
 _DOCKER_TS = re.compile(r"^(\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z)\s?")
 _LEAD_TS = re.compile(r"^(\d{4}-\d\d-\d\d[ T]\d\d:\d\d:\d\d(?:[.,]\d+)?)")
@@ -72,7 +73,11 @@ def split_line(raw: str) -> tuple[datetime | None, str]:
 def window(text: str, max_lines: int, max_bytes: int) -> tuple[list[str], bool]:
     """Last `max_lines` lines, then the newest fitting `max_bytes`. Returns (lines, truncated)."""
     lines = text.splitlines()
-    cut = len(lines) > max_lines
+    clipped = [
+        ln if len(ln) <= MAX_LINE_CHARS else ln[:MAX_LINE_CHARS] + " ...[clipped]" for ln in lines
+    ]
+    cut = len(lines) > max_lines or clipped != lines
+    lines = clipped
     lines = lines[-max_lines:]
     total, keep = 0, []
     for ln in reversed(lines):

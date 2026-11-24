@@ -191,3 +191,101 @@ def test_ollama_cloud_models_refused_unless_explicitly_allowed(model):
 def test_local_ollama_models_are_not_treated_as_cloud():
     for m in ("qwen2.5-coder:7b", "devstral-small-2:24b", "qwen2.5-coder-7b-ctx16k"):
         gateway.check_allowed(Settings(llm_provider="ollama", llm_model=m))
+
+
+def test_attempt_index_makes_identical_prompts_distinct_requests(tmp_path):
+    """A repair attempt after the first must not replay attempt 1 from the cache (F0 attempts are
+    'fresh'); attempt 1 keeps its original cache key so legitimate cached results stay valid."""
+    s, c = settings(tmp_path), FakeClient()
+    chat(MSGS, settings=s, client=c)
+    assert chat(MSGS, settings=s, client=c).cache_hit  # same attempt: still a hit
+    second = chat(MSGS, settings=s, client=c, attempt_index=1)
+    third = chat(MSGS, settings=s, client=c, attempt_index=2)
+    assert not second.cache_hit and not third.cache_hit and c.calls == 3
+    assert chat(MSGS, settings=s, client=c, attempt_index=1).cache_hit  # reruns of it are cached
+    assert c.calls == 3
+
+
+def test_attempt_index_is_not_sent_and_first_attempt_key_is_unchanged(tmp_path):
+    seen = {}
+
+    class Spy(FakeClient):
+        def _create(self, **kw):
+            seen.update(kw)
+            return super()._create(**kw)
+
+    s = settings(tmp_path)
+    chat(MSGS, settings=s, client=Spy(), attempt_index=2)
+    assert "attempt_index" not in seen and "replicate_index" not in seen
+    legacy = {
+        "provider": s.llm_provider, "model": s.llm_model, "messages": MSGS, "tools": None,
+        "temperature": 0.0, "max_tokens": s.llm_max_output_tokens, "seed": 0, "replicate_index": 0,
+    }  # fmt: skip
+    from traceforge.agent import cache
+
+    c = FakeClient()
+    chat(MSGS, settings=s, client=c)
+    assert cache.get(s.llm_cache_dir, s.llm_provider, s.llm_model, cache_key(legacy)) is not None
+
+
+def test_replicates_are_independent_live_requests(tmp_path):
+    s, c = settings(tmp_path), FakeClient()
+    runs = [chat(MSGS, settings=s, client=c, replicate_index=r) for r in range(3)]
+    assert [r.cache_hit for r in runs] == [False, False, False] and c.calls == 3
+    assert chat(MSGS, settings=s, client=c, replicate_index=1).cache_hit  # a resume reuses its own
+
+
+def test_requests_with_different_inputs_never_share_a_response(tmp_path):
+    """Feedback-carrying and feedback-free prompts, or L and G contexts, are different keys."""
+    s, c = settings(tmp_path), FakeClient()
+    base = [{"role": "user", "content": "patch the file"}]
+    with_fb = [
+        {
+            "role": "user",
+            "content": "patch the file\n<visible_test_feedback>x</visible_test_feedback>",
+        }
+    ]
+    other_ctx = [{"role": "user", "content": "patch the file (graph context)"}]
+    for m in (base, with_fb, other_ctx):
+        assert not chat(m, settings=s, client=c).cache_hit
+    assert c.calls == 3 and chat(base, settings=s, client=c).cache_hit and c.calls == 3
+
+
+class TruncClient(FakeClient):
+    """Reply ends at the output cap with no content (hidden reasoning used the budget)."""
+
+    def _create(self, **kw):
+        self.calls += 1
+        msg = SimpleNamespace(content="", tool_calls=[])
+        return SimpleNamespace(
+            choices=[SimpleNamespace(message=msg, finish_reason="length")],
+            usage=SimpleNamespace(prompt_tokens=1000, completion_tokens=4096),
+        )
+
+
+def test_truncated_reply_is_not_cached_or_replayed(tmp_path):
+    s, c = settings(tmp_path), TruncClient()
+    a = chat(MSGS, settings=s, client=c)
+    b = chat(MSGS, settings=s, client=c)
+    assert (a.cache_hit, b.cache_hit, c.calls) == (False, False, 2)  # both are live requests
+    assert a.finish_reason == "length"
+
+
+def test_previously_cached_truncated_reply_is_a_miss(tmp_path):
+    from traceforge.agent import cache
+
+    s = settings(tmp_path)
+    req = {
+        "provider": s.llm_provider, "model": s.llm_model, "messages": MSGS, "tools": None,
+        "temperature": 0.0, "max_tokens": s.llm_max_output_tokens, "seed": 0, "replicate_index": 0,
+    }  # fmt: skip
+    bad = gateway.ModelResponse(
+        content="", tokens_in=1, tokens_out=4096, latency_ms=0.0, provider=s.llm_provider,
+        model=s.llm_model, list_price_usd=0.0, finish_reason="length",
+    )  # fmt: skip
+    cache.put(
+        s.llm_cache_dir, s.llm_provider, s.llm_model, cache.cache_key(req), req, bad.model_dump()
+    )
+    c = FakeClient()
+    r = chat(MSGS, settings=s, client=c)
+    assert r.cache_hit is False and c.calls == 1

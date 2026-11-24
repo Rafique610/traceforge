@@ -121,3 +121,19 @@ def test_verified_incident_keeps_the_verified_caveat(db, client):
     inc = verified_incident(db)
     body = client.get(f"/incidents/{inc.id}/report").json()
     assert body["limitations"].startswith("Verified only by")
+
+
+def test_missing_evidence_event_from_the_pipeline_reaches_the_report(client, db):
+    from support import PRE, make_incident
+
+    from traceforge.agent.persist import record_missing_evidence
+    from traceforge.contracts.evidence import EvidenceBundle
+    from traceforge.incidents.states import State
+
+    inc = make_incident(db, cause="insufficient_evidence", path=[*PRE, State.INCONCLUSIVE])
+    bundle = EvidenceBundle(
+        incident_id=str(inc.id), base_sha="a" * 40, compose_sha256="b" * 64, items=[]
+    )
+    record_missing_evidence(db, inc, bundle, "insufficient_evidence")
+    body = client.get(f"/incidents/{inc.id}/report").json()
+    assert any("log" in m for m in body["outcome"]["missing_evidence"])

@@ -15,18 +15,19 @@ class WorktreeError(RuntimeError):
 
 
 def _git(repo: str | Path, *args: str, stdin: str | None = None) -> str:
+    # Bytes in and out: text mode would translate line endings on Windows and break `git apply`.
     p = subprocess.run(
         ["git", "-C", str(repo), *args],
-        input=stdin,
+        input=None if stdin is None else stdin.encode("utf-8"),
         capture_output=True,
-        text=True,
-        encoding="utf-8",
         timeout=60,
         check=False,
     )
     if p.returncode != 0:
-        raise WorktreeError(f"git {args[0]} failed: {p.stderr.strip()[:500]}")
-    return p.stdout
+        raise WorktreeError(
+            f"git {args[0]} failed: {p.stderr.decode('utf-8', 'replace').strip()[:500]}"
+        )
+    return p.stdout.decode("utf-8", "replace")
 
 
 def read_base_file(repo: str | Path, base_sha: str, path: str) -> tuple[str | None, bool]:

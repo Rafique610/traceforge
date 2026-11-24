@@ -87,6 +87,13 @@ def page_records(runs: Path, run_id: str, limit: int, offset: int) -> dict:
             "tokens_in": r.tokens_in,
             "tokens_out": r.tokens_out,
             "latency_ms": r.latency_ms,
+            "condition": r.condition,
+            "pipeline_version": r.pipeline_version,
+            "diagnosis": {
+                "cause_class": r.diagnosis.cause_class,
+                "target": r.diagnosis.target,
+                "abstained": r.diagnosis.abstained,
+            },
         }
         for r in recs[offset : offset + limit]
     ]

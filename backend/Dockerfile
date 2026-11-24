@@ -19,4 +19,5 @@ COPY alembic ./alembic
 COPY traceforge ./traceforge
 USER app
 EXPOSE 8000
-CMD ["uvicorn", "traceforge.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Migrate first (idempotent), then serve: a clean database becomes a working one on first start.
+CMD ["sh", "-c", "alembic upgrade head && exec uvicorn traceforge.main:app --host 0.0.0.0 --port 8000"]

@@ -24,9 +24,10 @@ class FakeChat:
     """Scripted gateway: pops one item per call; an Exception item is raised."""
 
     def __init__(self, *script):
-        self.script, self.messages, self.tools = list(script), [], []
+        self.script, self.messages, self.tools, self.kw = list(script), [], [], []
 
-    def __call__(self, messages, tools=None):
+    def __call__(self, messages, tools=None, **kw):
+        self.kw.append(kw)  # e.g. attempt_index
         self.messages.append(messages)
         self.tools.append(tools)
         item = self.script.pop(0)

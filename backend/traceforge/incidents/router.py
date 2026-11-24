@@ -31,12 +31,12 @@ def register_handlers(app: FastAPI) -> None:
         return JSONResponse(status_code=409, content={"detail": str(exc), "state": exc.current})
 
 
-def _known_case_ids() -> set[str] | None:
-    """Case ids of the configured dataset manifest; None (no check) when no manifest is set."""
+def _manifest_cases() -> dict[str, dict] | None:
+    """Cases of the configured dataset manifest by id; None (no check) when no manifest is set."""
     path = get_settings().manifest
     if not path:
         return None
-    return {c["case_id"] for c in json.loads(Path(path).read_text(encoding="utf-8"))}
+    return {c["case_id"]: c for c in json.loads(Path(path).read_text(encoding="utf-8"))}
 
 
 def _get_or_404(db: Session, incident_id: uuid.UUID):
@@ -48,11 +48,14 @@ def _get_or_404(db: Session, incident_id: uuid.UUID):
 
 @router.post("", status_code=201, response_model=IncidentOut)
 def create_incident(body: IncidentCreate, db: Db):
-    known = _known_case_ids()
-    if body.case_id and known is not None and body.case_id not in known:
-        raise HTTPException(
-            422, f"unknown case_id {body.case_id!r}: not in the configured manifest"
-        )
+    known = _manifest_cases()
+    if body.case_id and known is not None:
+        if body.case_id not in known:
+            raise HTTPException(
+                422, f"unknown case_id {body.case_id!r}: not in the configured manifest"
+            )
+        if not body.service and known[body.case_id].get("service"):
+            body = body.model_copy(update={"service": known[body.case_id]["service"]})
     return service.create_incident(db, body)
 
 

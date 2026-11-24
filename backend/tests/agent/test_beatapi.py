@@ -46,6 +46,14 @@ class FakeClient:
         )
 
 
+@pytest.fixture(autouse=True)
+def _isolate_ledger(monkeypatch, tmp_path):
+    monkeypatch.setattr(beatapi, "LEDGER", tmp_path / "beatapi_usage.jsonl")
+    beatapi.reset_halt()
+    yield
+    beatapi.reset_halt()
+
+
 @pytest.fixture
 def isolated(tmp_path, monkeypatch):
     """Point pacing state and the call log/cache at tmp paths; never really sleep."""
@@ -101,7 +109,7 @@ def test_last_line_of_defence_blocks_a_tampered_request(isolated):
     assert client.calls == []
 
 
-def test_pacing_waits_65s_between_live_requests(isolated, monkeypatch):
+def test_pacing_waits_90s_between_live_requests(isolated, monkeypatch):
     tmp, sleeps = isolated
     clock = {"t": 1000.0}
     monkeypatch.setattr(beatapi.time, "time", lambda: clock["t"])
@@ -111,7 +119,7 @@ def test_pacing_waits_65s_between_live_requests(isolated, monkeypatch):
     clock["t"] += 20.0  # only 20 s later
     chat([{"role": "user", "content": "b"}], settings=s, client=client, use_cache=False)
     assert len(client.calls) == 2
-    assert sleeps and abs(sleeps[0] - 45.0) < 1e-6  # 65 - 20
+    assert sleeps and abs(sleeps[0] - 70.0) < 1e-6  # 90 - 20
     state = json.loads((tmp / "state.json").read_text())
     assert state["sent_at"] == 1020.0  # stamped when the second request was sent
 
@@ -154,3 +162,24 @@ def test_base_url_is_fixed_and_key_alias_works(monkeypatch):
     assert (
         Settings(llm_provider="beatapi").beatapi_api_key.get_secret_value() == "sk-from-plain-name"
     )
+
+
+def test_window_counts_from_completion_not_only_from_send(tmp_path):
+    state = tmp_path / "s.json"
+    t = {"now": 1000.0}
+    beatapi.pace(sleep=lambda s: None, now=lambda: t["now"], state_file=state)  # sent at 1000
+    t["now"] = 1040.0  # generation took 40 s
+    beatapi.stamp_done(now=lambda: t["now"], state_file=state)
+    t["now"] = 1066.0  # 66 s after send but only 26 s after completion
+    assert beatapi.seconds_until_allowed(1066.0, state) == pytest.approx(64.0)
+    assert beatapi.seconds_until_allowed(1131.0, state) == 0.0
+
+
+def test_usage_is_recorded_in_a_development_ledger():
+    from types import SimpleNamespace as N
+
+    beatapi.record_usage(N(prompt_tokens=10, completion_tokens=4))
+    beatapi.record_usage(None)
+    rows = [json.loads(x) for x in beatapi.LEDGER.read_text("utf-8").splitlines()]
+    assert rows[0]["tier"] == "development" and rows[0]["input_tokens"] == 10
+    assert rows[1]["usage_source"] == "unknown"

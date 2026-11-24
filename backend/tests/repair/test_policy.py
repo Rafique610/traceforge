@@ -130,3 +130,18 @@ def test_test_literal_only_added_literals_count():
     old = {"shop.py": "def g(x):\n    if x == 42:\n        return 8.4\n    return x\n"}
     new = {"shop.py": "def g(x):\n    if x == 42:\n        return 8.4\n    return x + 1\n"}
     assert policy.check_patch(to_unified_diff(old, new), old, new, [_VISIBLE]).ok
+
+
+def test_class_level_field_default_is_not_a_test_literal_but_module_constants_still_are():
+    """Settings defaults are configuration: the fix is the value itself (found on the frozen split:
+    the gold fix of 29 configuration cases was rejected by the literal rule before this)."""
+    visible = 'def test_t(s):\n    assert s.queue == "orders:confirm"\n'
+    old = {"settings.py": 'class Settings:\n    queue: str = "wrong"\n'}
+    fixed = {"settings.py": 'class Settings:\n    queue: str = "orders:confirm"\n'}
+    assert policy.check_patch(to_unified_diff(old, fixed), old, fixed, [visible]).ok
+    old2 = {"m.py": 'QUEUE = "wrong"\n'}
+    fixed2 = {"m.py": 'QUEUE = "orders:confirm"\n'}
+    r = policy.check_patch(to_unified_diff(old2, fixed2), old2, fixed2, [visible])
+    assert (
+        not r.ok and "test_literal:m.py" in r.reasons
+    )  # a module-level assignment is still checked

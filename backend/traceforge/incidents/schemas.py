@@ -1,6 +1,6 @@
 import uuid
 from datetime import datetime
-from typing import Literal, Self
+from typing import Any, Literal, Self
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
@@ -70,3 +70,25 @@ class EvidenceItemOut(BaseModel):
     path: str | None
     line: int | None
     ts: datetime | None
+    scope: str | None = None  # derived at serialization, not stored (no migration)
+    basis: str | None = None
+    origin: str | None = None
+
+    @model_validator(mode="before")
+    @classmethod
+    def _derive_label(cls, row: Any) -> Any:
+        if isinstance(row, dict):
+            return row
+        from traceforge.agent.evidence_view import evidence_label
+        from traceforge.contracts.evidence import EvidenceItem
+
+        fields = {f: getattr(row, f, None) for f in cls.model_fields if f != "incident_id"}
+        # model_construct: stored rows must serialize even if they predate current patterns
+        scope, basis, origin = evidence_label(EvidenceItem.model_construct(**fields))
+        return {
+            **fields,
+            "incident_id": row.incident_id,
+            "scope": scope,
+            "basis": basis,
+            "origin": origin,
+        }

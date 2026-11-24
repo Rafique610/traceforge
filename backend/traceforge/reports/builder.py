@@ -50,6 +50,16 @@ def _payload(events: list[AuditEvent], state: State) -> dict:
     return {}
 
 
+MISSING_EVIDENCE_EVENT = "missing_evidence"  # written by agent.persist.record_missing_evidence
+
+
+def _event_payload(events: list[AuditEvent], event_type: str) -> dict:
+    for e in reversed(events):
+        if e.event_type == event_type:
+            return e.payload or {}
+    return {}
+
+
 def _ids(raw: object, known: set[str]) -> list[str]:
     return [i for i in raw if isinstance(i, str) and i in known] if isinstance(raw, list) else []
 
@@ -78,7 +88,12 @@ def build_report(db: Session, incident_id: uuid.UUID) -> Report | None:
         outcome.dependency = target
         outcome.dependency_evidence_ids = ev_ids
     elif status == "INCONCLUSIVE":
-        missing = inconclusive.get("missing_evidence") or diag.get("missing_evidence") or []
+        missing = (
+            inconclusive.get("missing_evidence")
+            or diag.get("missing_evidence")
+            or _event_payload(events, MISSING_EVIDENCE_EVENT).get("missing_evidence")
+            or []
+        )
         outcome.missing_evidence = [m for m in missing if isinstance(m, str)]
 
     patch = repair.get_patch(db, incident_id)

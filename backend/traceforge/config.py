@@ -4,7 +4,7 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Literal
 
-from pydantic import AliasChoices, Field, SecretStr
+from pydantic import AliasChoices, Field, SecretStr, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from sqlalchemy import URL
 
@@ -49,11 +49,24 @@ class Settings(BaseSettings):
         default=SecretStr(""),
         validation_alias=AliasChoices("TRACEFORGE_AXFORGE_API_KEY", "AXFORGE_API_KEY"),
     )
+    # Second AxForge key (slot "2"): same model/endpoint; disabled until the owner enables it
+    # (see agent/axforge.py). Which key THIS process uses: TRACEFORGE_AXFORGE_KEY_SLOT.
+    axforge_api_key2: SecretStr = Field(
+        default=SecretStr(""),
+        validation_alias=AliasChoices("TRACEFORGE_AXFORGE_API_KEY2", "AXFORGE_API_KEY2"),
+    )
+    axforge_key_slot: Literal["1", "2"] = "1"
+    ratings_dir: Path = Path("runs/ratings")  # usefulness ratings (P6-S03), JSON with report hash
     llm_cache_dir: Path = Path(".cache/llm")
     llm_call_log: Path = Path("runs/llm_calls.jsonl")
     llm_max_rps: float = 1.0
     llm_max_prompt_chars: int = 400_000
     manifest: str | None = None  # dataset manifest for GET /evaluation/report
+    # Investigation route (POST /incidents/{id}/investigate): saved evidence bundles and datasets.
+    evidence_dir: Path = Path("runs/evidence")
+    datasets_dir: Path | None = None  # default: <repo>/datasets next to the manifest
+    investigate_pipeline: Literal["v4", "v5"] = "v5"
+    investigate_condition: Literal["L0", "G0", "L1", "G1"] = "G1"
     runs_dir: Path = Path("runs")  # saved experiment runs (TRACEFORGE_RUNS_DIR)
     # Scratch space for live end-to-end evidence runs; git-ignored under .cache by default.
     e2e_scratch_dir: Path = Field(
@@ -71,6 +84,21 @@ class Settings(BaseSettings):
     github_allowed_owners: list[str] = []
     github_api_base: str = "https://api.github.com"
     github_timeout_s: float = 10.0
+
+    # API hardening. cors_origins empty = no cross-origin access; "*" is refused in prod.
+    cors_origins: list[str] = []
+    max_request_bytes: int = Field(default=1_000_000, ge=1_000, le=50_000_000)
+
+    @model_validator(mode="after")
+    def _check_consistency(self):
+        if self.env == "prod":
+            if not self.db_password.get_secret_value():
+                raise ValueError("TRACEFORGE_DB_PASSWORD must be set when TRACEFORGE_ENV=prod")
+            if "*" in self.cors_origins:
+                raise ValueError("TRACEFORGE_CORS_ORIGINS must not contain '*' in prod")
+        if not 1 <= self.db_port <= 65535:
+            raise ValueError("TRACEFORGE_DB_PORT must be 1-65535")
+        return self
 
     @property
     def database_url(self) -> URL:

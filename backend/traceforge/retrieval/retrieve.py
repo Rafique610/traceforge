@@ -54,17 +54,21 @@ def rank(
     cands = index_for(corpus).candidates(query.terms, top_k)
     pool: dict[str, float] = {c.node_id: lex for c, lex in cands}
     anchor_of: dict[str, tuple[float, str, int, bool, str]] = {}
-    for a in query.anchors:
+    feats = (features or GraphFeatures()) if mode == "G" else None
+    g_anchors = list(query.graph_anchors) if (feats is not None and feats.symptom_anchors) else []
+    for a in [*query.anchors, *g_anchors]:
         c = corpus.by_node.get(a.node_id)
         if c is None:
             continue
         anchor_of.setdefault(a.node_id, (a.strength, a.source, a.rank, a.forced, a.evidence_id))
         pool.setdefault(a.node_id, norm.get(c.hit_id, 0.0))
-    feats = (features or GraphFeatures()) if mode == "G" else None
     w = weights or (G_WEIGHTS if mode == "G" else L_WEIGHTS)
     info: dict[str, GraphInfo] = {}
     if feats is not None and feats.any:
-        info = graph_scores(graph, query.anchors, feats)
+        # symptom_config anchors are ranked as candidates but not walked: their neighbourhood is
+        # every other reader of the key, which is context the symptom gives no reason to offer
+        walk = [a for a in [*query.anchors, *g_anchors] if a.source != "symptom_config"]
+        info = graph_scores(graph, walk, feats)
         if feats.expansion:
             for nid in info:
                 if nid in corpus.by_node and nid not in pool:
@@ -88,6 +92,8 @@ def rank(
         reasons = [f"bm25:{lex:.2f}"]
         if src == "config":
             reasons.append(f"anchor:config_key named in {eid}")
+        elif src.startswith("symptom"):
+            reasons.append(f"anchor:{src} ({eid})")
         elif src:
             reasons.append(f"anchor:{src} frame#{arank + 1} ({eid})")
         if g and feats:

@@ -31,13 +31,20 @@ class GraphFeatures:
     test_link: bool = True  # tests covering an anchor
     uncertainty: bool = True  # penalty for low-confidence paths
     hubs: bool = True  # hub down-weighting
+    symptom_anchors: bool = True  # anchors from the symptom (failing tests -> covered code, routes)
 
     @property
     def any(self) -> bool:
-        return self.proximity or self.expansion or self.test_link or self.uncertainty
+        return (
+            self.proximity
+            or self.expansion
+            or self.test_link
+            or self.uncertainty
+            or self.symptom_anchors
+        )
 
 
-NO_GRAPH = GraphFeatures(False, False, False, False, False, False)
+NO_GRAPH = GraphFeatures(False, False, False, False, False, False, False)
 
 
 @dataclass(frozen=True)
@@ -78,8 +85,9 @@ def _walk(graph: Graph, anchor: Anchor, feats: GraphFeatures) -> dict[str, tuple
     heap = [(0.0, 0, anchor.node_id, 1.0, _label(graph, anchor.node_id))]
     while heap:
         cost, hops, n, conf, path = heapq.heappop(heap)
-        if cost > best.get((n, hops), float("inf")) or hops >= MAX_HOPS:
+        if cost > best.get((n, hops), float("inf")):
             continue
+        at_limit = hops >= MAX_HOPS  # only a key <-> settings-field binding (no hop) goes further
         edges = sorted(
             graph.nx.out_edges(n, data=True), key=lambda x: (x[1], x[2]["type"], x[2]["provenance"])
         )
@@ -88,6 +96,8 @@ def _walk(graph: Graph, anchor: Anchor, feats: GraphFeatures) -> dict[str, tuple
                 continue
             vd = graph.node(v)
             if vd["kind"] == "unknown":
+                continue
+            if at_limit and not (feats.binding and _is_binding(graph.node(n), vd)):
                 continue
             c = d["confidence"]
             if d.get("unknown"):

@@ -31,17 +31,16 @@ from traceforge.agent.real_sources import (
     real_sources,
 )
 from traceforge.agent.repair_run import run_case_with_repair
+from traceforge.agent.rc2.version import rc2_fingerprint, run_label, select_chat_fn
+from traceforge.agent.symptoms import symptom_for
 from traceforge.config import Settings
 from traceforge.contracts.case_manifest import REPAIRABLE, CaseManifest
+from traceforge.contracts.evidence import EvidenceBundle
+from traceforge.evaluation.fingerprint import code_fingerprint
 from traceforge.faultgen.generate import materialize
 
 REPO = Path(__file__).resolve().parents[3]
-SYMPTOM = {  # what the reporter saw (client-visible only; no cause)
-    "shop_api-001": "POST /orders returns 503 'order queue unavailable'",
-    "shop_api-002": "POST /orders with quantity 100 returns 422 'Input should be less than 100'",
-    "shop_api-003": "POST /orders returns 503 'order queue unavailable'",
-    "shop_api-004": "intermittent: worker heartbeat lapses; logs are suppressed",
-}
+RC2_FP_FILE = REPO / "results/rc2/rc2-fingerprint.txt"
 
 
 def rm_tree(path: Path) -> None:
@@ -94,12 +93,36 @@ def slug(s: str) -> str:
     return re.sub(r"[^A-Za-z0-9._-]+", "-", s).strip("-")
 
 
+def _rc_label(rc: str) -> dict:
+    """Version + matching fingerprint for meta.json; refuses a label/fingerprint mismatch."""
+    if rc == "rc2":
+        sha = rc2_fingerprint()["sha256"]
+        recorded = RC2_FP_FILE.read_text("utf-8").strip() if RC2_FP_FILE.is_file() else None
+        if recorded != sha:  # rc2 files changed since the recorded fingerprint: refresh it
+            RC2_FP_FILE.parent.mkdir(parents=True, exist_ok=True)
+            RC2_FP_FILE.write_text(sha, "utf-8")
+    else:
+        sha = code_fingerprint()["sha256"]
+    return run_label(rc, sha)  # rc1 must equal the frozen RC1 fingerprint, rc2 must differ
+
+
+def _saved_evidence(evidence_dir: Path, case_id: str):  # noqa: ANN202
+    p = Path(evidence_dir) / f"{case_id}.json"
+    return EvidenceBundle.model_validate_json(p.read_text("utf-8")) if p.is_file() else None
+
+
 def run(a: argparse.Namespace) -> dict:
     from sqlalchemy.orm import Session
 
     datasets = a.manifest.parents[1]
     settings = Settings(llm_provider=a.provider, llm_model=a.model)
     run_id = a.run_id or f"e2e-{a.case}-{a.condition}-{slug(a.model)}-r{a.replicate}"
+    if a.provider == "axforge":  # the billing gate applies here exactly as in the experiment runner
+        from traceforge.agent import axforge
+
+        if not a.axforge_billing_verified:
+            raise SystemExit(axforge.NOT_AUTHORIZED)
+        axforge.authorize(run_id)
     out = a.out / run_id
     shutil.rmtree(out, ignore_errors=True)
     repo_dir = SCRATCH / "repos" / run_id
@@ -109,11 +132,37 @@ def run(a: argparse.Namespace) -> dict:
     case = ManifestCaseSource(a.manifest).get(a.case)
     repo, head = build_repo(case, datasets, repo_dir)
     src = real_sources(a.manifest, a.evidence_dir, repo)
-    guard = HiddenLeakGuard(datasets / "hidden_tests", [case.case_id])
-    chat = guard.wrap(
-        partial(gateway.chat, settings=settings, replicate_index=a.replicate, seed=0, temperature=0.0)
+    guard = HiddenLeakGuard(
+        datasets / "hidden_tests",
+        [case.case_id],
+        [repo / "lab" / case.service / "tests", datasets / "reproducers" / case.case_id],
+    )
+    v5 = a.pipeline == "v5"
+    rc = getattr(a, "rc", "rc1")
+    rc_label = _rc_label(rc)  # raises VersionLabelError on a label/fingerprint mismatch
+    rc2_log: list[dict] = []
+    ev = _saved_evidence(a.evidence_dir, case.case_id) if rc == "rc2" else None
+    chat = select_chat_fn(  # rc1: identity; rc2: wraps the guarded gateway (guard still sees every request)
+        rc,
+        guard.wrap(
+            partial(
+                gateway.chat, settings=settings, replicate_index=a.replicate, seed=0,
+                temperature=0.0, use_cache=not v5,  # v5: every request is live (no stale replays)
+            )
+        ),
+        rc2_log,
+        ev,
     )  # fmt: skip
-    runlog = RunLog(make_sandbox_run_tests(repo, datasets))
+    runlog = RunLog(make_sandbox_run_tests(repo, datasets, case.service))
+    sym_obj = None
+    if v5:  # the symptom comes from the visible tests run on the base commit (no gold terms)
+        from traceforge.agent import symptom as symptom_mod
+        from traceforge.repair.worktree import worktree
+
+        with worktree(str(repo), head) as wt:
+            sym_obj = symptom_mod.collect_symptom(runlog, str(wt), case.case_id)
+        if (why := symptom_mod.validate(sym_obj, guard.check)) and sym_obj.status == "ok":
+            sym_obj.status = f"blocked: {why[0]}"  # fail closed: nothing enters a prompt
     artifacts: dict = {}
     db: Session | None = None
     inc = None
@@ -123,8 +172,13 @@ def run(a: argparse.Namespace) -> dict:
         from traceforge.incidents.schemas import IncidentCreate
 
         db = SessionLocal()
+        incident_symptom = (
+            ("\n".join(sym_obj.texts()) or "No failing visible test on the base commit.")[:10_000]
+            if v5
+            else symptom_for(case, datasets)
+        )
         inc = service.create_incident(
-            db, IncidentCreate(case_id=case.case_id, service=case.service, symptom=SYMPTOM[case.case_id])
+            db, IncidentCreate(case_id=case.case_id, service=case.service, symptom=incident_symptom)
         )  # fmt: skip
     t0 = datetime.now(UTC)
     rec = run_case_with_repair(
@@ -134,6 +188,7 @@ def run(a: argparse.Namespace) -> dict:
         visible_test_sources=visible_sources(repo, datasets, case),
         db=db, settings=settings, chat_fn=chat, replicate=a.replicate,
         dataset_sha256=src.cases.sha256, artifacts=artifacts,
+        pipeline=a.pipeline, symptom=sym_obj,
     )  # fmt: skip
     rr = artifacts.get("repair")
     if db is not None and inc is not None:
@@ -149,9 +204,13 @@ def run(a: argparse.Namespace) -> dict:
         "run_id": run_id, "label": a.label, "n_expected": 1, "started_at": t0.isoformat(),
         "finished_at": datetime.now(UTC).isoformat(), "provider": a.provider, "model": a.model,
         "dataset_sha256": rec.dataset_sha256, "repair_repo_head": head, "hidden_guard_calls": guard.calls,
-        "hidden_markers_checked": len(guard.markers),
+        "hidden_markers_checked": len(guard.markers), "hidden_fragment_hits": len(guard.fragment_hits),
         "incident_id": str(inc.id) if inc else None,
+        "rc_version": rc, **rc_label,
     }, indent=2), "utf-8")  # fmt: skip
+    (out / "rc2_log.json").write_text(json.dumps(rc2_log, indent=2), "utf-8")
+    if sym_obj is not None:
+        (out / "symptom.json").write_text(json.dumps(sym_obj.as_dict(), indent=2), "utf-8")
     diff = artifacts.get("diff")
     (out / "patch.diff").write_text(diff or "", "utf-8")
     sub = artifacts.get("submitted")
@@ -187,12 +246,32 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--model", default="qwen2.5-coder-7b-ctx16k")
     ap.add_argument("--replicate", type=int, default=0)
     ap.add_argument("--label", default="")
+    ap.add_argument("--rc", choices=["rc1", "rc2"], default="rc1", help="pipeline version (default rc1, unchanged)")
     ap.add_argument("--run-id")
     ap.add_argument("--manifest", type=Path, default=REPO / "datasets/manifests/dev.json")
     ap.add_argument("--evidence-dir", type=Path, default=REPO / "runs/evidence")
     ap.add_argument("--out", type=Path, default=REPO / "runs/e2e")
     ap.add_argument("--no-db", action="store_true", help="do not persist to the incident DB")
-    res = run(ap.parse_args(argv))
+    ap.add_argument(
+        "--pipeline",
+        choices=["v4", "v5"],
+        default="v5",
+        help="v5 (default): symptom from the visible tests, labelled evidence, validated "
+        "diagnosis, scoped patches; v4: the formal pipeline",
+    )
+    ap.add_argument(
+        "--axforge-billing-verified",
+        action="store_true",
+        help="REQUIRED for AxForge: the owner confirmed the free allowance only (see the runner)",
+    )
+    a = ap.parse_args(argv)
+    if a.provider == "beatapi":  # same one-run-at-a-time lock the experiment runner takes
+        from traceforge.agent import beatapi
+
+        with beatapi.single_instance(label=f"e2e case={a.case} rc={a.rc}"):
+            res = run(a)
+    else:
+        res = run(a)
     r = res["record"]
     keys = (
         "outcome",

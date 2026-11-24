@@ -8,6 +8,7 @@ from typing import Any
 
 from sqlalchemy.orm import Session
 
+from traceforge.evidence.redaction import redact_text
 from traceforge.incidents import repository
 from traceforge.incidents.models import AuditEvent, Incident
 from traceforge.incidents.schemas import IncidentCreate
@@ -71,7 +72,7 @@ def create_incident(db: Session, data: IncidentCreate) -> Incident:
         Incident(
             case_id=data.case_id,
             service=data.service,
-            symptom=data.symptom,
+            symptom=redact_text(data.symptom) if data.symptom else data.symptom,
             source=data.source or ("lab_case" if data.case_id else "manual"),
             state=State.CREATED,
         ),

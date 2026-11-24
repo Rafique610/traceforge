@@ -1,5 +1,6 @@
 """Hash-bound review. Nothing here applies or deploys a patch, whatever the decision."""
 
+import hashlib
 import uuid
 
 from sqlalchemy.orm import Session
@@ -26,10 +27,22 @@ def _check(db: Session, incident_id: uuid.UUID, state: State, data: ReviewCreate
     if patch is not None:
         if data.patch_sha256 is None:
             raise ReviewInvalid("patch_sha256 is required for this incident")
+        if hashlib.sha256(patch.diff.encode()).hexdigest() != patch.sha256:
+            raise lifecycle.IllegalTransition(
+                state,
+                State.REVIEWED,
+                "frozen patch is corrupt: stored diff does not match its hash",
+            )
         if data.patch_sha256 != patch.sha256:
             raise lifecycle.IllegalTransition(
                 state, State.REVIEWED, "patch hash does not match the frozen patch"
             )
+        if data.decision == "approve":
+            events = incidents.list_events(db, incident_id)
+            if not any(e.to_state is State.VERIFIED for e in events):
+                raise lifecycle.IllegalTransition(
+                    state, State.REVIEWED, "only a VERIFIED patch can be approved"
+                )
 
 
 def submit_review(db: Session, incident_id: uuid.UUID, data: ReviewCreate) -> Review:

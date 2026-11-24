@@ -139,3 +139,145 @@ def test_records_endpoint(manifest, tmp_path, monkeypatch):
     assert c.get("/evaluation/runs/r1/records?limit=0").status_code == 422
     assert c.get("/evaluation/runs/r1/records?offset=-1").status_code == 422
     assert c.get("/evaluation/runs/..bad%20id/records").status_code == 422
+
+
+def test_conditions_default_to_the_official_provider_and_differ_only_in_the_studied_factors():
+    for n in NAMES:
+        c = load_condition(n)
+        assert (c.provider, c.model_id) == ("axforge", "glm-5.3-flash")
+
+
+def test_tier_is_official_only_for_axforge_glm_and_provider_override_is_recorded(
+    manifest, tmp_path
+):
+    out = tmp_path / "runs"
+    d = run_experiment(manifest, "L0", "off", fake(), out, **QUIET)
+    meta = json.loads((d / "meta.json").read_text("utf-8"))
+    assert meta["tier"] == "official" and meta["provider"] == "axforge"
+    d2 = run_experiment(
+        manifest, "L0", "dev", fake(), out, provider="beatapi", model="glm-5.3-flash-free", **QUIET
+    )
+    m2 = json.loads((d2 / "meta.json").read_text("utf-8"))
+    assert (m2["tier"], m2["provider"], m2["model_id"]) == (
+        "development",
+        "beatapi",
+        "glm-5.3-flash-free",
+    )
+    assert m2["condition_sha256"] != meta["condition_sha256"]  # different binding, different hash
+
+
+def test_cases_that_are_not_ready_are_skipped_without_a_record_and_resume_later(manifest, tmp_path):
+    out, calls, ready_ids = tmp_path / "runs", [], set()
+
+    def ready(case):
+        if case.case_id not in ready_ids:
+            raise RuntimeError("no evidence bundle")
+
+    run_fn = fake(calls)
+    run_fn.ready = ready
+    d = run_experiment(manifest, "L0", "r", run_fn, out, **QUIET)
+    assert calls == [] and store.read_records(d) == []  # nothing recorded, nothing spent
+    ready_ids.update({"case-0", "case-1"})
+    run_experiment(manifest, "L0", "r", run_fn, out, **QUIET)
+    assert calls == ["case-0", "case-1"]
+    run_experiment(manifest, "L0", "r", run_fn, out, **QUIET)  # finished cases are never repeated
+    assert calls == ["case-0", "case-1"]
+
+
+def test_usage_report_keeps_providers_separate(tmp_path):
+    from traceforge.evaluation import usage_report
+
+    ax, bt = tmp_path / "ax.jsonl", tmp_path / "bt.jsonl"
+    ax.write_text(
+        json.dumps({"type": "request", "input_tokens": 100, "output_tokens": 20}) + chr(10),
+        "utf-8",
+    )
+    bt.write_text(
+        json.dumps({"input_tokens": 7, "output_tokens": 3, "usage_source": "provider"}) + chr(10),
+        "utf-8",
+    )
+    r = usage_report.report(ax, bt)
+    assert r["axforge"]["total_tokens"] == 120 and r["axforge"]["tier"] == "official"
+    assert r["beatapi"]["total_tokens"] == 10 and r["beatapi"]["tier"] == "development"
+    assert r["axforge"]["remaining_to_ceiling"] == 3_000_000 - 120
+
+
+def test_parallel_workers_record_every_case_once_and_run_concurrently(manifest, tmp_path):
+    import threading
+    import time
+
+    active, peak, lock, seen = 0, 0, threading.Lock(), []
+
+    def slow(case, condition, rep):
+        nonlocal active, peak
+        with lock:
+            active += 1
+            peak = max(peak, active)
+            seen.append(case.case_id)
+        time.sleep(0.3)
+        with lock:
+            active -= 1
+        return AgentRunRecord.model_validate(
+            {**REC, "case_id": case.case_id, "condition": condition}
+        )
+
+    t = time.time()
+    d = run_experiment(
+        manifest, "L0", "p", slow, tmp_path / "runs", split="dev", replicates=2, workers=4, **QUIET
+    )
+    wall = time.time() - t
+    assert sorted(seen) == ["case-0", "case-0", "case-1", "case-1"]  # each task exactly once
+    assert peak > 1 and wall < 1.0  # 4 tasks x 0.3 s ran concurrently, not one after another
+    assert len(store.read_records(d)) == 4
+
+
+def test_an_outage_in_parallel_mode_starts_no_new_case_and_records_no_result(manifest, tmp_path):
+    import time
+
+    calls = []
+
+    def flaky(case, condition, rep):
+        calls.append((case.case_id, rep))
+        time.sleep(0.2)
+        if case.case_id == "case-0" and rep == 0:
+            raise StopRun("outage")
+        return AgentRunRecord.model_validate(
+            {**REC, "case_id": case.case_id, "condition": condition, "replicate": rep}
+        )
+
+    d = run_experiment(
+        manifest, "L0", "o", flaky, tmp_path / "runs", split="dev", replicates=3, workers=2, **QUIET
+    )
+    recorded = {(r.case_id, r.replicate) for r in store.read_records(d)}
+    assert ("case-0", 0) not in recorded  # an outage is not a result
+    assert len(calls) < 6  # the rest of the queue was not started after the outage
+    run_experiment(
+        manifest, "L0", "o", fake(), tmp_path / "runs", split="dev", replicates=3, **QUIET
+    )
+    assert len(store.read_records(d)) == 6  # resume completes exactly the missing cases
+
+
+def test_case_ids_select_exactly_those_and_unknown_ids_are_an_error(manifest, tmp_path):
+    calls: list[str] = []
+    run_experiment(
+        manifest,
+        "L0",
+        "sel",
+        fake(calls),
+        tmp_path / "out",
+        split="dev",
+        case_ids=["case-1"],
+        **QUIET,
+    )
+    assert calls == ["case-1"]
+    with pytest.raises(ValueError, match="case-9"):
+        run_experiment(
+            manifest,
+            "L0",
+            "bad",
+            fake([]),
+            tmp_path / "out",
+            split="dev",
+            case_ids=["case-9"],
+            **QUIET,
+        )

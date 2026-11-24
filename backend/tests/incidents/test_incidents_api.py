@@ -89,8 +89,49 @@ def test_unknown_case_id_is_422_when_manifest_configured(client, monkeypatch, tm
     from traceforge.incidents import router
 
     manifest = tmp_path / "m.json"
-    manifest.write_text('[{"case_id": "shop_api-001"}]', encoding="utf-8")
+    manifest.write_text('[{"case_id": "shop_api-001", "service": "shop_api"}]', encoding="utf-8")
     monkeypatch.setattr(router, "get_settings", lambda: config.Settings(manifest=str(manifest)))
     assert client.post("/incidents", json={"case_id": "nope-9"}).status_code == 422
-    assert client.post("/incidents", json={"case_id": "shop_api-001"}).status_code == 201
+    ok = client.post("/incidents", json={"case_id": "shop_api-001"})
+    assert ok.status_code == 201 and ok.json()["service"] == "shop_api"  # filled from manifest
     assert client.get("/incidents").json()["total"] == 1  # nothing written for the rejected one
+
+
+def test_symptom_secrets_are_redacted_before_storage(client):
+    res = client.post(
+        "/incidents",
+        json={"service": "api", "symptom": "login failed, password=hunter2 for user bob"},
+    )
+    assert res.status_code == 201
+    assert "hunter2" not in res.json()["symptom"]
+    assert "hunter2" not in client.get(f"/incidents/{res.json()['id']}").text
+
+
+def test_pagination_limits_422(client):
+    assert client.get("/incidents?limit=0").status_code == 422
+    assert client.get("/incidents?limit=101").status_code == 422
+    assert client.get("/incidents?offset=-1").status_code == 422
+
+
+def test_evidence_out_carries_derived_labels(client, db):
+    from traceforge.incidents.models import EvidenceItemRow
+
+    inc = client.post("/incidents", json={"case_id": "c1"}).json()
+    for i, (kind, path) in enumerate([("config", "settings.py"), ("log", None)], 1):
+        db.add(
+            EvidenceItemRow(
+                incident_id=uuid.UUID(inc["id"]),
+                id=f"EV-000{i}",
+                kind=kind,
+                service="s",
+                content="x",
+                sha256="0" * 64,
+                path=path,
+                line=None,
+            )
+        )
+    db.commit()
+    got = {e["id"]: e for e in client.get(f"/incidents/{inc['id']}/evidence").json()}
+    assert (got["EV-0001"]["scope"], got["EV-0001"]["basis"]) == ("static", "declared")
+    assert (got["EV-0002"]["scope"], got["EV-0002"]["basis"]) == ("runtime", "observed")
+    assert got["EV-0002"]["origin"]

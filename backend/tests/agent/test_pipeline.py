@@ -209,7 +209,54 @@ def test_empty_truncated_patch_reply_is_reported_as_output_truncated():
 
     resp = ModelResponse(content=None, finish_reason="length", provider="p", model="m")
     diag = SimpleNamespace(cause_class="configuration", target="K", rationale="r", path=None)
-    tc = SimpleNamespace(evidence=SimpleNamespace(items=[]), case=None, context=None)
+    tc = SimpleNamespace(
+        evidence=SimpleNamespace(items=[]), case=SimpleNamespace(service="shop_api"), context=None
+    )
     usage = SimpleNamespace(add=lambda r: None)
-    out = request_patch(tc, diag, lambda m, t: resp, usage)
+    out = request_patch(tc, diag, lambda m, t, **kw: resp, usage)
     assert out == (None, None, "output_truncated")
+
+
+def test_bare_config_key_is_qualified_by_case_service_but_wrong_service_stays_wrong():
+    from traceforge.agent.tools import SubmitDiagnosis
+
+    bare = SubmitDiagnosis(
+        cause_class="configuration", config_key="REDIS_HOST", supporting_evidence_ids=["EV-0001"]
+    )
+    assert bare.qualified_target("worker") == "worker.REDIS_HOST"
+    qualified = SubmitDiagnosis(
+        cause_class="configuration",
+        config_key="shop_api.REDIS_HOST",
+        supporting_evidence_ids=["EV-0001"],
+    )
+    assert qualified.qualified_target("worker") == "shop_api.REDIS_HOST"  # not rewritten
+    code = SubmitDiagnosis(
+        cause_class="application_code",
+        path="a/b.py",
+        qualname="f",
+        supporting_evidence_ids=["EV-1"],
+    )
+    assert code.qualified_target("worker") == "a/b.py::f"
+
+
+def test_patch_prompt_tells_the_model_which_files_may_be_edited():
+    from types import SimpleNamespace
+
+    from traceforge.agent.gateway import ModelResponse
+    from traceforge.agent.patch import ask_patch
+
+    seen = []
+
+    def chat(messages, tools, **kw):
+        seen.append(messages)
+        return ModelResponse(content="NO_PATCH", provider="p", model="m")
+
+    diag = SimpleNamespace(
+        cause_class="configuration", target="shop_api.K", rationale="r", path=None
+    )
+    tc = SimpleNamespace(
+        evidence=SimpleNamespace(items=[]), case=SimpleNamespace(service="worker"), context=None
+    )
+    ask_patch(tc, diag, chat, SimpleNamespace(add=lambda r: None), None)
+    system = seen[0][0]["content"]
+    assert "lab/worker/" in system and "Compose files" in system and "{service}" not in system

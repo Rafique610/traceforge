@@ -98,6 +98,9 @@ def _special(node: ast.AST, parents: dict[ast.AST, ast.AST]) -> bool:
         # left operand pairs with ops[0]; comparator i pairs with ops[i]
         ops = par.ops[:1] if cur is par.left else [par.ops[par.comparators.index(cur)]]
         return any(isinstance(o, (ast.Eq, ast.NotEq, ast.In, ast.NotIn)) for o in ops)
+    if isinstance(par, (ast.Assign, ast.AnnAssign)) and isinstance(parents.get(par), ast.ClassDef):
+        return False  # a class-level field default (e.g. a settings value) is configuration, like a
+        # default parameter: the fix is the value itself, not a special case for a test input
     if isinstance(par, (ast.Return, ast.Assign, ast.AnnAssign, ast.NamedExpr)):
         return getattr(par, "value", None) is cur
     if isinstance(par, (ast.Dict, ast.List, ast.Set, ast.Tuple)):
@@ -125,6 +128,36 @@ def _sigs(tree: ast.AST) -> dict[str, str]:
     return out
 
 
+def _config_loads(path: str, text: str) -> bool | None:
+    """True/False if a .json/.toml/.yaml file parses; None if the kind is not checked."""
+    try:
+        if path.endswith(".json"):
+            import json
+
+            json.loads(text)
+        elif path.endswith(".toml"):
+            import tomllib
+
+            tomllib.loads(text)
+        elif path.endswith((".yaml", ".yml")):
+            import yaml  # optional: skipped when PyYAML is not installed
+
+            list(yaml.safe_load_all(text))
+        else:
+            return None
+    except ImportError:
+        return None
+    except Exception:  # noqa: BLE001  (any parse error)
+        return False
+    return True
+
+
+def _config_broken(path: str, old: str, new: str) -> bool:
+    """The edit made a config file that parsed before unparseable (a file that was already broken
+    is not blamed on the edit)."""
+    return _config_loads(path, new) is False and _config_loads(path, old) is not False
+
+
 def check_patch(
     diff_text: str,
     old_files: dict[str, str],
@@ -149,6 +182,8 @@ def check_patch(
             res.reasons.append(f"binary:{path}")
             continue
         if not path.endswith(".py"):
+            if _config_broken(path, old_files.get(path, ""), text):
+                res.reasons.append(f"syntax_error:{path}")
             continue
         try:
             new_tree = ast.parse(text)

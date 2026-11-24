@@ -1,0 +1,27 @@
+.........................F..F......                                      [100%]
+================================== FAILURES ===================================
+______________ test_quote_chains_the_rules_with_default_settings ______________
+shop_api\tests\test_pricing_rules.py:78: in test_quote_chains_the_rules_with_default_settings
+    assert q == {
+E   AssertionError: assert {'subtotal': ...('4.99'), ...} == {'subtotal': ...('4.99'), ...}
+E     
+E     Omitting 4 identical items, use -vv to show
+E     Differing items:
+E     {'tax': Decimal('4.93')} != {'tax': Decimal('4.08')}
+E     {'grand_total': Decimal('33.92')} != {'grand_total': Decimal('33.07')}
+E     Use -v to get more diff
+___________________ test_quote_endpoint_and_unknown_coupon ____________________
+shop_api\tests\test_pricing_rules.py:105: in test_quote_endpoint_and_unknown_coupon
+    assert body["grand_total"] == "54.13" and body["shipping"] == "4.99"
+E   AssertionError: assert ('54.98' == '54.13'
+E     
+E     - 54.13
+E     + 54.98)
+---------------------------- Captured stderr call -----------------------------
+2026-11-24 12:45:49,549 INFO httpx2 HTTP Request: GET http://testserver/orders/1/quote "HTTP/1.1 200 OK"
+------------------------------ Captured log call ------------------------------
+INFO     httpx2:_client.py:1079 HTTP Request: GET http://testserver/orders/1/quote "HTTP/1.1 200 OK"
+=========================== short test summary info ===========================
+FAILED shop_api/tests/test_pricing_rules.py::test_quote_chains_the_rules_with_default_settings
+FAILED shop_api/tests/test_pricing_rules.py::test_quote_endpoint_and_unknown_coupon
+2 failed, 33 passed, 2 deselected in 0.67s
