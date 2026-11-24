@@ -1,6 +1,6 @@
 # Phase 6 — Productization and paper (Assignment 4)
 
-**Status:** NOT STARTED
+**Status:** IN PROGRESS (status sync 2026-11-25: P6-S02 partial, P6-S03 implemented and tested)
 
 ## Phase information
 - **Purpose:** meet Assignment 4's engineering requirements (containerisation, CI/CD, public deployment, AI tool declaration) and produce the research paper and investor pitch.
@@ -13,8 +13,8 @@
 | Step ID | Task | Responsible | Dependencies | Status |
 |---|---|---|---|---|
 | [P6-S01](step-01-security-hardening.md) | Security hardening (TRAC-26) | Rafique | P4-S03 | NOT STARTED |
-| [P6-S02](step-02-ci-and-deployment.md) | CI, images, public deployment (TRAC-30) | Ruhan | P4-S03 | NOT STARTED |
-| [P6-S03](step-03-ui-polish-and-audit-view.md) | UI polish + audit view (TRAC-31) | Ruhan | P4-S03, P5-S02 | NOT STARTED |
+| [P6-S02](step-02-ci-and-deployment.md) | CI, images, public deployment (TRAC-30) | Ruhan | P4-S03 | PARTIALLY COMPLETE (no GitHub run, no host) |
+| [P6-S03](step-03-ui-polish-and-audit-view.md) | UI polish + audit view (TRAC-31) | Ruhan | P4-S03, P5-S02 | IMPLEMENTED, TESTED; NOT REVIEWED/APPROVED |
 | [P6-S04](step-04-paper-and-pitch.md) | Paper, documentation, investor pitch (TRAC-32) | Rafique (+Ruhan) | P5-S02, P5-S03 | NOT STARTED |
 
 ## Execution order

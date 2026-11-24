@@ -61,6 +61,9 @@ IDs: `FR-` functional, `NFR-` non-functional, `SR-` security, `IR-` integration,
 | ER-04 | ≥10 failure examples grouped by cause with planned fixes. | P4-S02 |
 | ER-05 | Latency and cost per request measured on the running system. | P1-S05, P4-S01 |
 | ER-06 | First R&D experiment against a baseline. | P4-S01 |
+| ER-07 | Follow-up (optional, 24 Nov 2026): offline retrieval benchmark of RET-L/RET-G on the dev split with equal-budget comparison and paired bootstrap CIs; frozen RC1 untouched, 0 tokens. | P5-S06 |
+| ER-08 | Follow-up (optional): embedding and hybrid arms evaluated against preregistered thresholds; go/no-go recorded in ADR 0003 (PROPOSED). | P5-S07, P5-S08 (P5-S09, P5-S11 conditional) |
+| ER-09 | Follow-up (optional, PROPOSED 25 Nov 2026): root-cause ranking with explanation paths, dependency traversal and a change-impact report with visible-test selection are **evaluated, not guaranteed**, on hand-verified fixtures against preregistered thresholds; each relation carries an evidence class; limits (dynamic dispatch, reflection, test-coverage gaps) are stated; no claim of complete root-cause or impact coverage. | P5-S12, P5-S15, P5-S16 (P5-S13, P5-S14 Tier 2; P5-S17 conditional) |
 
 ## Constraints
 - Python 3.12 + uv; FastAPI; SQLAlchemy 2 + Alembic; PostgreSQL 16; Vite + React + TS with pnpm; Taskfile; Docker Compose; Ollama.

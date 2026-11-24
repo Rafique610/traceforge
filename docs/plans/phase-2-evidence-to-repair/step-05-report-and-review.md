@@ -12,8 +12,10 @@
 | Reviewer | Muhammad Rafique |
 | Priority | Normal |
 | Effort | 1.5 days |
-| Status | NOT STARTED |
+| Status | IMPLEMENTED, TESTED, NOT REVIEWED/APPROVED |
 | Branch | `ruhan/P2-S05-report-review` |
+
+**Status sync 2026-11-25.** Evidence: `pytest tests/reports` 13 passed, `tests/reviews` 20 passed. `missing_evidence` is persisted as an audit event and read by `reports/builder.py`; it is not in the INCONCLUSIVE payload (that needs an edit to fingerprinted `agent/pipeline.py`, not done by design). Five-fact detail: `docs/plans/RUHAN_TASK_TRACKER.md`.
 
 ## B. Objective
 Give the engineer the output they act on: a report built deterministically from stored records (no LLM, so it can't hallucinate), and an approve/reject decision that can only apply to the exact patch it was made on.

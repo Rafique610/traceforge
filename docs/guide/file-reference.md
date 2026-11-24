@@ -1,5 +1,8 @@
 # File-by-file reference (implemented, project-owned files)
 
+> **Status sync 2026-11-25.** This chapter was written on 2026-11-21 and parts are historical. Current status of Ruhan's 20 primary tasks: **none COMPLETE & VERIFIED**; 11 IMPLEMENTED NOT VERIFIED, 7 PARTIALLY COMPLETE, 2 NOT STARTED (conditional). Nothing is reviewed by Rafique or approved by the owner. Authoritative: `docs/plans/RUHAN_TASK_TRACKER.md`. Where this chapter says Rafique's components are absent, there is no experiment, or the model is undecided, that is stale: the lab, sandbox, evidence, graph, retrieval, metrics and a 184-case frozen dataset exist; a reduced RC1 evaluation exists in `results/final` (35 sites at replicate 0, 12 at replicate 1, 8 at replicate 2; AxForge `glm-5.3-flash`); the team is two members (Rafique, Ruhan).
+
+
 Back to [TraceForge Explained](TraceForge-Explained.md). Paths are relative to the repo root `D:\TraceForge\repo`. Generated or third-party files (`uv.lock`, `pnpm-lock.yaml`, `contracts/schema/*.json`, caches, `__pycache__`) are not described. "Tests" names the test file that covers the code. Line counts are from the working tree on 2026-11-21.
 
 ## Backend app core

@@ -12,8 +12,10 @@
 | Reviewer | Muhammad Rafique |
 | Priority | Normal |
 | Effort | 4 days |
-| Status | NOT STARTED |
+| Status | IMPLEMENTED, TESTED, NOT REVIEWED/APPROVED |
 | Branch | `ruhan/P3-S03-reviewer-ui` |
+
+**Status sync 2026-11-25.** Evidence: vitest 12 files / 78 tests; ReviewPanel focus/ARIA fixes; Investigate button enabled with polling and accessible errors. Not verified against a live backend with a real provider. Five-fact detail: `docs/plans/RUHAN_TASK_TRACKER.md`.
 
 ## B. Objective
 The live-demo surface (rubric C2, E1): an engineer goes from incident to decision without a terminal. The page order follows how an engineer reasons: symptom → evidence → where in the code → why → what changed → did it pass → decide.

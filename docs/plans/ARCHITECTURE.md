@@ -1,6 +1,6 @@
 # Architecture
 
-Status: **designed, not implemented.** Where this document and the earlier proposal architecture (`TraceForge_Architecture_Audited.md`, outside the repo) differ, this document reflects the decisions made after the supervisor review and is authoritative for implementation. Differences are listed in [DECISIONS_AND_OPEN_QUESTIONS.md](DECISIONS_AND_OPEN_QUESTIONS.md#contradictions-found).
+Status: **the original design below is the PLAN. Since 2026-11-25 a CURRENT-state summary is at the end of this paragraph; the rest of this file keeps the plan wording ("planned", "not implemented") and should be read as PROPOSED/historical where it differs from `docs/ARCHITECTURE.md`, which is CURRENT.** CURRENT: the backend modules, incident state machine, hash-bound review, GitHub intake, reviewer UI, runner and RC1 pipeline v5 exist; `POST /incidents/{id}/investigate` exists (202/404/409/422/503, background job, injectable factory, default real-sandbox factory untested live, needs `TRACEFORGE_MANIFEST` and a provider key); RC2 opt-in modules `agent/rc2/` exist and are not validated; `agent/hw_monitor.py` exists. The model provider in use is AxForge `glm-5.3-flash`, not Mistral (the External services table below is the plan; ADR 0001 is PROPOSED). Everything about embeddings, traversal overlays, impact reports and regression validation is PROPOSED. Original statement: Where this document and the earlier proposal architecture (`TraceForge_Architecture_Audited.md`, outside the repo) differ, this document reflects the decisions made after the supervisor review and is authoritative for implementation. Differences are listed in [DECISIONS_AND_OPEN_QUESTIONS.md](DECISIONS_AND_OPEN_QUESTIONS.md#contradictions-found).
 
 ## High-level view
 ```
@@ -53,7 +53,7 @@ State machine: `CREATED → SNAPSHOT_LOCKED → EVIDENCE_COLLECTED → CONTEXT_R
 ## Contracts
 Defined in P0-S05; full field list in [INTEGRATION_PLAN.md](INTEGRATION_PLAN.md#contracts). `CaseManifest`, `EvidenceBundle`, `ContextBundle`, `TestRunRequest`/`TestRunResult`, `AgentRunRecord`.
 
-## API (planned)
+## API (planned; `/incidents/{id}/investigate` is CURRENT since 2026-11-25, others per their steps)
 | Method | Path | Step |
 |---|---|---|
 | GET | `/health` | P0-S02 |
@@ -96,6 +96,53 @@ All settings through `traceforge/config.py` (`Settings`, prefix `TRACEFORGE_`), 
 - Conditions L0, G0, L1, G1; fixed model, temperature 0, prompts, tools, budgets. A3: E1 (retrieval only, all cases) + L0 vs G0 on ≥50 cases. A4: full 2×2 × 3 replicates.
 - Every case labelled with `distance` (graph hops symptom → cause); ≥50% of test cases distance ≥1; results by distance.
 
+## Retrieval architecture: current and proposed target
+**Current (implemented, RC1 frozen):** the graph and chunk corpus are rebuilt in every process; BM25 (L) plus a 2-hop graph walk (G); no embeddings, no persisted index. **Proposed target (PROPOSED, not approved, offline only; decision gate is ADR 0003 after P5-S08):** an opt-in dense arm and RRF fusion in new modules outside the RC1 fingerprint list, fed by an incremental embedding index.
+
+```mermaid
+flowchart LR
+  subgraph Current["Current (RC1, frozen)"]
+    C1[chunks from graph] --> C2[BM25] --> C3[L / G rank + pack]
+  end
+  subgraph Target["PROPOSED target (offline, new modules)"]
+    T1[chunk manifest per commit] --> T2[(content-addressed vector cache)]
+    T2 --> T3[RET-E dense top-50]
+    C2 --> T4[RRF k=60 fusion]
+    T3 --> T4 --> T5[same pack and budget]
+  end
+```
+
+**Incremental-index workflow (proposed, P5-S07):**
+1. Chunk the tree deterministically; compute `chunk_key`, `content_hash`, `embed_key` (model, revision, dims, preprocessing).
+2. Diff against the previous manifest: new / modified / deleted / moved (explains and audits).
+3. Embed only chunks whose `embed_key` is missing in the model namespace (authoritative), in fixed batches, idempotent and resumable.
+4. Refresh graph edges separately (re-link never triggers embedding).
+5. Run the verifier (tree hash, content hashes, vectors present, dims, no NaN).
+6. Write the manifest to a temp file, then switch the `ACTIVE` pointer atomically.
+7. A model upgrade builds a new namespace; queries keep the old one until the pointer moves.
+Details, scenarios and costs: [retrieval-architecture-review.md](../research/retrieval-architecture-review.md) sections 3 and 6.
+
 ## Deployment
 - **A3:** everything local via Docker Compose; reproducible from the repo (rubric C5 alternative to a public link).
 - **A4:** public deployment of the reviewer app showing saved runs/reports; lab and sandbox stay local. Host **[TO BE DECIDED]** in P6-S02.
+
+## Root-cause traversal, impact report and regression validation (PROPOSED, 25 Nov 2026)
+**Current architecture is unchanged.** Everything below is PROPOSED (pending owner approval Q18, decision D37), offline, in new modules (e.g. `backend/traceforge/analysis/`) working on a copy of the graph; `codeintel/` and RC1-fingerprinted files are not edited. Capabilities are evaluated, not guaranteed; no claim of complete root-cause or impact coverage.
+
+```mermaid
+flowchart LR
+  subgraph Current["Current (RC1, frozen)"]
+    G0[code graph + L / G retrieval] --> P0[pack and budget] --> R0[repair loop: full visible suite each attempt, hidden gate once]
+  end
+  subgraph Proposed["PROPOSED (new modules, offline)"]
+    O1[overlay on graph copy: inherits/overrides, evidence classes] --> O2[budgeted bidirectional traversal + ranker with explanation paths, P5-S12]
+    O3[value flow, Tier 2, P5-S13] --> O2
+    O4[observed marks, Tier 2, P5-S14] --> O2
+    O2 --> O5[change-impact report + visible-test selection, P5-S15]
+    O5 --> O6[RC2 regression-aware validation, conditional, P5-S17]
+  end
+  G0 --> O1
+  O2 -. same pack and budget .-> P0
+  O6 -. RC2 only .-> R0
+```
+Stages: (1) traversal and ranking (P5-S12, MVP); (2) impact report from patch diff and pre/post graphs (P5-S15, MVP); (3) regression validation in the repair loop (P5-S17, conditional, new fingerprint; hidden gate once, human approval unchanged). Evaluation: P5-S16. Design: [root-cause-impact-regression-design.md](../research/root-cause-impact-regression-design.md).

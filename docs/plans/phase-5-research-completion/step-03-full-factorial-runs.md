@@ -12,8 +12,10 @@
 | Reviewer | Muhammad Rafique |
 | Priority | Low (A4) |
 | Effort | 3 days of work + multi-day unattended runs |
-| Status | NOT STARTED |
+| Status | PARTIALLY COMPLETE |
 | Branch | `ruhan/P5-S03-factorial-runs` |
+
+**Status sync 2026-11-25.** Evidence: only the reduced RC1 evaluation in `results/final` (35 sites, replicates 35/12/8 sites); the full 2x2 x 3 replicates were not run. Same open owner decision as P4-S01. Key-1 ledger 152,664 tokens left; combined 742,728 left under the 4.8M ceiling. Five-fact detail: `docs/plans/RUHAN_TASK_TRACKER.md`.
 
 ## B. Objective
 Run the complete controlled experiment that answers the research question: conditions L0, G0, L1, G1, three replicates each, on the frozen test set with the pinned model.

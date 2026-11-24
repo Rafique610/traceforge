@@ -53,6 +53,8 @@ Does evidence-bound graph retrieval improve root-cause localization and independ
 Supervisor: Sir Akhtar Jamil. Taha Ahmed appears in the earlier proposal but is no longer on the team.
 
 ## Current status
+
+**Update 2026-11-25:** the table below is the 19 Nov snapshot and is stale (code now exists: backend, frontend, lab, dataset, agent, evaluation). Current status: `RUHAN_TASK_TRACKER.md` and `TEAM_WORK_DISTRIBUTION.md` section 0. Supervisor approval of the revised scope is still NOT in writing (the evidence is the 18 Nov feedback email and a note that approval was verbal). Taha Ahmed is off the team and owns nothing.
 Verified by repository and board inspection on 19 November 2026:
 
 | Item | State |

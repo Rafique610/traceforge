@@ -1,6 +1,6 @@
 # Phase 0 — Foundation
 
-**Status:** IN PROGRESS (P0-S02 COMPLETED; P0-S01 nearly done; P0-S05 COMPLETED; P0-S06 Part A done, Part B not started; P0-S03, P0-S04 NOT STARTED)
+**Status:** IN PROGRESS (P0-S02, P0-S05 COMPLETED; P0-S06 Part A done, Part B IMPLEMENTED/partly run; Ruhan's P0-S03 implemented and tested, P0-S04 partially complete; status sync 2026-11-25, nothing reviewed or approved)
 
 ## Phase information
 - **Purpose:** give both members a running skeleton, the shared contracts, and an approved scope, so Phase 1 can run fully in parallel.
@@ -14,8 +14,8 @@
 |---|---|---|---|---|
 | [P0-S01](step-01-repository-and-collaboration-setup.md) | Repository and collaboration setup | Rafique | — | IN PROGRESS |
 | [P0-S02](step-02-backend-scaffold.md) | Backend scaffold (TRAC-1) | Rafique | P0-S01 | COMPLETED |
-| [P0-S03](step-03-frontend-scaffold.md) | Frontend scaffold (TRAC-2) | Ruhan | P0-S01 | NOT STARTED |
-| [P0-S04](step-04-proposal-update-and-approval.md) | Proposal update and approval (TRAC-3) | Ruhan | — | NOT STARTED |
+| [P0-S03](step-03-frontend-scaffold.md) | Frontend scaffold (TRAC-2) | Ruhan | P0-S01 | IMPLEMENTED, TESTED; NOT REVIEWED/APPROVED |
+| [P0-S04](step-04-proposal-update-and-approval.md) | Proposal update and approval (TRAC-3) | Ruhan | — | PARTIALLY COMPLETE (no written approval of revised scope) |
 | [P0-S05](step-05-shared-contracts.md) | Shared contracts + samples (TRAC-4) | Rafique (+Ruhan) | P0-S02 | COMPLETED |
 | [P0-S06](step-06-feasibility-prototype.md) | Feasibility prototype: retrieval spike (A) + model probe (B) | Rafique (A) + Ruhan (B) | P0-S02 | IN PROGRESS (Part A done) |
 

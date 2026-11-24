@@ -12,8 +12,10 @@
 | Reviewer | Muhammad Rafique |
 | Priority | Normal |
 | Effort | 3 days |
-| Status | NOT STARTED |
+| Status | IMPLEMENTED, TESTED, NOT REVIEWED/APPROVED |
 | Branch | `ruhan/P1-S06-pipeline-agent` |
+
+**Status sync 2026-11-25.** Evidence: `pytest tests/agent` 339 passed (fake gateway; includes 17 RC2 and 3 hw_monitor); live runs on 4 dev cases and the `results/final` RC1 runs. The D20 budget is a placeholder. Five-fact detail: `docs/plans/RUHAN_TASK_TRACKER.md`.
 
 ## B. Objective
 The diagnosis brain and patch requester, built against contract **samples** so it never waits for Track A. It is the project's "agentic tool calling" component (rubric B4/C3), but deliberately pipeline-first (safeguard 2): fixed stages, with the LLM allowed to call tools only during diagnosis, under a small budget. This makes runs cheaper, reproducible and feasible for the local 7B comparator.

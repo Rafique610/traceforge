@@ -1,6 +1,6 @@
 # Phase 1 — Core components
 
-**Status:** NOT STARTED
+**Status:** IN PROGRESS (status sync 2026-11-25: Ruhan's P1-S04..S07 implemented and tested, none reviewed/approved; P1-S05 partial; Rafique rows per TWD)
 
 ## Phase information
 - **Purpose:** build the foundation pieces of both lanes in parallel: the victim lab, the sandbox and first labelled cases (Track A); the incident API, LLM gateway and pipeline agent (Track B).
@@ -12,13 +12,13 @@
 ## Task overview
 | Step ID | Task | Responsible | Dependencies | Status |
 |---|---|---|---|---|
-| [P1-S01](step-01-lab-fixtures.md) | Lab fixtures (TRAC-5) | Rafique | P0-S02 | NOT STARTED |
-| [P1-S02](step-02-sandbox-test-runner.md) | Sandbox test runner (TRAC-6) | Rafique | P0-S05 | NOT STARTED |
-| [P1-S03](step-03-fault-generator-and-seed-cases.md) | Fault generator + 4 seed cases (TRAC-7) | Rafique | P1-S01, P1-S02 | NOT STARTED |
-| [P1-S04](step-04-incidents-api-and-database.md) | Incidents API + DB (TRAC-8) | Ruhan | P0-S05 | NOT STARTED |
-| [P1-S05](step-05-model-gateway.md) | Model gateway + cache + ADR (TRAC-9) | Ruhan | P0-S02 | NOT STARTED |
-| [P1-S06](step-06-pipeline-agent.md) | Pipeline agent (TRAC-10) | Ruhan | P1-S04, P1-S05 | NOT STARTED |
-| [P1-S07](step-07-sync-1-agent-on-seed-cases.md) | Sync 1 (TRAC-11) | Ruhan (+Rafique) | P1-S03, P1-S06 | NOT STARTED |
+| [P1-S01](step-01-lab-fixtures.md) | Lab fixtures (TRAC-5) | Rafique | P0-S02 | IMPLEMENTED (per TWD; not reviewed by Rafique) |
+| [P1-S02](step-02-sandbox-test-runner.md) | Sandbox test runner (TRAC-6) | Rafique | P0-S05 | IMPLEMENTED (per TWD; not reviewed by Rafique) |
+| [P1-S03](step-03-fault-generator-and-seed-cases.md) | Fault generator + 4 seed cases (TRAC-7) | Rafique | P1-S01, P1-S02 | COMPLETED |
+| [P1-S04](step-04-incidents-api-and-database.md) | Incidents API + DB (TRAC-8) | Ruhan | P0-S05 | IMPLEMENTED, TESTED; NOT REVIEWED/APPROVED |
+| [P1-S05](step-05-model-gateway.md) | Model gateway + cache + ADR (TRAC-9) | Ruhan | P0-S02 | PARTIALLY COMPLETE (ADR 0001 PROPOSED) |
+| [P1-S06](step-06-pipeline-agent.md) | Pipeline agent (TRAC-10) | Ruhan | P1-S04, P1-S05 | IMPLEMENTED, TESTED; NOT REVIEWED/APPROVED |
+| [P1-S07](step-07-sync-1-agent-on-seed-cases.md) | Sync 1 (TRAC-11) | Ruhan (+Rafique) | P1-S03, P1-S06 | IMPLEMENTED, TESTED; NOT REVIEWED/APPROVED |
 
 ## Execution order
 - **Track A (sequential):** P1-S01 → P1-S02 → P1-S03. P1-S02 can start in parallel with P1-S01 once contracts merge (it can test on a tiny throwaway package), but P1-S03 needs both.

@@ -12,7 +12,9 @@
 | Reviewer | Muhammad Rafique |
 | Priority | High |
 | Effort | 1 day |
-| Status | NOT STARTED |
+| Status | PARTIALLY COMPLETE |
+
+**Status sync 2026-11-25.** Evidence: revised PDF dated 23 Nov at `D:\TraceForge\proposal\TraceForge_Assignment3_Proposal.pdf` and a GCR_Upload pack exist on disk. Approval evidence is only the 18 Nov supervisor feedback email plus a note that approval was verbal; there is NO written approval of the revised scope. Human-only items stay open. Five-fact detail: `docs/plans/RUHAN_TASK_TRACKER.md`.
 
 ## B. Objective
 Make the submitted proposal match what is actually being built, and get written supervisor approval of the revised scope and R&D track. Rubric eligibility checks A1 (approval evidence) and A2 (track declared) depend on it, and the proposal itself is worth 40 marks (stage B).

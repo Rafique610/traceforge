@@ -12,8 +12,10 @@
 | Reviewer | Muhammad Rafique |
 | Priority | Normal |
 | Effort | 2 days |
-| Status | NOT STARTED |
+| Status | IMPLEMENTED, TESTED, NOT REVIEWED/APPROVED |
 | Branch | `ruhan/P1-S04-incidents-api` |
+
+**Status sync 2026-11-25.** Evidence: `pytest tests/incidents` 194 passed; migrations 0001/0002 applied in compose. Includes `POST /incidents/{id}/investigate` (202/404/409/422/503); the default real-sandbox factory is untested live. Five-fact detail: `docs/plans/RUHAN_TASK_TRACKER.md`.
 
 ## B. Objective
 Make incidents real records with a guarded lifecycle and an append-only audit trail. Every later step (agent, repair, report, review, UI) reads and advances an incident through this module, and the state guards are how the system refuses to claim things it hasn't proven (no "diagnosed" without evidence, no "verified" without a red/green pair).

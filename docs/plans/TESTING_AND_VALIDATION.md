@@ -18,6 +18,15 @@ Each step document has its own testing section. This page defines the levels, ow
 | Tool validation | Ruhan | Unknown tool, bad args, oversize args | Rejected and counted as invalid |
 | Diff policy | Ruhan | Path escape, test file, binary, oversize | All rejected with reason |
 | Metrics | Rafique | Hand-computed examples | Exact match to hand values |
+| Retrieval benchmark (P5-S06) | Rafique | Hand-computed metric cases; fixed-seed bootstrap; two runs identical; GraphFeatures-off equals L; leakage test (no hidden tests, patches, gold in chunks) | Metrics exact; byte-identical rankings; RC1 fingerprint `ee3d8d87...` unchanged |
+| Chunk manifest, embedding cache, verifier (P5-S07) | Rafique | Fake embedder; six scenarios (edit, add, delete, rename, import change, model upgrade); crash and resume; verifier on tampered index | Only changed chunks re-embedded; ACTIVE never partial; verifier flags edits, missing vectors, wrong dims |
+| Dense and fusion arms (P5-S08) | Rafique | RRF on hand-computed lists; forced anchors first; dims mismatch raises; preregistered H1 to H4 | Thresholds reported pass/fail with CIs; ADR 0003 PROPOSED |
+| Overlay, traversal, evidence classes (P5-S12) | Rafique | Overlay never mutates the source graph; inheritance incl. external base -> `unknown`; evidence class per edge; budgets and cycle safety; identical output on two runs | All pass; RC1 fingerprint unchanged |
+| Config value flow (P5-S13) | Rafique | Positive and negative fixture per mismatch check; secret-named keys absent from graph, reports and logs | All pass; no secret value printed |
+| Runtime evidence (P5-S14) | Rafique | `observed` marks never create `static` edges; unresolvable frame stays `unknown`; dev-only oracle not importable from pipeline code | All pass |
+| Impact report and selection (P5-S15) | Rafique | Golden tests on fixture patches (signature change, removed symbol, config default change, untested dependant); limitation statement present; stable report hash; hidden-test directory isolation test for graph and selection | Goldens identical; no hidden path in any node, path or selection |
+| Evaluation suite (P5-S16) | Rafique, Ruhan (label check) | Fixture validator: every expected relationship resolves; thresholds file committed before the first run | Threshold results reported pass/fail with CIs |
+| RC2 fixes (P5-S10) | Ruhan | Fake-gateway tests: long rationale, identical retry, candidate config values | RC1 still reproducible from cache; analysed sites not used as confirmation |
 | UI components | Ruhan | Vitest + Testing Library | Renders API data; loading/error/empty states |
 
 ## Integration testing
@@ -50,6 +59,7 @@ Run through the UI for the demo (P4-S03) and through `test_pipeline_e2e.py` from
 | Sandbox: no network, caps enforced, no socket | Rafique | P1-S02, P6-S01 |
 | No secret in prompts, index, report | Rafique | P2-S01, P6-S01 |
 | Hidden tests never in prompts | Ruhan | P2-S04 |
+| Hidden-test directory absent from graph, overlay, impact report and test selection (asserted); no hidden or oracle data in any prompt or regression feedback | Rafique (P5-S12, P5-S15), Ruhan (P5-S17) | P5-S12, P5-S15, P5-S17 |
 | Forbidden paths/test edits rejected | Ruhan | P2-S04, P6-S01 |
 
 ## Performance testing
@@ -64,6 +74,8 @@ No hard targets are set until first measurements exist (see open questions).
 | Retrieval | All repairable test cases (≥120) with gold symbols/keys | Recall@5, MRR, nDCG@10, tokens, by distance | L vs G | Rafique |
 | Diagnosis | All ≥144 test cases | Cause-class accuracy, exact-target top-1, abstention precision/recall | Rule-based baseline | Rafique (metrics), Ruhan (runs) |
 | Repair | ≥50 repairable test cases (A3); all 120 (A4) | Verified repair rate, apply rate, regressions | L0 vs G0 (A3), 2×2 (A4) | Ruhan (runs), Rafique (metrics) |
+| Retrieval modernization (follow-up, P5-S06 to P5-S09) | Dev split (33 cases), offline, gold for scoring only | Recall@K, Precision@K, MRR, nDCG, source-localization, evidence coverage, context tokens, latency; paired bootstrap 95% CIs at equal token budget | RET-L, RET-G (budget-matched) | Rafique |
+| Root-cause and impact analysis (follow-up, PROPOSED, P5-S12 to P5-S16) | Hand-verified fixtures separate from the frozen test split, plus dev split | Root-cause top-1/3/5 and MRR; dependency recall/precision at equal tokens; affected-dependant recall; selection recall and fraction selected; false-positive warnings per patch; latency; paired bootstrap CIs | RET-L, RET-G and P5-S08 arms | Rafique (Ruhan verifies labels) |
 | Every component | All runs | Median/P95 latency, cost (actual + list-price), failure rate | — | Both |
 
 ## Acceptance testing
@@ -78,3 +90,20 @@ No hard targets are set until first measurements exist (see open questions).
 | Each sync | Integration tests on both laptops; Synverk proof recorded |
 | Before freeze | `task dataset:validate` on all cases |
 | Before demo/submission | Clean-clone dry run; every reported number recomputed from saved runs |
+
+## Test evidence and status (2026-11-25)
+Counts are from runs on 2026-11-25 unless noted; nothing here means a step is reviewed or approved.
+
+| Suite | Result |
+|---|---|
+| Backend full suite (before the 25 Nov changes) | 983 passed, 21 skipped |
+| `tests/integration` (Sync 1: fake gateway, offline replay of `ManifestCaseSource`, route to pipeline to repair to report to review) | 7 passed |
+| `tests/reports` / `tests/incidents` / `tests/reviews` / `tests/repair` | 13 / 194 / 20 / 64 passed |
+| `tests/agent` (includes 17 RC2 and 3 hw_monitor) | 339 passed |
+| Frontend vitest | 12 files, 78 tests; `tsc -b` clean; `vite build` ok; oxlint warnings only |
+| Lint | ruff clean |
+| Docker | api and web images build (456 MB, 74.1 MB); compose up healthy locally; migrations 0001/0002 applied; GET / and /api/health 200; POST 403 (showcase) |
+| CI | actionlint passes. CI runs `pytest -m "not docker and not e2e"`, `pnpm` vitest and a contract drift check including untracked files. NO GitHub Actions run has happened |
+
+Not tested: the default real-sandbox factory of `POST /incidents/{id}/investigate` against a live backend with a real provider; the RC2 config-value checker inside the pipeline (standalone only); any local-model comparison (one smoke ended provider_error); a clean-clone dry run. The frontend uses pnpm; the dev machine has only npm.
+

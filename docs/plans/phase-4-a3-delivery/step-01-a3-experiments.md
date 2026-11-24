@@ -12,8 +12,10 @@
 | Reviewer | Muhammad Rafique |
 | Priority | High |
 | Effort | 2 days (plus unattended run time) |
-| Status | NOT STARTED |
+| Status | PARTIALLY COMPLETE |
 | Branch | `ruhan/P4-S01-a3-experiments` |
+
+**Status sync 2026-11-25.** Evidence: no A3-protocol run (L0 vs G0 on >=50 cases) exists. `results/final` (RC1, 35 sites; r0=35 / r1=12 / r2=8 sites; 23 sites r0 only) is a reduced evaluation, not the A3 deliverable. OPEN DECISION (owner): supersede the protocol or extend it. No claim that G1 beats anything. Five-fact detail: `docs/plans/RUHAN_TASK_TRACKER.md`.
 
 ## B. Objective
 Produce the quantitative evidence for Assignment 3 stage D: test sets ≥50 per component (D1), metrics (D2), baselines (D3), latency/cost (D5) and the first R&D experiment (D6), all from saved, rerunnable runs on the frozen test split.

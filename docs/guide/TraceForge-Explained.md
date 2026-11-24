@@ -1,5 +1,8 @@
 # TraceForge Explained
 
+> **Status sync 2026-11-25.** This chapter was written on 2026-11-21 and parts are historical. Current status of Ruhan's 20 primary tasks: **none COMPLETE & VERIFIED**; 11 IMPLEMENTED NOT VERIFIED, 7 PARTIALLY COMPLETE, 2 NOT STARTED (conditional). Nothing is reviewed by Rafique or approved by the owner. Authoritative: `docs/plans/RUHAN_TASK_TRACKER.md`. Where this chapter says Rafique's components are absent, there is no experiment, or the model is undecided, that is stale: the lab, sandbox, evidence, graph, retrieval, metrics and a 184-case frozen dataset exist; a reduced RC1 evaluation exists in `results/final` (35 sites at replicate 0, 12 at replicate 1, 8 at replicate 2; AxForge `glm-5.3-flash`); the team is two members (Rafique, Ruhan).
+
+
 *The living encyclopedia of the TraceForge project. Start here.*
 
 Last verified against the working tree: **2026-11-21** (branch `ruhan/stage-b-work`, no commits yet). This guide is a living document: every implementation statement was checked against the real files. If you change code, update the matching chapter (see the Docs role in `docs/orchestration/AGENT_ROLES.md`).
@@ -65,7 +68,7 @@ Fairness rules (from `docs/domain/traceforge/index.md` and `docs/invariants/ml.m
 - **Temperature 0** (the model's randomness setting), a pinned model, fixed prompts, tools and budgets. Only the factor under test changes.
 - Every case has a **distance** label (graph hops from where the symptom shows to where the cause lives); results are reported by distance.
 
-Status: the conditions exist as labels in the code (`AgentRunRecord.condition`, `--condition L0|G0|L1|G1`), but **no real experiment has been run yet**. Experiments are planned for Phases 4-5 and are blocked on Rafique's tracks (dataset, sandbox, retrieval). Any number you see in this guide comes from a saved file and is labelled with its date.
+Status (2026-11-25 correction: a reduced RC1 evaluation of the four conditions now exists in `results/final`, 35 sites, replicates 35/12/8, no superiority claim; the next sentence is the 21 Nov text): the conditions exist as labels in the code (`AgentRunRecord.condition`, `--condition L0|G0|L1|G1`), but **no real experiment has been run yet**. Experiments are planned for Phases 4-5 and are blocked on Rafique's tracks (dataset, sandbox, retrieval). Any number you see in this guide comes from a saved file and is labelled with its date.
 
 ## 3. Status legend
 

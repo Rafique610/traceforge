@@ -1,6 +1,6 @@
 # Phase 3 — Dataset, evaluation and product surface
 
-**Status:** NOT STARTED
+**Status:** IN PROGRESS (status sync 2026-11-25: P3-S01 completed; Ruhan's P3-S03/S04 implemented and tested, not reviewed/approved)
 
 ## Phase information
 - **Purpose:** turn the working pipeline into something that can be measured and shown: a frozen labelled dataset large enough for the rubric, metrics with a baseline, a reviewer UI, and an experiment runner with a results page.
@@ -12,10 +12,10 @@
 ## Task overview
 | Step ID | Task | Responsible | Dependencies | Status |
 |---|---|---|---|---|
-| [P3-S01](step-01-dataset-scale-up-and-freeze.md) | Dataset scale-up and freeze (TRAC-19) | Rafique | P1-S03, P2-S02 | NOT STARTED |
-| [P3-S02](step-02-evaluation-metrics-and-baseline.md) | Metrics + rule baseline (TRAC-20) | Rafique | P0-S05 | NOT STARTED |
-| [P3-S03](step-03-reviewer-ui.md) | Reviewer UI (TRAC-21) | Ruhan | P0-S03, P2-S05 | NOT STARTED |
-| [P3-S04](step-04-experiment-runner-and-results-page.md) | Experiment runner + results page (TRAC-22) | Ruhan | P2-S04 | NOT STARTED |
+| [P3-S01](step-01-dataset-scale-up-and-freeze.md) | Dataset scale-up and freeze (TRAC-19) | Rafique | P1-S03, P2-S02 | COMPLETED (23 Nov) |
+| [P3-S02](step-02-evaluation-metrics-and-baseline.md) | Metrics + rule baseline (TRAC-20) | Rafique | P0-S05 | IMPLEMENTED (per TWD) |
+| [P3-S03](step-03-reviewer-ui.md) | Reviewer UI (TRAC-21) | Ruhan | P0-S03, P2-S05 | IMPLEMENTED, TESTED; NOT REVIEWED/APPROVED |
+| [P3-S04](step-04-experiment-runner-and-results-page.md) | Experiment runner + results page (TRAC-22) | Ruhan | P2-S04 | IMPLEMENTED, TESTED; NOT REVIEWED/APPROVED |
 
 ## Execution order
 - All four can run in parallel. P3-S02 has no real dependency beyond contracts, so Rafique can start it early (e.g. during Phase 2 if blocked).

@@ -1,5 +1,8 @@
 # Testing
 
+> **Status sync 2026-11-25.** This chapter was written on 2026-11-21 and parts are historical. Current status of Ruhan's 20 primary tasks: **none COMPLETE & VERIFIED**; 11 IMPLEMENTED NOT VERIFIED, 7 PARTIALLY COMPLETE, 2 NOT STARTED (conditional). Nothing is reviewed by Rafique or approved by the owner. Authoritative: `docs/plans/RUHAN_TASK_TRACKER.md`. Where this chapter says Rafique's components are absent, there is no experiment, or the model is undecided, that is stale: the lab, sandbox, evidence, graph, retrieval, metrics and a 184-case frozen dataset exist; a reduced RC1 evaluation exists in `results/final` (35 sites at replicate 0, 12 at replicate 1, 8 at replicate 2; AxForge `glm-5.3-flash`); the team is two members (Rafique, Ruhan).
+
+
 Back to [TraceForge Explained](TraceForge-Explained.md). Plan source: `docs/plans/TESTING_AND_VALIDATION.md`. Numbers source: `docs/orchestration/STATE.md` (updated 2026-11-21). **No count in this chapter was produced by me**; I did not run the suites while writing. Re-run `task test` and `task web:test` for current numbers.
 
 ## 1. Verified numbers (from `docs/orchestration/STATE.md`)
@@ -52,3 +55,6 @@ Integration tests under `tests/integration/` (`test_sync1`, `test_pipeline_e2e` 
 
 ## 6. Quality gates (`docs/orchestration/QUALITY_GATES.md`)
 A task closes only when its gates pass: acceptance criteria mapped to tests, feature folders and files under 300 lines, no placeholders, `ruff check` and `ruff format --check` pass, counts come from real runs, no secrets in logs, hidden tests never in prompts, docs updated, research validity (four conditions, 3 attempts, temperature 0, pinned model, negatives kept), and no commits without approval.
+
+## 7. Verified numbers, 2026-11-25 (supersede section 1)
+Backend full suite 983 passed / 21 skipped (run before the 25 Nov changes). Targeted on 25 Nov: `tests/integration` 7 (Sync 1, fake gateway); reports 13; incidents 194; reviews 20; repair 64; `tests/agent` 339 (includes 17 RC2 and 3 hw_monitor). Frontend vitest 12 files / 78 tests; `tsc -b` clean; `vite build` ok; oxlint warnings only; ruff clean. Docker: both images build (api 456 MB, web 74.1 MB); compose up healthy locally; migrations 0001/0002; GET / and /api/health 200; POST 403. actionlint passes. NOT done: a GitHub Actions run, a live Investigate call with a real provider, a clean-clone dry run. The pass counts in section 1 are 21 Nov history; the "not tested" list in section 4 is mostly stale except the model-quality caveats (see `docs/research/final-evaluation-report.md`).

@@ -12,8 +12,10 @@
 | Reviewer | Muhammad Rafique |
 | Priority | Normal |
 | Effort | 2.5 days |
-| Status | NOT STARTED |
+| Status | IMPLEMENTED, TESTED, NOT REVIEWED/APPROVED |
 | Branch | `ruhan/P3-S04-experiment-runner` |
+
+**Status sync 2026-11-25.** Evidence: runner, conditions, runs/report endpoints and results pages covered by the backend and vitest suites; produced `results/final`. FactorialView shows an honest empty state. Five-fact detail: `docs/plans/RUHAN_TASK_TRACKER.md`.
 
 ## B. Objective
 Run the pipeline over a whole manifest under one fixed condition, reproducibly and within free-tier limits, and show the computed results in the app. Without this, the A3 and A4 experiments can't be run or presented.

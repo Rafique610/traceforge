@@ -12,8 +12,10 @@
 | Reviewer | Muhammad Rafique |
 | Priority | High |
 | Effort | 1 day |
-| Status | NOT STARTED |
+| Status | IMPLEMENTED, TESTED, NOT REVIEWED/APPROVED |
 | Branch | `ruhan/P0-S03-frontend-scaffold` |
+
+**Status sync 2026-11-25.** Evidence: `pnpm vitest` 12 files / 78 tests, `tsc -b` clean, `vite build` ok, oxlint warnings only. Not verified against a live backend with a real provider. Five-fact detail: `docs/plans/RUHAN_TASK_TRACKER.md`.
 
 ## B. Objective
 A minimal reviewer app that proves the browser → API path works, with the folder conventions, API helper and test setup that P3-S03 builds the real UI on.

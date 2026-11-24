@@ -12,8 +12,10 @@
 | Reviewer | Muhammad Rafique |
 | Priority | Low (A4) |
 | Effort | 2 days |
-| Status | NOT STARTED |
+| Status | PARTIALLY COMPLETE (setup and monitor only; NO model-comparison result) |
 | Branch | `ruhan/P5-S04-model-sensitivity` |
+
+**Status sync 2026-11-25.** Evidence: `agent/hw_monitor.py` + 3 tests; local Ollama models qwen3.5:4b-q4_K_M, medgemma:4b, all-minilm:22m (`qwen2.5-coder:7b` NOT installed). One smoke (shop_api-001, G1, qwen3.5:4b) ended provider_error BadRequestError (HTTP 400; cause unconfirmed). Five-fact detail: `docs/plans/RUHAN_TASK_TRACKER.md`.
 
 ## B. Objective
 A separate experiment (never mixed into the 2×2) answering: how much does the result depend on the model? It also documents what a fully local, private, free deployment can achieve on a 6 GB GPU.

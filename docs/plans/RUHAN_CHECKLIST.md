@@ -1,18 +1,22 @@
 # Ruhan's live checklist (Track B)
 
-Source of truth for ownership: [TEAM_WORK_DISTRIBUTION.md](TEAM_WORK_DISTRIBUTION.md) §2.2/§3 (read 21 Nov 2026, `main` @ 839a62d). Task IDs and step paths are the repo's own. Status vocabulary: Not started · In progress · Implemented but unverified · Blocked · Verified complete. A box is ticked only with evidence. Per AGENTS.md, only the project owner approves a step; I set NEEDS REVIEW.
+Source of truth for ownership: [TEAM_WORK_DISTRIBUTION.md](TEAM_WORK_DISTRIBUTION.md) §2.2/§3 (read 21 Nov 2026, `main` @ 839a62d). Task IDs and step paths are the repo's own. Status vocabulary: NOT STARTED, PARTIALLY COMPLETE, IMPLEMENTED NOT VERIFIED, BLOCKED, COMPLETE & VERIFIED. A box is ticked only with evidence. Per AGENTS.md, only the project owner approves a step; I set NEEDS REVIEW.
 
-Progress: **0 / 20 verified** (4 implemented, awaiting Ruhan review: P0-S03, P1-S04, P1-S05 partial, P0-S05 confirmation) (matches the team table: Ruhan 0/20). Phase counts below are computed from this file.
+**Status sync 2026-11-25 (authoritative detail: `RUHAN_TASK_TRACKER.md`).** Five facts per task: Implemented / Tested / Integrated / Reviewed / Approved, plus one label. Nothing is Reviewed (Rafique's review is outstanding) or Approved (no owner approval recorded), so **0 / 20 COMPLETE & VERIFIED**. Boxes below stay unticked on purpose: a box means approved, not merely implemented. The per-task notes further down are dated history (21 to 23 Nov); where they disagree with this section or the tracker, this section wins (e.g. repair tests are 64, not 24 or 28; vitest is 78, not 65; P1-S07 is no longer blocked on P1-S03, which is complete, and `tests/integration/test_sync1.py` exists).
 
-| Phase | Ruhan steps | Verified | Status |
+Ruhan has exactly **20** primary steps (P0-S03, P0-S04, P1-S04..S07, P2-S04..S06, P3-S03, P3-S04, P4-S01, P4-S03, P5-S03, P5-S04, P5-S10, P5-S11, P5-S17, P6-S02, P6-S03). Supporting only, not counted: P0-S05, P0-S06 Part B, P6-S04, P5-S16 label verification. The earlier "0 / 23" and "0 / 22" figures were wrong.
+
+| Phase | Ruhan primary steps | Labels (2026-11-25) | COMPLETE & VERIFIED |
 |---|---|---|---|
-| 0 | S03, S04, S05(confirm), S06-B | 0/4 | Not started |
-| 1 | S04, S05, S06, S07 | 0/4 | Not started |
-| 2 | S04, S05, S06 | 0/3 | Not started |
-| 3 | S03, S04 | 0/2 | Not started |
-| 4 | S01, S03 | 0/2 | Not started |
-| 5 | S03, S04 | 0/2 | Not started |
-| 6 | S02, S03, S04 (support) | 0/3 | Not started |
+| 0 | S03, S04 (supporting: S05, S06-B) | S03 IMPLEMENTED NOT VERIFIED; S04 PARTIALLY COMPLETE | 0/2 |
+| 1 | S04, S05, S06, S07 | S04, S06, S07 IMPLEMENTED NOT VERIFIED; S05 PARTIALLY COMPLETE | 0/4 |
+| 2 | S04, S05, S06 | all IMPLEMENTED NOT VERIFIED | 0/3 |
+| 3 | S03, S04 | both IMPLEMENTED NOT VERIFIED | 0/2 |
+| 4 | S01, S03 | both PARTIALLY COMPLETE (reduced evaluation only; no dry run) | 0/2 |
+| 5 | S03, S04, S10, S11, S17 | S03, S04 PARTIALLY COMPLETE; S10 IMPLEMENTED NOT VERIFIED (opt-in, not validated); S11, S17 NOT STARTED (conditional) | 0/5 |
+| 6 | S02, S03 (supporting: S04) | S02 PARTIALLY COMPLETE (no GitHub run, no host); S03 IMPLEMENTED NOT VERIFIED | 0/2 |
+
+Totals by label: 11 IMPLEMENTED NOT VERIFIED, 7 PARTIALLY COMPLETE, 2 NOT STARTED. Human-only items are NOT done: supervisor written approval, Rafique review, owner approval, public URL, hosting, GitHub CI run, branch protection.
 
 Columns per task: Dependencies · Files · Acceptance · Tests · Evidence · Commits · Blockers · Next action. Evidence/commits are empty until work happens.
 
@@ -38,7 +42,7 @@ Columns per task: Dependencies · Files · Acceptance · Tests · Evidence · Co
 - [ ] **P1-S04** Incidents API + DB (TRAC-8) 2 d. **NEEDS REVIEW** 2026-11-21: 189 tests (SQLite; all 169 state pairs), ruff clean. Postgres VERIFIED 2026-11-21 (docker postgres:16): migration up/down/up OK; `tests/incidents/test_postgres.py` (8 concurrent transitions → exactly 1 wins, JSONB round trip) passes; health DB-up test passes. Unknown-`case_id` 422 DONE 2026-11-22 (when a dataset manifest is configured; no check otherwise, since the dataset is not frozen). Deps P0-S02, P0-S05. Files `backend/traceforge/incidents/**`, Alembic migration. Acceptance: VERIFIED without red/green payload → 409, nothing written. Tests: all transition pairs, guards, audit append-only.
 - [ ] **P1-S05** Model gateway + cache + ADR 0001 (TRAC-9) 2 d. **Implemented, partly verified** 2026-11-21: 16 mocked tests pass. Live smoke on local Ollama qwen2.5-coder:7b PASSED 2026-11-21 (live call then cache hit) after adding `tool_calls_from_text` adapter (model prints tool calls as JSON text). NOT DONE: `gateway:probe`, ADR 0001 (needs probe numbers), cloud-provider smoke (no key yet). Provider-agnostic + free-only guard (DECISIONS B4). Deps P0-S02 (informed by P0-S06). Files `agent/{gateway,cache,call_log,smoke}.py`, `docs/adrs/0001-primary-model.md`. Acceptance: smoke on Mistral + Ollama, 2nd run cache hit; Q1 closed. Includes `task gateway:probe`; cache key = prompt+model+replicate (D26).
 - [ ] **P1-S06** Pipeline agent (TRAC-10) 3 d. **Implemented 2026-11-21**: 33 agent tests pass with fake gateway (config/code/abstain/runtime_dependency, injection, malformed output, hidden-leak, budget). NOT verified: live model run of `agent:run`, D20 budget (placeholder 12000 chars). Deps P1-S04, P1-S05, P0-S05. Acceptance: injection test passes; abstain/runtime_dependency → no patch; D20 context budget; code-map tool in both arms.
-- [ ] **P1-S07** Sync 1 (TRAC-11, primary) 0.5 d. Deps P1-S03 (Rafique), P1-S06. Acceptance: 4 schema-valid records; offline integration test.
+- [ ] **P1-S07** Sync 1 (TRAC-11, primary) 0.5 d. Deps P1-S03 (Rafique, complete), P1-S06. Acceptance: 4 schema-valid records; offline integration test. 2026-11-25: `tests/integration/test_sync1.py` 7 passed (fake gateway); IMPLEMENTED NOT VERIFIED.
 
 ## Phase 2
 - [ ] **P2-S04** Repair loop (TRAC-15) 3.5 d. **Core implemented 2026-11-21**: `repair/` 24 tests pass (policy, worktree, F0/F1 equal attempts, no-leak, correct patch verified vs wrong rejected on real temp git repo + real pytest). NOT done: patches/validation_runs tables (moving to P2-S05 migration 0002), CLI, real sandbox (Rafique P1-S02), pipeline wiring. Deps P1-S06, P1-S02 (Rafique; fake runner until then), P1-S03. Acceptance: no-leak + equal-attempts tests; hand-correct patch verified, hand-wrong rejected; ≤60 lines/≤2 files/no tests; test-literal check.
@@ -56,6 +60,9 @@ Columns per task: Dependencies · Files · Acceptance · Tests · Evidence · Co
 ## Phase 5
 - [ ] **P5-S03** Full 2×2 × 3 replicates 3 d (+ unattended). Deps P4-S03, P3-S04.
 - [ ] **P5-S04** Model sensitivity (local Qwen) 2 d. Deps P5-S03 (G1).
+- [ ] **P5-S10** RC2 pipeline robustness fixes (added 2026-11-24) 2 d. Deps none for design; owner approval to start. Parallel with P5-S06..S08. Reviewer Rafique.
+- [ ] **P5-S11** Conditional end-to-end hybrid experiment (added 2026-11-24) 2 d + unattended. Deps P5-S08 go (+P5-S10). Needs owner approval for AxForge spend; Rafique supports retrieval wiring.
+- [ ] **P5-S17** Regression-aware repair validation (added 2026-11-25, PROPOSED, CONDITIONAL) 3 d. Deps owner approval, P5-S10 (RC2), P5-S15 and P5-S16 showing benefit. RC2 only, new fingerprint, never RC1. Rafique supports (impact/selection interface), reviewer Rafique. NOT STARTED. Separately, Ruhan independently verifies P5-S16 hand-labelled expected relationships (supporting, not counted).
 
 ## Phase 6
 - [ ] **P6-S02** CI + deployment 3 d. Deps P4-S03. Open Q7 (host).
@@ -79,7 +86,7 @@ Verification run today: backend `pytest` **360 passed, 0 skipped** (Postgres 16 
 | P1-S04 | NEEDS REVIEW | Postgres verified (migration up/down, 8-way concurrent transition, JSONB). Missing: unknown-`case_id` 422 |
 | P1-S05 | Implemented, partly verified | 17 gateway tests; live smoke passed on Ollama and OpenRouter `:free`; free-only guard verified. `gateway:probe` task added 2026-11-22; ADR 0001 updated (still PROPOSED, no probe numbers for AxForge) |
 | P1-S06 | Implemented | 34+ agent tests with fake gateway; no live end-to-end `agent:run` yet; D20 budget placeholder |
-| P1-S07 | BLOCKED | needs Rafique's P1-S03 seed cases |
+| P1-S07 | (21 Nov, stale) BLOCKED | superseded: P1-S03 is complete and test_sync1 exists (25 Nov) |
 | P2-S04 | Core + wiring implemented | repair loop + `run_case_with_repair`, F0/F1, hidden isolation tests; uses fake/real-pytest runner, NOT Rafique's sandbox; no CLI; D31 literal check can reject legitimate patches (e.g. literal 100) — limitation to report |
 | P2-S05 | Implemented, SQLite+Postgres migration | 26 tests; REVIEWED→CLOSED automatically; payload keys (`evidence_ids`, `missing_evidence`, patches.impact) must be written by the pipeline — not yet |
 | P2-S06 | Implemented | 39 mocked tests; live demo NOT RUN (needs an allowlisted public issue) |

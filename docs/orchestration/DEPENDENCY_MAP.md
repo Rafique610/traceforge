@@ -1,5 +1,8 @@
 # Dependency map (Track B, with cross-track inputs)
 
+> Status sync 2026-11-25: P1-S03 (Rafique) is complete, so "P1-S07 also needs P1-S03" is satisfied and `tests/integration/test_sync1.py` exists. The frozen dataset (P3-S01) exists. Q1 (Mistral access) is superseded by the AxForge decision (ADR 0001, still PROPOSED). Remaining external blockers: written supervisor approval (Q3), Rafique's review, owner approvals, hosting (Q7).
+
+
 **Independent now (parallel):** P0-S03, P1-S05, P1-S04, P0-S06-B (needs a usable model), provider research.
 
 **Sequential:**

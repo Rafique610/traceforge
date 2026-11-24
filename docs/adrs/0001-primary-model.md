@@ -31,3 +31,12 @@ Update 2026-11-22 (B17, owner decision): the agent model is now **AxForge `glm-5
 
 ## Conditions for reconsideration
 Free Devstral access confirmed (Mistral Experiment plan or otherwise) → pin it and re-run the probe on identical cases; Ollama Cloud shows a non-zero included balance with no payment path → consider the official `devstral-small-2:24b-cloud`; the supervisor decides to allow a paid model (explicit approval needed).
+
+## Evidence in the repository (2026-11-25)
+Status stays **PROPOSED**; the owner decides. Only verified facts are listed here.
+- AxForge `glm-5.3-flash` is the model used in every RC1 run in `results/final` (all conditions, temperature 0, live requests).
+- Devstral and Mistral were NOT run (no free route; see the updates above).
+- A local smoke on 25 Nov with `qwen3.5:4b-q4_K_M` (shop_api-001, G1, `--pipeline v5`, label EXPERIMENTAL-LOCAL-P5S04, run `runs/e2e/p5s04-local-smoke-qwen35-4b`) FAILED: `provider_error` BadRequestError (HTTP 400 from `/v1/chat/completions` after 54 s). The cause is unconfirmed (possibly the 4096 default context or the tool/thinking format). `qwen2.5-coder:7b`, which this ADR names as the local baseline, is not installed on the machine at present.
+- No head-to-head probe numbers exist between any two models; none are claimed here. Model comparison remains NOT RUN.
+- Key-1 allowance left on 25 Nov: 152,664 tokens; combined 742,728 left under the 4.8M internal ceiling.
+

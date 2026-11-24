@@ -43,6 +43,8 @@ Three kinds of entries, never mixed:
 | D33 | No pull requests or step branches: commit on `main`, push straight to `origin/main`; both members pull to check each other's work; never force-push | User, 21 Nov 2026; `docs/invariants/processes.md` |
 | D34 | Evidence Docker proxy pinned to `tecnativa/docker-socket-proxy:v0.5.0` (was `:latest`); 66 evidence tests pass against it | Rafique review, 22 Nov 2026 |
 | D35 | `AgentRunRecord` additive change approved: optional `replicate`, `temperature`, `seed`, `failure_reason`; `RULES` condition; `provider` any lowercase slug (the gateway allow-list still decides which providers may run). Closes P0-S05 | Rafique review, 22 Nov 2026 (Ruhan's B9, B13) |
+| D36 | Embeddings and hybrid retrieval are a **separate follow-up study** ("Retrieval modernization", P5-S06 to P5-S11), gated by an offline dev-split benchmark with preregistered thresholds; frozen RC1 (fingerprint `ee3d8d87...`) and all its artifacts stay untouched; zero AxForge tokens for the offline stage. Tasks assigned per the owner's instruction (retrieval/graph/metrics in Rafique's Track A; RC2 and the end-to-end experiment to Ruhan). **Proposed; ADR 0003 PROPOSED, not accepted** | User, 24 Nov 2026; `docs/research/retrieval-architecture-review.md`; P5-S06..S11 |
+| D37 | **PROPOSED (25 Nov 2026, pending owner approval Q18):** root-cause, dependency and change-impact capabilities are built as an **overlay in new modules** (e.g. `backend/traceforge/analysis/`) merged into a copy of the code graph; `codeintel/` and all RC1-fingerprinted files are not modified. Every edge and path carries an evidence class (`static`, `observed`, `inferred`, `unknown`). Capabilities are evaluated offline against preregistered thresholds (P5-S16) and kept only if they pass; no claim of complete root-cause or impact coverage. Changes to `repair/` (P5-S17) are RC2 only. | `docs/research/root-cause-impact-regression-design.md`; P5-S12 to P5-S17 |
 
 ## Assumptions (to confirm)
 | # | Assumption | Used in | Confirm by |
@@ -57,6 +59,8 @@ Three kinds of entries, never mixed:
 | AS8 | Docker socket proxy image `tecnativa/docker-socket-proxy` | P2-S01 | Rafique at P2-S01 |
 | AS9 | GitHub issues for intake live in a separate public repo `traceforge-lab-issues` or labelled issues on the main repo | P2-S06 | Ruhan |
 | AS10 | A3 reviewer identity is a free-text name (no login) | P2-S05 | Both |
+| AS11 | A free local embedding model (e.g. all-MiniLM-L6-v2, CodeRankEmbed or jina-embeddings-v2-base-code) can run on the dev machine. **Unconfirmed**: the Ollama server did not respond on 24 Nov 2026; torch and sentence-transformers are not installed; C: has about 3 GB free (use D:) | P5-S08 | Rafique at P5-S08 (before the first run) |
+| AS12 | The config value-flow subset (values from compose and settings defaults, one config chain, one interprocedural hop, mismatch checks) can localize configuration root causes on the evaluation fixtures with stdlib `ast`. **Unmeasured**; `jedi`, `libcst`, `pycg` are TO EVALUATE. Effort figures for P5-S12 to P5-S17 are also unmeasured. | P5-S13, P5-S16 | Rafique at P5-S16 (results decide; kept only if thresholds pass) |
 
 ## Open questions
 | # | Question | Affects | Owner | Blocking? |
@@ -76,6 +80,10 @@ Three kinds of entries, never mixed:
 | Q13 | ~~Usefulness of the report to a human is unmeasured. Option: 3–5 classmates rate reports on a short rubric (A4)~~ Resolved by D29 | P6-S03, P6-S04 | Ruhan | No |
 | Q14 | ~~Sandbox cost: container start per attempt × ~1,600 runs may dominate time. Measure in P0-S06/P1-S02; reuse warm images~~ Resolved by D30 | P1-S02, P5-S03 | Rafique | No |
 | Q15 | ~~Overfitting a patch to the test (special-casing inputs). Hidden tests use different inputs; add a check that the patch doesn't contain literal test values~~ Resolved by D31 | P2-S04, P3-S01 | Both | No |
+| Q16 | Approvals needed for the retrieval study: (a) which embedding model; (b) whether to change the Postgres image (not recommended; numpy flat store needs none); (c) approval to start RC2 (P5-S10); (d) AxForge spend for P5-S11 if P5-S08 says go; (e) Rafique's capacity and timeline for P5-S06 to P5-S09 (about 6.5 d) | P5-S06..S11 | Project owner (with Rafique for e) | Blocks P5-S08 (a), P5-S10 (c), P5-S11 (d) |
+| Q17 | Evaluation fixture set size for P5-S16: minimum viable 12 cases (4 families x 3) or full 40 (8 x 5). Small sets give wide CIs. Also: results directory (default `results/retrieval/<run_id>/`). | P5-S16 | Project owner, Rafique | No (MVP default 12) |
+| Q18 | Approve the scope of P5-S12 to P5-S16 and the MVP (S12, S15, S16-reduced); approve or drop Tier 2 (S13, S14) and conditional P5-S17 (RC2, owner approval, token spend if any); accept Rafique's capacity impact (about 19.5 d full, about 12.5 d MVP, ASSUMPTION). | P5-S12 to P5-S17 | Project owner, Rafique | Blocks start of P5-S12 to P5-S17 |
+| Q19 | **OPEN (owner), added 2026-11-25.** A3 protocol (L0 vs G0 on at least 50 cases, P4-S01 / P5-S03): supersede it with the reduced RC1 evaluation in `results/final` (35 sites; replicates 35/12/8; L1/G1 share diagnoses) or extend it. Until decided P4-S01 and P5-S03 stay PARTIALLY COMPLETE. Tokens: Key-1 152,664 left; combined 742,728 left under the 4.8M ceiling. Also open: owner approval to use RC2 (P5-S10) in any run; written supervisor approval of the revised scope (P0-S04). | Owner |
 
 ## Contradictions found
 | # | Where | Contradiction | Resolution |

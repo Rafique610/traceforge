@@ -8,7 +8,30 @@ AI-4009 Generative AI semester project (FAST-NUCES), R&D Product track.
 
 ## Status
 
-The pipeline runs end to end on the lab cases: incidents API with an audited state machine, model gateway, pipeline agent, repair loop with sandbox verification, evidence report with hash-bound review, GitHub intake and the reviewer UI, on top of the victim lab, Docker sandbox, fault generator (4 validated development cases), evidence collector, code graph, retrieval and metrics. Still open: the frozen evaluation dataset and the full 2x2 experiments. Progress and ownership: [`docs/plans/TEAM_WORK_DISTRIBUTION.md`](docs/plans/TEAM_WORK_DISTRIBUTION.md). Explanation for newcomers: [`docs/guide/TraceForge-Explained.md`](docs/guide/TraceForge-Explained.md). The plan is in [`docs/plans/README.md`](docs/plans/README.md).
+Release candidate RC1 (pipeline v5) is implemented and a staged, **reduced** final evaluation has been run on a seeded subset of the frozen test split: 35 variant groups at replicate 0, 12 at replicate 1, 8 at replicate 2 (stage 1 had 12 groups, stage 2 added 23); not the full 151-case protocol and not the A3 protocol (L0 vs G0 on at least 50 cases). No claim that the graph arm or feedback is better is established. Results, deviations and limitations: [`docs/research/final-evaluation-report.md`](docs/research/final-evaluation-report.md) (section 10 lists limitations). Architecture: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md). Two-key provider operations: [`docs/research/dual-key-operations.md`](docs/research/dual-key-operations.md). Chronology: [`docs/DEV_LOG.md`](docs/DEV_LOG.md). Plans: [`docs/plans/README.md`](docs/plans/README.md); newcomer guide: [`docs/guide/TraceForge-Explained.md`](docs/guide/TraceForge-Explained.md).
+
+## Evaluation pipeline v5 (RC1) in brief
+
+1. Dataset: generated fault cases with a frozen, hash-verified split (`datasets/manifests/test.json` + `test.sha256`).
+2. Symptom: derived from the visible tests run on the base commit (no gold terms), redacted.
+3. Evidence: logs, health, effective config, tracebacks, labelled by scope/basis/origin; deterministic diagnostics findings added.
+4. Retrieval: lexical (L) or code-graph (G, with symptom-derived anchors), packed into a token-budgeted context.
+5. Diagnosis: model plus local read-only tools; claims and targets are validated.
+6. Patch: scoped edit proposal, up to 3 attempts; visible-test feedback (with provenance) on attempts 2-3 only in the `1` conditions.
+7. Verification: the hidden suite runs once in a Docker sandbox on the frozen final patch and is never shown to a model.
+8. Conditions: L0, G0, L1, G1 (retrieval arm x feedback).
+9. Review: hash-bound evidence report, approve/reject by an engineer; nothing is auto-deployed.
+10. Guards: leak guard, code-fingerprint gate, token ledger and 30 s pacing for the AxForge provider.
+
+## Running the final evaluation
+
+One replicate stage per invocation, from the repo root: `bash scripts/final_eval.sh K [CASES_FILE]` (K = replicate index; order L0, G0, then L1/G1 from the shared diagnosis; halts at the first failure, never retries). Two-key job scheduling: `python scripts/parallel_eval.py --jobs jobs.json` (see `docs/research/dual-key-operations.md`). These make real provider requests and spend a limited token allowance: run only with the owner's approval. Usage report (from `backend/`): `python -m traceforge.evaluation.usage_report`.
+
+## Tests and Docker
+
+- Backend: `task test` (or `cd backend; .venv/Scripts/python.exe -m pytest`); lint with `task lint`.
+- Frontend: `task web:test`, `task web:build`.
+- Docker: `docker compose up -d --wait db` starts Postgres for development (`compose.yaml`); `compose.prod.yaml` runs db + api + web (the API container runs `alembic upgrade head` on start).
 
 ## Setup (Windows, PowerShell)
 
@@ -43,7 +66,7 @@ Check it works: open http://localhost:8000/docs, expand `GET /health`, click *Tr
 
 ## Frontend
 
-Vite + React + TypeScript in `frontend/` (pnpm). Needs Node LTS and pnpm (`corepack enable`, or `npm i -g pnpm` if that needs admin).
+Vite + React + TypeScript in `frontend/` (pnpm; CI uses `pnpm-lock.yaml`). Needs Node LTS and pnpm (`corepack enable`, or `npm i -g pnpm` if that needs admin). A machine with only npm can run the same scripts, but the lockfile is pnpm's.
 
 ```powershell
 pnpm --dir frontend install
@@ -55,15 +78,27 @@ task web:build  # type check + production build
 
 The header badge shows "API ok", "API degraded" (database down) or "API unreachable", straight from `/health`. `VITE_API_URL` overrides the API base.
 
-## Incidents API
+## Incidents API and the Investigate flow
 
 `/docs` lists `POST /incidents`, `GET /incidents`, `GET /incidents/{id}`, `/events` and `/evidence`. Incident states are guarded; an illegal move returns 409. Apply the migration with `task db:migrate` (needs Postgres: `task db:up`).
+
+**Investigate (added 2026-11-25).** `POST /incidents/{id}/investigate` starts a background investigation (diagnosis, repair loop, report) and returns 202; the reviewer UI's **Investigate** button calls it and polls the incident until its state changes. Responses: 404 unknown incident, 409 incident not in a startable state, 422 case not in the manifest, 503 when it cannot run. To use it:
+
+1. Set `TRACEFORGE_MANIFEST` in `.env` to the case manifest (for example `datasets/manifests/dev.json`) and set a model provider key and provider (see `.env.example`; AxForge uses `TRACEFORGE_AXFORGE_API_KEY`). Never commit `.env`.
+2. Start Postgres, the lab and the sandbox prerequisites (Docker), then `task dev` and `task web`.
+3. Create an incident for a manifest case, open it in the UI and press Investigate.
+
+With no manifest or provider key the API answers 503 and the UI says that no model provider is configured. **Status:** tested with a fake gateway and component tests only; the default real-sandbox path has not been run live against a real provider, and it spends provider tokens when it does.
 
 ## Layout
 
 ```
 backend/traceforge/     one folder per feature (health/, contracts/, ...); main.py only wires routers
 backend/tests/          pytest
+frontend/               reviewer UI (Vite + React + TypeScript)
+lab/, datasets/         victim lab services, generated cases, frozen manifests
+scripts/                final-evaluation and scheduler scripts
+results/, runs/         evaluation outputs, ledgers, logs (data, not code)
 backend/alembic/        migrations (URL comes from Settings, never from alembic.ini)
 compose.yaml            Postgres for the app
 docs/                   rules, project facts, the execution plan

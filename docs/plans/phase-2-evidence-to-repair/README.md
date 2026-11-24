@@ -1,6 +1,6 @@
 # Phase 2 — Evidence-to-repair pipeline
 
-**Status:** NOT STARTED
+**Status:** IN PROGRESS (status sync 2026-11-25: Ruhan's P2-S04..S06 implemented and tested, none reviewed/approved; P2-S07 not started)
 
 ## Phase information
 - **Purpose:** replace every sample with the real thing: real evidence from the lab, the code graph, retrieval in both modes, the repair loop with independent verification, the report and review, and the GitHub integration.
@@ -12,12 +12,12 @@
 ## Task overview
 | Step ID | Task | Responsible | Dependencies | Status |
 |---|---|---|---|---|
-| [P2-S01](step-01-evidence-collector.md) | Evidence collector (TRAC-12) | Rafique | P0-S05, P1-S01 | NOT STARTED |
-| [P2-S02](step-02-code-graph.md) | Code graph (TRAC-13) | Rafique | P1-S01 | NOT STARTED |
-| [P2-S03](step-03-retrieval-l-and-g.md) | Retrieval L and G + E1 (TRAC-14) | Rafique | P2-S01, P2-S02 | NOT STARTED |
-| [P2-S04](step-04-repair-loop.md) | Repair loop (TRAC-15) | Ruhan | P1-S02, P1-S06 | NOT STARTED |
-| [P2-S05](step-05-report-and-review.md) | Report and review (TRAC-16) | Ruhan | P1-S04, P2-S04 | NOT STARTED |
-| [P2-S06](step-06-github-intake.md) | GitHub intake (TRAC-17) | Ruhan | P1-S04 | NOT STARTED |
+| [P2-S01](step-01-evidence-collector.md) | Evidence collector (TRAC-12) | Rafique | P0-S05, P1-S01 | IMPLEMENTED (per TWD) |
+| [P2-S02](step-02-code-graph.md) | Code graph (TRAC-13) | Rafique | P1-S01 | IMPLEMENTED (per TWD; not reviewed by Rafique) |
+| [P2-S03](step-03-retrieval-l-and-g.md) | Retrieval L and G + E1 (TRAC-14) | Rafique | P2-S01, P2-S02 | IMPLEMENTED (per TWD; not reviewed by Rafique) |
+| [P2-S04](step-04-repair-loop.md) | Repair loop (TRAC-15) | Ruhan | P1-S02, P1-S06 | IMPLEMENTED, TESTED; NOT REVIEWED/APPROVED |
+| [P2-S05](step-05-report-and-review.md) | Report and review (TRAC-16) | Ruhan | P1-S04, P2-S04 | IMPLEMENTED, TESTED; NOT REVIEWED/APPROVED |
+| [P2-S06](step-06-github-intake.md) | GitHub intake (TRAC-17) | Ruhan | P1-S04 | IMPLEMENTED, TESTED; NOT REVIEWED/APPROVED |
 | [P2-S07](step-07-sync-2-full-pipeline.md) | Sync 2 (TRAC-18) | Rafique (+Ruhan) | P2-S03, P2-S04, P2-S05 | NOT STARTED |
 
 ## Execution order

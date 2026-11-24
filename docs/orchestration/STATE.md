@@ -1,5 +1,14 @@
 # Current state (update at each handoff; git status is the truth)
 
+**Status sync 2026-11-25 (supersedes the 21 Nov text below, which is kept as history).**
+- Ruhan's 20 primary tasks: 0 COMPLETE & VERIFIED; 11 IMPLEMENTED NOT VERIFIED, 7 PARTIALLY COMPLETE, 2 NOT STARTED (conditional). Nothing reviewed by Rafique, nothing approved by the owner. Per task: `docs/plans/RUHAN_TASK_TRACKER.md`.
+- Tests (25 Nov): backend 983 passed / 21 skipped (before today's changes); tests/integration 7; reports 13; incidents 194; reviews 20; repair 64; tests/agent 339; frontend vitest 12 files / 78; `tsc -b`, `vite build`, ruff clean; oxlint warnings only; both Docker images build; compose healthy locally; actionlint passes.
+- Done 25 Nov: `POST /incidents/{id}/investigate` (untested live with a real provider), Investigate button, `missing_evidence` audit event, `test_sync1.py`, RC2 opt-in (`agent/rc2/`, 17 tests, not validated, owner approval pending; fingerprint file `results/rc2/rc2-fingerprint.txt`; RC1 fingerprint unchanged), `agent/hw_monitor.py`, local-model smoke (failed: HTTP 400, cause unconfirmed), CI workflow authored (no GitHub run).
+- Open decisions (owner): supersede or extend the A3 protocol (only a reduced evaluation exists in `results/final`); ADR 0001 model; ADR 0003; RC2 use. Human-only: written supervisor approval, Rafique review, hosting (Q7), branch protection.
+- Tokens: Key-1 ledger 152,664 left; combined 742,728 left under the 4.8M ceiling.
+- Branch and "no commits" notes below are from 21 Nov and may not hold.
+
+
 Updated 2026-11-21 (end of session 1, final update). Branch `ruhan/stage-b-work` (from main 839a62d). **No commits, no pushes.** ~47 changed/untracked paths.
 
 - Verified today: backend `pytest` 360 passed (Postgres 16 container `traceforge-db-1`, port 5433 via git-ignored `.env`; migrations 0001+0002 applied; `alembic check` clean); ruff clean; frontend 24 tests + build OK.

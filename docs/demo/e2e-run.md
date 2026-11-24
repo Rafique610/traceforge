@@ -1,0 +1,47 @@
+# Real end-to-end investigation run (facts)
+
+Date 2026-11-24. Real path, no fake gateway: uvicorn (backend venv) on :8000 against dev Postgres
+(`traceforge-db-1`, localhost:5433, alembic at head 0002), vite dev server on :5173 proxying `/api` -> :8000.
+Provider BeatAPI free profile (`glm-5.3-flash-free`) through the existing gateway/limiter. No keys were read or printed.
+
+## Commands
+```
+# evidence, zero tokens (real lab from faulty tree, ~45 s each)
+python -m traceforge.agent.lab_collect --case shop_api-001 --out ../runs/real-e2e/evidence   # also -017, -002, -111
+# server (env: TRACEFORGE_LLM_PROVIDER=beatapi TRACEFORGE_LLM_MODEL=glm-5.3-flash-free
+#   TRACEFORGE_MANIFEST=datasets/manifests/dev.json TRACEFORGE_EVIDENCE_DIR=runs/real-e2e/evidence)
+python -m uvicorn traceforge.main:app --port 8000 ; npx vite --port 5173
+python scripts/e2e_investigate.py --case shop_api-001 --decision reject   # via http://localhost:5173/api
+```
+Artifacts: `runs/real-e2e/` (logs, report-*.json, events-*.json, evidence/).
+
+## Results
+| run | case | states reached | time | outcome |
+|---|---|---|---|---|
+| 1 | shop_api-017 (config) | CREATED, SNAPSHOT_LOCKED, CONTEXT_RETRIEVED, INCONCLUSIVE, REVIEW_PENDING, REVIEWED, CLOSED (approve) | 500 s | insufficient_evidence: "No trace_frame evidence collected". The lab-collected bundle for 017 has no failure signal (POST /orders returned 201; fault is only visible via tests). |
+| 2 | shop_api-001 (config; bundle has 6 trace frames) approve | same chain | 20 s | provider_error 503 InternalServerError, process-wide halt latch (by design) |
+| 3 | 001 reject (same server) | same | 20 s | zero calls: halt latch from run 2 |
+| 4 | 001 reject (server restarted, latch reset) | same | 263 s | provider_error: beatapi call failed (503): InternalServerError; not retried |
+
+Never reached: DIAGNOSED, PATCH_PROPOSED, VALIDATING, VERIFIED/UNVERIFIED. Blocker: BeatAPI returned HTTP 503 on the first
+diagnosis call in runs 2 and 4 (not 429/402/403). Run 1 ended inconclusive on evidence grounds (the provider outcome of its
+calls was not separately inspected). Total real provider attempts by this agent: a handful (run 1 plus one each in runs 2 and 4).
+
+## Verified live
+- POST /incidents (201), POST /incidents/{id}/investigate (202), polling GET /incidents/{id} to REVIEW_PENDING, through the vite proxy.
+- GET report json and `?format=md`: well-formed; INCONCLUSIVE root cause, `outcome.missing_evidence` populated with the honest reason, evidence list (33-40 items with sha256, trace frames with lab/ paths for 001), `patch: null`, `limitations` set.
+- POST /incidents/{id}/review approve (run 1) and reject (run 4): 201, state REVIEWED -> CLOSED; second review on a closed incident: 409.
+- Audit trail (GET /incidents/{id}/events) has created, 3 system transitions, agent INCONCLUSIVE + REVIEW_PENDING + `missing_evidence`, `reviewer:e2e-human` REVIEWED, system CLOSED.
+- No hidden test id, `hidden_tests` or `datasets/` string appears in any report or event payload saved.
+- Vite proxy routes `/api/health`, `/incidents`, `/events`, `/evidence`, `/report` all 200; `/` serves the SPA. No browser run.
+
+## Not verified
+- Populated patch/impact fields, validation runs, VERIFIED path, approve-with-patch-hash and reject-with-patch-hash (covered only by unit tests), patch never touching lab/ or datasets/ (no patch produced), hidden tests absent from LLM prompts (the HiddenLeakGuard wraps the chat fn but no prompt was inspected here).
+
+## Observations (not changed)
+- Incidents created with only `case_id` have `service` and `symptom` null in the report header (`incidents/service.create_incident` does not copy the manifest service). Cosmetic.
+- The BeatAPI halt latch is per process: after one 503 every later incident in the same uvicorn gets zero calls until restart.
+- Lab-collected evidence for most dev config/code cases carries no failing request, so the v5 pipeline relies on the test symptom; case 001 is the only dev case with trace frames.
+- No code was changed.
+
+Servers (uvicorn, vite) stopped; lab compose projects were torn down by lab_collect.

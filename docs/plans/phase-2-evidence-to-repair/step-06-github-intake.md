@@ -12,8 +12,10 @@
 | Reviewer | Muhammad Rafique |
 | Priority | Normal |
 | Effort | 1.5 days |
-| Status | NOT STARTED |
+| Status | IMPLEMENTED, TESTED, NOT REVIEWED/APPROVED |
 | Branch | `ruhan/P2-S06-github-intake` |
+
+**Status sync 2026-11-25.** Evidence: mocked intake tests pass; one earlier live intake on a public issue (pallets/flask#6190). Open question AS9. Five-fact detail: `docs/plans/RUHAN_TASK_TRACKER.md`.
 
 ## B. Objective
 The real external integration the rubric requires (C4): an engineer pastes a GitHub issue URL and gets an incident whose issue text is stored as untrusted evidence.

@@ -1,5 +1,8 @@
 # Ruhan audit: 20 assigned tasks against original acceptance criteria
 
+> **SUPERSEDED by the status sync dated 2026-11-25.** This audit is a dated snapshot of 2026-11-21 and is kept unchanged below. Its statements that Rafique modules are absent, that no live model run exists, that P1-S07 is blocked, and its test counts (361 tests, 24 Vitest) are STALE. Current truth: `RUHAN_TASK_TRACKER.md` (five-fact status per task, 20 primary steps, nothing REVIEWED or APPROVED, nothing COMPLETE & VERIFIED).
+
+
 Auditor pass, 2026-11-21, branch `ruhan/stage-b-work`. Read-only except this file. Criteria are quoted (shortened) from sections F/H/J of each step document and were not altered. RUHAN_CHECKLIST.md and DECISIONS.md were used as hints and checked against code.
 
 Status codes: **V** VERIFIED by evidence, **IU** IMPLEMENTED-UNVERIFIED, **P** PARTIAL, **B** BLOCKED, **NS** NOT STARTED.

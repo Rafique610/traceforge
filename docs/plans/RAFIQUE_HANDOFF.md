@@ -36,6 +36,8 @@ These are Rafique's tasks by ownership. He did NOT write them and has not review
 | 5 | P3-S02 metrics on real data | metrics over real runs, edit-quality metrics | `evaluation/` | run once records exist | P3-S04 results page, P4-S01 | parallel |
 | 6 | P2-S07 Sync 2 | joint session, one command running 4 cases end to end | my consumer side is wired | lead the session | P2-S07 | after 1-4 |
 | 7 | P4-S02, P5-S01, P5-S02, P5-S05 (optional), P6-S01, P6-S04 | failure analysis, deeper graph, statistics, security suite, paper | none of mine overlaps | not started, deliberately untouched | P4-S03, P6-S04 support | later |
+| 8 | **New, 24 Nov 2026:** Retrieval modernization study P5-S06 (benchmark + baselines), P5-S07 (embedding cache + verifier), P5-S08 (RET-E, fusion, ADR 0003), P5-S09 (optional) | offline dev-split results, new modules, ADR 0003 PROPOSED | review of section 2 code first; `retrieval/e1.py`, `evaluation/metrics/retrieval.py` | see section 6 | P5-S11 (Ruhan, conditional) | P5-S06 depends on item 1 (review) and P3-S01 (done); after items 1 to 4 as capacity allows (Q16) |
+| 9 | **Proposed, 25 Nov 2026:** root-cause and impact tasks P5-S12 to P5-S16 (see section 6.1; pending owner approval Q18) | new modules, preregistered evaluation | design doc `docs/research/root-cause-impact-regression-design.md` | section 6.1 | P5-S17 (Ruhan, conditional) | after P5-S06; MVP first |
 
 ## 5. WhatsApp message
 ```
@@ -58,3 +60,60 @@ Your list, in the order I need it:
 
 Heads up: Docker was off when I checked, so lab/sandbox live status is from my earlier run. Shout if anything looks off 👍
 ```
+
+## 6. Retrieval modernization study (new, 24 Nov 2026)
+Added at the project owner's instruction because retrieval, graph and metrics are your Track A. It is a **follow-up study**: it does not change or re-run the frozen experiment. Design and numbers: `docs/research/retrieval-architecture-review.md` (read sections 0, 3, 5, 7) and `docs/research/technical-findings-2026-11-24.md`. Decision D36; assumption AS11; open question Q16 (approvals, your capacity).
+
+| Task | Effort | Depends on | Expected output | Acceptance (measurable) |
+|---|---|---|---|---|
+| P5-S06 Benchmark + baselines RET-L / RET-G (essential) | 1.5 d | P3-S01 (done), your review of P2-S02/S03 | harness + `results/retrieval/<run_id>/` tables on the 33 dev cases: Recall@K, Precision@K, MRR, nDCG, source-localization, evidence coverage, context tokens, latency, paired bootstrap CIs, equal-token protocol | metrics match hand-computed tests; two runs identical; fingerprint unchanged; 0 tokens |
+| P5-S07 Manifest + embedding cache + verifier (essential) | 2 d | P5-S06 (data model can start in parallel) | new modules: chunk identity, manifest diff (new/modified/deleted/moved), content-addressed store, atomic `ACTIVE` pointer, resume, namespaces, verifier | six scenario tests pass with a fake embedder; crash/resume test; verifier catches tampering |
+| P5-S08 RET-E + RET-LE/LG/LGE (RRF k=60) + ADR 0003 (essential, decision gate) | 2 d + model setup | P5-S06, P5-S07, model approval (Q16/AS11) | preregistration, dense/hybrid modules, results at equal budget, `docs/adrs/0003-retrieval-architecture-decision.md` (PROPOSED) | every threshold reported pass/fail with CIs; go only if H1 and H2 hold on dev |
+| P5-S09 Optional reranking | 1 d | P5-S08 go | rerank arm or dropped note | gain at equal tokens with CIs, else dropped |
+
+### 6.1 Root-cause and impact analysis tasks (PROPOSED 25 Nov 2026, NOT STARTED, pending owner approval Q18)
+Design: `docs/research/root-cause-impact-regression-design.md` (sections 2 to 9). Decision D37 (proposed); assumption AS12; questions Q17, Q18. Same hard constraints as above: new modules only (e.g. `backend/traceforge/analysis/`), overlay on a graph copy, never edit `codeintel/` or RC1-fingerprinted files, 0 tokens, dev/fixture data only, no hidden tests or gold in any graph or report.
+
+| Task | Tier | Effort (ASSUMPTION) | Depends on | Expected output |
+|---|---|---|---|---|
+| P5-S12 Traversal overlay + root-cause ranker | MVP | 3 d | P5-S06 | inheritance/override edges, evidence classes, budgeted bidirectional traversal, ranker with explanation paths |
+| P5-S13 Config value-flow analysis | Tier 2 (after MVP gain) | 3 d | P5-S12 | value extraction (no secrets), one config chain, model-free mismatch checks |
+| P5-S14 Runtime evidence fusion | Tier 2 | 1.5 d | P5-S12 | `observed` marks from frames/logs/failing test id; dev-only coverage oracle |
+| P5-S15 Change-impact report + visible-test selection | MVP | 2.5 d | P5-S06 (S12 optional) | impact report, ranked visible tests, "not analysable" section, hidden-dir exclusion test |
+| P5-S16 Root-cause and impact evaluation suite | MVP reduced (4 families x 3 cases, about 1.5 d); full (8 x 5, about 3 d) | 1.5 to 3 d | P5-S06; S12/S15 incrementally | fixtures, preregistered thresholds, results with CIs; Ruhan verifies labels |
+
+P5-S17 (regression-aware repair validation) is Ruhan's, conditional, RC2 only; you support the impact/selection interface. Do not take it.
+
+**MVP path:** P5-S06, S07, S08, S12, S15, S16-reduced. **Capacity warning:** your new work is about 6.5 d (P5-S06 to S09, earlier) plus 13 d (S12 to S16 full) = about 19.5 d full, and about 12.5 d for the MVP path. This competes with your existing Track A backlog. Capacity and timeline are an owner/Rafique decision (Q18); the tasks are NOT STARTED and proposed pending owner approval. Static analysis cannot see dynamic dispatch or reflection; nothing here claims complete root-cause or impact coverage.
+
+Ruhan owns P5-S10 (RC2 pipeline fixes, needs owner approval) and P5-S11 (conditional end-to-end experiment; you support the retrieval wiring). Do not take those.
+
+**How to run / where to read:** existing offline harness `task eval:retrieval SPLIT=dev` (`backend/traceforge/retrieval/e1.py`); step docs in `docs/plans/phase-5-research-completion/step-06 ... step-09`; step documents give the exact acceptance lists. Per-step commands are added to the README as each step lands.
+
+**Constraints (hard):**
+- Do not edit any of the 28 RC1-fingerprinted files (list in review section 6.1) and treat `codeintel/*` as de facto frozen; new code goes in new files not imported by frozen ones. Check `code_fingerprint()` equals `ee3d8d87...` before and after.
+- Zero AxForge tokens, no network or LLM calls, no hosted embeddings; free local model only (Ollama server was not responding on 24 Nov; no torch yet; put any install and caches on D:, C: has about 3 GB free).
+- Dev split only (33 cases). Never the test split (151) or the 35 analysed sites. Results only under `results/retrieval/`, never `results/final`.
+- Never index hidden tests, `mutation.patch`, gold manifests or fault-generator artifacts.
+- Gold labels are used by the scorer only. Preregister hypotheses before running.
+- Files <= ~300 lines, feature folders, one runnable check per non-trivial piece (`docs/invariants/core.md`); commit on `main`, update TWD section 0 in the same commit.
+
+**Known inconsistencies (not fixed here, do not rely on the stale side):** (1) step docs and phase READMEs say NOT STARTED where TWD/this file say IMPLEMENTED; (2) TWD section 3 ticks few items vs section 0; (3) P2-S02/P2-S03 owned by you but authored by Ruhan's session and unreviewed; (4) P3-S04/P4-S01/P2-S05/P2-S06 status differs between TWD and the Ruhan tracker; (5) TWD step counts (19/20) do not equal the primary-step lists; (6) P0-S06 Part A status differs and `spikes/retrieval` is not listed in main's tree; (7) the "graph decision ADR" required by P5-S01/P5-S03 does not exist (ADR 0003 is proposed to cover it, owner approval pending); (8) P2-S03's embeddings checklist item is still open; (9) TWD section 6 ownership-consistency claim; (10) Taha still named in `docs/demo/a3-demo.md`; (11) context-budget figures disagree (D20 ~4,000 vs code 3,000 tokens); (12) step docs name branches though D33 says none.
+
+## 7. Status sync 2026-11-25: Ruhan-side duties and the 12 inconsistencies
+**Ruhan-side review duties (outstanding, not done):** Rafique has not reviewed any Ruhan task; Ruhan has not approved the Track A code authored by his Claude-assisted session (P1-S01, P1-S02, P2-S01..S03, P3-S02). Rafique's review list for Ruhan's code: P0-S03, P1-S04..S07, P2-S04..S06, P3-S03, P3-S04, P5-S10 (RC2 opt-in files `agent/rc2/*`, `tests/agent/test_rc2.py`, `results/rc2/rc2-fingerprint.txt`), P6-S02 (CI is Rafique-owned for branch protection), P6-S03, plus the additive `AgentRunRecord` change. Evidence per task: `RUHAN_TASK_TRACKER.md`. Rafique should run `tests/integration` and the compose stack on his own machine.
+
+Status of the 12 inconsistencies listed in section 6:
+1. Step docs say NOT STARTED: FIXED for Ruhan's 20 steps and the phase README rows (labels plus evidence line). Rafique's step docs are unchanged (his to update).
+2. TWD section 3 ticks vs section 0: unchanged by design; a tick means approved, and nothing of Ruhan's is approved.
+3. P2-S02/S03 owned by Rafique, authored by Ruhan's session, unreviewed: NOT RESOLVABLE here (needs the review).
+4. P3-S04/P4-S01/P2-S05/P2-S06 status differences: FIXED (tracker authoritative; TWD and roadmap synced).
+5. Step counts: FIXED. Ruhan 20 primary; Rafique 28 (the 27 in the TWD 2.1 list plus P0-S06 Part A, now added to that list). Earlier 22/23 for Ruhan were wrong.
+6. P0-S06 Part A status: roadmap now says "A DONE; B ... IMPLEMENTED, PARTLY RUN". `spikes/retrieval` exists on disk (verified 25 Nov by directory listing); whether it is tracked on `main` was not checked.
+7. Graph decision ADR missing: UNRESOLVED. ADR 0003 stays PROPOSED with its decision blank (owner).
+8. P2-S03 embeddings checklist item: UNRESOLVED (Rafique's P5-S08 gate).
+9. TWD section 6 consistency claim: FIXED (Synverk is not used; see plans README).
+10. Taha in `docs/demo/a3-demo.md`: FIXED.
+11. Context-budget figures (D20 ~4,000 vs code): UNRESOLVED, not re-measured today; D20 stays provisional.
+12. Step docs name branches though D33 says none: unchanged; `plans/README.md` already says the Branch field is ignored.
+

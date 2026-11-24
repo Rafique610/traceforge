@@ -14,6 +14,9 @@ Written 2026-11-21 after the owner's scope clarification: implement ONLY the Raf
 | P3-S04 results page, P4-S01 | **P3-S02 Metrics + baseline** (`evaluation/{metrics,baselines,analysis}`) | computed metrics for the results page and experiments | `report(records, manifests, contexts)`; GET /evaluation/report | No | **Implemented** by Claude-assisted session: 25 new tests; **not run on real data**; CLI/router tested on hand-built runs only |
 | P4-S01, P5-S03 | **P3-S01 Dataset scale-up and freeze** (`datasets/`) | the frozen test set + dev set the experiments must run on | manifests dev/test, `test.sha256`, ≥60/60/12/12 + ≥30 dev, ≥50% distance ≥1 | No | Not started (largest item; may only be partly achievable) |
 | shared | `AgentRunRecord` contract (B9, B13) | needed for provider-agnostic gateway and RULES baseline | additive fields | existed | Changed additively by Claude-assisted session; **Rafique has not been told** |
+| P5-S11 (conditional hybrid experiment, added 2026-11-24) | **P5-S08 dense/hybrid retrieval** (`retrieval/dense.py`, `hybrid.py`) and **P5-S07 embedding cache and manifest** | the fused arm is wired into new conditions only if P5-S08 decides go | `retrieve`-style call returning a `ContextBundle` at the same token budget | No | Not started; Rafique (study tasks P5-S06 to P5-S08, offline, 0 tokens, RC1 frozen) |
+| P5-S17 (regression-aware repair validation, Ruhan, conditional; added 2026-11-25, PROPOSED) | **P5-S15 impact report and visible-test selection** (`backend/traceforge/analysis/`) and, for evidence of benefit, **P5-S16** | the RC2 repair loop calls the impact report and selection; only built if S15/S16 show benefit and the owner approves | function: patch diff + pre/post graphs -> impact report (JSON, hash) and ranked visible tests | No | Not started; Rafique (S12 to S16 offline, 0 tokens, RC1 frozen) |
+| P5-S10 (RC2, Ruhan; reviewer Rafique, added 2026-11-24) | none from Rafique for design; P5-S06 dev bundles for dev validation | RC2 validation reuses dev cases and evidence bundles | existing evidence bundles | Yes (dev bundles via P5-S06 inventory) | Not started; needs owner approval |
 
 ## B. Rafique's tasks NOT needed for Ruhan's tasks (left to Rafique, not touched)
 | Task | Why not a prerequisite |
@@ -21,6 +24,8 @@ Written 2026-11-21 after the owner's scope clarification: implement ONLY the Raf
 | P2-S07 Sync 2 (primary Rafique) | Integration checkpoint; Ruhan wires the consumer side, Rafique leads the joint session |
 | P4-S02 Failure analysis and results | Analysis of results after experiments; his authorship |
 | P5-S01 Deeper graph + new fault families | Phase 5 research extension |
+| P5-S06 to P5-S09 Retrieval modernization study (added 2026-11-24) | Offline benchmark, embedding cache, dense/fusion arms, ADR 0003; assigned by the owner because retrieval/graph/metrics are Track A; builds on code Rafique has not yet reviewed (P2-S02/S03) |
+| P5-S12 to P5-S16 Root-cause and impact analysis study (added 2026-11-25, PROPOSED) | Offline overlay, impact report and evaluation; only P5-S15 is a prerequisite of Ruhan's conditional P5-S17 |
 | P5-S02 Statistics (A4) | Phase 5 research statistics beyond the metrics needed for the A3 results page |
 | P5-S05 BugsInPy subset (optional) | Optional |
 | P6-S01 Security hardening | Phase 6; Ruhan's tasks do not need the full suite |
@@ -44,3 +49,12 @@ Written 2026-11-21 after the owner's scope clarification: implement ONLY the Raf
 | P3-S02 Metrics (Rafique) | same | 25 new tests vs hand-computed values; run on real run records (10 records) | edit-quality metrics unavailable |
 | P3-S01 Frozen dataset (Rafique) | NOT done | — | needs far more validated cases (≈3 min each in the real sandbox); not padded |
 Rafique's untouched tasks (unchanged): P2-S07, P4-S02, P5-S01, P5-S02, P5-S05, P6-S01, P6-S04, P0-S01/S02.
+
+## E. Status update 2026-11-25 (sections A and D above are dated 21 Nov and kept as history)
+- P1-S03 and P3-S01 are COMPLETED by Rafique (184 validated cases: test 151, dev 33; freeze verified). The "Not started" cells for them above are stale.
+- Track A components in section D (P1-S01, P1-S02, P2-S01, P2-S02, P2-S03, P3-S02) remain IMPLEMENTED but NOT REVIEWED by Rafique. `tests/integration/test_sync1.py` (7 tests, fake gateway, offline replay of `ManifestCaseSource`) now exercises them through the route, pipeline, repair, report and review path; it does not replace the review.
+- P5-S10 needs nothing from Rafique for design. RC2 opt-in code exists (`agent/rc2/`, 17 tests), is not validated, and awaits owner approval.
+- P5-S11 and P5-S17 are NOT STARTED and still wait on P5-S08 (go decision) and P5-S15/S16.
+- P5-S04 local-model smoke needs no Rafique input; his S08 note: an embedding model runs locally (all-minilm:22m, 384-d); a code-specific embedding model is not downloaded (his decision).
+- Rafique primary count is 28 and Ruhan primary count is exactly 20 (`TEAM_WORK_DISTRIBUTION.md` section 0).
+

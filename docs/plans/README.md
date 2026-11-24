@@ -4,9 +4,12 @@ TraceForge takes a reproducible failure in a Dockerized Python service and works
 
 This folder is the team's execution manual: what to build, why, how, who owns it, in what order, how it is tested, and when it counts as done.
 
-## Where things stand (19 November 2026)
-- **Implemented and verified:** public repo `Rafique610/traceforge`, `main` protected against force push and deletion (no approving review required), docs rules tree (`docs/invariants/`, `docs/domain/`), this execution manual merged to `main`.
-- **Not implemented:** all application code. Every step below is NOT STARTED unless its document says otherwise.
+## Where things stand (status sync 25 November 2026)
+- **Ruhan's 20 primary steps:** 0 COMPLETE & VERIFIED. 11 are IMPLEMENTED NOT VERIFIED (code and tests exist, Rafique has not reviewed, the owner has not approved), 7 are PARTIALLY COMPLETE, 2 are NOT STARTED and conditional (P5-S11, P5-S17). Per-task five-fact status (implemented / tested / integrated / reviewed / approved): [RUHAN_TASK_TRACKER.md](RUHAN_TASK_TRACKER.md). The older [RUHAN_AUDIT.md](RUHAN_AUDIT.md) is superseded.
+- **Rafique's 28 primary steps:** see [TEAM_WORK_DISTRIBUTION.md](TEAM_WORK_DISTRIBUTION.md) section 0 (P0-S02, P0-S05, P1-S03, P3-S01 approved; the rest as listed there).
+- **Evidence:** backend 983 passed / 21 skipped (before 25 Nov); frontend vitest 78; both Docker images build. No GitHub Actions run, no host, no public URL, no live Investigate run against a real provider, no clean-clone dry run.
+- **Open human-only items:** written supervisor approval of the revised scope, Rafique's review, owner approval of steps, hosting decision (Q7), branch protection, the A3-protocol decision (supersede or extend the reduced evaluation in `results/final`).
+- The step documents' older text ("All application code is NOT implemented") is history; read each step's Status line, which was synced for Ruhan's steps on 2026-11-25.
 - Details: [PROJECT_OVERVIEW.md](PROJECT_OVERVIEW.md#current-status).
 
 ## Recommended reading order
@@ -41,7 +44,7 @@ This folder is the team's execution manual: what to build, why, how, who owns it
 | 2 Evidence-to-repair pipeline | [phase-2-evidence-to-repair](phase-2-evidence-to-repair/README.md) | A3 | P2-S01 … P2-S07 |
 | 3 Dataset, evaluation and product surface | [phase-3-dataset-evaluation-ui](phase-3-dataset-evaluation-ui/README.md) | A3 | P3-S01 … P3-S04 |
 | 4 Assignment 3 evaluation and delivery | [phase-4-a3-delivery](phase-4-a3-delivery/README.md) | A3 | P4-S01 … P4-S03 |
-| 5 Research completion | [phase-5-research-completion](phase-5-research-completion/README.md) | A4 | P5-S01 … P5-S05 |
+| 5 Research completion | [phase-5-research-completion](phase-5-research-completion/README.md) | A4 | P5-S01 … P5-S17 |
 | 6 Productization and paper | [phase-6-productization-paper](phase-6-productization-paper/README.md) | A4 | P6-S01 … P6-S04 |
 
 ## Task IDs
@@ -58,4 +61,4 @@ This folder is the team's execution manual: what to build, why, how, who owns it
 5. Commit on `main` and push straight to `origin/main` (no pull requests). The other member pulls and checks it.
 6. **Before every commit**, update section 0 "Progress at a glance" in [TEAM_WORK_DISTRIBUTION.md](TEAM_WORK_DISTRIBUTION.md) for both members, in the same commit. After merge, update the status column in the phase README.
 
-Status labels used everywhere: **NOT STARTED, IN PROGRESS, BLOCKED, NEEDS REVIEW, COMPLETED**.
+Status labels: **NOT STARTED, IN PROGRESS, BLOCKED, NEEDS REVIEW, COMPLETED**. For Ruhan's tasks (since 2026-11-25) the tracker uses five separate facts (implemented / tested / integrated / reviewed / approved) and the overall labels COMPLETE & VERIFIED, IMPLEMENTED NOT VERIFIED, PARTIALLY COMPLETE, NOT STARTED, BLOCKED. COMPLETE & VERIFIED requires review and approval.
