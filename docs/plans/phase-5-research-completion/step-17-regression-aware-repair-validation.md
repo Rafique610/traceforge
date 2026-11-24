@@ -14,10 +14,10 @@ Follow-up study **Root-cause and impact analysis** (added 2026-11-25, PROPOSED, 
 | Reviewer | Muhammad Rafique |
 | Priority | CONDITIONAL (see section C) |
 | Effort | 3 days (ASSUMPTION, not measured) |
-| Status | NOT STARTED (proposed, conditional) |
+| Status | PARTIALLY COMPLETE (Ruhan-side layer IMPLEMENTED, TESTED, NOT INTEGRATED) |
 | Branch | none (commit on `main`, D33) |
 
-**Status sync 2026-11-25.** Unchanged; needs P5-S10 validated, P5-S15, P5-S16. Five-fact detail: `docs/plans/RUHAN_TASK_TRACKER.md`.
+**Status sync 2026-11-25 (final).** Evidence: `backend/traceforge/regression/` (ImpactProvider protocol, sealed ImpactReport, default GraphImpactProvider over codeintel, deterministic select_tests, RegressionAwareRunner wrapping the repair runner without editing the frozen loop, PatchHistory JSONL, leak-guarded regression feedback, RetrievalAdapter registry, preregistration validator), 26 tests pass (real pytest temp repo); `docs/research/regression-validation-contract.md`. Not integrated into the pipeline (needs RC2 hooks in frozen files, Rafique's P5-S15 provider and a sandbox run_selected adapter); never run end-to-end with a real model. Five-fact detail: `docs/plans/RUHAN_TASK_TRACKER.md`.
 
 ## B. Objective
 Add regression-aware validation to the repair loop: use the P5-S15 impact report and selected visible tests, keep the full visible suite and the single hidden gate, store every patch version with its results, and allow a controlled revision on visible regression evidence.

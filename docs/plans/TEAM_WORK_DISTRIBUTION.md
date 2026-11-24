@@ -5,7 +5,7 @@ Members come from the project docs: **Muhammad Rafique** and **Muhammad Ruhan Ka
 The split follows one rule: **each person owns whole folders**, and the two halves exchange data only through the five shared contracts (P0-S05). That lets both work at the same time with almost no waiting.
 
 ## 0. Progress at a glance
-**Updated before every commit by whoever commits** (rule in `docs/invariants/processes.md`). Last updated: 25 Nov 2026 (status sync, see below); the Rafique column was last updated 23 Nov 2026 with P1-S03 and P3-S01 approved. On 24 Nov 2026 six Phase 5 tasks (P5-S06 to P5-S11, retrieval modernization study) were added at the owner's request; see section 7. On 25 Nov 2026 six more Phase 5 tasks (P5-S12 to P5-S17, root-cause and impact analysis study) were added as PROPOSED, pending owner approval (Q18).
+**Updated before every commit by whoever commits** (rule in `docs/invariants/processes.md`). Last updated: 25 Nov 2026 (final status sync, see below); the Rafique column was last updated 23 Nov 2026 with P1-S03 and P3-S01 approved. On 24 Nov 2026 six Phase 5 tasks (P5-S06 to P5-S11, retrieval modernization study) were added at the owner's request; see section 7. On 25 Nov 2026 six more Phase 5 tasks (P5-S12 to P5-S17, root-cause and impact analysis study) were added as PROPOSED, pending owner approval (Q18).
 
 "Done" = approved by the step's owner. "Implemented" = code on `main` that its owner has not yet approved (much of Track A was written by Ruhan's Claude-assisted session; see section 7).
 
@@ -13,9 +13,9 @@ The split follows one rule: **each person owns whole folders**, and the two halv
 
 | | Muhammad Rafique (Track A) | Muhammad Ruhan Kamran (Track B) |
 |---|---|---|
-| **Steps done** | 4 / 28 (P0-S02, P0-S05, P1-S03, P3-S01); P0-S06 Part A done | 0 / 20 approved (none reviewed by Rafique); by label: 11 IMPLEMENTED, NOT VERIFIED; 7 PARTIALLY COMPLETE; 2 NOT STARTED (P5-S11, P5-S17, both conditional); 0 COMPLETE & VERIFIED |
+| **Steps done** | 4 / 28 (P0-S02, P0-S05, P1-S03, P3-S01); P0-S06 Part A done | 0 / 20 approved (none reviewed by Rafique); by label: 10 IMPLEMENTED, NOT VERIFIED; 10 PARTIALLY COMPLETE (incl. P5-S10, P5-S11, P5-S17); 0 COMPLETE & VERIFIED |
 | **Working on** | Dataset frozen and approved: test 151 (60/67/12/12), dev 33, 184/184 validated | Awaiting Rafique's review and owner approval; P0-S04 proposal approval evidence; ADR 0001 model decision (owner) |
-| **Next up** | Review P1-S01/S02, P2-S01…S03; real E1 retrieval run on the dev split; P3-S02 metrics on real runs | Live check of the Investigate route with a real provider; A3-protocol run decision (P4-S01); RC2 owner approval |
+| **Next up** | Review P1-S01/S02, P2-S01…S03; note the additive contract schema change (`agent_run_record`, `evidence_bundle`); P3-S02 metrics on real runs | Owner decisions: AxForge investigation for the real patch path (about 30k tokens), RC2 blind validation, ADR 0001; Q19 is DECIDED (reduced RC1 evaluation adopted, shortfall disclosed) |
 | **Waiting on the other** | Ruhan: model decision for experiments | — (frozen dataset now on `main`: unblocks P1-S07, P3-S04, P4-S01, P5-S03/S04) |
 
 | Phase | Rafique | Status | Ruhan | Status |
@@ -27,16 +27,16 @@ The split follows one rule: **each person owns whole folders**, and the two halv
 | 1 | P1-S01 Lab fixtures | IMPLEMENTED; extended by Rafique (stock, coupons, shipping, quote) | P1-S04 Incidents API | IMPLEMENTED, TESTED; NOT REVIEWED/APPROVED |
 | 1 | P1-S02 Sandbox | IMPLEMENTED; self-test passes on Rafique's laptop | P1-S05 Model gateway | PARTIALLY COMPLETE (tested; ADR 0001 still PROPOSED) |
 | 1 | P1-S03 Seed cases | COMPLETED: 184 cases validated | P1-S06 Pipeline agent | IMPLEMENTED, TESTED; NOT REVIEWED/APPROVED |
-| 1 | — | — | P1-S07 Sync 1 | IMPLEMENTED, TESTED (`tests/integration/test_sync1.py`, 7 tests, fake gateway); NOT REVIEWED/APPROVED |
+| 1 | — | — | P1-S07 Sync 1 | IMPLEMENTED, TESTED (`tests/integration/test_sync1.py`, 7 tests, fake gateway), partially integrated (no both-members run recorded); NOT REVIEWED/APPROVED |
 | 2 | P2-S01 Evidence collector | IMPLEMENTED; 66 tests pass with pinned proxy | P2-S04 Repair loop | IMPLEMENTED, TESTED (64 repair tests); NOT REVIEWED/APPROVED |
 | 2 | P2-S02 Code graph | IMPLEMENTED, not reviewed | P2-S05 Report + review | IMPLEMENTED, TESTED; NOT REVIEWED/APPROVED |
 | 2 | P2-S03 Retrieval L/G | IMPLEMENTED; E1 not meaningful yet | P2-S06 GitHub intake | IMPLEMENTED, TESTED; NOT REVIEWED/APPROVED |
 | 2 | P2-S07 Sync 2 | NOT STARTED | — | — |
 | 3 | P3-S01 Dataset freeze | COMPLETED: test split frozen (sha256 881f2887…) | P3-S03 Reviewer UI | IMPLEMENTED, TESTED; NOT REVIEWED/APPROVED |
 | 3 | P3-S02 Metrics + baseline | IMPLEMENTED; needs real runs | P3-S04 Runner + results page | IMPLEMENTED, TESTED; NOT REVIEWED/APPROVED |
-| 4 | 0 / 1 done | NOT STARTED | 0 / 2 done | P4-S01 PARTIALLY COMPLETE (reduced evaluation in `results/final`, not the A3 protocol); P4-S03 PARTIALLY COMPLETE (no dry run) |
-| 5 | 0 / 12 done (P5-S01, S02, S05 + new S06 to S09 + proposed S12 to S16) | NOT STARTED | 0 / 5 approved: P5-S03 PARTIALLY COMPLETE; P5-S04 PARTIALLY COMPLETE (no model comparison); P5-S10 IMPLEMENTED opt-in, not validated; P5-S11, P5-S17 NOT STARTED (conditional) | see left |
-| 6 | 0 / 2 done | NOT STARTED | 0 / 2 done (P6-S04 supporting only) | P6-S02 PARTIALLY COMPLETE (no GitHub run, no host); P6-S03 IMPLEMENTED, TESTED; NOT REVIEWED/APPROVED |
+| 4 | 0 / 1 done | NOT STARTED | 0 / 2 done | P4-S01 PARTIALLY COMPLETE (Q19 DECIDED: reduced RC1 evaluation adopted as the A3 final evaluation for diagnosis/repair, shortfall disclosed; retrieval >=50 met); P4-S03 PARTIALLY COMPLETE (no dry run) |
+| 5 | 0 / 12 done (P5-S01, S02, S05 + new S06 to S09 + proposed S12 to S16) | NOT STARTED | 0 / 5 approved, all PARTIALLY COMPLETE: P5-S03 (decision made, shortfall disclosed); P5-S04 (local comparison done, n=12, one replicate; no code model); P5-S10 (opt-in, benefit UNPROVEN, blind validation not done); P5-S11 and P5-S17 (regression layer implemented and tested, NOT integrated) | see left |
+| 6 | 0 / 2 done | NOT STARTED | 0 / 2 done (P6-S04 supporting only) | P6-S02 PARTIALLY COMPLETE (CI green on 64073ca, all four jobs; no host); P6-S03 IMPLEMENTED, TESTED; NOT REVIEWED/APPROVED |
 
 When a phase starts, replace its count row with one row per step, as Phases 0–3 show.
 

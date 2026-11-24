@@ -43,3 +43,9 @@ spikes/glm_beatapi_eval/results/cache/
 # experiment results (generated); keep the convention file
 results/*
 !results/README.md
+# small, reviewable summaries (the raw per-case outputs stay local)
+!results/rc2/
+!results/p5s04/
+!results/analysis/
+results/analysis/e1-test-all151/
+

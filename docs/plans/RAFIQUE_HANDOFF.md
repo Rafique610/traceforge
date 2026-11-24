@@ -142,3 +142,12 @@ Pushed so you can work independently while Ruhan finishes his remaining tasks. T
 **Incomplete on Ruhan's side (still in progress after this push):** real end-to-end investigate run with a patch (BeatAPI returned 503s; re-run with local Ollama pending), RC2 dev validation (pending), P5-S04 local-model comparison (pending), research statistics for P4-S01 / P5-S03, final docs sync. Any of these may land as later commits; pull before you push.
 
 **Rules that still apply to everything you add:** no secrets or keys in code or logs (keys come from env or settings only); no hidden-test content in prompts, retrieval inputs or feedback; no AxForge spend without owner approval (retrieval work needs none); normal pushes only, no force-push or history rewrites.
+
+## 9. Final sync (2026-11-25, `origin/main` up to `64073ca`)
+The interim checkpoint in section 8 is superseded by later pushes; CI on `64073ca` is green on all four jobs (backend ruff+pytest, contracts, frontend, docker). `git pull --ff-only` before you push.
+- **Contract schema JSON changed additively:** `agent_run_record` and `evidence_bundle` schemas gained optional fields. They were regenerated and pushed (the CI drift check failed on the stale files before). Please review as the shared-contract owner (P0-S05).
+- **Small result summaries are now tracked:** `results/rc2`, `results/p5s04`, `results/analysis` summaries (`.gitignore` updated). Raw analysis outputs stay local and untracked.
+- **CI fixes** in `.github/workflows/ci.yml` (pnpm, drift check); ruff E501/I001 fixed; a test that depended on a missing DB password env var is now hermetic.
+- **Q19 is DECIDED:** the reduced RC1 evaluation is the A3 final evaluation for diagnosis/repair, shortfall disclosed; retrieval E1 was run offline on all 151 frozen test cases (`docs/research/a3-evidence-and-statistics.md`). No graph-superiority and no feedback-effect claim.
+- **Ruhan-side `regression/` layer** (26 tests) exposes the `ImpactProvider` and `RetrievalAdapter` hooks from section 8; it is not integrated yet (needs your P5-S15 provider and a sandbox `run_selected` adapter).
+- Your tasks (P5-S06 to S09, P5-S12 to S16) remain NOT STARTED. Rafique review of Ruhan's tasks is still outstanding.

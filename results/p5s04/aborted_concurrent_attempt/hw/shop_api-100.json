@@ -1,0 +1,14 @@
+{
+ "case": "shop_api-100",
+ "run_id": "p5s04-shop_api-100-G1-qwen35-4b-ctx12k-r0",
+ "status": "exit_1",
+ "wall_s": 280.1,
+ "hw": {
+  "samples": 135,
+  "interval_s": 2.0,
+  "gpu_mem_peak_mib": 4900,
+  "gpu_util_peak_pct": 98,
+  "ram_used_peak_mib": 16091
+ },
+ "tail": "Traceback (most recent call last):\n  File \"<frozen runpy>\", line 198, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"D:\\TraceForge\\repo\\backend\\traceforge\\agent\\e2e.py\", line 291, in <module>\n    raise SystemExit(main())\n                     ^^^^^^\n  File \"D:\\TraceForge\\repo\\backend\\traceforge\\agent\\e2e.py\", line 274, in main\n    res = run(a)\n          ^^^^^^\n  File \"D:\\TraceForge\\repo\\backend\\traceforge\\agent\\e2e.py\", line 199, in run\n    (out / \"records\").mkdir()\n  File \"C:\\Users\\RUHAN\\AppData\\Roaming\\uv\\python\\cpython-3.12-windows-x86_64-none\\Lib\\pathlib.py\", line 1311, in mkdir\n    os.mkdir(self, mode)\nFileExistsError: [WinError 183] Cannot create a file when that file already exists: 'D:\\\\TraceForge\\\\repo\\\\runs\\\\p5s04\\\\p5s04-shop_api-100-G1-qwen35-4b-ctx12k-r0\\\\records'\n"
+}

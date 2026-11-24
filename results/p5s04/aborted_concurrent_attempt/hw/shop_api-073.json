@@ -1,0 +1,14 @@
+{
+ "case": "shop_api-073",
+ "run_id": "p5s04-shop_api-073-G1-qwen35-4b-ctx12k-r0",
+ "status": "ok",
+ "wall_s": 151.3,
+ "hw": {
+  "samples": 74,
+  "interval_s": 2.0,
+  "gpu_mem_peak_mib": 4900,
+  "gpu_util_peak_pct": 98,
+  "ram_used_peak_mib": 16074
+ },
+ "tail": "{\n \"run_id\": \"p5s04-shop_api-073-G1-qwen35-4b-ctx12k-r0\",\n \"incident_id\": null,\n \"diagnosis\": {\n  \"cause_class\": \"application_code\",\n  \"target\": \"lab/shop_api/app/orders.py::order_headline\",\n  \"evidence_ids\": [\n   \"EV-0034\",\n   \"EV-0037\"\n  ],\n  \"contradicting_ids\": [],\n  \"abstained\": false\n },\n \"outcome\": \"REJECTED\",\n \"hidden_passed\": null,\n \"attempts\": 3,\n \"tokens_in\": 19641,\n \"tokens_out\": 1889,\n \"latency_ms\": 133375,\n \"failure_reason\": \"malformed_edit\"\n}\n"
+}

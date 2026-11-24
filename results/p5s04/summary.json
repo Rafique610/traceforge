@@ -1,0 +1,41 @@
+{
+ "glm-5.3-flash (RC1 recorded)": {
+  "n": 12,
+  "verified": 10,
+  "diag_correct": 12,
+  "abstained": 1,
+  "invalid_tool_calls": 0,
+  "no_record_or_error": 0,
+  "latency_median_s": 24.0,
+  "latency_p95_s": 28.6,
+  "tokens_in_total": 37417,
+  "tokens_out_total": 543,
+  "tok_out_per_s_median_wall": 1.62,
+  "gpu_mem_peak_mib_max": null,
+  "ram_used_peak_mib_max": null,
+  "outcomes": {
+   "NO_PATCH": 2,
+   "TEST_VERIFIED_IN_LAB": 10
+  }
+ },
+ "qwen3.5-4b-ctx12k (local)": {
+  "n": 12,
+  "verified": 4,
+  "diag_correct": 9,
+  "abstained": 4,
+  "invalid_tool_calls": 26,
+  "no_record_or_error": 0,
+  "latency_median_s": 275.6,
+  "latency_p95_s": 406.5,
+  "tokens_in_total": 536188,
+  "tokens_out_total": 42992,
+  "tok_out_per_s_median_wall": 15.45,
+  "gpu_mem_peak_mib_max": 4917,
+  "ram_used_peak_mib_max": 16251,
+  "outcomes": {
+   "NO_PATCH": 4,
+   "REJECTED": 4,
+   "TEST_VERIFIED_IN_LAB": 4
+  }
+ }
+}

@@ -12,10 +12,10 @@
 | Reviewer | Muhammad Rafique |
 | Priority | Low (A4) |
 | Effort | 3 days |
-| Status | PARTIALLY COMPLETE |
+| Status | PARTIALLY COMPLETE (CI green on GitHub; no host, no public URL) |
 | Branch | `ruhan/P6-S02-ci-deploy` |
 
-**Status sync 2026-11-25.** Evidence: `.github/workflows/ci.yml` passes actionlint; both images build (api 456 MB, web 74.1 MB); compose up healthy locally, migrations applied, GET / and /api/health 200, POST 403. NO GitHub run, no host (Q7), no public URL; branch protection is Rafique's. CI job names are backend, frontend, contracts, docker (no security job). Frontend uses pnpm (`pnpm-lock.yaml`). Five-fact detail: `docs/plans/RUHAN_TASK_TRACKER.md`.
+**Status sync 2026-11-25 (final).** Evidence: interim checkpoint pushed to origin/main (commits up to 64073ca); the CI run on 64073ca is green on all four jobs (backend ruff+pytest, contracts, frontend, docker). Earlier failures fixed: ruff E501/I001, stale contract schemas regenerated, a test relying on a missing DB password env var made hermetic, CI/pnpm/drift-check fixes in `ci.yml`. Local docker build and compose up healthy (ADR 0002). Host (Q7) and public URL still open; branch protection is Rafique's. Five-fact detail: `docs/plans/RUHAN_TASK_TRACKER.md`.
 
 ## B. Objective
 Meet Assignment 4's engineering requirements: containerisation, CI/CD and a public deployment, at zero cost.

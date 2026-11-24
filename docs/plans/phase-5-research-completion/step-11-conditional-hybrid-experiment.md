@@ -14,10 +14,10 @@ Added 2026-11-24. Design: [retrieval-architecture-review.md](../../research/retr
 | Reviewer | Muhammad Rafique |
 | Priority | CONDITIONAL |
 | Effort | 2 days plus unattended runs (planning estimate, AS1) |
-| Status | NOT STARTED (conditional on P5-S08 go) |
+| Status | PARTIALLY COMPLETE (Ruhan-side regression layer implemented, tested, NOT integrated; waits for P5-S08 go) |
 | Branch | none (commit on `main`, D33) |
 
-**Status sync 2026-11-25.** Unchanged. Five-fact detail: `docs/plans/RUHAN_TASK_TRACKER.md`.
+**Status sync 2026-11-25 (final).** Evidence: shares the Ruhan-side `backend/traceforge/regression/` layer with P5-S17 (26 tests pass; RetrievalAdapter registry with RET-L/RET-G; preregistration validator refuses until ADR 0003 says go). No end-to-end hybrid experiment run; needs the P5-S08 go and owner spend approval. Five-fact detail: `docs/plans/RUHAN_TASK_TRACKER.md`.
 
 ## B. Objective
 Run new conditions (H0/H1 or the chosen RET arms) through the diagnosis and patch pipeline on unseen cases, in new run directories, to see whether an offline retrieval gain carries to verified repair. RC1 conditions and artifacts stay untouched.

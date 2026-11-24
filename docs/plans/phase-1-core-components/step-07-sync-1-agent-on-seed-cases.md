@@ -12,10 +12,10 @@
 | Reviewer | Muhammad Rafique |
 | Priority | Normal |
 | Effort | 0.5 day (joint session) |
-| Status | IMPLEMENTED, TESTED, NOT REVIEWED/APPROVED |
+| Status | IMPLEMENTED, TESTED, partially integrated (no both-members run recorded); NOT REVIEWED/APPROVED |
 | Branch | `ruhan/P1-S07-sync-1` |
 
-**Status sync 2026-11-25.** Evidence: `pytest tests/integration` 7 passed (`test_sync1.py`, fake gateway, offline replay of `ManifestCaseSource`; route, pipeline, repair, report, review). Both members still need to run it on their own machines. The old 'blocked on P1-S03' is stale: P1-S03 is complete. Five-fact detail: `docs/plans/RUHAN_TASK_TRACKER.md`.
+**Status sync 2026-11-25 (final).** Evidence: `pytest tests/integration` 7 passed (`test_sync1.py`, fake gateway, offline replay of `ManifestCaseSource`). Both members still need to run it on their own machines. The old 'blocked on P1-S03' is stale: P1-S03 is complete. Five-fact detail: `docs/plans/RUHAN_TASK_TRACKER.md`.
 
 ## B. Objective
 First join of the two tracks: the agent reads Rafique's real `CaseManifest`s (evidence and context still from samples). Catches contract mismatches while they are cheap to fix.

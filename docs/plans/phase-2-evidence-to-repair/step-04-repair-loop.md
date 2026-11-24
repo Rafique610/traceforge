@@ -12,10 +12,10 @@
 | Reviewer | Muhammad Rafique |
 | Priority | Normal |
 | Effort | 3.5 days |
-| Status | IMPLEMENTED, TESTED, NOT REVIEWED/APPROVED |
+| Status | IMPLEMENTED, TESTED, partly integrated; NOT REVIEWED/APPROVED |
 | Branch | `ruhan/P2-S04-repair-loop` |
 
-**Status sync 2026-11-25.** Evidence: `pytest tests/repair` 64 passed (real git + real sandbox); `agent.e2e` CLI exists. Five-fact detail: `docs/plans/RUHAN_TASK_TRACKER.md`.
+**Status sync 2026-11-25 (final).** Evidence: `pytest tests/repair` 64 passed (real git + real sandbox); `agent.e2e` CLI. Real end-to-end 25 Nov (local Ollama): the 4B model produced `malformed_edit`, no patch; BeatAPI free returned 503 twice. A repair with a patch was not reached through the real API path. Owner-gated: needs one AxForge investigation (see `docs/demo/e2e-run.md`). Five-fact detail: `docs/plans/RUHAN_TASK_TRACKER.md`.
 
 ## B. Objective
 Turn a proposed diff into a verified, rejected or unverified result, with the two feedback conditions differing **only** in whether the model sees visible-test output. This is the second independent variable of the research question and the main safety mechanism: a patch is only "verified" if pre-written hidden tests, which the model never sees, pass.

@@ -56,3 +56,16 @@ Server env: `TRACEFORGE_LLM_PROVIDER=ollama TRACEFORGE_LLM_MODEL=qwen3.5-4b-ctx1
 PATCH_PROPOSED/VERIFIED were not reached: a valid result for this model, not retried. Reject path verified live on a no-patch incident (017); approve live on 001 (no patch). Patch-hash review paths remain unit-test-only.
 Fixes: (1) `investigation.py` `_SymptomPersistingEvidence`: the v5 pipeline stored the raw bundle then appended symptom items, so citing them failed the DIAGNOSED guard; the full bundle is now stored first (test `tests/incidents/test_symptom_evidence.py`). (2) `incidents/router.py` fills `service` from the manifest when an incident is created with only `case_id` (header now shows `shop_api`; symptom stays null: the manifest has none; test in `test_incidents_api.py`). `pytest tests/incidents`: 196 passed.
 Checks: sha256 over all files in `lab/` and `datasets/` identical before/after; no hidden test id or `hidden_tests` string in these reports/events or the uvicorn log (prompts not captured, so only the guard wrapper vouches for them). Servers stopped. Run A's incident cb937469 remains stuck in CONTEXT_RETRIEVED (pre-fix).
+
+## Addendum: BeatAPI re-run, 2026-11-24 (after coordinator reported recovery)
+shop_api-001 (approve), incident 449db95f: CONTEXT_RETRIEVED -> INCONCLUSIVE -> REVIEW_PENDING -> REVIEWED -> CLOSED in 198 s. Provider again returned `503 InternalServerError` on the diagnosis call (halted, not retried; no loop, no second case run). No patch; PATCH_PROPOSED/VERIFIED not reached, patch/impact/approve-with-hash/reject-with-hash unverified. lab/ and datasets/ hashes unchanged. Stuck incident cb937469 (pre-fix ollama run A, CONTEXT_RETRIEVED) left untouched. Servers stopped.
+
+## Owner-gated step (open)
+The patch, impact and validation fields and approve-with-patch-hash have not been exercised on a strong model through the real path: BeatAPI free returned HTTP 503 at the first diagnosis call and the local 4B model produced `malformed_edit`. `agent/axforge.py` blocks every AxForge request until the owner confirms the free-allowance billing check, so this needs one action from the owner (about 30k tokens, slot per `TRACEFORGE_AXFORGE_KEY_SLOT`):
+
+```
+cd backend
+.venv/Scripts/python.exe -m traceforge.agent.e2e --case shop_api-001 --condition G1 --provider axforge --axforge-billing-verified --label EXPERIMENTAL-DEMO
+```
+
+Note: the "No code was changed" line under the first run predates the two fixes recorded later in this file (symptom evidence stored before the pipeline; `service` filled from the manifest).

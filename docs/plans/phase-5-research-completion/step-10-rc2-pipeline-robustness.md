@@ -14,10 +14,10 @@ Added 2026-11-24 from [technical-findings-2026-11-24.md](../../research/technica
 | Reviewer | Muhammad Rafique |
 | Priority | ESSENTIAL-OPTIONAL (owner approval needed to start) |
 | Effort | 2 days (planning estimate, AS1; not in the design doc) |
-| Status | IMPLEMENTED (opt-in), TESTED, NOT VALIDATED, owner approval pending |
+| Status | PARTIALLY COMPLETE (implemented opt-in, tested; benefit UNPROVEN; blind validation not done; owner approval pending) |
 | Branch | none (commit on `main`, D33) |
 
-**Status sync 2026-11-25.** Evidence: `pytest tests/agent/test_rc2.py` 17 passed; `results/rc2/rc2-fingerprint.txt` = fe0b6000853d7ac8b5e070b8f53bfc02216dbc77575081944f10adc5e6784e75; RC1 fingerprint ee3d8d87...56b51 unchanged. Config-value checker is standalone (wiring needs a hook in frozen patch.py/feedback.py: follow-up). Nothing calls `select_chat_fn` yet. Five-fact detail: `docs/plans/RUHAN_TASK_TRACKER.md`.
+**Status sync 2026-11-25 (final).** Evidence: `agent/rc2/*`, `e2e.py --rc rc2`, `results/rc2/rc2-fingerprint.txt`, label guard, 20 tests; RC1 fingerprint ee3d8d87...56b51 unchanged and reproduced from a clean export of the pushed commit. Dev validation on local Ollama: 4 dev configuration cases (shop_api-001, 032, 056, 071) x rc1/rc2: no RC2 mechanism fired (0 rationale truncations, 0 repeat-guard triggers), outcomes identical except shop_api-001 (rc1 REJECTED vs rc2 NO_PATCH output_truncated, not attributable to RC2), hidden_fragment_hits 0 in all 8 runs; BeatAPI free returned HTTP 503 so that attempt was discarded. Inconclusive. Blind validation needs unseen cases plus ~30k AxForge tokens per case per version (not approved). The config-value checker reaches the model only via the repeat-guard re-ask note; full wiring needs a hook in frozen `patch.py`/`feedback.py` (RC2 follow-up). Five-fact detail: `docs/plans/RUHAN_TASK_TRACKER.md`.
 
 ## B. Objective
 Define a **separately fingerprinted release candidate RC2** = RC1 + three fixes for the only observed genuine failure modes, without altering RC1, its fingerprint (`ee3d8d87...`) or any frozen result.

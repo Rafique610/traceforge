@@ -12,11 +12,11 @@ Ruhan has exactly **20** primary steps (P0-S03, P0-S04, P1-S04..S07, P2-S04..S06
 | 1 | S04, S05, S06, S07 | S04, S06, S07 IMPLEMENTED NOT VERIFIED; S05 PARTIALLY COMPLETE | 0/4 |
 | 2 | S04, S05, S06 | all IMPLEMENTED NOT VERIFIED | 0/3 |
 | 3 | S03, S04 | both IMPLEMENTED NOT VERIFIED | 0/2 |
-| 4 | S01, S03 | both PARTIALLY COMPLETE (reduced evaluation only; no dry run) | 0/2 |
-| 5 | S03, S04, S10, S11, S17 | S03, S04 PARTIALLY COMPLETE; S10 IMPLEMENTED NOT VERIFIED (opt-in, not validated); S11, S17 NOT STARTED (conditional) | 0/5 |
-| 6 | S02, S03 (supporting: S04) | S02 PARTIALLY COMPLETE (no GitHub run, no host); S03 IMPLEMENTED NOT VERIFIED | 0/2 |
+| 4 | S01, S03 | both PARTIALLY COMPLETE (Q19 DECIDED: reduced RC1 evaluation adopted, shortfall disclosed; no dry run) | 0/2 |
+| 5 | S03, S04, S10, S11, S17 | all PARTIALLY COMPLETE: S03 (decision made, shortfall disclosed); S04 (local comparison done, n=12); S10 (opt-in, benefit UNPROVEN); S11 and S17 (regression layer implemented and tested, NOT integrated) | 0/5 |
+| 6 | S02, S03 (supporting: S04) | S02 PARTIALLY COMPLETE (CI green on 64073ca; no host); S03 IMPLEMENTED NOT VERIFIED | 0/2 |
 
-Totals by label: 11 IMPLEMENTED NOT VERIFIED, 7 PARTIALLY COMPLETE, 2 NOT STARTED. Human-only items are NOT done: written confirmation of the revised proposal by the supervisor (the 18 Nov email is conditional permission to proceed only), Rafique review, owner approval, public URL, hosting, GitHub CI run, branch protection.
+Totals by label (final sync 2026-11-25): 10 IMPLEMENTED NOT VERIFIED, 10 PARTIALLY COMPLETE, 0 NOT STARTED, 0 COMPLETE & VERIFIED. P5-S10, P5-S11 and P5-S17 moved to PARTIALLY COMPLETE (see the tracker for the evidence); P4-S01 and P5-S03 are PARTIALLY COMPLETE with Q19 DECIDED (reduced RC1 evaluation adopted, shortfall disclosed); P5-S04 local comparison done; P6-S02 CI green on 64073ca. Human-only items are NOT done: written confirmation of the revised proposal by the supervisor (the 18 Nov email is conditional permission to proceed only), Rafique review, owner approval, public URL, hosting, branch protection. The owner-gated blocker for the real patch path is one AxForge investigation (`--axforge-billing-verified`; see the tracker).
 
 Columns per task: Dependencies · Files · Acceptance · Tests · Evidence · Commits · Blockers · Next action. Evidence/commits are empty until work happens.
 

@@ -96,14 +96,17 @@ Counts are from runs on 2026-11-25 unless noted; nothing here means a step is re
 
 | Suite | Result |
 |---|---|
-| Backend full suite (before the 25 Nov changes) | 983 passed, 21 skipped |
+| Backend full CI-style run | 1022 passed, 4 skipped, 36 deselected (one failure fixed afterwards; CI then green). Earlier 983 passed / 21 skipped was before the 25 Nov changes |
 | `tests/integration` (Sync 1: fake gateway, offline replay of `ManifestCaseSource`, route to pipeline to repair to report to review) | 7 passed |
-| `tests/reports` / `tests/incidents` / `tests/reviews` / `tests/repair` | 13 / 194 / 20 / 64 passed |
-| `tests/agent` (includes 17 RC2 and 3 hw_monitor) | 339 passed |
+| `tests/reports` / `tests/incidents` / `tests/reviews` / `tests/repair` | 13 / 196 / 20 / 64 passed |
+| `tests/agent` (includes RC2 and hw_monitor) | 339+3 passed |
+| `tests/regression` (impact provider, selection, runner, history, adapters, preregistration validator; real pytest temp repo) | 26 passed |
 | Frontend vitest | 12 files, 78 tests; `tsc -b` clean; `vite build` ok; oxlint warnings only |
-| Lint | ruff clean |
+| Lint | ruff check and ruff format clean |
 | Docker | api and web images build (456 MB, 74.1 MB); compose up healthy locally; migrations 0001/0002 applied; GET / and /api/health 200; POST 403 (showcase) |
-| CI | actionlint passes. CI runs `pytest -m "not docker and not e2e"`, `pnpm` vitest and a contract drift check including untracked files. NO GitHub Actions run has happened |
+| CI | CI run on 64073ca (origin/main) is green on all four jobs: backend ruff+pytest, contracts, frontend, docker. Earlier failures fixed: ruff E501/I001, stale contract schemas regenerated, a test that relied on a missing DB password env var made hermetic. actionlint passes |
 
-Not tested: the default real-sandbox factory of `POST /incidents/{id}/investigate` against a live backend with a real provider; the RC2 config-value checker inside the pipeline (standalone only); any local-model comparison (one smoke ended provider_error); a clean-clone dry run. The frontend uses pnpm; the dev machine has only npm.
+Real end-to-end (25 Nov, real Postgres, sandbox, vite proxy, local Ollama): create, investigate, CONTEXT_RETRIEVED, DIAGNOSED, REVIEW_PENDING, approve/CLOSED (shop_api-001) and INCONCLUSIVE, reject/CLOSED (shop_api-017); audit complete; `lab/` and `datasets/` hashes unchanged. See `docs/demo/e2e-run.md`.
+
+Not tested: PATCH_PROPOSED/VERIFIED and approve-with-patch-hash through the real path on any real provider (local 4B model gave malformed_edit; BeatAPI free returned 503; the strong-model run is owner-gated); the RC2 config-value checker inside the pipeline (standalone only); RC2 on unseen cases; `regression/` integrated into the pipeline; a clean-clone dry run. The frontend uses pnpm; the dev machine has only npm.
 

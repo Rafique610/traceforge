@@ -15,7 +15,7 @@
 | Status | PARTIALLY COMPLETE (implemented and tested; ADR 0001 still PROPOSED; NOT REVIEWED/APPROVED) |
 | Branch | `ruhan/P1-S05-model-gateway` |
 
-**Status sync 2026-11-25.** Evidence: gateway tests inside `pytest tests/agent` (339 passed). The model decision is the owner's (see the ADR 0001 evidence section). Five-fact detail: `docs/plans/RUHAN_TASK_TRACKER.md`.
+**Status sync 2026-11-25 (final).** Evidence: gateway tests inside `pytest tests/agent` (339+3 passed); `glm-5.3-flash` used in all RC1 runs; Devstral/Mistral never run; ADR 0001 stays PROPOSED (owner decides). Local Ollama provider path used 25 Nov (see P5-S04). Five-fact detail: `docs/plans/RUHAN_TASK_TRACKER.md`.
 
 ## B. Objective
 One way to call Mistral, Ollama or Groq with tools, where every call is logged (tokens, latency, cost) and cached. The cache makes experiments free to re-score and exactly reproducible (safeguard 4), and protects against the free tier's rate limits. This step also pins the primary model (open question Q1).

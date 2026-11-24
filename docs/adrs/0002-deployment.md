@@ -44,5 +44,8 @@ Set `TRACEFORGE_DB_USER`, `TRACEFORGE_DB_PASSWORD`, `TRACEFORGE_DB_NAME` in `.en
 Host choice (Q7), host account and secrets, DNS/URL, branch protection marking CI jobs required on `main`
 (owner: Rafique), first green CI run on GitHub, public link in README.
 
-## Status check 2026-11-25
+## Status check 2026-11-25 (earlier in the day; its no-GitHub-run statement is superseded by the evidence section below)
 Still DRAFT; the host (Q7) is not decided and there is no public URL. Verified locally: both images build (api 456 MB, web 74.1 MB), compose up is healthy, migrations 0001/0002 apply, GET / and /api/health return 200 and POST returns 403 (showcase mode). `.github/workflows/ci.yml` passes actionlint but NO GitHub Actions run has happened. CI jobs are backend, frontend, contracts and docker (no security job); the frontend uses pnpm. Branch protection is Rafique's.
+
+## Evidence 2026-11-25 (status unchanged: DRAFT)
+Interim checkpoint pushed to origin/main (commits up to `64073ca`); the CI run on `64073ca` is green on all four jobs (backend ruff+pytest, contracts, frontend, docker). Earlier CI failures were fixed (ruff E501/I001, stale contract schemas regenerated, a test relying on a missing DB password env var made hermetic, pnpm and drift-check fixes in `ci.yml`). Local `docker build` and `compose up` healthy (see above). Host (Q7), public URL and branch protection are still open.

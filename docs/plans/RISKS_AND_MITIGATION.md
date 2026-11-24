@@ -25,6 +25,8 @@ Likelihood and impact: Low / Medium / High.
 | A5 | Labels wrong | Low | High | Labels from generator; validator red/green; peer check of 10 cases | Rafique |
 | A6 | Unverifiable numbers in demo (rubric deduction up to 10) | Low | High | All numbers recomputed from saved runs by script | Both |
 | A7 | Index staleness or leakage: stale vectors after a code or model change, or hidden tests / gold / fault patches embedded | Medium | High | Content-addressed keys, manifest + consistency verifier (P5-S07); exclusion filter and leakage test; two identical runs; RC1 fingerprint checked before and after | Rafique |
+| A8 | Repair evaluation is below the supervisor's >=50 labelled examples per AI component (35 sites) and its CIs do not support graph or feedback claims (every pairwise comparison one discordant pair, exact p=1.0). Extending costs about 763k tokens vs 742,728 left | High | High | Q19 DECIDED 2026-11-25: disclose the shortfall, make no superiority claim, report retrieval (151 cases) separately as ranking only; extend only with owner-approved AxForge spend | Ruhan |
+| A9 | RC2 benefit is unproven (no mechanism fired on 4 dev cases; blind validation not done) and the strong-model patch path was never run through the API (owner-gated AxForge billing confirmation) | High | Medium | RC2 stays opt-in with its own fingerprint, RC1 fingerprint unchanged; claim no RC2 benefit; owner runs one AxForge investigation (about 30k tokens) before any demo claim about patches | Ruhan |
 
 ## Integration risks
 | # | Risk | Likelihood | Impact | Mitigation | Owner |

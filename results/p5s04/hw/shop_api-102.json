@@ -1,0 +1,14 @@
+{
+ "case": "shop_api-102",
+ "run_id": "p5s04-shop_api-102-G1-qwen35-4b-ctx12k-r0",
+ "status": "ok",
+ "wall_s": 87.7,
+ "hw": {
+  "samples": 44,
+  "interval_s": 2.0,
+  "gpu_mem_peak_mib": 4891,
+  "gpu_util_peak_pct": 98,
+  "ram_used_peak_mib": 15789
+ },
+ "tail": "{\n \"run_id\": \"p5s04-shop_api-102-G1-qwen35-4b-ctx12k-r0\",\n \"incident_id\": null,\n \"diagnosis\": {\n  \"cause_class\": \"insufficient_evidence\",\n  \"target\": null,\n  \"evidence_ids\": [],\n  \"contradicting_ids\": [],\n  \"abstained\": true\n },\n \"outcome\": \"NO_PATCH\",\n \"hidden_passed\": null,\n \"attempts\": 0,\n \"tokens_in\": 7816,\n \"tokens_out\": 660,\n \"latency_ms\": 72391,\n \"failure_reason\": \"insufficient_evidence\"\n}\n"
+}

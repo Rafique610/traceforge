@@ -16,12 +16,12 @@ From the current state (repo + docs + board, no code) to the final Assignment 4 
 | P1-S03 | Fault generator + 4 seed cases | TRAC-7 | Rafique | Ruhan | P1-S01, P1-S02 | 3 | COMPLETED |
 | P1-S04 | Incidents API + DB | TRAC-8 | Ruhan | Rafique | P0-S05 | 2 | IMPLEMENTED, TESTED; NOT REVIEWED/APPROVED |
 | P1-S05 | Model gateway + cache + ADR 0001 | TRAC-9 | Ruhan | Rafique | P0-S02 | 2 | PARTIALLY COMPLETE (ADR 0001 PROPOSED) |
-| P1-S06 | Pipeline agent | TRAC-10 | Ruhan | Rafique | P1-S04, P1-S05 | 3 | IMPLEMENTED, TESTED; NOT REVIEWED/APPROVED |
+| P1-S06 | Pipeline agent | TRAC-10 | Ruhan | Rafique | P1-S04, P1-S05 | 3 | IMPLEMENTED, TESTED, partly integrated (real path to DIAGNOSED with local Ollama); NOT REVIEWED/APPROVED |
 | P1-S07 | Sync 1: agent on real seed cases | TRAC-11 | Ruhan (+Rafique) | Rafique | P1-S03, P1-S06 | 0.5 | IMPLEMENTED, TESTED (test_sync1, 7); NOT REVIEWED/APPROVED |
 | P2-S01 | Evidence collector | TRAC-12 | Rafique | Ruhan | P0-S05, P1-S01 | 2.5 | IMPLEMENTED (per TWD) |
 | P2-S02 | Code graph | TRAC-13 | Rafique | Ruhan | P1-S01 | 3 | IMPLEMENTED (per TWD; not reviewed by Rafique) |
 | P2-S03 | Retrieval L and G + E1 | TRAC-14 | Rafique | Ruhan | P2-S01, P2-S02 | 3 | IMPLEMENTED (per TWD; not reviewed by Rafique) |
-| P2-S04 | Repair loop | TRAC-15 | Ruhan | Rafique | P1-S02, P1-S06 | 3.5 | IMPLEMENTED, TESTED; NOT REVIEWED/APPROVED |
+| P2-S04 | Repair loop | TRAC-15 | Ruhan | Rafique | P1-S02, P1-S06 | 3.5 | IMPLEMENTED, TESTED, partly integrated (no real patch via the API; owner-gated AxForge run); NOT REVIEWED/APPROVED |
 | P2-S05 | Report and review | TRAC-16 | Ruhan | Rafique | P1-S04, P2-S04 | 1.5 | IMPLEMENTED, TESTED; NOT REVIEWED/APPROVED |
 | P2-S06 | GitHub intake | TRAC-17 | Ruhan | Rafique | P1-S04 | 1.5 | IMPLEMENTED, TESTED; NOT REVIEWED/APPROVED |
 | P2-S07 | Sync 2: full pipeline | TRAC-18 | Rafique (+Ruhan) | Ruhan | P2-S03, P2-S04, P2-S05 | 1 | NOT STARTED |
@@ -29,28 +29,28 @@ From the current state (repo + docs + board, no code) to the final Assignment 4 
 | P3-S02 | Metrics + rule baseline | TRAC-20 | Rafique | Ruhan | P0-S05 | 2.5 | IMPLEMENTED (per TWD) |
 | P3-S03 | Reviewer UI | TRAC-21 | Ruhan | Rafique | P0-S03, P2-S05 | 4 | IMPLEMENTED, TESTED; NOT REVIEWED/APPROVED |
 | P3-S04 | Experiment runner + results page | TRAC-22 | Ruhan | Rafique | P2-S04 | 2.5 | IMPLEMENTED, TESTED; NOT REVIEWED/APPROVED |
-| P4-S01 | A3 experiments (E1, L0 vs G0, baseline) | TRAC-23 | Ruhan | Rafique | P2-S07, P3-S01, P3-S02, P3-S04 | 2 | PARTIALLY COMPLETE (reduced evaluation only; owner decision open) |
+| P4-S01 | A3 experiments (E1, L0 vs G0, baseline) | TRAC-23 | Ruhan | Rafique | P2-S07, P3-S01, P3-S02, P3-S04 | 2 | PARTIALLY COMPLETE (Q19 DECIDED: reduced RC1 evaluation adopted, shortfall disclosed; retrieval on 151 cases) |
 | P4-S02 | Failure analysis + results slides | TRAC-23 | Rafique | Ruhan | P4-S01 | 2 | NOT STARTED |
 | P4-S03 | Demo script + submission pack | TRAC-23 | Ruhan | Rafique | P0-S04, P2-S06, P3-S03, P4-S02 | 1.5 | PARTIALLY COMPLETE (no dry run) |
 | P5-S01 | Deeper graph + new fault families | TRAC-24 | Rafique | Ruhan | P4-S03 | 3 | NOT STARTED |
 | P5-S02 | Statistics | TRAC-25 | Rafique | Ruhan | P4-S03 | 2 | NOT STARTED |
-| P5-S03 | Full 2×2 × 3 runs | TRAC-28 | Ruhan | Rafique | P4-S03 | 3 | PARTIALLY COMPLETE (reduced evaluation) |
-| P5-S04 | Model sensitivity | TRAC-29 | Ruhan | Rafique | P5-S03 (G1 runs) | 2 | PARTIALLY COMPLETE (setup + monitor; no comparison) |
+| P5-S03 | Full 2×2 × 3 runs | TRAC-28 | Ruhan | Rafique | P4-S03 | 3 | PARTIALLY COMPLETE (2x2 at 35 sites; shortfall disclosed) |
+| P5-S04 | Model sensitivity | TRAC-29 | Ruhan | Rafique | P5-S03 (G1 runs) | 2 | PARTIALLY COMPLETE (local comparison done: 12 sites, one replicate, no code model) |
 | P5-S05 | BugsInPy subset (optional) | TRAC-27 | Rafique | Ruhan | P4-S03 | 2.5 | NOT STARTED |
 | P5-S06 | Retrieval benchmark + baselines RET-L / RET-G (dev, 0 tokens) | — | Rafique | Ruhan | P3-S01 (done), review of P2-S02/S03 | 1.5 | NOT STARTED |
 | P5-S07 | Incremental chunk manifest, embedding cache, index verifier | — | Rafique | Ruhan | P5-S06 (data model parallel) | 2 | NOT STARTED |
 | P5-S08 | RET-E + fusion arms, ADR 0003 decision gate | — | Rafique | Ruhan | P5-S06, P5-S07 | 2 | NOT STARTED |
 | P5-S09 | Optional reranking | — | Rafique | Ruhan | P5-S08 go | 1 | NOT STARTED |
-| P5-S10 | RC2 candidate: pipeline robustness fixes (needs owner approval) | — | Ruhan | Rafique | none (approval to start) | 2 | IMPLEMENTED opt-in, TESTED (17); NOT VALIDATED/APPROVED |
-| P5-S11 | Conditional end-to-end hybrid experiment | — | Ruhan (+Rafique) | Rafique | P5-S08 go (+P5-S10) | 2 | NOT STARTED |
+| P5-S10 | RC2 candidate: pipeline robustness fixes (needs owner approval) | — | Ruhan | Rafique | none (approval to start) | 2 | PARTIALLY COMPLETE (implemented opt-in, 20 tests; benefit UNPROVEN; blind validation not done) |
+| P5-S11 | Conditional end-to-end hybrid experiment | — | Ruhan (+Rafique) | Rafique | P5-S08 go (+P5-S10) | 2 | PARTIALLY COMPLETE (Ruhan-side regression layer implemented, NOT integrated; waits for S08 go) |
 | P5-S12 | Traversal overlay + root-cause ranker (MVP, proposed 2026-11-25) | — | Rafique | Ruhan | P5-S06 | 3 | NOT STARTED |
 | P5-S13 | Config value-flow analysis (Tier 2, proposed) | — | Rafique | Ruhan | P5-S12 (+MVP gain) | 3 | NOT STARTED |
 | P5-S14 | Runtime evidence fusion (Tier 2, proposed) | — | Rafique | Ruhan | P5-S12 (+MVP gain) | 1.5 | NOT STARTED |
 | P5-S15 | Change-impact report + visible-test selection (MVP, proposed) | — | Rafique | Ruhan | P5-S06 (S12 optional) | 2.5 | NOT STARTED |
 | P5-S16 | Root-cause and impact evaluation suite (MVP reduced 1.5 d; full 3 d) | — | Rafique (Ruhan verifies labels) | Ruhan | P5-S06; S12/S15 incrementally | 3 | NOT STARTED |
-| P5-S17 | Regression-aware repair validation (conditional, RC2; owner approval) | — | Ruhan (+Rafique) | Rafique | P5-S10, P5-S15, P5-S16 benefit | 3 | NOT STARTED |
+| P5-S17 | Regression-aware repair validation (conditional, RC2; owner approval) | — | Ruhan (+Rafique) | Rafique | P5-S10, P5-S15, P5-S16 benefit | 3 | PARTIALLY COMPLETE (layer implemented, 26 tests, NOT integrated) |
 | P6-S01 | Security hardening | TRAC-26 | Rafique | Ruhan | P4-S03 | 2.5 | NOT STARTED |
-| P6-S02 | CI, images, public deployment | TRAC-30 | Ruhan | Rafique | P4-S03 | 3 | PARTIALLY COMPLETE (no GitHub run, no host) |
+| P6-S02 | CI, images, public deployment | TRAC-30 | Ruhan | Rafique | P4-S03 | 3 | PARTIALLY COMPLETE (CI green on 64073ca; no host) |
 | P6-S03 | UI polish + audit view | TRAC-31 | Ruhan | Rafique | P4-S03, P5-S02 | 2.5 | IMPLEMENTED, TESTED; NOT REVIEWED/APPROVED |
 | P6-S04 | Paper, docs, investor pitch | TRAC-32 | Rafique (+Ruhan) | Both | P5-S02, P5-S03 | 5 | NOT STARTED |
 

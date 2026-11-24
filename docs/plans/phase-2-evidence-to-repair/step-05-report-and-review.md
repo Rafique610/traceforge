@@ -12,10 +12,10 @@
 | Reviewer | Muhammad Rafique |
 | Priority | Normal |
 | Effort | 1.5 days |
-| Status | IMPLEMENTED, TESTED, NOT REVIEWED/APPROVED |
+| Status | IMPLEMENTED, TESTED, partly integrated; NOT REVIEWED/APPROVED |
 | Branch | `ruhan/P2-S05-report-review` |
 
-**Status sync 2026-11-25.** Evidence: `pytest tests/reports` 13 passed, `tests/reviews` 20 passed. `missing_evidence` is persisted as an audit event and read by `reports/builder.py`; it is not in the INCONCLUSIVE payload (that needs an edit to fingerprinted `agent/pipeline.py`, not done by design). Five-fact detail: `docs/plans/RUHAN_TASK_TRACKER.md`.
+**Status sync 2026-11-25 (final).** Evidence: `pytest tests/reports` 13, `tests/reviews` 20. Real path 25 Nov: report and approve/reject verified on shop_api-001 (approve, CLOSED) and shop_api-017 (INCONCLUSIVE, reject, CLOSED); audit rows complete. Fixed: report header service was empty (router now fills it from the manifest). Approve-with-patch-hash on a real patch not exercised. `missing_evidence` is an audit event, not in the INCONCLUSIVE payload (needs an edit to fingerprinted `agent/pipeline.py`, not done by design). Five-fact detail: `docs/plans/RUHAN_TASK_TRACKER.md`.
 
 ## B. Objective
 Give the engineer the output they act on: a report built deterministically from stored records (no LLM, so it can't hallucinate), and an approve/reject decision that can only apply to the exact patch it was made on.

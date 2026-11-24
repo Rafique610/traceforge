@@ -12,10 +12,10 @@
 | Reviewer | Muhammad Rafique |
 | Priority | High |
 | Effort | 2 days (plus unattended run time) |
-| Status | PARTIALLY COMPLETE |
+| Status | PARTIALLY COMPLETE (decision made; shortfall disclosed) |
 | Branch | `ruhan/P4-S01-a3-experiments` |
 
-**Status sync 2026-11-25.** Evidence: no A3-protocol run (L0 vs G0 on >=50 cases) exists. `results/final` (RC1, 35 sites; r0=35 / r1=12 / r2=8 sites; 23 sites r0 only) is a reduced evaluation, not the A3 deliverable. OPEN DECISION (owner): supersede the protocol or extend it. No claim that G1 beats anything. Five-fact detail: `docs/plans/RUHAN_TASK_TRACKER.md`.
+**Status sync 2026-11-25 (final).** Evidence: Q19 DECIDED 2026-11-25. The reduced RC1 evaluation in `results/final` (35 variant-group sites, one case per group; replicates r0=35/r1=12/r2=8) is adopted as the A3 final evaluation for diagnosis/repair, with the shortfall against >=50 labelled examples disclosed. Retrieval meets >=50: E1 offline on all 151 frozen test cases (127 with a target), `docs/research/a3-evidence-and-statistics.md`: G minus L recall@5 +0.193 [+0.083,+0.321], MRR +0.048 [+0.011,+0.094], nDCG +0.044 [+0.004,+0.098], recall@10 +0.031 [-0.035,+0.122]; ranking only. Rules baseline on 151: class 14/151 (9.3%), exact target 0/127. RC1 fixed counts L0 27, G0 28, L1 28, G1 29 of 35; every pairwise comparison has one discordant pair (exact p=1.0): no graph-superiority and no feedback-effect claim. Not complete: the repair component is below 50 (35). Five-fact detail: `docs/plans/RUHAN_TASK_TRACKER.md`.
 
 ## B. Objective
 Produce the quantitative evidence for Assignment 3 stage D: test sets ≥50 per component (D1), metrics (D2), baselines (D3), latency/cost (D5) and the first R&D experiment (D6), all from saved, rerunnable runs on the frozen test split.

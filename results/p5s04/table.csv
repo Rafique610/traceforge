@@ -1,0 +1,25 @@
+model,case,truth_class,run_status,outcome,verified,diag_class,diag_correct,abstained,invalid_tool_calls,tool_calls,tokens_in,tokens_out,latency_s,tok_out_per_s_wall,wall_s,gpu_mem_peak_mib,ram_used_peak_mib,failure_reason
+glm-5.3-flash (RC1 recorded),shop_api-066,application_code,ok,TEST_VERIFIED_IN_LAB,1,application_code,1,0,0,0,3993,41,25.4,1.61,,,,
+qwen3.5-4b-ctx12k (local),shop_api-066,application_code,ok,NO_PATCH,0,insufficient_evidence,0,1,6,8,75691,8812,282.7,31.17,300.1,4903,16150,budget_exhausted
+glm-5.3-flash (RC1 recorded),shop_api-092,application_code,ok,TEST_VERIFIED_IN_LAB,1,application_code,1,0,0,0,3718,33,23.2,1.42,,,,
+qwen3.5-4b-ctx12k (local),shop_api-092,application_code,ok,REJECTED,0,application_code,1,0,0,2,27026,2303,316.5,7.28,329.9,4908,16029,malformed_edit
+glm-5.3-flash (RC1 recorded),shop_api-100,application_code,ok,TEST_VERIFIED_IN_LAB,1,application_code,1,0,0,0,3778,36,25.5,1.41,,,,
+qwen3.5-4b-ctx12k (local),shop_api-100,application_code,ok,REJECTED,0,application_code,1,0,1,8,86337,6503,381.5,17.04,407.7,4915,16191,malformed_edit
+glm-5.3-flash (RC1 recorded),shop_api-073,application_code,ok,TEST_VERIFIED_IN_LAB,1,application_code,1,0,0,0,3841,101,26.3,3.84,,,,
+qwen3.5-4b-ctx12k (local),shop_api-073,application_code,ok,REJECTED,0,application_code,1,0,0,1,19641,1889,136.4,13.85,150.3,4894,15860,malformed_edit
+glm-5.3-flash (RC1 recorded),shop_api-008,application_code,ok,TEST_VERIFIED_IN_LAB,1,application_code,1,0,0,0,3164,34,20.9,1.63,,,,
+qwen3.5-4b-ctx12k (local),shop_api-008,application_code,ok,TEST_VERIFIED_IN_LAB,1,application_code,1,0,1,2,25892,2462,119.2,20.66,128.7,4900,16037,
+glm-5.3-flash (RC1 recorded),shop_api-047,application_code,ok,TEST_VERIFIED_IN_LAB,1,application_code,1,0,0,0,4315,35,17.7,1.98,,,,
+qwen3.5-4b-ctx12k (local),shop_api-047,application_code,ok,REJECTED,0,application_code,1,0,1,2,38699,2474,124.6,19.85,137.1,4900,15710,malformed_edit
+glm-5.3-flash (RC1 recorded),shop_api-181,configuration,ok,TEST_VERIFIED_IN_LAB,1,configuration,1,0,0,0,3133,37,23.4,1.58,,,,
+qwen3.5-4b-ctx12k (local),shop_api-181,configuration,ok,TEST_VERIFIED_IN_LAB,1,configuration,1,0,0,4,32052,3005,268.6,11.19,283.8,4901,16251,
+glm-5.3-flash (RC1 recorded),shop_api-119,configuration,ok,TEST_VERIFIED_IN_LAB,1,configuration,1,0,0,0,3648,63,21.3,2.96,,,,
+qwen3.5-4b-ctx12k (local),shop_api-119,configuration,ok,TEST_VERIFIED_IN_LAB,1,configuration,1,0,1,2,26738,2015,316.5,6.37,338.7,4917,16024,
+glm-5.3-flash (RC1 recorded),shop_api-019,configuration,ok,TEST_VERIFIED_IN_LAB,1,configuration,1,0,0,0,3861,125,30.4,4.11,,,,
+qwen3.5-4b-ctx12k (local),shop_api-019,configuration,ok,TEST_VERIFIED_IN_LAB,1,configuration,1,0,7,8,79034,6373,342.5,18.61,358.9,4907,15987,
+glm-5.3-flash (RC1 recorded),shop_api-148,configuration,ok,TEST_VERIFIED_IN_LAB,1,configuration,1,0,0,0,3966,38,24.7,1.54,,,,
+qwen3.5-4b-ctx12k (local),shop_api-148,configuration,ok,NO_PATCH,0,insufficient_evidence,0,1,7,8,49753,2973,124.7,23.84,137.2,4912,15757,budget_exhausted
+glm-5.3-flash (RC1 recorded),shop_api-102,insufficient_evidence,ok,NO_PATCH,0,insufficient_evidence,1,1,0,0,0,0,,,,,,insufficient_evidence
+qwen3.5-4b-ctx12k (local),shop_api-102,insufficient_evidence,ok,NO_PATCH,0,insufficient_evidence,1,1,0,1,7816,660,72.4,9.12,87.7,4891,15789,insufficient_evidence
+glm-5.3-flash (RC1 recorded),shop_api-030,runtime_dependency,ok,NO_PATCH,0,runtime_dependency,1,0,0,0,0,0,,,,,,
+qwen3.5-4b-ctx12k (local),shop_api-030,runtime_dependency,ok,NO_PATCH,0,insufficient_evidence,0,1,2,2,67509,3523,437.1,8.06,449.3,4896,16010,model_output_malformed

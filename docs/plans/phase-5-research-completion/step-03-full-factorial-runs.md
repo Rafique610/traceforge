@@ -12,10 +12,10 @@
 | Reviewer | Muhammad Rafique |
 | Priority | Low (A4) |
 | Effort | 3 days of work + multi-day unattended runs |
-| Status | PARTIALLY COMPLETE |
+| Status | PARTIALLY COMPLETE (decision made; shortfall disclosed) |
 | Branch | `ruhan/P5-S03-factorial-runs` |
 
-**Status sync 2026-11-25.** Evidence: only the reduced RC1 evaluation in `results/final` (35 sites, replicates 35/12/8 sites); the full 2x2 x 3 replicates were not run. Same open owner decision as P4-S01. Key-1 ledger 152,664 tokens left; combined 742,728 left under the 4.8M ceiling. Five-fact detail: `docs/plans/RUHAN_TASK_TRACKER.md`.
+**Status sync 2026-11-25 (final).** Evidence: Q19 DECIDED 2026-11-25: the 2x2 was done at 35 sites (replicates 35/12/8, not 3 replicates everywhere); CIs do not support claims (L0 27, G0 28, L1 28, G1 29 of 35 fixed; cause class L0 32 vs G0 35, 3 discordant, p=0.25; feedback exercised in one case, shop_api-020, two arms, not independent). Extending by 15 sites would cost ~763k tokens (mean 50.9k per site across four conditions; median 41.6k; p90 96.9k; diagnosis-only L0+G0 44.3k) vs 742,728 left under the 4.8M ceiling and needs unapproved AxForge spend; extra cases inside existing variant groups are not independent. Optional: owner-approved extension; otherwise disclose. Five-fact detail: `docs/plans/RUHAN_TASK_TRACKER.md`.
 
 ## B. Objective
 Run the complete controlled experiment that answers the research question: conditions L0, G0, L1, G1, three replicates each, on the frozen test set with the pinned model.
