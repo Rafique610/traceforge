@@ -76,11 +76,13 @@ def test_unhandled_error_is_generic_500():
     assert "hunter2" not in res.text and res.json()["request_id"] == res.headers["x-request-id"]
 
 
-def test_config_validation_fails_fast():
+def test_config_validation_fails_fast(monkeypatch):
     from pydantic import ValidationError
 
     from traceforge.config import Settings
 
+    for name in ("TRACEFORGE_DB_PASSWORD", "DB_PASSWORD"):
+        monkeypatch.delenv(name, raising=False)
     with pytest.raises(ValidationError, match="DB_PASSWORD"):
         Settings(env="prod", _env_file=None)
     with pytest.raises(ValidationError, match="CORS"):
