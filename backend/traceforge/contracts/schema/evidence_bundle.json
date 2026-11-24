@@ -70,6 +70,52 @@
           ],
           "default": null,
           "title": "Ts"
+        },
+        "scope": {
+          "anyOf": [
+            {
+              "enum": [
+                "static",
+                "runtime"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Scope"
+        },
+        "basis": {
+          "anyOf": [
+            {
+              "enum": [
+                "declared",
+                "observed",
+                "inferred"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Basis"
+        },
+        "origin": {
+          "anyOf": [
+            {
+              "maxLength": 120,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Origin"
         }
       },
       "required": [

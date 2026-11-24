@@ -1,3 +1,4 @@
+# ruff: noqa: E501
 import json
 import shutil
 from pathlib import Path
@@ -51,17 +52,27 @@ def test_lab_config_consumers(lab_report):
     assert all(c.config_key == "cfg:REDIS_HOST" for c in r.config_consumers)
     assert any(f.code == "config_key_read_elsewhere" for f in r.risk_flags)
     assert {d.evidence_class for d in r.direct_dependants + r.transitive_dependants} <= {
-        "static", "inferred", "unknown", "observed"
+        "static",
+        "inferred",
+        "unknown",
+        "observed",
     }
-    assert all(d.depth <= 3 and d.path[0] == "cfg:REDIS_HOST" for d in r.direct_dependants + r.transitive_dependants)
+    assert all(
+        d.depth <= 3 and d.path[0] == "cfg:REDIS_HOST"
+        for d in r.direct_dependants + r.transitive_dependants
+    )
     assert r.transitive_dependants and r.related_tests
     assert r.related_tests[0].rank == 1 and r.related_tests[0].direct
 
 
 def test_deterministic_hash_and_json(lab_tests):
     vis = [t for t in lab_tests if not t.startswith(HIDDEN)]
-    a = GraphImpactProvider().analyse(LAB, LAB, visible_tests=vis, hidden_paths=[HIDDEN], seeds=["cfg:REDIS_HOST"])
-    b = GraphImpactProvider().analyse(LAB, LAB, visible_tests=vis, hidden_paths=[HIDDEN], seeds=["cfg:REDIS_HOST"])
+    a = GraphImpactProvider().analyse(
+        LAB, LAB, visible_tests=vis, hidden_paths=[HIDDEN], seeds=["cfg:REDIS_HOST"]
+    )
+    b = GraphImpactProvider().analyse(
+        LAB, LAB, visible_tests=vis, hidden_paths=[HIDDEN], seeds=["cfg:REDIS_HOST"]
+    )
     assert a.canonical_json() == b.canonical_json() and a.impact_sha256 == b.impact_sha256
     assert select_tests(a, vis).ids == select_tests(b, vis).ids
     tampered = a.model_copy(update={"limitation": "x"})
@@ -112,13 +123,21 @@ def test_hidden_dir_pattern_and_only_visible_selectable(lab_tests, tmp_path):
 def test_changed_symbol_flags_on_small_repo(tmp_path):
     base = tmp_path / "b"
     (base / "tests").mkdir(parents=True)
-    (base / "m.py").write_text("def f(a):\n    return a\n\n\ndef g(x):\n    return f(x)\n\n\ndef h():\n    return g(1)\n")
-    (base / "tests" / "test_m.py").write_text("from m import h\n\n\ndef test_h():\n    assert h() == 1\n")
+    (base / "m.py").write_text(
+        "def f(a):\n    return a\n\n\ndef g(x):\n    return f(x)\n\n\ndef h():\n    return g(1)\n"
+    )
+    (base / "tests" / "test_m.py").write_text(
+        "from m import h\n\n\ndef test_h():\n    assert h() == 1\n"
+    )
     new = tmp_path / "n"
     shutil.copytree(base, new)
-    (new / "m.py").write_text("def f(a, b):\n    return a\n\n\ndef g(x):\n    return f(x, 1)\n\n\ndef h():\n    return g(1)\n")
+    (new / "m.py").write_text(
+        "def f(a, b):\n    return a\n\n\ndef g(x):\n    return f(x, 1)\n\n\ndef h():\n    return g(1)\n"
+    )
     r = GraphImpactProvider().analyse(base, new, visible_tests=["tests/test_m.py::test_h"])
     assert [m.change for m in r.modified_symbols if m.id.endswith("::f")] == ["signature"]
-    assert any(d.id.endswith("::g") and d.breaking for d in r.direct_dependants) or r.direct_dependants
+    assert (
+        any(d.id.endswith("::g") and d.breaking for d in r.direct_dependants) or r.direct_dependants
+    )
     assert any(n.reason.startswith("contract changes") for n in r.not_analysable)
     assert r.related_tests and r.related_tests[0].test_id == "tests/test_m.py::test_h"

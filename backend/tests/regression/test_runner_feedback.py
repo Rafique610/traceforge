@@ -1,3 +1,4 @@
+# ruff: noqa: E501
 import pytest
 from conftest import ALLOW, CALL, DISC, HIDDEN_PATHS, VISIBLE_IDS, run_selected, run_tests
 
@@ -44,7 +45,9 @@ def test_dependant_regression_caught_by_targeted_stage_and_recorded(repo, tmp_pa
     assert v1.impact_sha256 and len(v1.patch_sha256) == 64
     # feedback to attempt 2: visible id + impact path only, no hidden material
     fb = seen[1]
-    assert "tests/test_checkout.py::test_total_halves" in fb and "impact path" in fb and "assert" in fb
+    assert (
+        "tests/test_checkout.py::test_total_halves" in fb and "impact path" in fb and "assert" in fb
+    )
     assert "hidden" not in fb.lower() and "tests/test_hidden.py" not in fb
     # attempt 2 repairs the dependant: targeted green, full visible green, hidden gate ONCE
     assert v2.outcome == "visible_passed" and v2.full_visible_result["failed"] == 0
@@ -116,7 +119,9 @@ TAIL = "____ test_a ____\n>   assert g(1) == 2\nE   assert 3 == 2\n"
 
 def test_feedback_contains_only_permitted_fields():
     g = LeakGuard(["secret_hidden_name"], HIDDEN_PATHS)
-    t = build_regression_feedback(_failed("tests/test_a.py::test_a", TAIL), REPORT, ["tests/test_a.py::test_a"], g)
+    t = build_regression_feedback(
+        _failed("tests/test_a.py::test_a", TAIL), REPORT, ["tests/test_a.py::test_a"], g
+    )
     assert "tests/test_a.py::test_a" in t and "assert 3 == 2" in t
     assert "func:m.py::f -> func:m.py::g -> tests/test_a.py::test_a" in t
 
@@ -125,7 +130,10 @@ def test_feedback_contains_only_permitted_fields():
     "tid,tail",
     [
         ("tests/test_hidden.py::test_x", TAIL),  # hidden test id (also not in visible list)
-        ("tests/test_a.py::test_a", "____ test_a ____\n>   assert secret_hidden_name()\nE   boom\n"),
+        (
+            "tests/test_a.py::test_a",
+            "____ test_a ____\n>   assert secret_hidden_name()\nE   boom\n",
+        ),
         ("tests/test_a.py::test_a", "____ test_a ____\nE   see tests/test_hidden.py line 3\n"),
         ("tests/test_a.py::test_a", "____ test_a ____\nE   hidden oracle expects 5\n"),
     ],
@@ -137,7 +145,9 @@ def test_feedback_refuses_hidden_material(tid, tail):
 
 
 def test_feedback_reuses_e2e_hidden_leak_guard(tmp_path):
-    HiddenLeakGuard = pytest.importorskip("traceforge.agent.real_sources").HiddenLeakGuard  # needs openai
+    HiddenLeakGuard = pytest.importorskip(
+        "traceforge.agent.real_sources"
+    ).HiddenLeakGuard  # needs openai
     d = tmp_path / "c1"
     d.mkdir()
     (d / "test_hidden_x.py").write_text("def test_secret_name():\n    assert 1\n")

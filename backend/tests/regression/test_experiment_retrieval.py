@@ -1,3 +1,4 @@
+# ruff: noqa: E501
 import pytest
 
 from traceforge.regression.experiment import (
@@ -48,7 +49,9 @@ def test_go_and_budget_allows_start(tmp_path):
 
 def test_no_budget_refused_even_when_go(tmp_path):
     with pytest.raises(PreregistrationError) as e:
-        validate_preregistration(spec(tmp_path, token_ceiling=0, budget_approved_by=""), adr(tmp_path, "Go"))
+        validate_preregistration(
+            spec(tmp_path, token_ceiling=0, budget_approved_by=""), adr(tmp_path, "Go")
+        )
     assert any("token budget" in r for r in e.value.reasons)
 
 
@@ -56,7 +59,15 @@ def test_other_refusals(tmp_path):
     a = adr(tmp_path, "Go")
     with pytest.raises(PreregistrationError) as e:
         validate_preregistration(
-            spec(tmp_path, arms=["RET-ZZ"], hypotheses=[], case_ids=["c1"], excluded_case_ids=["c1"], run_dir="results/final/x"), a
+            spec(
+                tmp_path,
+                arms=["RET-ZZ"],
+                hypotheses=[],
+                case_ids=["c1"],
+                excluded_case_ids=["c1"],
+                run_dir="results/final/x",
+            ),
+            a,
         )
     t = " ".join(e.value.reasons)
     assert "RET-ZZ" in t and "hypotheses" in t and "analysed sites" in t and "results/final" in t

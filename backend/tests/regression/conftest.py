@@ -32,7 +32,9 @@ ENV = {"PATH": "", "SYSTEMROOT": "C:\\Windows"}
 
 
 def git(cwd, *args):
-    return subprocess.run(["git", "-C", str(cwd), *args], capture_output=True, text=True, check=True).stdout.strip()
+    return subprocess.run(
+        ["git", "-C", str(cwd), *args], capture_output=True, text=True, check=True
+    ).stdout.strip()
 
 
 @pytest.fixture
@@ -66,7 +68,11 @@ def _pytest(wt, targets):
 
 
 def run_tests(req: TestRunRequest) -> TestRunResult:
-    files = {"reproducer": ["tests/test_repro.py"], "visible": VISIBLE_FILES, "hidden": HIDDEN_PATHS}
+    files = {
+        "reproducer": ["tests/test_repro.py"],
+        "visible": VISIBLE_FILES,
+        "hidden": HIDDEN_PATHS,
+    }
     return _pytest(req.worktree_path, files[req.suite])
 
 

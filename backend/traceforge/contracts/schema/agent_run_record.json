@@ -229,6 +229,12 @@
       "default": null,
       "description": "Why the run ended without a verified patch, if it did",
       "title": "Failure Reason"
+    },
+    "pipeline_version": {
+      "default": "v4",
+      "description": "v4 = formal pipeline (patch_v4); v5 = development track (symptom, labelled evidence, validated diagnosis). Records without the field are v4/v3 and are never reinterpreted.",
+      "title": "Pipeline Version",
+      "type": "string"
     }
   },
   "required": [

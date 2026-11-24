@@ -14,7 +14,12 @@ from pydantic import BaseModel, Field
 
 from traceforge.regression.retrieval_adapters import available_arms
 
-ADR_PATH = Path(__file__).resolve().parents[3] / "docs" / "adrs" / "0003-retrieval-architecture-decision.md"
+ADR_PATH = (
+    Path(__file__).resolve().parents[3]
+    / "docs"
+    / "adrs"
+    / "0003-retrieval-architecture-decision.md"
+)
 
 
 class PreregistrationError(RuntimeError):
@@ -59,8 +64,14 @@ def validate_preregistration(
     why: list[str] = []
     decision, status = adr_decision(adr_path)
     if decision != "go":
-        why.append(f"ADR 0003 decision is {decision!r} (status: {status}); a downstream run needs 'go'")
-    if spec.token_ceiling <= 0 or not spec.budget_approved_by.strip() or not spec.budget_approved_on:
+        why.append(
+            f"ADR 0003 decision is {decision!r} (status: {status}); a downstream run needs 'go'"
+        )
+    if (
+        spec.token_ceiling <= 0
+        or not spec.budget_approved_by.strip()
+        or not spec.budget_approved_on
+    ):
         why.append("no approved token budget recorded (token_ceiling, budget_approved_by/on)")
     have = arms_available if arms_available is not None else available_arms()
     missing = [a for a in spec.arms if a not in have]
