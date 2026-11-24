@@ -48,7 +48,8 @@ jobs:
       - run: uv run ruff check .
       - run: uv run ruff format --check .
       - run: uv run alembic upgrade head
-      - run: uv run pytest
+      # Docker/e2e-marked tests need real sandbox images or models: run locally (task sandbox:test).
+      - run: uv run pytest -m "not docker and not e2e"
 
   frontend:
     name: frontend (test + build)
@@ -68,7 +69,7 @@ jobs:
           cache-dependency-path: frontend/pnpm-lock.yaml
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
-      - run: pnpm test -- --run
+      - run: pnpm exec vitest --run
       - run: pnpm build
 
   contracts:
@@ -87,7 +88,7 @@ jobs:
       - run: uv sync --frozen
         working-directory: backend
       - run: task contracts:schema
-      - run: git diff --exit-code -- backend/traceforge/contracts/schema
+      - run: test -z "$(git status --porcelain -- backend/traceforge/contracts/schema)"
 
   docker:
     name: docker (build images, no push)

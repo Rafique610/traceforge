@@ -39,3 +39,7 @@ spikes/model_probe/.cache/
 AItmp*/
 backend/AItmp*/
 spikes/glm_beatapi_eval/results/cache/
+
+# experiment results (generated); keep the convention file
+results/*
+!results/README.md
