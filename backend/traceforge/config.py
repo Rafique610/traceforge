@@ -31,7 +31,7 @@ class Settings(BaseSettings):
     llm_free_allowlist: frozenset[str] = frozenset({"ollama", "openrouter", "beatapi", "axforge"})
     llm_max_output_tokens: int = 4096  # reasoning models spend part of this on hidden reasoning
     llm_reasoning_effort: Literal["low", "high", "max"] | None = (
-        None  # axforge only; None = provider default
+        None  # axforge: None = provider default; beatapi: None = "low" (gateway.reasoning_effort)
     )
     llm_allow_ollama_cloud: bool = False  # cloud-tagged Ollama models are billed per token
     ollama_base_url: str = "http://localhost:11434/v1"

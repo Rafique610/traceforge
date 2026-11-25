@@ -239,6 +239,17 @@ def _call(client: Any, s: Settings, request: dict[str, Any]) -> Any:
     raise AssertionError("unreachable")
 
 
+def reasoning_effort(s: Settings) -> str | None:
+    """reasoning_effort to send, or None. AxForge: only when set. BeatAPI: 'low' unless set, because
+    the free model's hidden reasoning filled the output cap and cut answers off (25 Nov: 10 of 30
+    calls); a probe at 'low' answered shop_api-002 correctly in 247 tokens, 25 of them reasoning."""
+    if s.llm_provider == "axforge":
+        return s.llm_reasoning_effort
+    if s.llm_provider == "beatapi":
+        return s.llm_reasoning_effort or "low"
+    return None
+
+
 def _truncated(reply: dict) -> bool:
     """Output cap hit with no usable content (reasoning ate the budget): not cacheable."""
     return reply.get("finish_reason") == "length" and not (reply.get("content") or "").strip()
@@ -273,10 +284,8 @@ def chat(
     }
     if attempt_index:  # part of the cache key only (never sent): a repair attempt after the first
         request["attempt_index"] = attempt_index  # is a new request even if its prompt is identical
-    if s.llm_provider == "axforge" and s.llm_reasoning_effort:
-        request["extra_body"] = {
-            "reasoning_effort": s.llm_reasoning_effort
-        }  # part of the cache key
+    if effort := reasoning_effort(s):
+        request["extra_body"] = {"reasoning_effort": effort}  # part of the cache key
     key = cache.cache_key(request)
     log = {
         "provider": s.llm_provider,

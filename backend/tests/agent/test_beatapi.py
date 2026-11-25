@@ -228,6 +228,16 @@ def test_beatapi_requests_are_streamed_and_capped(isolated):
     assert (r.tokens_in, r.tokens_out) == (70, 9)
 
 
+def test_beatapi_asks_for_low_reasoning_by_default_and_can_be_overridden(isolated):
+    tmp, _ = isolated
+    for kw, want in [({}, "low"), ({"llm_reasoning_effort": "high"}, "high")]:
+        client = StreamClient()
+        chat([{"role": "user", "content": "x"}], settings=settings(tmp, **kw), client=client,
+             use_cache=False)  # fmt: skip
+        assert client.calls[0]["extra_body"] == {"reasoning_effort": want}
+        assert client.calls[0]["stream"] is True  # the setting rides along with streaming
+
+
 def test_collect_stream_passes_a_non_streamed_reply_through():
     done = SimpleNamespace(choices=[], usage=None)
     assert beatapi.collect_stream(done) is done
