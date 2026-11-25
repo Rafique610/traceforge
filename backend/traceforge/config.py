@@ -67,6 +67,8 @@ class Settings(BaseSettings):
     datasets_dir: Path | None = None  # default: <repo>/datasets next to the manifest
     investigate_pipeline: Literal["v4", "v5"] = "v5"
     investigate_condition: Literal["L0", "G0", "L1", "G1"] = "G1"
+    # Opt-in regression-aware visible validation (P5-S17); off = the injected runner is untouched.
+    investigate_regression: Literal["off", "graph", "s15"] = "off"
     runs_dir: Path = Path("runs")  # saved experiment runs (TRACEFORGE_RUNS_DIR)
     # Scratch space for live end-to-end evidence runs; git-ignored under .cache by default.
     e2e_scratch_dir: Path = Field(

@@ -14,8 +14,10 @@ Follow-up study **Retrieval modernization** (added 2026-11-24). Design: [retriev
 | Reviewer | Muhammad Ruhan Kamran |
 | Priority | ESSENTIAL (decision gate) |
 | Effort | 2 days plus model setup (design doc: dense retriever 1 to 1.5, fusion and ablations 0.5 to 1) |
-| Status | NOT STARTED |
+| Status | DONE with a preregistered NO-GO (not reviewed, not approved; ADR 0003 PROPOSED, decision blank) |
 | Branch | none (commit on `main`, D33) |
+
+**Status sync 2026-11-25.** Evidence: `traceforge/retrieval_next` (opt-in research module), `docs/research/embedding-hybrid-evaluation.md` and `-preregistration.md`. Models run: all-minilm:22m (45 MB, 384-d, ctx 512), nomic-embed-text (274 MB, 768-d, ctx 2048), jina-embeddings-v2-base-code community build (322 MB, 768-d, ctx 8192; primary). 31 of 33 dev cases scored (2 have no retrieval target) plus 45 benchmark queries. At an equal 3000-token budget on dev, G beats G+E and E alone (packed coverage G 0.919, LGE 0.806, E 0.581); on 45 free-text queries the fused arms are nominally ahead (Recall@10 0.607 vs 0.556), CI includes 0. H1 FAIL (-0.094 [-0.188, 0.000]), H2 FAIL (loss 0.133), H3 FAIL (-0.004), H4 PASS (E MRR 0.384 vs BM25 0.746). Recommendation: keep BM25 + graph; embeddings not adopted. Retrieval-level evidence only; downstream diagnosis/repair not tested with embeddings. Code implemented by Ruhan's Claude-assisted session at the owner's direction on 2026-11-25; NOT reviewed by Rafique; the task stays Rafique's.
 
 ## B. Objective
 Evaluate dense retrieval and fusion offline on the dev split and deliver **ADR 0003 "Retrieval architecture decision"**: go / no-go for embeddings and hybrid retrieval, decided by preregistered thresholds.

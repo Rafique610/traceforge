@@ -1,3 +1,4 @@
+# ruff: noqa: E501
 """Opt-in regression-aware repair validation (P5-S17) and hybrid-experiment support (P5-S11).
 
 Composes the injected `run_tests` of `repair.loop.run_repair`; nothing in `repair/`, `agent/` or any
@@ -21,11 +22,12 @@ from traceforge.regression.runner import (
     RegressionGuardError,
     run_repair_regression_aware,
 )
+from traceforge.regression.sandbox_adapter import SelectedTestRunner, wire_regression
 from traceforge.regression.selection import Selection, select_tests
 
 __all__ = [
     "LIMITATION", "MAX_ATTEMPTS_CEILING", "GraphImpactProvider", "ImpactProvider", "ImpactReport",
     "LeakRefused", "PatchHistory", "PatchVersion", "RegressionAwareRunner", "RegressionGuardError",
-    "Selection", "build_regression_feedback", "get_impact_provider", "register_impact_provider",
+    "Selection", "SelectedTestRunner", "wire_regression", "build_regression_feedback", "get_impact_provider", "register_impact_provider",
     "run_repair_regression_aware", "select_tests",
 ]  # fmt: skip

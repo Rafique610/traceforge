@@ -1,6 +1,6 @@
 # Phase 5 — Research completion (Assignment 4)
 
-**Status:** IN PROGRESS (status sync 2026-11-25: P5-S03/S04 partial, P5-S10 implemented opt-in; S11 and S17 not started)
+**Status:** IN PROGRESS (status sync 2026-11-25: P5-S03/S04 partial, P5-S10 implemented opt-in; P5-S06/S07/S12/S15 implemented and tested, P5-S08 done with a preregistered no-go, P5-S16 reduced suite implemented, P5-S09/S11 not triggered, P5-S13/S14 not started, P5-S17 implemented as an opt-in. Code for P5-S06..S09 and S12..S16 was implemented by Ruhan's Claude-assisted session at the owner's direction on 2026-11-25 and is NOT reviewed by Rafique; those tasks stay Rafique's)
 
 ## Phase information
 - **Purpose:** complete the research question with a full controlled experiment and proper statistics, plus the model-sensitivity study and an optional external check.
@@ -17,18 +17,18 @@
 | [P5-S03](step-03-full-factorial-runs.md) | Full 2×2 × 3 runs (TRAC-28) | Ruhan | P4-S03 | PARTIALLY COMPLETE (reduced evaluation) |
 | [P5-S04](step-04-model-sensitivity.md) | Model sensitivity (TRAC-29) | Ruhan | P5-S03 (G1 runs) | PARTIALLY COMPLETE (setup + monitor; no comparison) |
 | [P5-S05](step-05-bugsinpy-subset.md) | BugsInPy subset, optional (TRAC-27) | Rafique | P4-S03 | NOT STARTED |
-| [P5-S06](step-06-retrieval-benchmark-and-baselines.md) | Retrieval benchmark + baselines RET-L / RET-G, dev split (essential) | Rafique | P3-S01 (done), review of P2-S02/S03 | NOT STARTED |
-| [P5-S07](step-07-incremental-index-and-embedding-cache.md) | Incremental chunk manifest, embedding cache, index verifier (essential) | Rafique | P5-S06 (data model in parallel) | NOT STARTED |
-| [P5-S08](step-08-embedding-retrieval-and-fusion.md) | RET-E + fusion arms RET-LE/LG/LGE, ADR 0003 decision gate (essential) | Rafique | P5-S06, P5-S07 | NOT STARTED |
-| [P5-S09](step-09-optional-reranking.md) | Optional reranking (optional) | Rafique | P5-S08 go | NOT STARTED |
+| [P5-S06](step-06-retrieval-benchmark-and-baselines.md) | Retrieval benchmark + baselines RET-L / RET-G, dev split (essential) | Rafique | P3-S01 (done), review of P2-S02/S03 | IMPLEMENTED, TESTED (not reviewed) |
+| [P5-S07](step-07-incremental-index-and-embedding-cache.md) | Incremental chunk manifest, embedding cache, index verifier (essential) | Rafique | P5-S06 (data model in parallel) | IMPLEMENTED, TESTED (not reviewed) |
+| [P5-S08](step-08-embedding-retrieval-and-fusion.md) | RET-E + fusion arms RET-LE/LG/LGE, ADR 0003 decision gate (essential) | Rafique | P5-S06, P5-S07 | DONE, preregistered NO-GO (not reviewed; ADR 0003 PROPOSED) |
+| [P5-S09](step-09-optional-reranking.md) | Optional reranking (optional) | Rafique | P5-S08 go | NOT STARTED, NOT TRIGGERED |
 | [P5-S10](step-10-rc2-pipeline-robustness.md) | RC2 candidate: pipeline robustness fixes (essential-optional, needs owner approval) | Ruhan | none (owner approval to start) | IMPLEMENTED opt-in, TESTED; NOT VALIDATED/APPROVED |
-| [P5-S11](step-11-conditional-hybrid-experiment.md) | Conditional end-to-end hybrid experiment (conditional) | Ruhan (Rafique supports) | P5-S08 go (+P5-S10 if included) | NOT STARTED |
-| [P5-S12](step-12-bidirectional-traversal-and-root-cause-ranker.md) | Bidirectional traversal overlay + root-cause ranker (essential, MVP) | Rafique | P5-S06 | NOT STARTED (proposed) |
-| [P5-S13](step-13-config-value-flow-analysis.md) | Config value-flow analysis (Tier 2) | Rafique | P5-S12 (+MVP gain) | NOT STARTED (proposed) |
-| [P5-S14](step-14-runtime-evidence-fusion.md) | Runtime evidence fusion (Tier 2) | Rafique | P5-S12 (+MVP gain) | NOT STARTED (proposed) |
-| [P5-S15](step-15-change-impact-report-and-test-selection.md) | Change-impact report + visible-test selection (essential, MVP) | Rafique | P5-S06 (S12 optional) | NOT STARTED (proposed) |
-| [P5-S16](step-16-root-cause-and-impact-evaluation-suite.md) | Root-cause and impact evaluation suite (essential, MVP reduced set) | Rafique (Ruhan verifies labels) | P5-S06; S12/S15 incrementally | NOT STARTED (proposed) |
-| [P5-S17](step-17-regression-aware-repair-validation.md) | Regression-aware repair validation (conditional, RC2) | Ruhan (Rafique supports) | P5-S10, P5-S15, P5-S16 benefit, owner approval | NOT STARTED (proposed) |
+| [P5-S11](step-11-conditional-hybrid-experiment.md) | Conditional end-to-end hybrid experiment (conditional) | Ruhan (Rafique supports) | P5-S08 go (+P5-S10 if included); gate not met | conditional, gate not met, NOT TRIGGERED; adapter and preregistration validator exist |
+| [P5-S12](step-12-bidirectional-traversal-and-root-cause-ranker.md) | Bidirectional traversal overlay + root-cause ranker (essential, MVP) | Rafique | P5-S06 | IMPLEMENTED, TESTED; ranker NO-GO (not reviewed) |
+| [P5-S13](step-13-config-value-flow-analysis.md) | Config value-flow analysis (Tier 2) | Rafique | P5-S12 (+MVP gain) | NOT STARTED (Tier 2) |
+| [P5-S14](step-14-runtime-evidence-fusion.md) | Runtime evidence fusion (Tier 2) | Rafique | P5-S12 (+MVP gain) | NOT STARTED (Tier 2) |
+| [P5-S15](step-15-change-impact-report-and-test-selection.md) | Change-impact report + visible-test selection (essential, MVP) | Rafique | P5-S06 (S12 optional) | IMPLEMENTED, TESTED; GO on fixtures (not reviewed) |
+| [P5-S16](step-16-root-cause-and-impact-evaluation-suite.md) | Root-cause and impact evaluation suite (essential, MVP reduced set) | Rafique (Ruhan verifies labels) | P5-S06; S12/S15 incrementally | reduced suite IMPLEMENTED (second review open; not reviewed) |
+| [P5-S17](step-17-regression-aware-repair-validation.md) | Regression-aware repair validation (conditional, RC2) | Ruhan (Rafique supports) | P5-S10, P5-S15, P5-S16 benefit, owner approval | PARTIALLY COMPLETE (implemented, tested, opt-in wired; no live model run; benefit unproven) |
 
 ## Execution order
 - **Decide first (both, half a day):** do P5-S01's graph changes go into the *main* experiment? If yes, P5-S03 waits for P5-S01 and all four conditions are re-run with the new graph (the frozen test set stays the same; new fault families go into a **separate** new held-out set). If no, P5-S03 starts immediately with the A3 graph. Record the decision as an ADR. Default recommendation: freeze the A3 graph for the main experiment; report P5-S01 as a follow-up analysis.

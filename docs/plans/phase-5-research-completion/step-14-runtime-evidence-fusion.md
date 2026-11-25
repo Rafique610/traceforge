@@ -14,8 +14,10 @@ Follow-up study **Root-cause and impact analysis** (added 2026-11-25, PROPOSED, 
 | Reviewer | Muhammad Ruhan Kamran |
 | Priority | Tier 2 (only after the MVP shows a measurable gain) |
 | Effort | 1.5 days (ASSUMPTION, not measured) |
-| Status | NOT STARTED (proposed, pending owner approval) |
+| Status | NOT STARTED (Tier 2; gated on the S12 MVP showing a gain, which it did not for call chains) |
 | Branch | none (commit on `main`, D33) |
+
+**Status sync 2026-11-25.** Evidence: No code. Code implemented by Ruhan's Claude-assisted session at the owner's direction on 2026-11-25; NOT reviewed by Rafique; the task stays Rafique's.
 
 ## B. Objective
 Turn runtime artifacts already visible to the model today (trace frames, log excerpts, failing visible test id) into `observed` marks on overlay nodes, used to re-rank and annotate candidates.

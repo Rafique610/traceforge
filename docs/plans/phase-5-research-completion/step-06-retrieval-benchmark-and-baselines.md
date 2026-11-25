@@ -14,8 +14,10 @@ Follow-up study **Retrieval modernization** (added 2026-11-24 at the project own
 | Reviewer | Muhammad Ruhan Kamran |
 | Priority | ESSENTIAL (for this study) |
 | Effort | 1.5 days (design doc: 1 to 1.5) |
-| Status | NOT STARTED |
+| Status | IMPLEMENTED, TESTED (25 tests); not reviewed, not approved |
 | Branch | none (commit on `main`, D33) |
+
+**Status sync 2026-11-25.** Evidence: `backend/traceforge/retrieval_bench/`, `benchmarks/retrieval/` (itsdangerous 2.2.0 small, requests v2.32.3 medium, this repo's `lab/` complex; 45 queries, 98 gold units; labels Claude-authored, second check pending via `second_review.csv`), `docs/research/retrieval-benchmark-baselines.md`. Code implemented by Ruhan's Claude-assisted session at the owner's direction on 2026-11-25; NOT reviewed by Rafique; the task stays Rafique's.
 
 ## B. Objective
 An offline, reproducible benchmark that scores the existing arms RET-L (= current L) and RET-G (= current G) on the **dev split** (33 cases), so every later arm (P5-S08) is compared against measured baselines at an equal token budget. Gold labels are used by the scorer only.

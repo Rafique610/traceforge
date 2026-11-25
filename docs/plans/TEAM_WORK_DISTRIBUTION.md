@@ -35,14 +35,16 @@ The split follows one rule: **each person owns whole folders**, and the two halv
 | 3 | P3-S01 Dataset freeze | COMPLETED: test split frozen (sha256 881f2887…) | P3-S03 Reviewer UI | IMPLEMENTED, TESTED; NOT REVIEWED/APPROVED |
 | 3 | P3-S02 Metrics + baseline | IMPLEMENTED; needs real runs | P3-S04 Runner + results page | IMPLEMENTED, TESTED; NOT REVIEWED/APPROVED |
 | 4 | 0 / 1 done | NOT STARTED | 0 / 2 done | P4-S01 PARTIALLY COMPLETE (Q19 DECIDED: reduced RC1 evaluation adopted as the A3 final evaluation for diagnosis/repair, shortfall disclosed; retrieval >=50 met); P4-S03 PARTIALLY COMPLETE (no dry run) |
-| 5 | 0 / 12 done (P5-S01, S02, S05 + new S06 to S09 + proposed S12 to S16) | NOT STARTED | 0 / 5 approved, all PARTIALLY COMPLETE: P5-S03 (decision made, shortfall disclosed); P5-S04 (local comparison done, n=12, one replicate; no code model); P5-S10 (opt-in, benefit UNPROVEN, blind validation not done); P5-S11 and P5-S17 (regression layer implemented and tested, NOT integrated) | see left |
+| 5 | 0 / 12 done (P5-S01, S02, S05 + new S06 to S09 + proposed S12 to S16) | NOT STARTED | 0 / 5 approved, all PARTIALLY COMPLETE: P5-S03 (decision made, shortfall disclosed); P5-S04 (local comparison done, n=12, one replicate; no code model); P5-S10 (opt-in, benefit UNPROVEN, blind validation not done); P5-S11 (conditional, gate not met, NOT TRIGGERED); P5-S17 (implemented, tested, wired as an opt-in; no live model run; benefit unproven) | see left |
 | 6 | 0 / 2 done | NOT STARTED | 0 / 2 done (P6-S04 supporting only) | P6-S02 PARTIALLY COMPLETE (CI green on 64073ca, all four jobs; no host); P6-S03 IMPLEMENTED, TESTED; NOT REVIEWED/APPROVED |
 
 When a phase starts, replace its count row with one row per step, as Phases 0–3 show.
 
-New Phase 5 tasks (24 Nov 2026, all NOT STARTED): P5-S06, P5-S07, P5-S08 (essential), P5-S09 (optional), all Rafique; P5-S10 (essential-optional, needs owner approval), P5-S11 (conditional on P5-S08 go), both Ruhan. Counts above include them (Rafique 23 primary after this addition; Ruhan stays at 20 primary: the P5-S10 and P5-S11 additions are in the 20, an earlier figure of 22 was wrong).
+**Status sync 2026-11-25 (Rafique's retrieval/analysis tasks).** P5-S06 IMPLEMENTED, TESTED (25 tests); P5-S07 IMPLEMENTED, TESTED (17 tests); P5-S08 DONE with a preregistered NO-GO (current BM25 + graph retained; ADR 0003 PROPOSED, decision blank; dense/hybrid code kept as the opt-in research module `traceforge/retrieval_next`); P5-S09 NOT STARTED, NOT TRIGGERED; P5-S12 IMPLEMENTED, TESTED (ranker NO-GO); P5-S15 IMPLEMENTED, TESTED (GO on fixtures); P5-S16 reduced suite IMPLEMENTED (23 fixtures; second-reviewer label check open); P5-S13, S14 NOT STARTED. These stay Rafique's. Code implemented by Ruhan's Claude-assisted session at the owner's direction on 2026-11-25; NOT reviewed by Rafique; ownership unchanged. Ruhan's P5-S11 is conditional, gate not met (NOT TRIGGERED); P5-S17 is implemented and opt-in wired (no live model run). Nothing is Reviewed or Approved, so the 'done' counts above are unchanged. Evidence: `RAFIQUE_HANDOFF.md` section 10.
 
-New Phase 5 tasks (25 Nov 2026, all NOT STARTED, PROPOSED pending owner approval Q18): P5-S12 (MVP), P5-S13 (Tier 2), P5-S14 (Tier 2), P5-S15 (MVP), P5-S16 (MVP reduced set; Ruhan verifies labels), all Rafique; P5-S17 (conditional, RC2) Ruhan with Rafique supporting. Counts: Rafique 28 primary (the 27 listed in section 2.1 plus P0-S06 Part A); Ruhan 20 primary (P5-S17 is in the 20; the earlier figure of 23 was wrong).
+New Phase 5 tasks (24 Nov 2026, all NOT STARTED at the time): P5-S06, P5-S07, P5-S08 (essential), P5-S09 (optional), all Rafique; P5-S10 (essential-optional, needs owner approval), P5-S11 (conditional on P5-S08 go), both Ruhan. Counts above include them (Rafique 23 primary after this addition; Ruhan stays at 20 primary: the P5-S10 and P5-S11 additions are in the 20, an earlier figure of 22 was wrong).
+
+New Phase 5 tasks (25 Nov 2026, all NOT STARTED at the time, PROPOSED pending owner approval Q18): P5-S12 (MVP), P5-S13 (Tier 2), P5-S14 (Tier 2), P5-S15 (MVP), P5-S16 (MVP reduced set; Ruhan verifies labels), all Rafique; P5-S17 (conditional, RC2) Ruhan with Rafique supporting. Counts: Rafique 28 primary (the 27 listed in section 2.1 plus P0-S06 Part A); Ruhan 20 primary (P5-S17 is in the 20; the earlier figure of 23 was wrong).
 
 ## 1. Team overview
 | Member | Primary role | Assigned modules | Main responsibilities |
@@ -96,15 +98,15 @@ Shared (PR approved by both): `backend/traceforge/contracts/`, `main.py`, `confi
 - [ ] [P5-S01](phase-5-research-completion/step-01-deeper-graph.md) Deeper graph (TRAC-24)
 - [ ] [P5-S02](phase-5-research-completion/step-02-statistics.md) Statistics (TRAC-25)
 - [ ] [P5-S05](phase-5-research-completion/step-05-bugsinpy-subset.md) BugsInPy subset, optional (TRAC-27)
-- [ ] [P5-S06](phase-5-research-completion/step-06-retrieval-benchmark-and-baselines.md) Retrieval benchmark + baselines RET-L / RET-G (essential)
-- [ ] [P5-S07](phase-5-research-completion/step-07-incremental-index-and-embedding-cache.md) Incremental chunk manifest, embedding cache, verifier (essential)
-- [ ] [P5-S08](phase-5-research-completion/step-08-embedding-retrieval-and-fusion.md) Embedding retrieval + fusion arms, ADR 0003 (essential, decision gate)
-- [ ] [P5-S09](phase-5-research-completion/step-09-optional-reranking.md) Optional reranking (optional)
-- [ ] [P5-S12](phase-5-research-completion/step-12-bidirectional-traversal-and-root-cause-ranker.md) Traversal overlay + root-cause ranker (MVP, proposed)
-- [ ] [P5-S13](phase-5-research-completion/step-13-config-value-flow-analysis.md) Config value-flow analysis (Tier 2, proposed)
-- [ ] [P5-S14](phase-5-research-completion/step-14-runtime-evidence-fusion.md) Runtime evidence fusion (Tier 2, proposed)
-- [ ] [P5-S15](phase-5-research-completion/step-15-change-impact-report-and-test-selection.md) Change-impact report + test selection (MVP, proposed)
-- [ ] [P5-S16](phase-5-research-completion/step-16-root-cause-and-impact-evaluation-suite.md) Root-cause and impact evaluation suite (MVP reduced set; Ruhan verifies labels, proposed)
+- [ ] [P5-S06](phase-5-research-completion/step-06-retrieval-benchmark-and-baselines.md) Retrieval benchmark + baselines RET-L / RET-G (essential) — IMPLEMENTED, TESTED; not reviewed by Rafique
+- [ ] [P5-S07](phase-5-research-completion/step-07-incremental-index-and-embedding-cache.md) Incremental chunk manifest, embedding cache, verifier (essential) — IMPLEMENTED, TESTED; not reviewed by Rafique
+- [ ] [P5-S08](phase-5-research-completion/step-08-embedding-retrieval-and-fusion.md) Embedding retrieval + fusion arms, ADR 0003 (essential, decision gate) — DONE, preregistered NO-GO; not reviewed by Rafique
+- [ ] [P5-S09](phase-5-research-completion/step-09-optional-reranking.md) Optional reranking (optional) — NOT STARTED, NOT TRIGGERED
+- [ ] [P5-S12](phase-5-research-completion/step-12-bidirectional-traversal-and-root-cause-ranker.md) Traversal overlay + root-cause ranker (MVP, proposed) — IMPLEMENTED, TESTED (ranker NO-GO); not reviewed by Rafique
+- [ ] [P5-S13](phase-5-research-completion/step-13-config-value-flow-analysis.md) Config value-flow analysis (Tier 2, proposed) — NOT STARTED
+- [ ] [P5-S14](phase-5-research-completion/step-14-runtime-evidence-fusion.md) Runtime evidence fusion (Tier 2, proposed) — NOT STARTED
+- [ ] [P5-S15](phase-5-research-completion/step-15-change-impact-report-and-test-selection.md) Change-impact report + test selection (MVP, proposed) — IMPLEMENTED, TESTED (GO on fixtures); not reviewed by Rafique
+- [ ] [P5-S16](phase-5-research-completion/step-16-root-cause-and-impact-evaluation-suite.md) Root-cause and impact evaluation suite (MVP reduced set; Ruhan verifies labels, proposed) — reduced suite IMPLEMENTED; not reviewed by Rafique
 - [ ] [P6-S01](phase-6-productization-paper/step-01-security-hardening.md) Security hardening (TRAC-26)
 - [ ] [P6-S04](phase-6-productization-paper/step-04-paper-and-pitch.md) Paper, primary owner (TRAC-32)
 - [ ] Review every Track B PR within one working day.
@@ -128,8 +130,8 @@ Shared (PR approved by both): `backend/traceforge/contracts/`, `main.py`, `confi
 - [ ] [P5-S03](phase-5-research-completion/step-03-full-factorial-runs.md) Full 2×2 runs (TRAC-28)
 - [ ] [P5-S04](phase-5-research-completion/step-04-model-sensitivity.md) Model sensitivity (TRAC-29)
 - [ ] [P5-S10](phase-5-research-completion/step-10-rc2-pipeline-robustness.md) RC2 candidate: pipeline robustness fixes (essential-optional, owner approval needed)
-- [ ] [P5-S11](phase-5-research-completion/step-11-conditional-hybrid-experiment.md) Conditional hybrid experiment (conditional on P5-S08 go; supporting member Rafique)
-- [ ] [P5-S17](phase-5-research-completion/step-17-regression-aware-repair-validation.md) Regression-aware repair validation (conditional on owner approval, P5-S10, S15/S16 benefit; supporting member Rafique)
+- [ ] [P5-S11](phase-5-research-completion/step-11-conditional-hybrid-experiment.md) Conditional hybrid experiment (conditional on P5-S08 go; supporting member Rafique) — conditional, gate not met, NOT TRIGGERED; adapter and preregistration validator exist
+- [ ] [P5-S17](phase-5-research-completion/step-17-regression-aware-repair-validation.md) Regression-aware repair validation (conditional on owner approval, P5-S10, S15/S16 benefit; supporting member Rafique) — implemented, tested, opt-in wired; no live model run; not reviewed
 - [ ] [P5-S16 label verification](phase-5-research-completion/step-16-root-cause-and-impact-evaluation-suite.md) Independent check of hand-labelled expected relationships (supporting; P5-S16 stays Rafique's)
 - [ ] [P6-S02](phase-6-productization-paper/step-02-ci-and-deployment.md) CI and deployment (TRAC-30)
 - [ ] [P6-S03](phase-6-productization-paper/step-03-ui-polish-and-audit-view.md) UI polish and audit view (TRAC-31)

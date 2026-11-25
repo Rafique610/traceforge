@@ -14,10 +14,10 @@ Added 2026-11-24. Design: [retrieval-architecture-review.md](../../research/retr
 | Reviewer | Muhammad Rafique |
 | Priority | CONDITIONAL |
 | Effort | 2 days plus unattended runs (planning estimate, AS1) |
-| Status | PARTIALLY COMPLETE (Ruhan-side regression layer implemented, tested, NOT integrated; waits for P5-S08 go) |
+| Status | PARTIALLY COMPLETE (conditional, gate not met, NOT TRIGGERED; adapter and preregistration validator exist) |
 | Branch | none (commit on `main`, D33) |
 
-**Status sync 2026-11-25 (final).** Evidence: shares the Ruhan-side `backend/traceforge/regression/` layer with P5-S17 (26 tests pass; RetrievalAdapter registry with RET-L/RET-G; preregistration validator refuses until ADR 0003 says go). No end-to-end hybrid experiment run; needs the P5-S08 go and owner spend approval. Five-fact detail: `docs/plans/RUHAN_TASK_TRACKER.md`.
+**Status sync 2026-11-25 (final).** Evidence: shares the Ruhan-side `backend/traceforge/regression/` layer with P5-S17 (26 tests pass; RetrievalAdapter registry with RET-L/RET-G; preregistration validator refuses until ADR 0003 says go). No end-to-end hybrid experiment run. P5-S08 finished as a preregistered NO-GO (ADR 0003 PROPOSED, no 'go'), so the gate is not met; it would also need owner spend approval. Retrieval-level evidence only; downstream diagnosis/repair not tested with embeddings. Five-fact detail: `docs/plans/RUHAN_TASK_TRACKER.md`.
 
 ## B. Objective
 Run new conditions (H0/H1 or the chosen RET arms) through the diagnosis and patch pipeline on unseen cases, in new run directories, to see whether an offline retrieval gain carries to verified repair. RC1 conditions and artifacts stay untouched.

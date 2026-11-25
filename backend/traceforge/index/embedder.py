@@ -76,7 +76,7 @@ class OllamaEmbedder:
     """Local Ollama embedder (default model all-minilm:22m, 384-d). `dims` and `revision` are
     resolved lazily (a one-text probe and the /api/tags digest) unless given."""
 
-    def __init__(self, model="all-minilm:22m", base_url="http://localhost:11434", batch_size=32,
+    def __init__(self, model="all-minilm:22m", base_url="http://127.0.0.1:11434", batch_size=32,
                  timeout=120.0, preprocessing_version="p1", revision=None, dims=None):  # fmt: skip
         self.model_id, self.base_url = model, base_url.rstrip("/")
         self.batch_size, self.timeout = batch_size, timeout

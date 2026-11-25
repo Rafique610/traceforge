@@ -14,8 +14,10 @@ Follow-up study **Root-cause and impact analysis** (added 2026-11-25, PROPOSED, 
 | Reviewer | Muhammad Ruhan Kamran |
 | Priority | ESSENTIAL (MVP) |
 | Effort | MVP reduced set (4 families x 3 cases) about 1.5 days; full set (8 families x 5 cases) about 3 days (ASSUMPTION, not measured) |
-| Status | NOT STARTED (proposed, pending owner approval) |
+| Status | reduced suite IMPLEMENTED; second reviewer verification open; not reviewed, not approved |
 | Branch | none (commit on `main`, D33) |
+
+**Status sync 2026-11-25.** Evidence: `benchmarks/rootcause/` (23 fixtures: A2 B4 C4 D4 F5 G2 H2; labels hand-written; second reviewer verification open in `benchmarks/rootcause/expected_relationships.csv`), `docs/research/rootcause-impact-evaluation.md`. Code implemented by Ruhan's Claude-assisted session at the owner's direction on 2026-11-25; NOT reviewed by Rafique; the task stays Rafique's.
 
 ## B. Objective
 Evaluate the traversal/ranker (P5-S12) and the impact report (P5-S15) offline on hand-verified fixtures, against current L/G and the P5-S08 arms, with thresholds fixed before any run. Complexity is kept only if thresholds pass.

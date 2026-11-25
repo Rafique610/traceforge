@@ -14,8 +14,10 @@ Follow-up study **Retrieval modernization** (added 2026-11-24). Design: [retriev
 | Reviewer | Muhammad Ruhan Kamran |
 | Priority | OPTIONAL |
 | Effort | 1 day (design doc) |
-| Status | NOT STARTED |
+| Status | NOT STARTED, NOT TRIGGERED (conditional on a P5-S08 go; S08 was no-go) |
 | Branch | none (commit on `main`, D33) |
+
+**Status sync 2026-11-25.** Evidence: P5-S08 finished as a preregistered NO-GO; no code exists. Code implemented by Ruhan's Claude-assisted session at the owner's direction on 2026-11-25; NOT reviewed by Rafique; the task stays Rafique's.
 
 ## B. Objective
 Only if P5-S08 recommends go and shows recall gains but weak ranking: test a CPU cross-encoder rerank (RET-LE+R, RET-LGE+R over the same top-50) or fusion-weight tuning, tuned on **dev only**.

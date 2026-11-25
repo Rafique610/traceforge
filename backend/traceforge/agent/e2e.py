@@ -38,6 +38,7 @@ from traceforge.contracts.case_manifest import REPAIRABLE, CaseManifest
 from traceforge.contracts.evidence import EvidenceBundle
 from traceforge.evaluation.fingerprint import code_fingerprint
 from traceforge.faultgen.generate import materialize
+from traceforge.regression.sandbox_adapter import regression_meta
 
 REPO = Path(__file__).resolve().parents[3]
 RC2_FP_FILE = REPO / "results/rc2/rc2-fingerprint.txt"
@@ -93,7 +94,7 @@ def slug(s: str) -> str:
     return re.sub(r"[^A-Za-z0-9._-]+", "-", s).strip("-")
 
 
-def _rc_label(rc: str) -> dict:
+def _rc_label(rc: str, regression: str = "off") -> dict:
     """Version + matching fingerprint for meta.json; refuses a label/fingerprint mismatch."""
     if rc == "rc2":
         sha = rc2_fingerprint()["sha256"]
@@ -103,7 +104,8 @@ def _rc_label(rc: str) -> dict:
             RC2_FP_FILE.write_text(sha, "utf-8")
     else:
         sha = code_fingerprint()["sha256"]
-    return run_label(rc, sha)  # rc1 must equal the frozen RC1 fingerprint, rc2 must differ
+    # rc1 must equal the frozen RC1 fingerprint, rc2 must differ
+    return run_label(rc, sha, regression)
 
 
 def _saved_evidence(evidence_dir: Path, case_id: str):  # noqa: ANN202
@@ -139,7 +141,8 @@ def run(a: argparse.Namespace) -> dict:
     )
     v5 = a.pipeline == "v5"
     rc = getattr(a, "rc", "rc1")
-    rc_label = _rc_label(rc)  # raises VersionLabelError on a label/fingerprint mismatch
+    regression = getattr(a, "regression", "off")
+    rc_label = _rc_label(rc, regression)  # raises VersionLabelError on a label/fingerprint mismatch
     rc2_log: list[dict] = []
     ev = _saved_evidence(a.evidence_dir, case.case_id) if rc == "rc2" else None
     chat = select_chat_fn(  # rc1: identity; rc2: wraps the guarded gateway (guard still sees every request)
@@ -153,7 +156,8 @@ def run(a: argparse.Namespace) -> dict:
         rc2_log,
         ev,
     )  # fmt: skip
-    runlog = RunLog(make_sandbox_run_tests(repo, datasets, case.service))
+    sandbox_run = make_sandbox_run_tests(repo, datasets, case.service)
+    runlog = RunLog(sandbox_run)
     sym_obj = None
     if v5:  # the symptom comes from the visible tests run on the base commit (no gold terms)
         from traceforge.agent import symptom as symptom_mod
@@ -184,6 +188,23 @@ def run(a: argparse.Namespace) -> dict:
         from traceforge.investigation import _SymptomPersistingEvidence
 
         src.evidence = _SymptomPersistingEvidence(src.evidence, db, sym_obj)
+    reg_runner = None
+    reg_stack = None
+    hist_path = out / "patch_history.jsonl"
+    # opt-in: wrap the injected runner (after the symptom run, which is not an attempt)
+    if regression != "off":
+        from contextlib import ExitStack
+
+        from traceforge.regression.sandbox_adapter import make_sandbox_selected, wire_regression
+
+        reg_stack = ExitStack()
+        reg_runner = wire_regression(
+            sandbox_run, layer=regression, repo_path=repo, base_sha=head,
+            selected=make_sandbox_selected(repo, case.service), condition=a.condition,
+            history_path=hist_path, hidden_markers=sorted(guard.markers),
+            extra_leak_check=guard.check, stack=reg_stack,
+        )  # fmt: skip
+        runlog.run_tests = reg_runner
     t0 = datetime.now(UTC)
     rec = run_case_with_repair(
         inc or case, a.condition, src,
@@ -194,6 +215,8 @@ def run(a: argparse.Namespace) -> dict:
         dataset_sha256=src.cases.sha256, artifacts=artifacts,
         pipeline=a.pipeline, symptom=sym_obj,
     )  # fmt: skip
+    if reg_stack is not None:
+        reg_stack.close()
     rr = artifacts.get("repair")
     if db is not None and inc is not None:
         save_outcome(db, inc, cause_class=rec.diagnosis.cause_class, base_sha=case.base_sha,
@@ -211,6 +234,7 @@ def run(a: argparse.Namespace) -> dict:
         "hidden_markers_checked": len(guard.markers), "hidden_fragment_hits": len(guard.fragment_hits),
         "incident_id": str(inc.id) if inc else None,
         "rc_version": rc, **rc_label,
+        **(regression_meta(regression, reg_runner, str(hist_path)) if regression != "off" else {}),
     }, indent=2), "utf-8")  # fmt: skip
     (out / "rc2_log.json").write_text(json.dumps(rc2_log, indent=2), "utf-8")
     if sym_obj is not None:
@@ -256,6 +280,12 @@ def main(argv: list[str] | None = None) -> int:
         default="rc1",
         help="pipeline version (default rc1, unchanged)",
     )
+    ap.add_argument(
+        "--regression",
+        choices=["off", "graph", "s15"],
+        default="off",
+        help="opt-in regression-aware validation (impact provider); needs --rc rc2; default off",
+    )
     ap.add_argument("--run-id")
     ap.add_argument("--manifest", type=Path, default=REPO / "datasets/manifests/dev.json")
     ap.add_argument("--evidence-dir", type=Path, default=REPO / "runs/evidence")
@@ -274,6 +304,8 @@ def main(argv: list[str] | None = None) -> int:
         help="REQUIRED for AxForge: the owner confirmed the free allowance only (see the runner)",
     )
     a = ap.parse_args(argv)
+    if a.regression != "off" and a.rc == "rc1":
+        ap.error("--regression is not RC1: combine it with --rc rc2")
     if a.provider == "beatapi":  # same one-run-at-a-time lock the experiment runner takes
         from traceforge.agent import beatapi
 

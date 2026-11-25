@@ -82,6 +82,7 @@ class RegressionAwareRunner:
         fast_fail: bool = True,
         seeds: Sequence[str] = (),
         extra_leak_check: Callable[[list[dict]], None] | None = None,
+        feedback: bool = True,
     ) -> None:
         if not isinstance(max_attempts, int) or not 1 <= max_attempts <= MAX_ATTEMPTS_CEILING:
             raise RegressionGuardError(
@@ -93,6 +94,7 @@ class RegressionAwareRunner:
         self.history = history if history is not None else PatchHistory()
         self.max_attempts, self.fast_fail, self.seeds = max_attempts, fast_fail, list(seeds)
         self.guard = LeakGuard(hidden_markers, hidden_paths, extra_leak_check)
+        self.feedback = feedback  # False (F0): the targeted result is returned unmodified
         self.attempts = 0
         self.hidden_calls = 0
         self.last_report: ImpactReport | None = None
@@ -145,6 +147,8 @@ class RegressionAwareRunner:
                 ver.outcome = "targeted_failed"
                 if self.fast_fail:
                     self.history.append(ver)
+                    if not self.feedback:
+                        return targeted
                     return targeted.model_copy(
                         update={"stdout_tail": self._feedback(targeted, report)[:4096]}
                     )

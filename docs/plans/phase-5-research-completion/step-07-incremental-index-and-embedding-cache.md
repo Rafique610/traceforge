@@ -14,8 +14,10 @@ Follow-up study **Retrieval modernization** (added 2026-11-24). Design: [retriev
 | Reviewer | Muhammad Ruhan Kamran |
 | Priority | ESSENTIAL for embeddings; benefits caching generally |
 | Effort | 2 days (design doc: 1.5 to 2.5) |
-| Status | NOT STARTED |
+| Status | IMPLEMENTED, TESTED (17 tests); not reviewed, not approved |
 | Branch | none (commit on `main`, D33) |
+
+**Status sync 2026-11-25.** Evidence: `backend/traceforge/index/`; six scenarios, crash safety, dims refusal; `lab/` 280 chunks cold 34.3 s, warm 0.033 s with 0 embeds, 635 KB; `docs/research/incremental-index-measurements.md`. `OllamaEmbedder` now defaults to 127.0.0.1 (localhost added about 2 s per call). Code implemented by Ruhan's Claude-assisted session at the owner's direction on 2026-11-25; NOT reviewed by Rafique; the task stays Rafique's.
 
 ## B. Objective
 Make embedding work incremental, resumable and auditable: a content-addressed vector cache plus a per-commit chunk manifest, so a code change re-embeds only changed chunks, a model upgrade builds a new namespace, and a verifier proves the index matches the source tree. Graph edge refresh stays separate from re-embedding.

@@ -155,13 +155,27 @@ class InvestigationFactory:
                 sym = symptom_mod.collect_symptom(run_tests, str(wt), case.case_id)
             if (why := symptom_mod.validate(sym, guard.check)) and sym.status == "ok":
                 sym.status = f"blocked: {why[0]}"
+        cleanup = lambda: rm_tree(repo_dir)  # noqa: E731
+        if settings.investigate_regression != "off":  # opt-in; "off" leaves run_tests as is
+            from contextlib import ExitStack
+
+            from traceforge.regression.sandbox_adapter import make_sandbox_selected, wire_regression
+
+            stack = ExitStack()
+            run_tests = wire_regression(
+                run_tests, layer=settings.investigate_regression, repo_path=repo, base_sha=head,
+                selected=make_sandbox_selected(repo, case.service),
+                condition=settings.investigate_condition, hidden_markers=sorted(guard.markers),
+                extra_leak_check=guard.check, stack=stack,
+            )  # fmt: skip
+            cleanup = lambda: (stack.close(), rm_tree(repo_dir))  # noqa: E731
         return Plan(
             sources=src, chat_fn=chat, run_tests=run_tests, repo_path=str(repo), base_sha=head,
             allowlist=allowlist(repo, case.service),
             visible_test_sources=visible_sources(repo, datasets, case),
             condition=settings.investigate_condition, pipeline=settings.investigate_pipeline,
             symptom=sym, settings=settings, dataset_sha256=src.cases.sha256,
-            cleanup=lambda: rm_tree(repo_dir),
+            cleanup=cleanup,
         )  # fmt: skip
 
 

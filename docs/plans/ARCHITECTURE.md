@@ -97,7 +97,7 @@ All settings through `traceforge/config.py` (`Settings`, prefix `TRACEFORGE_`), 
 - Every case labelled with `distance` (graph hops symptom → cause); ≥50% of test cases distance ≥1; results by distance.
 
 ## Retrieval architecture: current and proposed target
-**Current (implemented, RC1 frozen):** the graph and chunk corpus are rebuilt in every process; BM25 (L) plus a 2-hop graph walk (G); no embeddings, no persisted index. **Proposed target (PROPOSED, not approved, offline only; decision gate is ADR 0003 after P5-S08):** an opt-in dense arm and RRF fusion in new modules outside the RC1 fingerprint list, fed by an incremental embedding index.
+**Current (implemented, RC1 frozen):** the graph and chunk corpus are rebuilt in every process; BM25 (L) plus a 2-hop graph walk (G); no embeddings, no persisted index. **Proposed target (PROPOSED, not approved, offline only; decision gate is ADR 0003 after P5-S08):** an opt-in dense arm and RRF fusion in new modules outside the RC1 fingerprint list, fed by an incremental embedding index. **Status 2026-11-25:** P5-S08 gave a preregistered NO-GO, so the CURRENT architecture (BM25 + graph, no embeddings in the product path) is retained and ADR 0003 stays PROPOSED with the decision blank. The dense/hybrid code exists only as the opt-in research module `traceforge/retrieval_next`; the incremental index (`traceforge/index`) is implemented and tested (P5-S07); both were implemented by Ruhan's Claude-assisted session at the owner's direction on 2026-11-25 and are NOT reviewed by Rafique. The 'proposed target' is therefore not adopted.
 
 ```mermaid
 flowchart LR
@@ -112,7 +112,7 @@ flowchart LR
   end
 ```
 
-**Incremental-index workflow (proposed, P5-S07):**
+**Incremental-index workflow (proposed, P5-S07):** (implemented and tested 2026-11-25 in `traceforge/index`; not wired into the product path.)
 1. Chunk the tree deterministically; compute `chunk_key`, `content_hash`, `embed_key` (model, revision, dims, preprocessing).
 2. Diff against the previous manifest: new / modified / deleted / moved (explains and audits).
 3. Embed only chunks whose `embed_key` is missing in the model namespace (authoritative), in fixed batches, idempotent and resumable.
@@ -145,4 +145,4 @@ flowchart LR
   O2 -. same pack and budget .-> P0
   O6 -. RC2 only .-> R0
 ```
-Stages: (1) traversal and ranking (P5-S12, MVP); (2) impact report from patch diff and pre/post graphs (P5-S15, MVP); (3) regression validation in the repair loop (P5-S17, conditional, new fingerprint; hidden gate once, human approval unchanged). Evaluation: P5-S16. Design: [root-cause-impact-regression-design.md](../research/root-cause-impact-regression-design.md).
+Stages: (1) traversal and ranking (P5-S12, MVP); (2) impact report from patch diff and pre/post graphs (P5-S15, MVP); (3) regression validation in the repair loop (P5-S17, conditional, new fingerprint; hidden gate once, human approval unchanged). Evaluation: P5-S16. Design: [root-cause-impact-regression-design.md](../research/root-cause-impact-regression-design.md). Status 2026-11-25: stages 1 and 2 are implemented and tested in `traceforge/analysis/` (ranker preregistered NO-GO; impact report GO on fixtures); stage 3 is wired as an opt-in (`--rc rc2 --regression graph|s15`), no live model run. Not reviewed by Rafique.

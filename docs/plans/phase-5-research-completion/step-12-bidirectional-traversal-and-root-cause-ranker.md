@@ -14,8 +14,10 @@ Follow-up study **Root-cause and impact analysis** (added 2026-11-25, PROPOSED, 
 | Reviewer | Muhammad Ruhan Kamran |
 | Priority | ESSENTIAL (MVP) |
 | Effort | 3 days (inheritance/overrides edges about 1 d, traversal and ranker about 2 d; ASSUMPTION, not measured) |
-| Status | NOT STARTED (proposed, pending owner approval) |
+| Status | IMPLEMENTED, TESTED; ranker preregistered NO-GO; not reviewed, not approved |
 | Branch | none (commit on `main`, D33) |
+
+**Status sync 2026-11-25.** Evidence: `backend/traceforge/analysis/` (overlay traversal and ranker); 41 analysis tests incl. S12/S15/S16. Rules R1, R2, R5 failed: on call chains the ranker equals graph distance; it helps on configuration and hub cases and abstains correctly on both static-blind cases. `docs/research/rootcause-impact-evaluation.md`. Code implemented by Ruhan's Claude-assisted session at the owner's direction on 2026-11-25; NOT reviewed by Rafique; the task stays Rafique's.
 
 ## B. Objective
 Build an offline **overlay** on a copy of the existing code graph: inheritance and override edges, evidence classes (`static`, `observed`, `inferred`, `unknown`), budgeted bidirectional multi-hop traversal and a candidate ranker that returns ranked locations with an explanation path. It produces ranked hypotheses, not a claimed root cause.

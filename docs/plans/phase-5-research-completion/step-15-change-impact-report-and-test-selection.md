@@ -14,8 +14,10 @@ Follow-up study **Root-cause and impact analysis** (added 2026-11-25, PROPOSED, 
 | Reviewer | Muhammad Ruhan Kamran |
 | Priority | ESSENTIAL (MVP) |
 | Effort | 2.5 days (ASSUMPTION, not measured) |
-| Status | NOT STARTED (proposed, pending owner approval) |
+| Status | IMPLEMENTED, TESTED; GO on fixtures; not reviewed, not approved |
 | Branch | none (commit on `main`, D33) |
+
+**Status sync 2026-11-25.** Evidence: impact provider `s15` in `backend/traceforge/analysis/impact_report.py`; selection recall 1.0, 0.575 of the suite selected, 0 hidden leaks, 0 false-positive warnings (fixtures are small). Code implemented by Ruhan's Claude-assisted session at the owner's direction on 2026-11-25; NOT reviewed by Rafique; the task stays Rafique's.
 
 ## B. Objective
 Produce an offline impact report from a patch diff and the pre- and post-patch graphs, and a ranked selection of **visible** covering tests.
