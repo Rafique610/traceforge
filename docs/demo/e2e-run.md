@@ -69,3 +69,6 @@ cd backend
 ```
 
 Note: the "No code was changed" line under the first run predates the two fixes recorded later in this file (symptom evidence stored before the pipeline; `service` filled from the manifest).
+
+## BeatAPI patch check (2026-11-25, after the final sync)
+`agent.e2e --case shop_api-056 --condition G1 --provider beatapi --model glm-5.3-flash-free` (one case, no retries): HTTP 503 InternalServerError at the first diagnosis call after 298 s, 6,806 tokens in, 2,863 out, outcome NO_PATCH. This is the third 503 on this provider at the diagnosis step even though a short smoke call succeeds, so the free model is not usable for the investigation prompt. The patch stage on a strong model remains the owner-gated AxForge run above.
