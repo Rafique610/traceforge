@@ -2,6 +2,8 @@
 
 Status: results of an engineering validation of the harness. Labels were written by Claude on behalf of Ruhan and have not had an independent second-person check. No superiority claim is made. Run id `p5s06-baseline-run1`; `run2` is an identical re-run (rankings byte-identical, `cmp` verified).
 
+**Reproduced by Rafique, 25 Nov 2026** (runs `review-both-1` and `review-both-2`, his laptop): the three repo suites give exactly the numbers below; all 33 dev bundles were collected (`lab_collect --jobs 3`, 33 contract-valid, 0 secret leaks), so the dev split now scores **31 cases** instead of 12. Sections 3.1 (dev rows), 3.3, 3.4 (dev rows) and 3.5 (dev rows) show the 31-case run; Ruhan's 12-case dev numbers are kept in section 3.6 for the record. Rankings byte-identical across the two runs; `code_fingerprint()` unchanged.
+
 ## 1. What was built (facts)
 
 | Item | Where |
@@ -54,8 +56,8 @@ Means over queries. File-level and packed metrics as defined above.
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | complex_lab | RET-G | 15 | 0.089 | 0.367 | 0.578 | 0.173 | 0.409 | 0.393 | 0.533 | 0.744 | 2390 |
 | complex_lab | RET-L | 15 | 0.089 | 0.367 | 0.578 | 0.173 | 0.409 | 0.393 | 0.533 | 0.744 | 2390 |
-| dev | RET-G | 12 | 0.125 | 0.792 | 0.917 | 0.233 | 0.436 | 0.542 | 0.250 | 0.917 | 2393 |
-| dev | RET-L | 12 | 0.125 | 0.375 | 0.875 | 0.133 | 0.369 | 0.474 | 0.250 | 1.000 | 2391 |
+| dev | RET-G | 31 | 0.097 | 0.565 | 0.839 | 0.181 | 0.390 | 0.479 | 0.226 | 0.919 | 2393 |
+| dev | RET-L | 31 | 0.097 | 0.290 | 0.790 | 0.110 | 0.306 | 0.411 | 0.226 | 0.919 | 2392 |
 | medium_requests | RET-G | 15 | 0.167 | 0.444 | 0.511 | 0.147 | 0.396 | 0.387 | 0.400 | 0.511 | 2393 |
 | medium_requests | RET-L | 15 | 0.167 | 0.444 | 0.511 | 0.147 | 0.385 | 0.381 | 0.400 | 0.511 | 2393 |
 | small_itsdangerous | RET-G | 15 | 0.233 | 0.411 | 0.578 | 0.120 | 0.386 | 0.420 | 0.533 | 0.611 | 2391 |
@@ -80,21 +82,18 @@ Means over queries. File-level and packed metrics as defined above.
 | symptom_no_identifier | RET-G | 6 | 0.000 | 0.000 | 0.056 | 0.000 | 0.048 | 0.024 | 0.167 | 0.139 | 2395 |
 | symptom_no_identifier | RET-L | 6 | 0.000 | 0.000 | 0.056 | 0.000 | 0.048 | 0.024 | 0.167 | 0.139 | 2395 |
 
-### 3.3 Dev split (v5 evidence; 12 cases scored)
+### 3.3 Dev split (v5 evidence; 31 cases scored, 8 variant groups)
 
 | qtype | method | n | R@1 | R@5 | R@10 | P@5 | MRR | nDCG@10 | file@1 | packed gold cov. | tokens |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| ALL | RET-G | 12 | 0.125 | 0.792 | 0.917 | 0.233 | 0.436 | 0.542 | 0.250 | 0.917 | 2393 |
-| ALL | RET-L | 12 | 0.125 | 0.375 | 0.875 | 0.133 | 0.369 | 0.474 | 0.250 | 1.000 | 2391 |
-| application_code | RET-G | 7 | 0.000 | 0.714 | 0.857 | 0.143 | 0.200 | 0.352 | 0.000 | 0.857 | 2393 |
-| application_code | RET-L | 7 | 0.000 | 0.143 | 0.857 | 0.029 | 0.136 | 0.285 | 0.000 | 1.000 | 2390 |
-| configuration | RET-G | 5 | 0.300 | 0.900 | 1.000 | 0.360 | 0.767 | 0.808 | 0.600 | 1.000 | 2393 |
-| configuration | RET-L | 5 | 0.300 | 0.700 | 0.900 | 0.280 | 0.695 | 0.739 | 0.600 | 1.000 | 2393 |
+| ALL | RET-G | 31 | 0.097 | 0.565 | 0.839 | 0.181 | 0.390 | 0.479 | 0.226 | 0.919 | 2393 |
+| ALL | RET-L | 31 | 0.097 | 0.290 | 0.790 | 0.110 | 0.306 | 0.411 | 0.226 | 0.919 | 2392 |
+| application_code | RET-G | 15 | 0.000 | 0.467 | 0.867 | 0.093 | 0.179 | 0.333 | 0.000 | 0.933 | 2392 |
+| application_code | RET-L | 15 | 0.000 | 0.067 | 0.867 | 0.013 | 0.120 | 0.278 | 0.000 | 0.933 | 2390 |
+| configuration | RET-G | 16 | 0.188 | 0.656 | 0.812 | 0.263 | 0.589 | 0.617 | 0.438 | 0.906 | 2394 |
+| configuration | RET-L | 16 | 0.188 | 0.500 | 0.719 | 0.200 | 0.480 | 0.535 | 0.438 | 0.906 | 2393 |
 
-Scored: 12 of 33 dev cases. Skipped: 19 cases without a saved EvidenceBundle (collecting these needs the live faulty lab; not done here, never invented) and:
-
-- shop_api-003: no retrieval target (runtime_dependency)
-- shop_api-004: no retrieval target (insufficient_evidence)
+Scored: 31 of 33 dev cases. Skipped (no retrieval target): shop_api-003 (runtime_dependency), shop_api-004 (insufficient_evidence). The 31 cases come from 8 variant groups, so they are not 31 independent samples.
 
 ### 3.4 RET-G minus RET-L (paired; positive = G higher)
 
@@ -110,11 +109,11 @@ Scored: 12 of 33 dev cases. Skipped: 19 cases without a saved EvidenceBundle (co
 | complex_lab (n=15) | mrr | +0.000 | [+0.000, +0.000] | 0 / 0 / 15 | 1.000 |
 | complex_lab (n=15) | ndcg@10 | +0.000 | [+0.000, +0.000] | 0 / 0 / 15 | 1.000 |
 | complex_lab (n=15) | gold_coverage_packed | +0.000 | [+0.000, +0.000] | 0 / 0 / 15 | 1.000 |
-| dev (n=12) | recall@5 | +0.417 | [+0.167, +0.667] | 6 / 0 / 6 | 0.031 |
-| dev (n=12) | recall@10 | +0.042 | [+0.000, +0.125] | 1 / 0 / 11 | 1.000 |
-| dev (n=12) | mrr | +0.067 | [+0.017, +0.132] | 7 / 1 / 4 | 0.070 |
-| dev (n=12) | ndcg@10 | +0.068 | [+0.014, +0.123] | 8 / 1 / 3 | 0.039 |
-| dev (n=12) | gold_coverage_packed | -0.083 | [-0.250, +0.000] | 0 / 1 / 11 | 1.000 |
+| dev (n=31) | recall@5 | +0.274 | [+0.145, +0.419] | 11 / 0 / 20 | 0.001 |
+| dev (n=31) | recall@10 | +0.048 | [+0.000, +0.097] | 3 / 0 / 28 | 0.250 |
+| dev (n=31) | mrr | +0.084 | [+0.045, +0.129] | 20 / 3 / 8 | <0.001 |
+| dev (n=31) | ndcg@10 | +0.069 | [+0.030, +0.112] | 17 / 4 / 10 | 0.007 |
+| dev (n=31) | gold_coverage_packed | +0.000 | [-0.097, +0.097] | 1 / 1 / 29 | 1.000 |
 | medium_requests (n=15) | recall@5 | +0.000 | [+0.000, +0.000] | 0 / 0 / 15 | 1.000 |
 | medium_requests (n=15) | recall@10 | +0.000 | [+0.000, +0.000] | 0 / 0 / 15 | 1.000 |
 | medium_requests (n=15) | mrr | +0.011 | [+0.000, +0.033] | 1 / 0 / 14 | 1.000 |
@@ -126,7 +125,7 @@ Scored: 12 of 33 dev cases. Skipped: 19 cases without a saved EvidenceBundle (co
 | small_itsdangerous (n=15) | ndcg@10 | +0.000 | [+0.000, +0.000] | 0 / 0 / 15 | 1.000 |
 | small_itsdangerous (n=15) | gold_coverage_packed | +0.000 | [+0.000, +0.000] | 0 / 0 / 15 | 1.000 |
 
-On the three repos the two arms are identical on every recall metric and differ only in MRR on one query (medium_requests). On dev, G is higher on Recall@5 and nDCG@10 with intervals that exclude zero, but n = 12 (5 configuration, 7 application_code) and the sign tests are underpowered: treat as descriptive. Packed gold coverage is lower for G on one dev case (L keeps all gold in the packed context on all 12 cases, G on 11); see `per_query.csv`.
+On the three repos the two arms are identical on every recall metric and differ only in MRR on one query (medium_requests). On dev (31 cases, 8 variant groups), G is higher on Recall@5, MRR and nDCG@10 with intervals that exclude zero (application_code Recall@5 +0.400, p = 0.031; configuration MRR +0.109, p = 0.008). Packed gold coverage is equal (0.919 both; G better on one case, L on another): G moves gold higher in the ranking, but within the 2400 usable tokens both arms end up holding the same gold. Cases inside a variant group are not independent, so read this as strong descriptive evidence on dev, not as a test-split result.
 
 ### 3.5 Cost
 
@@ -135,7 +134,7 @@ On the three repos the two arms are identical on every recall metric and differ 
 | small_itsdangerous | 144 | 0.128 | 0.015 | 0.010 | 0.152 | 2.06 | 50 | 0 B |
 | medium_requests | 765 | 0.553 | 0.063 | 0.077 | 0.693 | 16.34 | 393 | 0 B |
 | complex_lab | 280 | 0.156 | 0.013 | 0.014 | 0.183 | 2.34 | 62 | 0 B |
-| dev (mean of 12 case trees) | 280 | 0.246 | 0.017 | 0.021 | 0.283 | 2.47 (max) | 62 | 0 B |
+| dev (mean of 31 case trees) | 280 | 0.244 | 0.013 | 0.012 | 0.270 | 2.38 (max) | 62 | 0 B |
 
 Index build for RET-L/RET-G is the base build above (graph, corpus, BM25; there is no separate per-method index), nothing is persisted. Whole-process peak working set of the run: 162.7 MB (includes Python and libraries). Query latency (graph and index prebuilt):
 
@@ -145,14 +144,32 @@ Index build for RET-L/RET-G is the base build above (graph, corpus, BM25; there 
 | ALL | RET-L | 3.7 |
 | complex_lab | RET-G | 2.4 |
 | complex_lab | RET-L | 2.6 |
-| dev | RET-G | 12.3 |
-| dev | RET-L | 10.1 |
+| dev | RET-G | 15.0 |
+| dev | RET-L | 10.9 |
 | medium_requests | RET-G | 6.6 |
 | medium_requests | RET-L | 6.8 |
 | small_itsdangerous | RET-G | 1.8 |
 | small_itsdangerous | RET-L | 1.7 |
 
 Hardware: Windows-11-10.0.26200-SP0, AMD64 Family 23 Model 8 Stepping 2, AuthenticAMD, 12 logical CPUs, Python 3.12.15; packages {'rank-bm25': '0.2.2', 'networkx': '3.7', 'numpy': '2.5.5', 'pydantic': '2.14.4'}. Run time 26.7 s (v5 dev bundles were rebuilt once earlier in the sandbox and cached under runs/bench_repos/dev_evidence_v5; this run reused them).
+
+### 3.6 Earlier 12-case dev run (Ruhan, `p5s06-baseline-run1`), kept for the record
+
+| qtype | method | n | R@1 | R@5 | R@10 | P@5 | MRR | nDCG@10 | file@1 | packed gold cov. | tokens |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| ALL | RET-G | 12 | 0.125 | 0.792 | 0.917 | 0.233 | 0.436 | 0.542 | 0.250 | 0.917 | 2393 |
+| ALL | RET-L | 12 | 0.125 | 0.375 | 0.875 | 0.133 | 0.369 | 0.474 | 0.250 | 1.000 | 2391 |
+| application_code | RET-G | 7 | 0.000 | 0.714 | 0.857 | 0.143 | 0.200 | 0.352 | 0.000 | 0.857 | 2393 |
+| application_code | RET-L | 7 | 0.000 | 0.143 | 0.857 | 0.029 | 0.136 | 0.285 | 0.000 | 1.000 | 2390 |
+| configuration | RET-G | 5 | 0.300 | 0.900 | 1.000 | 0.360 | 0.767 | 0.808 | 0.600 | 1.000 | 2393 |
+| configuration | RET-L | 5 | 0.300 | 0.700 | 0.900 | 0.280 | 0.695 | 0.739 | 0.600 | 1.000 | 2393 |
+
+Scored: 12 of 33 dev cases. Skipped: 19 cases without a saved EvidenceBundle (collecting these needs the live faulty lab; not done here, never invented) and:
+
+- shop_api-003: no retrieval target (runtime_dependency)
+- shop_api-004: no retrieval target (insufficient_evidence)
+
+G minus L on those 12: recall@5 +0.417 [+0.167, +0.667] p = 0.031; MRR +0.067 [+0.017, +0.132]; nDCG@10 +0.068 [+0.014, +0.123]; packed coverage -0.083 [-0.250, +0.000].
 
 ## 4. Observations (descriptive only)
 
@@ -163,10 +180,10 @@ Hardware: Windows-11-10.0.26200-SP0, AMD64 Family 23 Model 8 Stepping 2, Authent
 
 ## 5. Limitations
 
-- Small n: 15 queries per repo, 45 pooled, 12 dev cases; intervals are wide and most per-type cells have 6 to 10 queries. Queries within a repo are not independent samples of a population.
+- Small n: 15 queries per repo, 45 pooled, 31 dev cases from 8 variant groups; intervals are wide and most per-type cells have 6 to 10 queries. Queries within a repo are not independent samples of a population.
 - Labels were authored by Claude (the same model family that helps build this system) on Ruhan's behalf, from the code at the pinned commit. They need an independent second-person spot check (`benchmarks/retrieval/second_review.csv`). Query wording can favour lexical overlap with the code in the exact-identifier type by construction.
 - The repo suites feed free text, so the trace-frame and symptom anchors that define L and G in the real pipeline are mostly absent; they exercise the lexical part. The dev loader is the only place where the anchors and graph features are active.
-- Dev: 12 of 33 cases only (bundle availability, non-repairable classes). The dev lab is the same code as benchmark tier (c) but queries and labels are separate.
+- Dev: 31 of 33 cases (2 non-repairable), from 8 variant groups only. The dev lab is the same code as benchmark tier (c) but queries and labels are separate.
 - Corpus limits shared by all methods: overloaded methods are indexed by their first stub only; inheritance edges do not exist; class headers are capped at 12 lines.
 - Packing uses neutral reasons, so packed tokens are not byte-identical to production bundles; chars/4 is an estimate.
 - This is engineering validation of the harness and baselines. No arm is claimed better than another; no hypothesis from the review (H1 to H4) is tested here.

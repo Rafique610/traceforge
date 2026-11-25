@@ -67,3 +67,13 @@ def test_evidence_key_changes_with_inputs_and_stale_bundles_are_not_reused(tmp_p
     out.with_suffix(".key").write_text(k1, "utf-8")
     assert lc.bundle_current(out, case.case_id, k1)
     assert not lc.bundle_current(out, case.case_id, "0" * 64)  # collected from other inputs
+
+
+def test_sh_decodes_non_cp1252_output():
+    import sys
+
+    from traceforge.agent.lab_collect import sh
+
+    code = "import sys; sys.stdout.buffer.write(bytes([111, 107, 32, 0x81, 32, 0xE2, 0x9C, 0x93]))"
+    p = sh([sys.executable, "-c", code])
+    assert p.stdout.startswith("ok ") and p.stdout.endswith(chr(0x2713))

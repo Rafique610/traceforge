@@ -2,7 +2,7 @@
 
 Each step document has its own testing section. This page defines the levels, owners and the commands everything plugs into.
 
-**Commands (created in P0-S02/P0-S03, extended per step):** `task test` (backend pytest), `task lint` (ruff), `task web:test` (Vitest), `task lab:test`, `task sandbox:selftest`, `task dataset:validate`, `task eval:retrieval`, `task eval:report`, `task eval:run`.
+**Commands (created in P0-S02/P0-S03, extended per step):** `task test` (backend pytest), `task lint` (ruff), `task web:test` (Vitest), `task lab:test`, `task sandbox:selftest`, `task dataset:validate`, `task eval:retrieval`, `task bench:retrieval`, `task eval:report`, `task eval:run`.
 
 ## Unit testing
 | What | Owner | Approach | Success criteria |
@@ -18,7 +18,7 @@ Each step document has its own testing section. This page defines the levels, ow
 | Tool validation | Ruhan | Unknown tool, bad args, oversize args | Rejected and counted as invalid |
 | Diff policy | Ruhan | Path escape, test file, binary, oversize | All rejected with reason |
 | Metrics | Rafique | Hand-computed examples | Exact match to hand values |
-| Retrieval benchmark (P5-S06) | Rafique | Hand-computed metric cases; fixed-seed bootstrap; two runs identical; GraphFeatures-off equals L; leakage test (no hidden tests, patches, gold in chunks) | Metrics exact; byte-identical rankings; RC1 fingerprint `ee3d8d87...` unchanged **2026-11-25:** IMPLEMENTED, TESTED (25 tests). Code implemented by Ruhan's Claude-assisted session at the owner's direction on 2026-11-25; NOT reviewed by Rafique; tasks stay Rafique's. |
+| Retrieval benchmark (P5-S06) | Rafique | Hand-computed metric cases; fixed-seed bootstrap; two runs identical; GraphFeatures-off equals L; leakage test (no hidden tests, patches, gold in chunks) | Metrics exact; byte-identical rankings; RC1 fingerprint `ee3d8d87...` unchanged **2026-11-25:** IMPLEMENTED, TESTED (25 tests). Code implemented by Ruhan's Claude-assisted session at the owner's direction on 2026-11-25; NOT reviewed by Rafique; tasks stay Rafique's. **Reviewed and reproduced by Rafique 2026-11-25:** 26 tests pass (labels with pinned clones); repos numbers equal; dev 31 scored; rankings byte-identical across two runs; fingerprint unchanged; `task bench:retrieval`. COMPLETED (approved 25 Nov; label second check open). |
 | Chunk manifest, embedding cache, verifier (P5-S07) | Rafique | Fake embedder; six scenarios (edit, add, delete, rename, import change, model upgrade); crash and resume; verifier on tampered index | Only changed chunks re-embedded; ACTIVE never partial; verifier flags edits, missing vectors, wrong dims **2026-11-25:** IMPLEMENTED, TESTED (17 tests; six scenarios, crash safety, dims refusal). |
 | Dense and fusion arms (P5-S08) | Rafique | RRF on hand-computed lists; forced anchors first; dims mismatch raises; preregistered H1 to H4 | Thresholds reported pass/fail with CIs; ADR 0003 PROPOSED **2026-11-25:** done; preregistered NO-GO (H1 FAIL -0.094, H2 FAIL, H3 FAIL, H4 PASS); ADR 0003 PROPOSED, decision blank; retrieval-level evidence only. |
 | Overlay, traversal, evidence classes (P5-S12) | Rafique | Overlay never mutates the source graph; inheritance incl. external base -> `unknown`; evidence class per edge; budgets and cycle safety; identical output on two runs | All pass; RC1 fingerprint unchanged **2026-11-25:** IMPLEMENTED, TESTED (41 analysis tests incl. S12/S15/S16); ranker preregistered NO-GO. |

@@ -43,7 +43,9 @@ SCRATCH = (
 
 
 def sh(args: list[str], timeout: int = 600, check: bool = True) -> subprocess.CompletedProcess:
-    p = subprocess.run(args, capture_output=True, text=True, timeout=timeout)  # noqa: S603
+    p = subprocess.run(  # noqa: S603  (utf-8: Docker output is not cp1252 on Windows)
+        args, capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=timeout
+    )
     if check and p.returncode:
         raise RuntimeError(f"{args[:4]} failed: {p.stderr[-800:]}")
     return p

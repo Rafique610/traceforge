@@ -61,6 +61,7 @@ Check it works: open http://localhost:8000/docs, expand `GET /health`, click *Tr
 | `task db:revision NAME=...` | Create a migration from model changes |
 | `task contracts:schema` | Regenerate JSON Schema for the contracts |
 | `task spike:retrieval` | Rerun the P0-S06 retrieval spike (needs ripgrep: `winget install BurntSushi.ripgrep.MSVC`); results in `docs/research/limits-report.md` |
+| `task bench:retrieval SUITE=both` | P5-S06 retrieval benchmark, RET-L vs RET-G, zero tokens. Needs the pinned clones (`benchmarks/retrieval/README.md`) and dev bundles (`python -m traceforge.agent.lab_collect`); writes `results/retrieval/<run_id>/` |
 | `task llm:smoke PROVIDER=ollama` | One tool-call round trip through the gateway, then a cache-hit check |
 | `task agent:run CASE=all CONDITION=G0` | Run the pipeline agent on the sample cases (needs a model; see `.env.example`) |
 

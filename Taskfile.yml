@@ -187,6 +187,14 @@ tasks:
     cmds:
       - .venv/Scripts/python.exe -m traceforge.retrieval.e1 --manifest ../datasets/manifests/{{.SPLIT | default "dev"}}.json --repo-root ../datasets/cases --evidence-dir ../{{.EVIDENCE}} --out-dir ../runs/e1
 
+  bench:retrieval:
+    desc: "P5-S06 retrieval benchmark, RET-L vs RET-G (0 tokens): task bench:retrieval SUITE=both RUN_ID=my-run [-- --no-rebuild-v5]"
+    dir: backend
+    vars:
+      SUITE: '{{.SUITE | default "both"}}'
+    cmds:
+      - .venv/Scripts/python.exe -m traceforge.retrieval_bench --suite {{.SUITE}} {{if .RUN_ID}}--run-id {{.RUN_ID}}{{end}} {{.CLI_ARGS}}
+
   dataset:generate:
     desc: Regenerate the seed cases and datasets/manifests/dev.json (deterministic)
     cmds:

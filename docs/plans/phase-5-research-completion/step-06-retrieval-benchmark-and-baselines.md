@@ -14,10 +14,12 @@ Follow-up study **Retrieval modernization** (added 2026-11-24 at the project own
 | Reviewer | Muhammad Ruhan Kamran |
 | Priority | ESSENTIAL (for this study) |
 | Effort | 1.5 days (design doc: 1 to 1.5) |
-| Status | IMPLEMENTED, TESTED (25 tests); not reviewed, not approved |
+| Status | COMPLETED (approved 25 Nov 2026 after Rafique's review and reproduction; label second check still open) |
 | Branch | none (commit on `main`, D33) |
 
 **Status sync 2026-11-25.** Evidence: `backend/traceforge/retrieval_bench/`, `benchmarks/retrieval/` (itsdangerous 2.2.0 small, requests v2.32.3 medium, this repo's `lab/` complex; 45 queries, 98 gold units; labels Claude-authored, second check pending via `second_review.csv`), `docs/research/retrieval-benchmark-baselines.md`. Code implemented by Ruhan's Claude-assisted session at the owner's direction on 2026-11-25; NOT reviewed by Rafique; the task stays Rafique's.
+
+**Review 2026-11-25 (Rafique).** Reproduced on his laptop (runs `review-both-1`, `review-both-2`): repo suites identical to Ruhan's; all 33 dev bundles collected, 31 scored (G minus L recall@5 +0.274 [+0.145, +0.419], p = 0.001; packed coverage equal 0.919); rankings byte-identical; fingerprint unchanged. Gaps filled: `task bench:retrieval`, README and TESTING rows, results note updated to 31 cases, utf-8 decoding fix in `agent/lab_collect.py` (Docker output on Windows). Open: second-person check of the 98 labels (`benchmarks/retrieval/second_review.csv`).
 
 ## B. Objective
 An offline, reproducible benchmark that scores the existing arms RET-L (= current L) and RET-G (= current G) on the **dev split** (33 cases), so every later arm (P5-S08) is compared against measured baselines at an equal token budget. Gold labels are used by the scorer only.
@@ -42,14 +44,14 @@ An offline, reproducible benchmark that scores the existing arms RET-L (= curren
 7. Add a `task` target (or document the module command) and a README line.
 
 ## F. Checklist
-- [ ] Dev bundles inventory: which of the 33 have bundles, which were collected, which are skipped (with reason)
-- [ ] RET-L and RET-G scored with all metrics above
-- [ ] Bootstrap CIs and sign test implemented and unit-tested on hand-computed data
-- [ ] Equal-budget and budget-matched modes
-- [ ] Latency recorded per arm outside the fingerprinted path
-- [ ] Two runs give identical rankings
-- [ ] `code_fingerprint()` equals `ee3d8d87...` before and after; no file under `results/final` changed
-- [ ] README and TESTING_AND_VALIDATION row updated
+- [x] Dev bundles inventory: which of the 33 have bundles, which were collected, which are skipped (with reason)
+- [x] RET-L and RET-G scored with all metrics above
+- [x] Bootstrap CIs and sign test implemented and unit-tested on hand-computed data
+- [x] Equal-budget and budget-matched modes
+- [x] Latency recorded per arm outside the fingerprinted path
+- [x] Two runs give identical rankings
+- [x] `code_fingerprint()` equals `ee3d8d87...` before and after; no file under `results/final` changed
+- [x] README and TESTING_AND_VALIDATION row updated
 
 ## G. Expected deliverables
 Harness module(s) and CLI; `results/retrieval/<run_id>/` baseline tables; a short results note (numbers only from the saved run).

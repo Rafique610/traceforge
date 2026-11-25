@@ -5,7 +5,7 @@ Members come from the project docs: **Muhammad Rafique** and **Muhammad Ruhan Ka
 The split follows one rule: **each person owns whole folders**, and the two halves exchange data only through the five shared contracts (P0-S05). That lets both work at the same time with almost no waiting.
 
 ## 0. Progress at a glance
-**Updated before every commit by whoever commits** (rule in `docs/invariants/processes.md`). Last updated: 25 Nov 2026 (final status sync, see below); the Rafique column was last updated 23 Nov 2026 with P1-S03 and P3-S01 approved. On 24 Nov 2026 six Phase 5 tasks (P5-S06 to P5-S11, retrieval modernization study) were added at the owner's request; see section 7. On 25 Nov 2026 six more Phase 5 tasks (P5-S12 to P5-S17, root-cause and impact analysis study) were added as PROPOSED, pending owner approval (Q18).
+**Updated before every commit by whoever commits** (rule in `docs/invariants/processes.md`). Last updated: 25 Nov 2026 (final status sync, see below); the Rafique column was last updated 25 Nov 2026 with P5-S06 reviewed, reproduced and approved. On 24 Nov 2026 six Phase 5 tasks (P5-S06 to P5-S11, retrieval modernization study) were added at the owner's request; see section 7. On 25 Nov 2026 six more Phase 5 tasks (P5-S12 to P5-S17, root-cause and impact analysis study) were added as PROPOSED, pending owner approval (Q18).
 
 "Done" = approved by the step's owner. "Implemented" = code on `main` that its owner has not yet approved (much of Track A was written by Ruhan's Claude-assisted session; see section 7).
 
@@ -13,8 +13,8 @@ The split follows one rule: **each person owns whole folders**, and the two halv
 
 | | Muhammad Rafique (Track A) | Muhammad Ruhan Kamran (Track B) |
 |---|---|---|
-| **Steps done** | 4 / 28 (P0-S02, P0-S05, P1-S03, P3-S01); P0-S06 Part A done | 0 / 20 approved (none reviewed by Rafique); by label: 10 IMPLEMENTED, NOT VERIFIED; 10 PARTIALLY COMPLETE (incl. P5-S10, P5-S11, P5-S17); 0 COMPLETE & VERIFIED |
-| **Working on** | Dataset frozen and approved: test 151 (60/67/12/12), dev 33, 184/184 validated | Awaiting Rafique's review and owner approval; P0-S04 proposal approval evidence; ADR 0001 model decision (owner) |
+| **Steps done** | 5 / 28 (P0-S02, P0-S05, P1-S03, P3-S01, P5-S06); P0-S06 Part A done | 0 / 20 approved (none reviewed by Rafique); by label: 10 IMPLEMENTED, NOT VERIFIED; 10 PARTIALLY COMPLETE (incl. P5-S10, P5-S11, P5-S17); 0 COMPLETE & VERIFIED |
+| **Working on** | Reviewing the P5 work built by Ruhan's session: P5-S06 approved (31 dev cases reproduced); P5-S07 next | Awaiting Rafique's review and owner approval; P0-S04 proposal approval evidence; ADR 0001 model decision (owner) |
 | **Next up** | Review P1-S01/S02, P2-S01…S03; note the additive contract schema change (`agent_run_record`, `evidence_bundle`); P3-S02 metrics on real runs | Owner decisions: AxForge investigation for the real patch path (about 30k tokens), RC2 blind validation, ADR 0001; Q19 is DECIDED (reduced RC1 evaluation adopted, shortfall disclosed) |
 | **Waiting on the other** | Ruhan: model decision for experiments | — (frozen dataset now on `main`: unblocks P1-S07, P3-S04, P4-S01, P5-S03/S04) |
 
@@ -98,7 +98,7 @@ Shared (PR approved by both): `backend/traceforge/contracts/`, `main.py`, `confi
 - [ ] [P5-S01](phase-5-research-completion/step-01-deeper-graph.md) Deeper graph (TRAC-24)
 - [ ] [P5-S02](phase-5-research-completion/step-02-statistics.md) Statistics (TRAC-25)
 - [ ] [P5-S05](phase-5-research-completion/step-05-bugsinpy-subset.md) BugsInPy subset, optional (TRAC-27)
-- [ ] [P5-S06](phase-5-research-completion/step-06-retrieval-benchmark-and-baselines.md) Retrieval benchmark + baselines RET-L / RET-G (essential) — IMPLEMENTED, TESTED; not reviewed by Rafique
+- [x] [P5-S06](phase-5-research-completion/step-06-retrieval-benchmark-and-baselines.md) Retrieval benchmark + baselines RET-L / RET-G (essential) — COMPLETED 25 Nov (reviewed and reproduced by Rafique; label second check open)
 - [ ] [P5-S07](phase-5-research-completion/step-07-incremental-index-and-embedding-cache.md) Incremental chunk manifest, embedding cache, verifier (essential) — IMPLEMENTED, TESTED; not reviewed by Rafique
 - [ ] [P5-S08](phase-5-research-completion/step-08-embedding-retrieval-and-fusion.md) Embedding retrieval + fusion arms, ADR 0003 (essential, decision gate) — DONE, preregistered NO-GO; not reviewed by Rafique
 - [ ] [P5-S09](phase-5-research-completion/step-09-optional-reranking.md) Optional reranking (optional) — NOT STARTED, NOT TRIGGERED
