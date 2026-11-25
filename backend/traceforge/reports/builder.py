@@ -60,6 +60,13 @@ def _event_payload(events: list[AuditEvent], event_type: str) -> dict:
     return {}
 
 
+SYMPTOM_PREFIX = "SYMPTOM "  # items agent.symptom adds: the failing tests observed before any fix
+
+
+def _symptom_items(items: list) -> list:
+    return [i for i in items if (i.content or "").startswith(SYMPTOM_PREFIX)]
+
+
 def _ids(raw: object, known: set[str]) -> list[str]:
     return [i for i in raw if isinstance(i, str) and i in known] if isinstance(raw, list) else []
 
@@ -99,6 +106,10 @@ def build_report(db: Session, incident_id: uuid.UUID) -> Report | None:
     patch = repair.get_patch(db, incident_id)
     review = reviews.get_review(db, incident_id)
     usage = diag.get("model_usage")
+    # A lab incident has no typed-in symptom and the pipeline leaves symptom_evidence_ids empty,
+    # so fall back to the observed SYMPTOM evidence (test results, not AI text).
+    sym = _symptom_items(items)
+    observed = sym[0].content.removeprefix(SYMPTOM_PREFIX).strip() if sym else None
     return Report(
         header=Header(
             incident_id=inc.id,
@@ -109,8 +120,8 @@ def build_report(db: Session, incident_id: uuid.UUID) -> Report | None:
             state=inc.state,
             created_at=inc.created_at,
         ),
-        symptom=inc.symptom,
-        symptom_evidence_ids=_ids(diag.get("symptom_evidence_ids"), known),
+        symptom=inc.symptom or observed,
+        symptom_evidence_ids=_ids(diag.get("symptom_evidence_ids"), known) or [i.id for i in sym],
         root_cause=RootCause(status=status, cause_class=cause, target=target, evidence_ids=ev_ids),
         outcome=outcome,
         evidence=[

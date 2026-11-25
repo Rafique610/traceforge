@@ -10,6 +10,7 @@ from support import (
 )
 
 import traceforge.reports as reports_pkg
+from traceforge.incidents.models import EvidenceItemRow
 from traceforge.reports.builder import build_report
 from traceforge.reports.render import render_markdown
 
@@ -58,6 +59,29 @@ def test_every_id_resolves(db):
     assert known == {"EV-0001"}
     assert set(r.root_cause.evidence_ids) <= known
     assert set(r.symptom_evidence_ids) <= known
+
+
+def test_lab_incident_symptom_comes_from_observed_symptom_evidence(db):
+    inc = verified_incident(db)
+    for n, text in [
+        (2, "SYMPTOM summary: reproducer: 1 failed"),
+        (3, "SYMPTOM failing test: t.py"),
+    ]:
+        db.add(
+            EvidenceItemRow(
+                incident_id=inc.id, id=f"EV-000{n}", kind="issue", service="shop_api",
+                content=text, sha256="0" * 64,
+            )
+        )  # fmt: skip
+    db.commit()
+    r = build_report(db, inc.id)
+    assert r.symptom == "summary: reproducer: 1 failed"
+    assert r.symptom_evidence_ids == ["EV-0002", "EV-0003"]
+
+
+def test_typed_symptom_and_no_symptom_items_are_left_alone(db):
+    r = build_report(db, verified_incident(db).id)
+    assert r.symptom is None and r.symptom_evidence_ids == []
 
 
 def test_markdown_format(db, client):
