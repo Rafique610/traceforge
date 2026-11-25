@@ -36,3 +36,9 @@ Slot 2 is enabled only if `AXFORGE_API_KEY2` is set AND `runs/axforge_keys_verif
 3. AxForge only for approved official experiments, the final evaluation and the viva.
 
 Usage is recorded separately for BeatAPI, AxForge key 1 and AxForge key 2 (never merged). Report: `python -m traceforge.evaluation.usage_report` (from `backend/`).
+
+## Owner-reported balances (2026-11-25), NOT yet reconciled with the ledgers
+- **Key 2:** about 2.1M tokens remaining (owner, from the provider dashboard). The slot-2 ledger (`runs/axforge_usage_k2.jsonl`) shows 1,209,905 committed, which would leave about 1.79M against the 3M ceiling.
+- **Key 1:** about 1M remaining (owner, stated earlier). The slot-1 ledger shows 152,664 remaining against its ceiling.
+- **Reading:** the ledgers are conservative upper bounds (committed includes reservations and estimates), so the provider-side balances are higher. Until the owner approves a reconciliation, the code ceilings and the 4.8M planning ceiling are unchanged: combined remaining by ledger is 742,728. If the dashboard figures are right, real remaining is about 3.1M, or about 1.9M after the 1.2M official reserve.
+- No spend was made or authorised on the strength of these figures. Extending the repair evaluation by 15 sites (about 763k, see `a3-evidence-and-statistics.md`) or running RC2 blind validation needs the owner's explicit approval and a ledger reconciliation first.
