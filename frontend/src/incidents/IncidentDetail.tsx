@@ -28,12 +28,15 @@ export const POLL_MS = 2000
 /** Upper bound on investigate polling (about 5 minutes) so a stuck run cannot poll forever. */
 const MAX_INVESTIGATE_POLLS = 150
 
+const NOT_INVESTIGABLE =
+  'Only lab bugs can be investigated for now: the sandbox needs the bug’s code and tests. Start one from New incident › Lab bug.'
+
 function investigateErrorText(e: unknown): string {
   if (e instanceof ApiError) {
     if (e.status === 409) return 'This incident is already being investigated, or its current state does not allow a new investigation.'
     if (e.status === 503) return `No model provider is configured, so the investigation could not start. ${e.message}`.trim()
     if (e.status === 404) return 'This incident no longer exists.'
-    return `The investigation could not be started (error ${e.status}).`
+    return `The investigation could not be started (error ${e.status}): ${e.message}`
   }
   return 'Could not reach the server to start the investigation. Check your connection and try again.'
 }
@@ -260,7 +263,14 @@ export function IncidentDetail({ id }: { id: string }) {
             <a className="btn" href={`${BASE}/incidents/${id}/report?format=md`} target="_blank" rel="noreferrer">
               Report (Markdown)
             </a>
-            <button type="button" className="btn btn-primary" disabled={investigating || polling} aria-busy={investigating} onClick={investigate}>
+            <button
+              type="button"
+              className="btn btn-primary"
+              disabled={investigating || polling || !incident.case_id}
+              title={incident.case_id ? undefined : NOT_INVESTIGABLE}
+              aria-busy={investigating}
+              onClick={investigate}
+            >
               {investigating ? 'Investigating…' : 'Investigate'}
             </button>
           </>
@@ -270,6 +280,7 @@ export function IncidentDetail({ id }: { id: string }) {
       <div ref={statusRef} tabIndex={-1} role="status" aria-live="polite" className="muted">
         {investigateNote}
       </div>
+      {!incident.case_id && incident.state === 'CREATED' && <p className="muted">{NOT_INVESTIGABLE}</p>}
       {investigateError && (
         <p role="alert" className="error">
           {investigateError}

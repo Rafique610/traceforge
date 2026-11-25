@@ -2,10 +2,42 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { json } from '../test-utils'
-import { GitHubForm } from './NewIncident'
+import { GitHubForm, LabCaseForm, NewIncident } from './NewIncident'
 import { validateGitHubUrl } from './validate'
 
 afterEach(() => vi.unstubAllGlobals())
+
+describe('Lab bug form', () => {
+  it('lists the server lab bugs and creates a lab-case incident', async () => {
+    const created = { id: 'n1', case_id: 'shop_api-017', service: 'shop_api' }
+    const f = vi.fn((_url: string, init?: RequestInit) =>
+      init?.method === 'POST'
+        ? json(created, 201)
+        : json({ configured: true, cases: [
+            { case_id: 'shop_api-002', service: 'shop_api' },
+            { case_id: 'shop_api-017', service: 'shop_api' },
+          ] }),
+    )
+    vi.stubGlobal('fetch', f)
+    const onCreated = vi.fn()
+    render(<NewIncident onCreated={onCreated} />)
+    const select = await screen.findByLabelText('Lab bug')
+    await screen.findByRole('option', { name: 'shop_api-017 (shop_api)' })
+    await userEvent.selectOptions(select, 'shop_api-017')
+    await userEvent.click(screen.getByRole('button', { name: 'Create incident' }))
+    const post = f.mock.calls.find(([, init]) => (init as RequestInit)?.method === 'POST')!
+    expect(post[0]).toBe('/api/incidents')
+    expect(JSON.parse((post[1] as RequestInit).body as string)).toEqual({ case_id: 'shop_api-017', service: 'shop_api' })
+    expect(onCreated).toHaveBeenCalledWith(created)
+  })
+
+  it('explains an empty list instead of offering a dead button', async () => {
+    vi.stubGlobal('fetch', vi.fn(() => json({ configured: false, cases: [] })))
+    render(<LabCaseForm onCreated={() => {}} />)
+    expect(await screen.findByText(/No dataset manifest is configured/)).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Create incident' })).toBeDisabled()
+  })
+})
 
 describe('GitHub form validation', () => {
   it('validates URLs', () => {

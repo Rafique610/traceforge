@@ -9,6 +9,7 @@ from traceforge.health.http import RequestHygieneMiddleware, register_error_hand
 from traceforge.health.router import router as health_router
 from traceforge.incidents.router import register_handlers as register_incident_handlers
 from traceforge.incidents.router import router as incidents_router
+from traceforge.investigation import lab_cases_router
 from traceforge.investigation import router as investigation_router
 from traceforge.ratings.router import router as ratings_router
 from traceforge.reports.router import router as reports_router
@@ -31,6 +32,7 @@ register_error_handlers(app)
 app.include_router(health_router)
 app.include_router(incidents_router)
 app.include_router(investigation_router)
+app.include_router(lab_cases_router)
 app.include_router(github_router)
 app.include_router(reports_router)
 app.include_router(reviews_router)

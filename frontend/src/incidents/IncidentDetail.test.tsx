@@ -172,6 +172,26 @@ describe('IncidentDetail investigate', () => {
     expect(alert).toHaveTextContent('OPENROUTER_API_KEY is not set')
   })
 
+  it('shows the server reason for a 422', async () => {
+    setup(() => res({ detail: 'no saved evidence for case c1' }, 422), ['CREATED'])
+    render(<IncidentDetail id="i1" />)
+    await screen.findByRole('heading', { name: 'Summary' })
+    await click()
+    expect(await screen.findByRole('alert')).toHaveTextContent('(error 422): no saved evidence for case c1')
+  })
+
+  it('disables Investigate and says why for an incident that is not a lab bug', async () => {
+    mockRoutes({
+      'GET /incidents/i1': { ...incident('CREATED'), case_id: null, source: 'manual' },
+      'GET /incidents/i1/report': baseReport(),
+      'GET /incidents/i1/evidence': evidence,
+    })
+    render(<IncidentDetail id="i1" />)
+    await screen.findByRole('heading', { name: 'Summary' })
+    expect(screen.getByRole('button', { name: 'Investigate' })).toBeDisabled()
+    expect(screen.getByText(/Only lab bugs can be investigated/)).toBeInTheDocument()
+  })
+
   it('shows a network error without a raw stack', async () => {
     setup(() => Promise.reject(new TypeError('Failed to fetch')), ['CREATED'])
     render(<IncidentDetail id="i1" />)

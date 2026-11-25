@@ -82,6 +82,12 @@ export interface GitHubIntake {
   service?: string | null
 }
 
+/** GET /lab-cases: lab bugs this server can investigate (id and service only, never the answer). */
+export interface LabCaseList {
+  configured: boolean
+  cases: { case_id: string; service: string }[]
+}
+
 export interface GitHubIntakeOut {
   incident: Incident
   evidence_id: string

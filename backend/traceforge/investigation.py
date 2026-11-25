@@ -15,6 +15,7 @@ import threading
 import uuid
 from collections.abc import Callable
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Annotated, Any
 
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
@@ -33,6 +34,35 @@ from traceforge.incidents.states import State
 
 log = logging.getLogger(__name__)
 router = APIRouter(prefix="/incidents", tags=["investigation"])
+lab_cases_router = APIRouter(prefix="/lab-cases", tags=["investigation"])
+
+NOT_A_LAB_BUG = (
+    "this incident is not linked to a lab bug, and only lab bugs can be investigated for now "
+    "(the sandbox needs the bug's repository and tests); create one from New incident > Lab bug"
+)
+
+
+def _has_bundle(settings: Settings, case_id: str) -> bool:
+    return (settings.evidence_dir / f"{case_id}.json").is_file()
+
+
+@lab_cases_router.get("")
+def list_lab_cases(settings: Annotated[Settings, Depends(get_settings)]) -> dict:
+    """Lab bugs Investigate can run on this server: in the configured manifest and with a saved
+    evidence bundle. Only id and service are returned: cause and fault family are the answer."""
+    if not settings.manifest:
+        return {"configured": False, "cases": []}
+    try:
+        raw = json.loads(Path(settings.manifest).read_text("utf-8"))
+    except (OSError, ValueError):
+        return {"configured": False, "cases": []}
+    cases = [
+        {"case_id": c["case_id"], "service": c["service"]}
+        for c in raw
+        if _has_bundle(settings, c["case_id"])
+    ]
+    return {"configured": True, "cases": sorted(cases, key=lambda c: c["case_id"])}
+
 
 _running: set[uuid.UUID] = set()
 _lock = threading.Lock()
@@ -114,6 +144,11 @@ class InvestigationFactory:
             raise HTTPException(
                 422, f"case {incident.case_id!r} is not in the configured manifest"
             ) from None
+        if not _has_bundle(settings, incident.case_id):
+            raise HTTPException(
+                422, f"no saved evidence for case {incident.case_id!r} on this server, so it "
+                "cannot be investigated here; pick a lab bug from New incident",
+            )  # fmt: skip
 
     def build(self, settings: Settings, incident: Incident) -> Plan:  # pragma: no cover (live)
         from functools import partial
@@ -266,7 +301,7 @@ def start_investigation(
     if inc is None:
         raise HTTPException(404, "incident not found")
     if not inc.case_id:
-        raise HTTPException(422, "only incidents with a case_id can be investigated")
+        raise HTTPException(422, NOT_A_LAB_BUG)
     if inc.state is not State.CREATED:
         raise HTTPException(409, f"incident is {inc.state}; only CREATED incidents can start")
     factory.check(settings, inc)  # 503 / 422 before anything starts
