@@ -1,0 +1,9 @@
+services:
+  ledger:
+    build: .
+    command: python -m app.transfer
+    environment:
+      FEE_RATE: "0.01"
+      DEFAULT_CURRENCY: USD
+  db:
+    image: postgres:16

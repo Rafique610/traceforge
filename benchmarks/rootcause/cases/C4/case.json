@@ -1,0 +1,40 @@
+{
+  "chain": [
+    "app/accounts.py::Account.withdraw",
+    "app/accounts.py::Account._debit",
+    "app/fees.py::with_fee",
+    "app/fees.py::fee"
+  ],
+  "decoys": [
+    "app/fees.py::with_fee",
+    "app/accounts.py::Account._debit"
+  ],
+  "derivation": "Account.withdraw -> _debit -> with_fee -> fee (3 hops). The edit makes fee(100) = 0.01 (rate squared) so the withdrawn cost is 100.01 instead of 101. with_fee only adds fee to the amount and is correct.",
+  "edits": [
+    {
+      "kind": "replace",
+      "new": "amount * settings.FEE_RATE ** 2, 2)",
+      "old": "amount * settings.FEE_RATE, 2)",
+      "path": "app/fees.py"
+    }
+  ],
+  "entry": "app/accounts.py::Account.withdraw",
+  "extra_deps": [
+    "app/fees.py::with_fee",
+    "cfg:FEE_RATE"
+  ],
+  "family": "C",
+  "gold": [
+    "app/fees.py::fee"
+  ],
+  "gold_files": [
+    "app/fees.py"
+  ],
+  "id": "C4",
+  "primary_test": "tests/test_accounts.py::test_withdraw_cost",
+  "project": "L",
+  "title": "fee squared: three hops below Account.withdraw",
+  "tree": {
+    "repo": "repo"
+  }
+}

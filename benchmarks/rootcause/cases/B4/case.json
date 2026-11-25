@@ -1,0 +1,37 @@
+{
+  "chain": [
+    "app/orders.py::create_order",
+    "app/inventory.py::Stock.reserve",
+    "app/inventory.py::Stock.add"
+  ],
+  "decoys": [
+    "app/inventory.py::Stock.reserve"
+  ],
+  "derivation": "The test adds 2 then 3 units and reserves 5 through create_order. The edit makes add keep only the last quantity (3), so reserve raises 'insufficient stock' in Stock.reserve. The raising frame is reserve but the defect is add, which is called by the TEST, not by create_order: the link is shared state (self.items) with no call edge. Hard by construction; the only graph route is test coverage.",
+  "edits": [
+    {
+      "kind": "replace",
+      "new": "self.items[sku] = qty",
+      "old": "self.items[sku] = self.available(sku) + qty",
+      "path": "app/inventory.py"
+    }
+  ],
+  "entry": "app/orders.py::create_order",
+  "extra_deps": [
+    "app/inventory.py::Stock.available"
+  ],
+  "family": "B",
+  "gold": [
+    "app/inventory.py::Stock.add"
+  ],
+  "gold_files": [
+    "app/inventory.py"
+  ],
+  "id": "B4",
+  "primary_test": "tests/test_orders.py::test_create_order_after_two_adds",
+  "project": "S",
+  "title": "Stock.add overwrites instead of accumulating (state written by the test)",
+  "tree": {
+    "repo": "repo"
+  }
+}

@@ -82,3 +82,6 @@ Revised proposal PDF (kept outside the public repo because it lists roll numbers
 
 ## J. Definition of done
 Revised PDF reviewed by Rafique and sent; approval saved, or requested changes logged as tasks.
+
+## Supervisor confirmation, face to face (reported by the owner, 2026-11-25)
+The owner (Ruhan) reports that he asked the supervisor in person whether to go ahead with the revised proposal and the supervisor said yes. This is the owner's account only: no date, written note or signature is on file, and nothing here is presented as written approval. Evidence on disk remains the 18 Nov 2026 email ("You may proceed with the project after incorporating the recommended changes") and the group's own note that verbal approval is not a signed or written document. P0-S04 stays PARTIALLY COMPLETE until the owner decides whether this is sufficient for the submission.

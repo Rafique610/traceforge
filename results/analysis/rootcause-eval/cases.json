@@ -1,0 +1,2836 @@
+{
+ "impact": [
+  {
+   "arms": {
+    "BM25-select": {
+     "detected": 1,
+     "frac_suite": 0.5,
+     "sel_recall": 0.2857142857142857,
+     "selected": [
+      "tests/test_cache.py::test_connect",
+      "tests/test_money.py::test_apply_pct",
+      "tests/test_money.py::test_round_money",
+      "tests/test_pricing.py::test_discount",
+      "tests/test_pricing.py::test_gross_with_discount",
+      "tests/test_pricing.py::test_net_price",
+      "tests/test_pricing.py::test_tax"
+     ]
+    },
+    "IMP-graph": {
+     "dep_precision": 1.0,
+     "dep_recall": 1.0,
+     "detected": 1,
+     "direct_recall": 1.0,
+     "fallback": null,
+     "flag_recall": 1.0,
+     "flags": [
+      "signature_change_external_callers:app/pricing.py::net_price"
+     ],
+     "fp_flags": 0,
+     "frac_suite": 0.5,
+     "hidden_leak": 0,
+     "ms": 42.10730001796037,
+     "n_not_analysable": 1,
+     "n_reported": 3,
+     "report_tokens": 878,
+     "sel_recall": 1.0,
+     "selected": [
+      "tests/test_orders.py::test_create_order",
+      "tests/test_orders.py::test_create_order_after_two_adds",
+      "tests/test_orders.py::test_create_order_exact_stock",
+      "tests/test_orders.py::test_quote",
+      "tests/test_pricing.py::test_gross_plain",
+      "tests/test_pricing.py::test_gross_with_discount",
+      "tests/test_pricing.py::test_net_price"
+     ],
+     "sha": "6b8f7793f8057fcc730d34643c53d0746a8f3148243525ff06dd7e069bbf8955"
+    },
+    "IMP-overlay": {
+     "dep_precision": 1.0,
+     "dep_recall": 1.0,
+     "detected": 1,
+     "direct_recall": 1.0,
+     "fallback": null,
+     "flag_recall": 1.0,
+     "flags": [
+      "signature_change_external_callers:app/pricing.py::net_price"
+     ],
+     "fp_flags": 0,
+     "frac_suite": 0.5,
+     "hidden_leak": 0,
+     "ms": 84.98730001156218,
+     "n_not_analysable": 1,
+     "n_reported": 3,
+     "report_tokens": 879,
+     "sel_recall": 1.0,
+     "selected": [
+      "tests/test_orders.py::test_create_order",
+      "tests/test_orders.py::test_create_order_after_two_adds",
+      "tests/test_orders.py::test_create_order_exact_stock",
+      "tests/test_orders.py::test_quote",
+      "tests/test_pricing.py::test_gross_plain",
+      "tests/test_pricing.py::test_gross_with_discount",
+      "tests/test_pricing.py::test_net_price"
+     ],
+     "sha": "64d4f027aff99e055e1260ebe0d95d57dfa9e060447af631cf051f1cc0560516"
+    },
+    "full-suite": {
+     "detected": 1,
+     "frac_suite": 1.0,
+     "sel_recall": 1.0,
+     "selected": [
+      "tests/test_cache.py::test_connect",
+      "tests/test_inventory.py::test_reserve_exact",
+      "tests/test_inventory.py::test_insufficient",
+      "tests/test_money.py::test_round_money",
+      "tests/test_money.py::test_apply_pct",
+      "tests/test_orders.py::test_quote",
+      "tests/test_orders.py::test_create_order",
+      "tests/test_orders.py::test_create_order_exact_stock",
+      "tests/test_orders.py::test_create_order_after_two_adds",
+      "tests/test_pricing.py::test_net_price",
+      "tests/test_pricing.py::test_discount",
+      "tests/test_pricing.py::test_tax",
+      "tests/test_pricing.py::test_gross_plain",
+      "tests/test_pricing.py::test_gross_with_discount"
+     ]
+    }
+   },
+   "family": "F",
+   "id": "F1",
+   "invalid": false,
+   "predicted_failing": [
+    "tests/test_orders.py::test_create_order",
+    "tests/test_orders.py::test_create_order_after_two_adds",
+    "tests/test_orders.py::test_create_order_exact_stock",
+    "tests/test_orders.py::test_quote",
+    "tests/test_pricing.py::test_gross_plain",
+    "tests/test_pricing.py::test_gross_with_discount",
+    "tests/test_pricing.py::test_net_price"
+   ],
+   "prediction_matches": true,
+   "suite": 14,
+   "true_failing": [
+    "tests/test_orders.py::test_create_order",
+    "tests/test_orders.py::test_create_order_after_two_adds",
+    "tests/test_orders.py::test_create_order_exact_stock",
+    "tests/test_orders.py::test_quote",
+    "tests/test_pricing.py::test_gross_plain",
+    "tests/test_pricing.py::test_gross_with_discount",
+    "tests/test_pricing.py::test_net_price"
+   ]
+  },
+  {
+   "arms": {
+    "BM25-select": {
+     "detected": 1,
+     "frac_suite": 0.7857142857142857,
+     "sel_recall": 1.0,
+     "selected": [
+      "tests/test_cache.py::test_connect",
+      "tests/test_inventory.py::test_insufficient",
+      "tests/test_inventory.py::test_reserve_exact",
+      "tests/test_money.py::test_apply_pct",
+      "tests/test_money.py::test_round_money",
+      "tests/test_orders.py::test_create_order",
+      "tests/test_orders.py::test_create_order_after_two_adds",
+      "tests/test_orders.py::test_create_order_exact_stock",
+      "tests/test_pricing.py::test_gross_plain",
+      "tests/test_pricing.py::test_gross_with_discount",
+      "tests/test_pricing.py::test_tax"
+     ]
+    },
+    "IMP-graph": {
+     "dep_precision": 1.0,
+     "dep_recall": 1.0,
+     "detected": 1,
+     "direct_recall": 1.0,
+     "fallback": null,
+     "flag_recall": null,
+     "flags": [],
+     "fp_flags": 0,
+     "frac_suite": 0.7857142857142857,
+     "hidden_leak": 0,
+     "ms": 42.03750001033768,
+     "n_not_analysable": 1,
+     "n_reported": 7,
+     "report_tokens": 1285,
+     "sel_recall": 1.0,
+     "selected": [
+      "tests/test_money.py::test_apply_pct",
+      "tests/test_money.py::test_round_money",
+      "tests/test_orders.py::test_create_order",
+      "tests/test_orders.py::test_create_order_after_two_adds",
+      "tests/test_orders.py::test_create_order_exact_stock",
+      "tests/test_orders.py::test_quote",
+      "tests/test_pricing.py::test_discount",
+      "tests/test_pricing.py::test_gross_plain",
+      "tests/test_pricing.py::test_gross_with_discount",
+      "tests/test_pricing.py::test_net_price",
+      "tests/test_pricing.py::test_tax"
+     ],
+     "sha": "e48fab1ff93c122cf1fdc4c50207a2144f84869ef579dfb4bb9859f3bd1618a7"
+    },
+    "IMP-overlay": {
+     "dep_precision": 1.0,
+     "dep_recall": 1.0,
+     "detected": 1,
+     "direct_recall": 1.0,
+     "fallback": null,
+     "flag_recall": null,
+     "flags": [],
+     "fp_flags": 0,
+     "frac_suite": 0.7857142857142857,
+     "hidden_leak": 0,
+     "ms": 84.6227000001818,
+     "n_not_analysable": 1,
+     "n_reported": 7,
+     "report_tokens": 1285,
+     "sel_recall": 1.0,
+     "selected": [
+      "tests/test_money.py::test_apply_pct",
+      "tests/test_money.py::test_round_money",
+      "tests/test_orders.py::test_create_order",
+      "tests/test_orders.py::test_create_order_after_two_adds",
+      "tests/test_orders.py::test_create_order_exact_stock",
+      "tests/test_orders.py::test_quote",
+      "tests/test_pricing.py::test_discount",
+      "tests/test_pricing.py::test_gross_plain",
+      "tests/test_pricing.py::test_gross_with_discount",
+      "tests/test_pricing.py::test_net_price",
+      "tests/test_pricing.py::test_tax"
+     ],
+     "sha": "9f8912f3d7e05aa1b2de222c988951ed6f95652058f2aecd2f18da4a17a5b980"
+    },
+    "full-suite": {
+     "detected": 1,
+     "frac_suite": 1.0,
+     "sel_recall": 1.0,
+     "selected": [
+      "tests/test_cache.py::test_connect",
+      "tests/test_inventory.py::test_reserve_exact",
+      "tests/test_inventory.py::test_insufficient",
+      "tests/test_money.py::test_round_money",
+      "tests/test_money.py::test_apply_pct",
+      "tests/test_orders.py::test_quote",
+      "tests/test_orders.py::test_create_order",
+      "tests/test_orders.py::test_create_order_exact_stock",
+      "tests/test_orders.py::test_create_order_after_two_adds",
+      "tests/test_pricing.py::test_net_price",
+      "tests/test_pricing.py::test_discount",
+      "tests/test_pricing.py::test_tax",
+      "tests/test_pricing.py::test_gross_plain",
+      "tests/test_pricing.py::test_gross_with_discount"
+     ]
+    }
+   },
+   "family": "F",
+   "id": "F2",
+   "invalid": false,
+   "predicted_failing": [
+    "tests/test_money.py::test_round_money"
+   ],
+   "prediction_matches": true,
+   "suite": 14,
+   "true_failing": [
+    "tests/test_money.py::test_round_money"
+   ]
+  },
+  {
+   "arms": {
+    "BM25-select": {
+     "detected": 1,
+     "frac_suite": 0.7272727272727273,
+     "sel_recall": 0.625,
+     "selected": [
+      "tests/test_accounts.py::test_deposit",
+      "tests/test_accounts.py::test_savings_limit",
+      "tests/test_accounts.py::test_withdraw_cost",
+      "tests/test_convert.py::test_convert_eur_usd",
+      "tests/test_convert.py::test_convert_usd_eur",
+      "tests/test_fees.py::test_fee",
+      "tests/test_fees.py::test_with_fee",
+      "tests/test_rates.py::test_lookup"
+     ]
+    },
+    "IMP-graph": {
+     "dep_precision": 1.0,
+     "dep_recall": 0.75,
+     "detected": 1,
+     "direct_recall": 1.0,
+     "fallback": null,
+     "flag_recall": 0.5,
+     "flags": [
+      "removed_symbol_still_referenced:app/fees.py::with_fee"
+     ],
+     "fp_flags": 0,
+     "frac_suite": 0.36363636363636365,
+     "hidden_leak": 0,
+     "ms": 40.30900000361726,
+     "n_not_analysable": 2,
+     "n_reported": 3,
+     "report_tokens": 742,
+     "sel_recall": 0.5,
+     "selected": [
+      "tests/test_accounts.py::test_savings_limit",
+      "tests/test_accounts.py::test_savings_withdraw",
+      "tests/test_accounts.py::test_withdraw_cost",
+      "tests/test_fees.py::test_with_fee"
+     ],
+     "sha": "fefafef8c7a731cfc4556d95236668621b6ca9723a7ad9caf5bbcd024672c3fd"
+    },
+    "IMP-overlay": {
+     "dep_precision": 1.0,
+     "dep_recall": 1.0,
+     "detected": 1,
+     "direct_recall": 1.0,
+     "fallback": null,
+     "flag_recall": 1.0,
+     "flags": [
+      "import_time_break:app/fees.py::with_fee",
+      "removed_symbol_still_referenced:app/fees.py::with_fee"
+     ],
+     "fp_flags": 0,
+     "frac_suite": 0.7272727272727273,
+     "hidden_leak": 0,
+     "ms": 95.46809998573735,
+     "n_not_analysable": 3,
+     "n_reported": 4,
+     "report_tokens": 1109,
+     "sel_recall": 1.0,
+     "selected": [
+      "tests/test_accounts.py::test_deposit",
+      "tests/test_accounts.py::test_savings_limit",
+      "tests/test_accounts.py::test_savings_withdraw",
+      "tests/test_accounts.py::test_withdraw_cost",
+      "tests/test_fees.py::test_fee",
+      "tests/test_fees.py::test_with_fee",
+      "tests/test_report.py::test_total_usd",
+      "tests/test_transfer.py::test_transfer_converts"
+     ],
+     "sha": "4485655aa4285241e0dc7c2df6de14bd38c0ac80179c62adb6e3f020b45e8073"
+    },
+    "full-suite": {
+     "detected": 1,
+     "frac_suite": 1.0,
+     "sel_recall": 1.0,
+     "selected": [
+      "tests/test_accounts.py::test_deposit",
+      "tests/test_accounts.py::test_withdraw_cost",
+      "tests/test_accounts.py::test_savings_withdraw",
+      "tests/test_accounts.py::test_savings_limit",
+      "tests/test_convert.py::test_convert_usd_eur",
+      "tests/test_convert.py::test_convert_eur_usd",
+      "tests/test_fees.py::test_fee",
+      "tests/test_fees.py::test_with_fee",
+      "tests/test_rates.py::test_lookup",
+      "tests/test_report.py::test_total_usd",
+      "tests/test_transfer.py::test_transfer_converts"
+     ]
+    }
+   },
+   "family": "F",
+   "id": "F3",
+   "invalid": false,
+   "predicted_failing": [
+    "tests/test_accounts.py::test_deposit",
+    "tests/test_accounts.py::test_savings_limit",
+    "tests/test_accounts.py::test_savings_withdraw",
+    "tests/test_accounts.py::test_withdraw_cost",
+    "tests/test_fees.py::test_fee",
+    "tests/test_fees.py::test_with_fee",
+    "tests/test_report.py::test_total_usd",
+    "tests/test_transfer.py::test_transfer_converts"
+   ],
+   "prediction_matches": true,
+   "suite": 11,
+   "true_failing": [
+    "tests/test_accounts.py::test_deposit",
+    "tests/test_accounts.py::test_savings_limit",
+    "tests/test_accounts.py::test_savings_withdraw",
+    "tests/test_accounts.py::test_withdraw_cost",
+    "tests/test_fees.py::test_fee",
+    "tests/test_fees.py::test_with_fee",
+    "tests/test_report.py::test_total_usd",
+    "tests/test_transfer.py::test_transfer_converts"
+   ]
+  },
+  {
+   "arms": {
+    "BM25-select": {
+     "detected": 1,
+     "frac_suite": 0.5,
+     "sel_recall": 0.2857142857142857,
+     "selected": [
+      "tests/test_cache.py::test_connect",
+      "tests/test_inventory.py::test_insufficient",
+      "tests/test_inventory.py::test_reserve_exact",
+      "tests/test_money.py::test_apply_pct",
+      "tests/test_money.py::test_round_money",
+      "tests/test_orders.py::test_create_order",
+      "tests/test_pricing.py::test_tax"
+     ]
+    },
+    "IMP-graph": {
+     "dep_precision": null,
+     "dep_recall": 0.0,
+     "detected": 0,
+     "direct_recall": 0.0,
+     "fallback": "full_suite",
+     "flag_recall": 0.0,
+     "flags": [],
+     "fp_flags": 0,
+     "frac_suite": 0.0,
+     "hidden_leak": 0,
+     "ms": 41.05390000040643,
+     "n_not_analysable": 0,
+     "n_reported": 0,
+     "report_tokens": 97,
+     "sel_recall": 0.0,
+     "selected": [],
+     "sha": "9200d186b7a3b34ea8b587c98f9e475b4d8d87a7970229003f737cd209faa286"
+    },
+    "IMP-overlay": {
+     "dep_precision": 1.0,
+     "dep_recall": 1.0,
+     "detected": 1,
+     "direct_recall": 1.0,
+     "fallback": null,
+     "flag_recall": 1.0,
+     "flags": [
+      "config_default_changed:cfg:TAX_RATE"
+     ],
+     "fp_flags": 0,
+     "frac_suite": 0.5,
+     "hidden_leak": 0,
+     "ms": 85.07540001301095,
+     "n_not_analysable": 0,
+     "n_reported": 4,
+     "report_tokens": 905,
+     "sel_recall": 1.0,
+     "selected": [
+      "tests/test_orders.py::test_create_order",
+      "tests/test_orders.py::test_create_order_after_two_adds",
+      "tests/test_orders.py::test_create_order_exact_stock",
+      "tests/test_orders.py::test_quote",
+      "tests/test_pricing.py::test_gross_plain",
+      "tests/test_pricing.py::test_gross_with_discount",
+      "tests/test_pricing.py::test_tax"
+     ],
+     "sha": "a238ef8ae7bda7251d17c6eaff262bb7515cdd3c32a8abbaa980e34e3b059d98"
+    },
+    "full-suite": {
+     "detected": 1,
+     "frac_suite": 1.0,
+     "sel_recall": 1.0,
+     "selected": [
+      "tests/test_cache.py::test_connect",
+      "tests/test_inventory.py::test_reserve_exact",
+      "tests/test_inventory.py::test_insufficient",
+      "tests/test_money.py::test_round_money",
+      "tests/test_money.py::test_apply_pct",
+      "tests/test_orders.py::test_quote",
+      "tests/test_orders.py::test_create_order",
+      "tests/test_orders.py::test_create_order_exact_stock",
+      "tests/test_orders.py::test_create_order_after_two_adds",
+      "tests/test_pricing.py::test_net_price",
+      "tests/test_pricing.py::test_discount",
+      "tests/test_pricing.py::test_tax",
+      "tests/test_pricing.py::test_gross_plain",
+      "tests/test_pricing.py::test_gross_with_discount"
+     ]
+    }
+   },
+   "family": "F",
+   "id": "F4",
+   "invalid": false,
+   "predicted_failing": [
+    "tests/test_orders.py::test_create_order",
+    "tests/test_orders.py::test_create_order_after_two_adds",
+    "tests/test_orders.py::test_create_order_exact_stock",
+    "tests/test_orders.py::test_quote",
+    "tests/test_pricing.py::test_gross_plain",
+    "tests/test_pricing.py::test_gross_with_discount",
+    "tests/test_pricing.py::test_tax"
+   ],
+   "prediction_matches": true,
+   "suite": 14,
+   "true_failing": [
+    "tests/test_orders.py::test_create_order",
+    "tests/test_orders.py::test_create_order_after_two_adds",
+    "tests/test_orders.py::test_create_order_exact_stock",
+    "tests/test_orders.py::test_quote",
+    "tests/test_pricing.py::test_gross_plain",
+    "tests/test_pricing.py::test_gross_with_discount",
+    "tests/test_pricing.py::test_tax"
+   ]
+  },
+  {
+   "arms": {
+    "BM25-select": {
+     "detected": 1,
+     "frac_suite": 0.36363636363636365,
+     "sel_recall": 0.5,
+     "selected": [
+      "tests/test_accounts.py::test_savings_limit",
+      "tests/test_accounts.py::test_savings_withdraw",
+      "tests/test_accounts.py::test_withdraw_cost",
+      "tests/test_fees.py::test_fee"
+     ]
+    },
+    "IMP-graph": {
+     "dep_precision": null,
+     "dep_recall": 0.0,
+     "detected": 1,
+     "direct_recall": 0.0,
+     "fallback": null,
+     "flag_recall": 0.0,
+     "flags": [],
+     "fp_flags": 0,
+     "frac_suite": 0.09090909090909091,
+     "hidden_leak": 0,
+     "ms": 42.35510001308285,
+     "n_not_analysable": 1,
+     "n_reported": 0,
+     "report_tokens": 246,
+     "sel_recall": 0.5,
+     "selected": [
+      "tests/test_accounts.py::test_withdraw_cost"
+     ],
+     "sha": "221a4729248bc1adb6cfd1a05d861338542984e94b6ccfc01c56765b788744f8"
+    },
+    "IMP-overlay": {
+     "dep_precision": 1.0,
+     "dep_recall": 1.0,
+     "detected": 1,
+     "direct_recall": 1.0,
+     "fallback": null,
+     "flag_recall": 1.0,
+     "flags": [
+      "signature_change_external_callers:app/accounts.py::Account.withdraw",
+      "signature_change_overriders:app/accounts.py::Account.withdraw"
+     ],
+     "fp_flags": 0,
+     "frac_suite": 0.36363636363636365,
+     "hidden_leak": 0,
+     "ms": 97.60860001551919,
+     "n_not_analysable": 1,
+     "n_reported": 2,
+     "report_tokens": 668,
+     "sel_recall": 1.0,
+     "selected": [
+      "tests/test_accounts.py::test_savings_limit",
+      "tests/test_accounts.py::test_savings_withdraw",
+      "tests/test_accounts.py::test_withdraw_cost",
+      "tests/test_transfer.py::test_transfer_converts"
+     ],
+     "sha": "8bc6cb3407f3dff969f5598b4554ca9bafec41e8bb53b963d071dcc00bed2b24"
+    },
+    "full-suite": {
+     "detected": 1,
+     "frac_suite": 1.0,
+     "sel_recall": 1.0,
+     "selected": [
+      "tests/test_accounts.py::test_deposit",
+      "tests/test_accounts.py::test_withdraw_cost",
+      "tests/test_accounts.py::test_savings_withdraw",
+      "tests/test_accounts.py::test_savings_limit",
+      "tests/test_convert.py::test_convert_usd_eur",
+      "tests/test_convert.py::test_convert_eur_usd",
+      "tests/test_fees.py::test_fee",
+      "tests/test_fees.py::test_with_fee",
+      "tests/test_rates.py::test_lookup",
+      "tests/test_report.py::test_total_usd",
+      "tests/test_transfer.py::test_transfer_converts"
+     ]
+    }
+   },
+   "family": "F",
+   "id": "F5",
+   "invalid": false,
+   "predicted_failing": [
+    "tests/test_accounts.py::test_withdraw_cost",
+    "tests/test_transfer.py::test_transfer_converts"
+   ],
+   "prediction_matches": true,
+   "suite": 11,
+   "true_failing": [
+    "tests/test_accounts.py::test_withdraw_cost",
+    "tests/test_transfer.py::test_transfer_converts"
+   ]
+  }
+ ],
+ "rootcause": [
+  {
+   "abstain": false,
+   "abstain_expected": false,
+   "arms": {
+    "BM25": {
+     "decoys_in_top5": 0,
+     "dep_precision": 0.1875,
+     "dep_recall": 1.0,
+     "file_rank": 1,
+     "packed_n": 16,
+     "packed_tokens": 576,
+     "rank": 1,
+     "rr": 1.0,
+     "top1": 1,
+     "top10": [
+      "func:app/pricing.py::discount",
+      "func:app/pricing.py::gross",
+      "func:app/pricing.py::tax",
+      "func:app/pricing.py::net_price",
+      "func:app/inventory.py::Stock.__init__",
+      "func:app/inventory.py::Stock.available",
+      "func:app/orders.py::quote",
+      "func:app/money.py::round_money",
+      "func:app/cache.py::Client.set",
+      "func:app/cache.py::connect"
+     ],
+     "top3": 1,
+     "top5": 1
+    },
+    "G-distance": {
+     "decoys_in_top5": 1,
+     "dep_precision": 0.42857142857142855,
+     "dep_recall": 1.0,
+     "file_rank": 1,
+     "packed_n": 7,
+     "packed_tokens": 165,
+     "rank": 1,
+     "rr": 1.0,
+     "top1": 1,
+     "top10": [
+      "func:app/pricing.py::discount",
+      "func:app/money.py::apply_pct",
+      "func:app/money.py::round_money",
+      "cfg:CACHE_HOST",
+      "cfg:CACHE_PORT",
+      "cfg:MAX_QTY",
+      "cfg:TAX_RATE"
+     ],
+     "top3": 1,
+     "top5": 1
+    },
+    "RC-overlay": {
+     "decoys_in_top5": 1,
+     "dep_precision": 0.5,
+     "dep_recall": 1.0,
+     "file_rank": 1,
+     "packed_n": 6,
+     "packed_tokens": 213,
+     "rank": 1,
+     "rr": 1.0,
+     "top1": 1,
+     "top10": [
+      "func:app/pricing.py::discount",
+      "func:app/money.py::apply_pct",
+      "func:app/money.py::round_money",
+      "func:app/pricing.py::gross",
+      "func:app/orders.py::create_order",
+      "func:app/orders.py::quote"
+     ],
+     "top3": 1,
+     "top5": 1
+    },
+    "RC-overlay+bm25": {
+     "decoys_in_top5": 1,
+     "dep_precision": 0.3333333333333333,
+     "dep_recall": 1.0,
+     "file_rank": 1,
+     "packed_n": 9,
+     "packed_tokens": 288,
+     "rank": 1,
+     "rr": 1.0,
+     "top1": 1,
+     "top10": [
+      "func:app/pricing.py::discount",
+      "func:app/money.py::round_money",
+      "func:app/money.py::apply_pct",
+      "func:app/pricing.py::gross",
+      "func:app/pricing.py::tax",
+      "cfg:TAX_RATE",
+      "func:app/orders.py::create_order",
+      "func:app/orders.py::quote",
+      "func:app/pricing.py::net_price"
+     ],
+     "top3": 1,
+     "top5": 1
+    }
+   },
+   "evidence_of_gold": "observed",
+   "family": "A",
+   "frames": [
+    [
+     "tests/test_pricing.py",
+     9
+    ]
+   ],
+   "id": "A1",
+   "invalid": false,
+   "ms": {
+    "BM25": 5.559300014283508,
+    "G-distance": 0.6736000068485737,
+    "RC-overlay": 55.53799998597242
+   },
+   "n_seeds": 2,
+   "top1_evidence": "observed",
+   "top1_reasons": [
+    "seed func:app/pricing.py::discount (failing_test: covered by tests/test_pricing.py::test_discount)",
+    "is the seed itself"
+   ],
+   "unresolved": []
+  },
+  {
+   "abstain": false,
+   "abstain_expected": false,
+   "arms": {
+    "BM25": {
+     "decoys_in_top5": 0,
+     "dep_precision": 0.25,
+     "dep_recall": 1.0,
+     "file_rank": 1,
+     "packed_n": 16,
+     "packed_tokens": 577,
+     "rank": 5,
+     "rr": 0.2,
+     "top1": 0,
+     "top10": [
+      "func:app/pricing.py::gross",
+      "cfg:MAX_QTY",
+      "func:app/money.py::apply_pct",
+      "func:app/orders.py::quote",
+      "func:app/pricing.py::tax",
+      "func:app/pricing.py::discount",
+      "func:app/pricing.py::net_price",
+      "func:app/orders.py::create_order",
+      "func:app/inventory.py::Stock.__init__",
+      "func:app/inventory.py::Stock.available"
+     ],
+     "top3": 0,
+     "top5": 1
+    },
+    "G-distance": {
+     "decoys_in_top5": 2,
+     "dep_precision": 0.4,
+     "dep_recall": 1.0,
+     "file_rank": 1,
+     "packed_n": 10,
+     "packed_tokens": 264,
+     "rank": 5,
+     "rr": 0.2,
+     "top1": 0,
+     "top10": [
+      "func:app/pricing.py::gross",
+      "func:app/money.py::round_money",
+      "func:app/pricing.py::discount",
+      "func:app/pricing.py::net_price",
+      "func:app/pricing.py::tax",
+      "cfg:TAX_RATE",
+      "func:app/money.py::apply_pct",
+      "cfg:CACHE_HOST",
+      "cfg:CACHE_PORT",
+      "cfg:MAX_QTY"
+     ],
+     "top3": 0,
+     "top5": 1
+    },
+    "RC-overlay": {
+     "decoys_in_top5": 2,
+     "dep_precision": 0.4444444444444444,
+     "dep_recall": 1.0,
+     "file_rank": 1,
+     "packed_n": 9,
+     "packed_tokens": 289,
+     "rank": 5,
+     "rr": 0.2,
+     "top1": 0,
+     "top10": [
+      "func:app/pricing.py::gross",
+      "func:app/money.py::round_money",
+      "func:app/pricing.py::discount",
+      "func:app/pricing.py::net_price",
+      "func:app/pricing.py::tax",
+      "cfg:TAX_RATE",
+      "func:app/money.py::apply_pct",
+      "func:app/orders.py::create_order",
+      "func:app/orders.py::quote"
+     ],
+     "top3": 0,
+     "top5": 1
+    },
+    "RC-overlay+bm25": {
+     "decoys_in_top5": 2,
+     "dep_precision": 0.36363636363636365,
+     "dep_recall": 1.0,
+     "file_rank": 1,
+     "packed_n": 11,
+     "packed_tokens": 388,
+     "rank": 5,
+     "rr": 0.2,
+     "top1": 0,
+     "top10": [
+      "func:app/pricing.py::gross",
+      "func:app/money.py::round_money",
+      "func:app/pricing.py::discount",
+      "func:app/pricing.py::net_price",
+      "func:app/pricing.py::tax",
+      "func:app/money.py::apply_pct",
+      "cfg:TAX_RATE",
+      "cfg:MAX_QTY",
+      "func:app/orders.py::create_order",
+      "func:app/orders.py::quote"
+     ],
+     "top3": 0,
+     "top5": 1
+    }
+   },
+   "evidence_of_gold": "static",
+   "family": "A",
+   "frames": [
+    [
+     "tests/test_pricing.py",
+     17
+    ]
+   ],
+   "id": "A2",
+   "invalid": false,
+   "ms": {
+    "BM25": 5.091300001367927,
+    "G-distance": 0.7838000019546598,
+    "RC-overlay": 35.776999982772395
+   },
+   "n_seeds": 2,
+   "top1_evidence": "observed",
+   "top1_reasons": [
+    "seed func:app/pricing.py::gross (failing_test: covered by tests/test_pricing.py::test_gross_plain)",
+    "is the seed itself"
+   ],
+   "unresolved": []
+  },
+  {
+   "abstain": false,
+   "abstain_expected": false,
+   "arms": {
+    "BM25": {
+     "decoys_in_top5": 0,
+     "dep_precision": 0.3125,
+     "dep_recall": 1.0,
+     "file_rank": 8,
+     "packed_n": 16,
+     "packed_tokens": 573,
+     "rank": 14,
+     "rr": 0.07142857142857142,
+     "top1": 0,
+     "top10": [
+      "func:app/orders.py::quote",
+      "func:app/orders.py::create_order",
+      "func:app/inventory.py::Stock.__init__",
+      "func:app/inventory.py::Stock.available",
+      "func:app/money.py::round_money",
+      "func:app/cache.py::Client.set",
+      "func:app/cache.py::connect",
+      "func:app/pricing.py::tax",
+      "func:app/inventory.py::Stock.add",
+      "cfg:MAX_QTY"
+     ],
+     "top3": 0,
+     "top5": 0
+    },
+    "G-distance": {
+     "decoys_in_top5": 1,
+     "dep_precision": 0.4,
+     "dep_recall": 0.8,
+     "file_rank": 2,
+     "packed_n": 10,
+     "packed_tokens": 259,
+     "rank": 2,
+     "rr": 0.5,
+     "top1": 0,
+     "top10": [
+      "func:app/orders.py::quote",
+      "func:app/pricing.py::gross",
+      "func:app/money.py::round_money",
+      "func:app/pricing.py::discount",
+      "func:app/pricing.py::net_price",
+      "func:app/money.py::apply_pct",
+      "cfg:CACHE_HOST",
+      "cfg:CACHE_PORT",
+      "cfg:MAX_QTY",
+      "cfg:TAX_RATE"
+     ],
+     "top3": 1,
+     "top5": 1
+    },
+    "RC-overlay": {
+     "decoys_in_top5": 1,
+     "dep_precision": 0.6666666666666666,
+     "dep_recall": 0.8,
+     "file_rank": 2,
+     "packed_n": 6,
+     "packed_tokens": 182,
+     "rank": 2,
+     "rr": 0.5,
+     "top1": 0,
+     "top10": [
+      "func:app/orders.py::quote",
+      "func:app/pricing.py::gross",
+      "func:app/money.py::round_money",
+      "func:app/pricing.py::discount",
+      "func:app/pricing.py::net_price",
+      "func:app/money.py::apply_pct"
+     ],
+     "top3": 1,
+     "top5": 1
+    },
+    "RC-overlay+bm25": {
+     "decoys_in_top5": 1,
+     "dep_precision": 0.25,
+     "dep_recall": 0.8,
+     "file_rank": 2,
+     "packed_n": 16,
+     "packed_tokens": 545,
+     "rank": 2,
+     "rr": 0.5,
+     "top1": 0,
+     "top10": [
+      "func:app/orders.py::quote",
+      "func:app/pricing.py::gross",
+      "func:app/money.py::round_money",
+      "func:app/pricing.py::discount",
+      "func:app/pricing.py::net_price",
+      "func:app/orders.py::create_order",
+      "func:app/inventory.py::Stock.__init__",
+      "func:app/cache.py::connect",
+      "func:app/money.py::apply_pct",
+      "cfg:CACHE_HOST"
+     ],
+     "top3": 1,
+     "top5": 1
+    }
+   },
+   "evidence_of_gold": "static",
+   "family": "B",
+   "frames": [
+    [
+     "tests/test_orders.py",
+     6
+    ]
+   ],
+   "id": "B1",
+   "invalid": false,
+   "ms": {
+    "BM25": 10.420500009786338,
+    "G-distance": 3.891300002578646,
+    "RC-overlay": 58.10539997764863
+   },
+   "n_seeds": 2,
+   "top1_evidence": "observed",
+   "top1_reasons": [
+    "seed func:app/orders.py::quote (failing_test: covered by tests/test_orders.py::test_quote)",
+    "is the seed itself"
+   ],
+   "unresolved": []
+  },
+  {
+   "abstain": false,
+   "abstain_expected": false,
+   "arms": {
+    "BM25": {
+     "decoys_in_top5": 2,
+     "dep_precision": 0.25,
+     "dep_recall": 0.75,
+     "file_rank": 2,
+     "packed_n": 12,
+     "packed_tokens": 594,
+     "rank": 2,
+     "rr": 0.5,
+     "top1": 0,
+     "top10": [
+      "func:app/orders.py::create_order",
+      "func:app/inventory.py::Stock.reserve",
+      "class:app/inventory.py::Stock",
+      "func:app/inventory.py::Stock.add",
+      "func:app/inventory.py::Stock.available",
+      "class:app/cache.py::Client",
+      "func:app/orders.py::quote",
+      "func:app/inventory.py::Stock.__init__",
+      "func:app/cache.py::Client.__init__",
+      "func:app/cache.py::Client.set"
+     ],
+     "top3": 1,
+     "top5": 1
+    },
+    "G-distance": {
+     "decoys_in_top5": 1,
+     "dep_precision": 0.2857142857142857,
+     "dep_recall": 1.0,
+     "file_rank": 1,
+     "packed_n": 14,
+     "packed_tokens": 592,
+     "rank": 1,
+     "rr": 1.0,
+     "top1": 1,
+     "top10": [
+      "func:app/inventory.py::Stock.reserve",
+      "func:app/inventory.py::Stock.__init__",
+      "func:app/orders.py::create_order",
+      "func:app/inventory.py::Stock.add",
+      "class:app/inventory.py::Stock",
+      "cfg:MAX_QTY",
+      "func:app/inventory.py::Stock.available",
+      "func:app/cache.py::connect",
+      "func:app/pricing.py::gross",
+      "cfg:CACHE_HOST"
+     ],
+     "top3": 1,
+     "top5": 1
+    },
+    "RC-overlay": {
+     "decoys_in_top5": 1,
+     "dep_precision": 0.2222222222222222,
+     "dep_recall": 1.0,
+     "file_rank": 1,
+     "packed_n": 18,
+     "packed_tokens": 600,
+     "rank": 1,
+     "rr": 1.0,
+     "top1": 1,
+     "top10": [
+      "func:app/inventory.py::Stock.reserve",
+      "cfg:MAX_QTY",
+      "func:app/orders.py::create_order",
+      "func:app/inventory.py::Stock.available",
+      "func:app/cache.py::connect",
+      "func:app/pricing.py::gross",
+      "func:app/inventory.py::Stock.__init__",
+      "func:app/inventory.py::Stock.add",
+      "cfg:CACHE_HOST",
+      "cfg:CACHE_PORT"
+     ],
+     "top3": 1,
+     "top5": 1
+    },
+    "RC-overlay+bm25": {
+     "decoys_in_top5": 1,
+     "dep_precision": 0.2222222222222222,
+     "dep_recall": 1.0,
+     "file_rank": 1,
+     "packed_n": 18,
+     "packed_tokens": 600,
+     "rank": 1,
+     "rr": 1.0,
+     "top1": 1,
+     "top10": [
+      "func:app/inventory.py::Stock.reserve",
+      "cfg:MAX_QTY",
+      "func:app/orders.py::create_order",
+      "func:app/inventory.py::Stock.available",
+      "func:app/cache.py::connect",
+      "func:app/pricing.py::gross",
+      "func:app/inventory.py::Stock.__init__",
+      "cfg:CACHE_HOST",
+      "cfg:CACHE_PORT",
+      "func:app/cache.py::Client.__init__"
+     ],
+     "top3": 1,
+     "top5": 1
+    }
+   },
+   "evidence_of_gold": "observed",
+   "family": "B",
+   "frames": [
+    [
+     "tests/test_orders.py",
+     19
+    ],
+    [
+     "app/orders.py",
+     10
+    ],
+    [
+     "app/inventory.py",
+     18
+    ]
+   ],
+   "id": "B2",
+   "invalid": false,
+   "ms": {
+    "BM25": 10.006199998315424,
+    "G-distance": 6.606300012208521,
+    "RC-overlay": 53.607999987434596
+   },
+   "n_seeds": 5,
+   "top1_evidence": "observed",
+   "top1_reasons": [
+    "seed func:app/inventory.py::Stock.reserve (frame: trace frame app/inventory.py:18)",
+    "is the seed itself"
+   ],
+   "unresolved": []
+  },
+  {
+   "abstain": false,
+   "abstain_expected": false,
+   "arms": {
+    "BM25": {
+     "decoys_in_top5": 1,
+     "dep_precision": 0.25,
+     "dep_recall": 1.0,
+     "file_rank": 11,
+     "packed_n": 12,
+     "packed_tokens": 504,
+     "rank": 11,
+     "rr": 0.09090909090909091,
+     "top1": 0,
+     "top10": [
+      "func:app/transfer.py::transfer",
+      "func:app/report.py::total_usd",
+      "func:app/accounts.py::Account.withdraw",
+      "func:app/accounts.py::Account.deposit",
+      "func:app/accounts.py::Account.__init__",
+      "func:app/accounts.py::SavingsAccount.withdraw",
+      "class:app/accounts.py::SavingsAccount",
+      "func:app/accounts.py::Account._debit",
+      "func:app/rates.py::lookup",
+      "func:app/fees.py::fee"
+     ],
+     "top3": 0,
+     "top5": 0
+    },
+    "G-distance": {
+     "decoys_in_top5": 0,
+     "dep_precision": 0.42857142857142855,
+     "dep_recall": 1.0,
+     "file_rank": 5,
+     "packed_n": 7,
+     "packed_tokens": 358,
+     "rank": 5,
+     "rr": 0.2,
+     "top1": 0,
+     "top10": [
+      "func:app/accounts.py::Account.__init__",
+      "func:app/transfer.py::transfer",
+      "class:app/accounts.py::Account",
+      "cfg:DEFAULT_CURRENCY",
+      "func:app/convert.py::convert",
+      "func:app/rates.py::lookup",
+      "cfg:FEE_RATE"
+     ],
+     "top3": 0,
+     "top5": 1
+    },
+    "RC-overlay": {
+     "decoys_in_top5": 0,
+     "dep_precision": 0.2727272727272727,
+     "dep_recall": 1.0,
+     "file_rank": 4,
+     "packed_n": 11,
+     "packed_tokens": 582,
+     "rank": 4,
+     "rr": 0.25,
+     "top1": 0,
+     "top10": [
+      "cfg:DEFAULT_CURRENCY",
+      "func:app/accounts.py::Account.__init__",
+      "func:app/transfer.py::transfer",
+      "func:app/convert.py::convert",
+      "class:app/accounts.py::Account",
+      "func:app/rates.py::lookup",
+      "func:app/accounts.py::Account.deposit",
+      "func:app/accounts.py::Account.withdraw",
+      "func:app/accounts.py::SavingsAccount.withdraw",
+      "func:app/accounts.py::Account._debit"
+     ],
+     "top3": 0,
+     "top5": 1
+    },
+    "RC-overlay+bm25": {
+     "decoys_in_top5": 1,
+     "dep_precision": 0.25,
+     "dep_recall": 1.0,
+     "file_rank": 4,
+     "packed_n": 12,
+     "packed_tokens": 587,
+     "rank": 4,
+     "rr": 0.25,
+     "top1": 0,
+     "top10": [
+      "func:app/transfer.py::transfer",
+      "cfg:DEFAULT_CURRENCY",
+      "func:app/accounts.py::Account.__init__",
+      "func:app/convert.py::convert",
+      "func:app/accounts.py::Account.withdraw",
+      "func:app/rates.py::lookup",
+      "class:app/accounts.py::Account",
+      "func:app/accounts.py::SavingsAccount.withdraw",
+      "func:app/report.py::total_usd",
+      "func:app/accounts.py::Account._debit"
+     ],
+     "top3": 0,
+     "top5": 1
+    }
+   },
+   "evidence_of_gold": "static",
+   "family": "B",
+   "frames": [
+    [
+     "tests/test_transfer.py",
+     8
+    ]
+   ],
+   "id": "B3",
+   "invalid": false,
+   "ms": {
+    "BM25": 3.8324999914038926,
+    "G-distance": 1.0839999886229634,
+    "RC-overlay": 30.714099993929267
+   },
+   "n_seeds": 3,
+   "top1_evidence": "static",
+   "top1_reasons": [
+    "seed func:app/accounts.py::Account.__init__ (failing_test: covered by tests/test_transfer.py::test_transfer_converts)",
+    "func:app/accounts.py::Account.__init__ -reads_config[static]-> cfg:DEFAULT_CURRENCY @ app/accounts.py:9"
+   ],
+   "unresolved": []
+  },
+  {
+   "abstain": false,
+   "abstain_expected": false,
+   "arms": {
+    "BM25": {
+     "decoys_in_top5": 1,
+     "dep_precision": 0.3333333333333333,
+     "dep_recall": 1.0,
+     "file_rank": 2,
+     "packed_n": 12,
+     "packed_tokens": 582,
+     "rank": 4,
+     "rr": 0.25,
+     "top1": 0,
+     "top10": [
+      "func:app/orders.py::create_order",
+      "func:app/inventory.py::Stock.reserve",
+      "class:app/inventory.py::Stock",
+      "func:app/inventory.py::Stock.add",
+      "func:app/inventory.py::Stock.available",
+      "class:app/cache.py::Client",
+      "func:app/orders.py::quote",
+      "func:app/inventory.py::Stock.__init__",
+      "func:app/cache.py::Client.__init__",
+      "func:app/cache.py::Client.set"
+     ],
+     "top3": 0,
+     "top5": 1
+    },
+    "G-distance": {
+     "decoys_in_top5": 1,
+     "dep_precision": 0.26666666666666666,
+     "dep_recall": 1.0,
+     "file_rank": 1,
+     "packed_n": 15,
+     "packed_tokens": 598,
+     "rank": 4,
+     "rr": 0.25,
+     "top1": 0,
+     "top10": [
+      "func:app/inventory.py::Stock.reserve",
+      "func:app/inventory.py::Stock.__init__",
+      "func:app/orders.py::create_order",
+      "func:app/inventory.py::Stock.add",
+      "class:app/inventory.py::Stock",
+      "cfg:MAX_QTY",
+      "func:app/inventory.py::Stock.available",
+      "func:app/cache.py::connect",
+      "func:app/pricing.py::gross",
+      "cfg:CACHE_HOST"
+     ],
+     "top3": 0,
+     "top5": 1
+    },
+    "RC-overlay": {
+     "decoys_in_top5": 1,
+     "dep_precision": 0.2222222222222222,
+     "dep_recall": 1.0,
+     "file_rank": 1,
+     "packed_n": 18,
+     "packed_tokens": 594,
+     "rank": 6,
+     "rr": 0.16666666666666666,
+     "top1": 0,
+     "top10": [
+      "func:app/inventory.py::Stock.reserve",
+      "cfg:MAX_QTY",
+      "func:app/orders.py::create_order",
+      "func:app/cache.py::connect",
+      "func:app/pricing.py::gross",
+      "func:app/inventory.py::Stock.add",
+      "func:app/inventory.py::Stock.available",
+      "func:app/inventory.py::Stock.__init__",
+      "cfg:CACHE_HOST",
+      "cfg:CACHE_PORT"
+     ],
+     "top3": 0,
+     "top5": 0
+    },
+    "RC-overlay+bm25": {
+     "decoys_in_top5": 1,
+     "dep_precision": 0.2222222222222222,
+     "dep_recall": 1.0,
+     "file_rank": 1,
+     "packed_n": 18,
+     "packed_tokens": 594,
+     "rank": 7,
+     "rr": 0.14285714285714285,
+     "top1": 0,
+     "top10": [
+      "func:app/inventory.py::Stock.reserve",
+      "cfg:MAX_QTY",
+      "func:app/orders.py::create_order",
+      "func:app/cache.py::connect",
+      "func:app/pricing.py::gross",
+      "func:app/inventory.py::Stock.available",
+      "func:app/inventory.py::Stock.add",
+      "func:app/inventory.py::Stock.__init__",
+      "cfg:CACHE_HOST",
+      "cfg:CACHE_PORT"
+     ],
+     "top3": 0,
+     "top5": 0
+    }
+   },
+   "evidence_of_gold": "observed",
+   "family": "B",
+   "frames": [
+    [
+     "tests/test_orders.py",
+     26
+    ],
+    [
+     "app/orders.py",
+     10
+    ],
+    [
+     "app/inventory.py",
+     18
+    ]
+   ],
+   "id": "B4",
+   "invalid": false,
+   "ms": {
+    "BM25": 5.101999995531514,
+    "G-distance": 2.878500003134832,
+    "RC-overlay": 33.70540001196787
+   },
+   "n_seeds": 5,
+   "top1_evidence": "observed",
+   "top1_reasons": [
+    "seed func:app/inventory.py::Stock.reserve (frame: trace frame app/inventory.py:18)",
+    "is the seed itself"
+   ],
+   "unresolved": []
+  },
+  {
+   "abstain": false,
+   "abstain_expected": false,
+   "arms": {
+    "BM25": {
+     "decoys_in_top5": 0,
+     "dep_precision": 0.25,
+     "dep_recall": 0.42857142857142855,
+     "file_rank": 5,
+     "packed_n": 12,
+     "packed_tokens": 587,
+     "rank": 5,
+     "rr": 0.2,
+     "top1": 0,
+     "top10": [
+      "func:app/orders.py::create_order",
+      "func:app/inventory.py::Stock.reserve",
+      "cfg:MAX_QTY",
+      "func:app/inventory.py::Stock.__init__",
+      "func:app/money.py::apply_pct",
+      "func:app/orders.py::quote",
+      "class:app/inventory.py::Stock",
+      "func:app/inventory.py::Stock.available",
+      "func:app/inventory.py::Stock.add",
+      "func:app/cache.py::Client.__init__"
+     ],
+     "top3": 0,
+     "top5": 1
+    },
+    "G-distance": {
+     "decoys_in_top5": 0,
+     "dep_precision": 0.4375,
+     "dep_recall": 1.0,
+     "file_rank": 11,
+     "packed_n": 16,
+     "packed_tokens": 597,
+     "rank": 17,
+     "rr": 0.058823529411764705,
+     "top1": 0,
+     "top10": [
+      "func:app/inventory.py::Stock.__init__",
+      "func:app/orders.py::create_order",
+      "func:app/inventory.py::Stock.add",
+      "func:app/inventory.py::Stock.available",
+      "class:app/inventory.py::Stock",
+      "func:app/cache.py::connect",
+      "func:app/pricing.py::gross",
+      "cfg:CACHE_HOST",
+      "cfg:CACHE_PORT",
+      "func:app/cache.py::Client.__init__"
+     ],
+     "top3": 0,
+     "top5": 0
+    },
+    "RC-overlay": {
+     "decoys_in_top5": 0,
+     "dep_precision": 0.375,
+     "dep_recall": 0.8571428571428571,
+     "file_rank": 11,
+     "packed_n": 16,
+     "packed_tokens": 600,
+     "rank": 19,
+     "rr": 0.05263157894736842,
+     "top1": 0,
+     "top10": [
+      "func:app/orders.py::create_order",
+      "func:app/inventory.py::Stock.available",
+      "func:app/cache.py::connect",
+      "func:app/pricing.py::gross",
+      "func:app/inventory.py::Stock.__init__",
+      "func:app/inventory.py::Stock.add",
+      "class:app/inventory.py::Stock",
+      "cfg:CACHE_HOST",
+      "cfg:CACHE_PORT",
+      "func:app/cache.py::Client.__init__"
+     ],
+     "top3": 0,
+     "top5": 0
+    },
+    "RC-overlay+bm25": {
+     "decoys_in_top5": 0,
+     "dep_precision": 0.2857142857142857,
+     "dep_recall": 0.5714285714285714,
+     "file_rank": 13,
+     "packed_n": 14,
+     "packed_tokens": 591,
+     "rank": 19,
+     "rr": 0.05263157894736842,
+     "top1": 0,
+     "top10": [
+      "func:app/orders.py::create_order",
+      "func:app/inventory.py::Stock.available",
+      "cfg:MAX_QTY",
+      "func:app/cache.py::connect",
+      "func:app/pricing.py::gross",
+      "func:app/inventory.py::Stock.reserve",
+      "func:app/inventory.py::Stock.__init__",
+      "func:app/inventory.py::Stock.add",
+      "class:app/inventory.py::Stock",
+      "cfg:CACHE_HOST"
+     ],
+     "top3": 0,
+     "top5": 0
+    }
+   },
+   "evidence_of_gold": "static",
+   "family": "C",
+   "frames": [
+    [
+     "tests/test_orders.py",
+     12
+    ]
+   ],
+   "id": "C1",
+   "invalid": false,
+   "ms": {
+    "BM25": 5.660599999828264,
+    "G-distance": 2.793699997710064,
+    "RC-overlay": 35.2491999801714
+   },
+   "n_seeds": 3,
+   "top1_evidence": "observed",
+   "top1_reasons": [
+    "seed func:app/orders.py::create_order (failing_test: covered by tests/test_orders.py::test_create_order)",
+    "is the seed itself"
+   ],
+   "unresolved": []
+  },
+  {
+   "abstain": false,
+   "abstain_expected": false,
+   "arms": {
+    "BM25": {
+     "decoys_in_top5": 0,
+     "dep_precision": 0.3125,
+     "dep_recall": 1.0,
+     "file_rank": 8,
+     "packed_n": 16,
+     "packed_tokens": 576,
+     "rank": 12,
+     "rr": 0.08333333333333333,
+     "top1": 0,
+     "top10": [
+      "func:app/orders.py::quote",
+      "func:app/orders.py::create_order",
+      "func:app/inventory.py::Stock.__init__",
+      "func:app/inventory.py::Stock.available",
+      "func:app/money.py::round_money",
+      "func:app/cache.py::Client.set",
+      "func:app/cache.py::connect",
+      "func:app/pricing.py::tax",
+      "func:app/inventory.py::Stock.add",
+      "cfg:MAX_QTY"
+     ],
+     "top3": 0,
+     "top5": 0
+    },
+    "G-distance": {
+     "decoys_in_top5": 1,
+     "dep_precision": 0.45454545454545453,
+     "dep_recall": 1.0,
+     "file_rank": 2,
+     "packed_n": 11,
+     "packed_tokens": 291,
+     "rank": 5,
+     "rr": 0.2,
+     "top1": 0,
+     "top10": [
+      "func:app/orders.py::quote",
+      "func:app/pricing.py::gross",
+      "func:app/money.py::round_money",
+      "func:app/pricing.py::discount",
+      "func:app/pricing.py::net_price",
+      "func:app/pricing.py::tax",
+      "cfg:TAX_RATE",
+      "func:app/money.py::apply_pct",
+      "cfg:CACHE_HOST",
+      "cfg:CACHE_PORT"
+     ],
+     "top3": 0,
+     "top5": 1
+    },
+    "RC-overlay": {
+     "decoys_in_top5": 1,
+     "dep_precision": 0.625,
+     "dep_recall": 1.0,
+     "file_rank": 2,
+     "packed_n": 8,
+     "packed_tokens": 232,
+     "rank": 5,
+     "rr": 0.2,
+     "top1": 0,
+     "top10": [
+      "func:app/orders.py::quote",
+      "func:app/pricing.py::gross",
+      "func:app/money.py::round_money",
+      "func:app/pricing.py::discount",
+      "func:app/pricing.py::net_price",
+      "func:app/pricing.py::tax",
+      "cfg:TAX_RATE",
+      "func:app/money.py::apply_pct"
+     ],
+     "top3": 0,
+     "top5": 1
+    },
+    "RC-overlay+bm25": {
+     "decoys_in_top5": 1,
+     "dep_precision": 0.2777777777777778,
+     "dep_recall": 1.0,
+     "file_rank": 2,
+     "packed_n": 18,
+     "packed_tokens": 595,
+     "rank": 5,
+     "rr": 0.2,
+     "top1": 0,
+     "top10": [
+      "func:app/orders.py::quote",
+      "func:app/pricing.py::gross",
+      "func:app/money.py::round_money",
+      "func:app/pricing.py::discount",
+      "func:app/pricing.py::net_price",
+      "func:app/pricing.py::tax",
+      "func:app/orders.py::create_order",
+      "func:app/inventory.py::Stock.__init__",
+      "func:app/cache.py::connect",
+      "cfg:TAX_RATE"
+     ],
+     "top3": 0,
+     "top5": 1
+    }
+   },
+   "evidence_of_gold": "static",
+   "family": "C",
+   "frames": [
+    [
+     "tests/test_orders.py",
+     6
+    ]
+   ],
+   "id": "C2",
+   "invalid": false,
+   "ms": {
+    "BM25": 5.200899991905317,
+    "G-distance": 0.9417999826837331,
+    "RC-overlay": 33.373699989169836
+   },
+   "n_seeds": 2,
+   "top1_evidence": "observed",
+   "top1_reasons": [
+    "seed func:app/orders.py::quote (failing_test: covered by tests/test_orders.py::test_quote)",
+    "is the seed itself"
+   ],
+   "unresolved": []
+  },
+  {
+   "abstain": false,
+   "abstain_expected": false,
+   "arms": {
+    "BM25": {
+     "decoys_in_top5": 1,
+     "dep_precision": 0.25,
+     "dep_recall": 1.0,
+     "file_rank": 9,
+     "packed_n": 12,
+     "packed_tokens": 505,
+     "rank": 9,
+     "rr": 0.1111111111111111,
+     "top1": 0,
+     "top10": [
+      "func:app/transfer.py::transfer",
+      "func:app/report.py::total_usd",
+      "func:app/accounts.py::Account.withdraw",
+      "func:app/accounts.py::Account.deposit",
+      "func:app/accounts.py::Account.__init__",
+      "func:app/accounts.py::SavingsAccount.withdraw",
+      "class:app/accounts.py::SavingsAccount",
+      "func:app/accounts.py::Account._debit",
+      "func:app/rates.py::lookup",
+      "func:app/fees.py::fee"
+     ],
+     "top3": 0,
+     "top5": 0
+    },
+    "G-distance": {
+     "decoys_in_top5": 1,
+     "dep_precision": 0.42857142857142855,
+     "dep_recall": 1.0,
+     "file_rank": 6,
+     "packed_n": 7,
+     "packed_tokens": 359,
+     "rank": 6,
+     "rr": 0.16666666666666666,
+     "top1": 0,
+     "top10": [
+      "func:app/accounts.py::Account.__init__",
+      "func:app/transfer.py::transfer",
+      "class:app/accounts.py::Account",
+      "cfg:DEFAULT_CURRENCY",
+      "func:app/convert.py::convert",
+      "func:app/rates.py::lookup",
+      "cfg:FEE_RATE"
+     ],
+     "top3": 0,
+     "top5": 0
+    },
+    "RC-overlay": {
+     "decoys_in_top5": 1,
+     "dep_precision": 0.2727272727272727,
+     "dep_recall": 1.0,
+     "file_rank": 6,
+     "packed_n": 11,
+     "packed_tokens": 583,
+     "rank": 6,
+     "rr": 0.16666666666666666,
+     "top1": 0,
+     "top10": [
+      "cfg:DEFAULT_CURRENCY",
+      "func:app/accounts.py::Account.__init__",
+      "func:app/transfer.py::transfer",
+      "func:app/convert.py::convert",
+      "class:app/accounts.py::Account",
+      "func:app/rates.py::lookup",
+      "func:app/accounts.py::Account.deposit",
+      "func:app/accounts.py::Account.withdraw",
+      "func:app/accounts.py::SavingsAccount.withdraw",
+      "func:app/accounts.py::Account._debit"
+     ],
+     "top3": 0,
+     "top5": 0
+    },
+    "RC-overlay+bm25": {
+     "decoys_in_top5": 2,
+     "dep_precision": 0.25,
+     "dep_recall": 1.0,
+     "file_rank": 6,
+     "packed_n": 12,
+     "packed_tokens": 588,
+     "rank": 6,
+     "rr": 0.16666666666666666,
+     "top1": 0,
+     "top10": [
+      "func:app/transfer.py::transfer",
+      "cfg:DEFAULT_CURRENCY",
+      "func:app/accounts.py::Account.__init__",
+      "func:app/convert.py::convert",
+      "func:app/accounts.py::Account.withdraw",
+      "func:app/rates.py::lookup",
+      "class:app/accounts.py::Account",
+      "func:app/accounts.py::SavingsAccount.withdraw",
+      "func:app/report.py::total_usd",
+      "func:app/accounts.py::Account._debit"
+     ],
+     "top3": 0,
+     "top5": 0
+    }
+   },
+   "evidence_of_gold": "static",
+   "family": "C",
+   "frames": [
+    [
+     "tests/test_transfer.py",
+     8
+    ]
+   ],
+   "id": "C3",
+   "invalid": false,
+   "ms": {
+    "BM25": 3.930499980924651,
+    "G-distance": 1.1240000021643937,
+    "RC-overlay": 31.35950001887977
+   },
+   "n_seeds": 3,
+   "top1_evidence": "static",
+   "top1_reasons": [
+    "seed func:app/accounts.py::Account.__init__ (failing_test: covered by tests/test_transfer.py::test_transfer_converts)",
+    "func:app/accounts.py::Account.__init__ -reads_config[static]-> cfg:DEFAULT_CURRENCY @ app/accounts.py:9"
+   ],
+   "unresolved": []
+  },
+  {
+   "abstain": false,
+   "abstain_expected": false,
+   "arms": {
+    "BM25": {
+     "decoys_in_top5": 1,
+     "dep_precision": 0.2727272727272727,
+     "dep_recall": 0.6,
+     "file_rank": 12,
+     "packed_n": 11,
+     "packed_tokens": 586,
+     "rank": 12,
+     "rr": 0.08333333333333333,
+     "top1": 0,
+     "top10": [
+      "func:app/accounts.py::Account._debit",
+      "func:app/report.py::total_usd",
+      "class:app/accounts.py::Account",
+      "cfg:FEE_RATE",
+      "func:app/accounts.py::Account.withdraw",
+      "func:app/accounts.py::SavingsAccount.withdraw",
+      "class:app/accounts.py::SavingsAccount",
+      "func:app/transfer.py::transfer",
+      "func:app/accounts.py::Account.deposit",
+      "func:app/accounts.py::Account.__init__"
+     ],
+     "top3": 0,
+     "top5": 0
+    },
+    "G-distance": {
+     "decoys_in_top5": 0,
+     "dep_precision": 0.5,
+     "dep_recall": 1.0,
+     "file_rank": 8,
+     "packed_n": 10,
+     "packed_tokens": 513,
+     "rank": 9,
+     "rr": 0.1111111111111111,
+     "top1": 0,
+     "top10": [
+      "func:app/accounts.py::Account.__init__",
+      "func:app/accounts.py::Account.withdraw",
+      "class:app/accounts.py::Account",
+      "func:app/accounts.py::SavingsAccount.withdraw",
+      "cfg:DEFAULT_CURRENCY",
+      "func:app/accounts.py::Account._debit",
+      "class:app/accounts.py::SavingsAccount",
+      "func:app/fees.py::with_fee",
+      "func:app/fees.py::fee",
+      "cfg:FEE_RATE"
+     ],
+     "top3": 0,
+     "top5": 0
+    },
+    "RC-overlay": {
+     "decoys_in_top5": 1,
+     "dep_precision": 0.4,
+     "dep_recall": 0.8,
+     "file_rank": 7,
+     "packed_n": 10,
+     "packed_tokens": 548,
+     "rank": 8,
+     "rr": 0.125,
+     "top1": 0,
+     "top10": [
+      "func:app/accounts.py::Account.withdraw",
+      "cfg:DEFAULT_CURRENCY",
+      "func:app/accounts.py::Account.__init__",
+      "class:app/accounts.py::Account",
+      "func:app/accounts.py::Account._debit",
+      "func:app/accounts.py::SavingsAccount.withdraw",
+      "func:app/fees.py::with_fee",
+      "func:app/fees.py::fee",
+      "class:app/accounts.py::SavingsAccount",
+      "func:app/transfer.py::transfer"
+     ],
+     "top3": 0,
+     "top5": 0
+    },
+    "RC-overlay+bm25": {
+     "decoys_in_top5": 1,
+     "dep_precision": 0.3333333333333333,
+     "dep_recall": 0.8,
+     "file_rank": 6,
+     "packed_n": 12,
+     "packed_tokens": 592,
+     "rank": 9,
+     "rr": 0.1111111111111111,
+     "top1": 0,
+     "top10": [
+      "func:app/accounts.py::Account._debit",
+      "func:app/accounts.py::Account.withdraw",
+      "cfg:DEFAULT_CURRENCY",
+      "class:app/accounts.py::Account",
+      "func:app/accounts.py::Account.__init__",
+      "func:app/fees.py::with_fee",
+      "func:app/accounts.py::SavingsAccount.withdraw",
+      "func:app/report.py::total_usd",
+      "func:app/fees.py::fee",
+      "func:app/convert.py::convert"
+     ],
+     "top3": 0,
+     "top5": 0
+    }
+   },
+   "evidence_of_gold": "static",
+   "family": "C",
+   "frames": [
+    [
+     "tests/test_accounts.py",
+     14
+    ]
+   ],
+   "id": "C4",
+   "invalid": false,
+   "ms": {
+    "BM25": 3.979300003265962,
+    "G-distance": 1.4528000028803945,
+    "RC-overlay": 31.981299980543554
+   },
+   "n_seeds": 4,
+   "top1_evidence": "observed",
+   "top1_reasons": [
+    "seed func:app/accounts.py::Account.withdraw (failing_test: covered by tests/test_accounts.py::test_withdraw_cost)",
+    "is the seed itself"
+   ],
+   "unresolved": []
+  },
+  {
+   "abstain": false,
+   "abstain_expected": false,
+   "arms": {
+    "BM25": {
+     "decoys_in_top5": 2,
+     "dep_precision": 0.23076923076923078,
+     "dep_recall": 1.0,
+     "file_rank": 4,
+     "packed_n": 13,
+     "packed_tokens": 600,
+     "rank": 4,
+     "rr": 0.25,
+     "top1": 0,
+     "top10": [
+      "class:app/cache.py::Client",
+      "func:app/cache.py::Client.__init__",
+      "func:app/cache.py::connect",
+      "cfg:CACHE_HOST",
+      "cfg:CACHE_PORT",
+      "func:app/cache.py::Client.set",
+      "func:app/orders.py::create_order",
+      "func:app/inventory.py::Stock.reserve",
+      "class:app/inventory.py::Stock",
+      "func:app/inventory.py::Stock.__init__"
+     ],
+     "top3": 0,
+     "top5": 1
+    },
+    "G-distance": {
+     "decoys_in_top5": 2,
+     "dep_precision": 0.3,
+     "dep_recall": 1.0,
+     "file_rank": 2,
+     "packed_n": 10,
+     "packed_tokens": 429,
+     "rank": 2,
+     "rr": 0.5,
+     "top1": 0,
+     "top10": [
+      "func:app/cache.py::Client.__init__",
+      "cfg:CACHE_HOST",
+      "cfg:CACHE_PORT",
+      "func:app/cache.py::connect",
+      "class:app/cache.py::Client",
+      "func:app/cache.py::Client.set",
+      "func:app/inventory.py::Stock.__init__",
+      "class:app/inventory.py::Stock",
+      "cfg:MAX_QTY",
+      "cfg:TAX_RATE"
+     ],
+     "top3": 1,
+     "top5": 1
+    },
+    "RC-overlay": {
+     "decoys_in_top5": 2,
+     "dep_precision": 0.375,
+     "dep_recall": 1.0,
+     "file_rank": 2,
+     "packed_n": 8,
+     "packed_tokens": 314,
+     "rank": 2,
+     "rr": 0.5,
+     "top1": 0,
+     "top10": [
+      "func:app/cache.py::Client.__init__",
+      "cfg:CACHE_HOST",
+      "cfg:CACHE_PORT",
+      "func:app/cache.py::connect",
+      "func:app/orders.py::create_order",
+      "func:app/cache.py::Client.set",
+      "class:app/cache.py::Client",
+      "func:app/inventory.py::Stock.__init__"
+     ],
+     "top3": 1,
+     "top5": 1
+    },
+    "RC-overlay+bm25": {
+     "decoys_in_top5": 2,
+     "dep_precision": 0.375,
+     "dep_recall": 1.0,
+     "file_rank": 2,
+     "packed_n": 8,
+     "packed_tokens": 314,
+     "rank": 2,
+     "rr": 0.5,
+     "top1": 0,
+     "top10": [
+      "func:app/cache.py::Client.__init__",
+      "cfg:CACHE_HOST",
+      "cfg:CACHE_PORT",
+      "func:app/cache.py::connect",
+      "func:app/orders.py::create_order",
+      "class:app/cache.py::Client",
+      "func:app/cache.py::Client.set",
+      "func:app/inventory.py::Stock.__init__"
+     ],
+     "top3": 1,
+     "top5": 1
+    }
+   },
+   "evidence_of_gold": "static",
+   "family": "D",
+   "frames": [
+    [
+     "tests/test_cache.py",
+     5
+    ],
+    [
+     "app/cache.py",
+     18
+    ],
+    [
+     "app/cache.py",
+     9
+    ]
+   ],
+   "id": "D1",
+   "invalid": false,
+   "ms": {
+    "BM25": 5.20329998107627,
+    "G-distance": 1.8595000146888196,
+    "RC-overlay": 32.54899999592453
+   },
+   "n_seeds": 10,
+   "top1_evidence": "observed",
+   "top1_reasons": [
+    "seed func:app/cache.py::Client.__init__ (frame: trace frame app/cache.py:9)",
+    "is the seed itself"
+   ],
+   "unresolved": []
+  },
+  {
+   "abstain": false,
+   "abstain_expected": false,
+   "arms": {
+    "BM25": {
+     "decoys_in_top5": 1,
+     "dep_precision": 0.25,
+     "dep_recall": 1.0,
+     "file_rank": 4,
+     "packed_n": 12,
+     "packed_tokens": 579,
+     "rank": 4,
+     "rr": 0.25,
+     "top1": 0,
+     "top10": [
+      "class:app/cache.py::Client",
+      "func:app/cache.py::Client.__init__",
+      "func:app/cache.py::connect",
+      "cfg:CACHE_PORT",
+      "func:app/cache.py::Client.set",
+      "cfg:CACHE_HOST",
+      "func:app/orders.py::create_order",
+      "func:app/inventory.py::Stock.reserve",
+      "class:app/inventory.py::Stock",
+      "func:app/inventory.py::Stock.__init__"
+     ],
+     "top3": 0,
+     "top5": 1
+    },
+    "G-distance": {
+     "decoys_in_top5": 2,
+     "dep_precision": 0.3,
+     "dep_recall": 1.0,
+     "file_rank": 3,
+     "packed_n": 10,
+     "packed_tokens": 436,
+     "rank": 3,
+     "rr": 0.3333333333333333,
+     "top1": 0,
+     "top10": [
+      "func:app/cache.py::Client.__init__",
+      "cfg:CACHE_HOST",
+      "cfg:CACHE_PORT",
+      "func:app/cache.py::connect",
+      "class:app/cache.py::Client",
+      "func:app/cache.py::Client.set",
+      "func:app/inventory.py::Stock.__init__",
+      "class:app/inventory.py::Stock",
+      "cfg:MAX_QTY",
+      "cfg:TAX_RATE"
+     ],
+     "top3": 1,
+     "top5": 1
+    },
+    "RC-overlay": {
+     "decoys_in_top5": 2,
+     "dep_precision": 0.375,
+     "dep_recall": 1.0,
+     "file_rank": 1,
+     "packed_n": 8,
+     "packed_tokens": 321,
+     "rank": 1,
+     "rr": 1.0,
+     "top1": 1,
+     "top10": [
+      "cfg:CACHE_PORT",
+      "func:app/cache.py::Client.__init__",
+      "cfg:CACHE_HOST",
+      "func:app/cache.py::connect",
+      "func:app/orders.py::create_order",
+      "func:app/cache.py::Client.set",
+      "class:app/cache.py::Client",
+      "func:app/inventory.py::Stock.__init__"
+     ],
+     "top3": 1,
+     "top5": 1
+    },
+    "RC-overlay+bm25": {
+     "decoys_in_top5": 2,
+     "dep_precision": 0.375,
+     "dep_recall": 1.0,
+     "file_rank": 1,
+     "packed_n": 8,
+     "packed_tokens": 321,
+     "rank": 1,
+     "rr": 1.0,
+     "top1": 1,
+     "top10": [
+      "cfg:CACHE_PORT",
+      "func:app/cache.py::Client.__init__",
+      "cfg:CACHE_HOST",
+      "func:app/cache.py::connect",
+      "func:app/orders.py::create_order",
+      "class:app/cache.py::Client",
+      "func:app/cache.py::Client.set",
+      "func:app/inventory.py::Stock.__init__"
+     ],
+     "top3": 1,
+     "top5": 1
+    }
+   },
+   "evidence_of_gold": "static",
+   "family": "D",
+   "frames": [
+    [
+     "tests/test_cache.py",
+     5
+    ],
+    [
+     "app/cache.py",
+     18
+    ],
+    [
+     "app/cache.py",
+     9
+    ]
+   ],
+   "id": "D2",
+   "invalid": false,
+   "ms": {
+    "BM25": 5.167099996469915,
+    "G-distance": 1.8204000080004334,
+    "RC-overlay": 32.25499999825843
+   },
+   "n_seeds": 10,
+   "top1_evidence": "static",
+   "top1_reasons": [
+    "seed cfg:CACHE_PORT (symptom: symptom names key CACHE_PORT)",
+    "is the seed itself"
+   ],
+   "unresolved": []
+  },
+  {
+   "abstain": false,
+   "abstain_expected": false,
+   "arms": {
+    "BM25": {
+     "decoys_in_top5": 2,
+     "dep_precision": 0.3076923076923077,
+     "dep_recall": 1.0,
+     "file_rank": 4,
+     "packed_n": 13,
+     "packed_tokens": 598,
+     "rank": 4,
+     "rr": 0.25,
+     "top1": 0,
+     "top10": [
+      "class:app/cache.py::Client",
+      "func:app/cache.py::Client.__init__",
+      "func:app/cache.py::connect",
+      "cfg:CACHE_HOST",
+      "cfg:CACHE_PORT",
+      "func:app/cache.py::Client.set",
+      "func:app/orders.py::create_order",
+      "func:app/inventory.py::Stock.reserve",
+      "class:app/inventory.py::Stock",
+      "func:app/inventory.py::Stock.__init__"
+     ],
+     "top3": 0,
+     "top5": 1
+    },
+    "G-distance": {
+     "decoys_in_top5": 2,
+     "dep_precision": 0.36363636363636365,
+     "dep_recall": 1.0,
+     "file_rank": 2,
+     "packed_n": 11,
+     "packed_tokens": 455,
+     "rank": 2,
+     "rr": 0.5,
+     "top1": 0,
+     "top10": [
+      "func:app/cache.py::Client.__init__",
+      "cfg:CACHE_HOST",
+      "cfg:CACHE_PORT",
+      "func:app/cache.py::connect",
+      "class:app/cache.py::Client",
+      "func:app/cache.py::Client.set",
+      "func:app/inventory.py::Stock.__init__",
+      "cfg:CACHE_HOSTNAME",
+      "class:app/inventory.py::Stock",
+      "cfg:MAX_QTY"
+     ],
+     "top3": 1,
+     "top5": 1
+    },
+    "RC-overlay": {
+     "decoys_in_top5": 2,
+     "dep_precision": 0.4444444444444444,
+     "dep_recall": 1.0,
+     "file_rank": 1,
+     "packed_n": 9,
+     "packed_tokens": 340,
+     "rank": 1,
+     "rr": 1.0,
+     "top1": 1,
+     "top10": [
+      "cfg:CACHE_HOST",
+      "func:app/cache.py::Client.__init__",
+      "cfg:CACHE_PORT",
+      "func:app/cache.py::connect",
+      "func:app/orders.py::create_order",
+      "func:app/cache.py::Client.set",
+      "class:app/cache.py::Client",
+      "func:app/inventory.py::Stock.__init__",
+      "cfg:CACHE_HOSTNAME"
+     ],
+     "top3": 1,
+     "top5": 1
+    },
+    "RC-overlay+bm25": {
+     "decoys_in_top5": 2,
+     "dep_precision": 0.4444444444444444,
+     "dep_recall": 1.0,
+     "file_rank": 1,
+     "packed_n": 9,
+     "packed_tokens": 340,
+     "rank": 1,
+     "rr": 1.0,
+     "top1": 1,
+     "top10": [
+      "cfg:CACHE_HOST",
+      "func:app/cache.py::Client.__init__",
+      "cfg:CACHE_PORT",
+      "func:app/cache.py::connect",
+      "func:app/orders.py::create_order",
+      "class:app/cache.py::Client",
+      "func:app/cache.py::Client.set",
+      "func:app/inventory.py::Stock.__init__",
+      "cfg:CACHE_HOSTNAME"
+     ],
+     "top3": 1,
+     "top5": 1
+    }
+   },
+   "evidence_of_gold": "static",
+   "family": "D",
+   "frames": [
+    [
+     "tests/test_cache.py",
+     5
+    ],
+    [
+     "app/cache.py",
+     18
+    ],
+    [
+     "app/cache.py",
+     9
+    ]
+   ],
+   "id": "D3",
+   "invalid": false,
+   "ms": {
+    "BM25": 5.9843999915756285,
+    "G-distance": 1.8498999997973442,
+    "RC-overlay": 34.33220001170412
+   },
+   "n_seeds": 11,
+   "top1_evidence": "static",
+   "top1_reasons": [
+    "seed cfg:CACHE_HOST (symptom: symptom names key CACHE_HOST)",
+    "is the seed itself"
+   ],
+   "unresolved": []
+  },
+  {
+   "abstain": false,
+   "abstain_expected": false,
+   "arms": {
+    "BM25": {
+     "decoys_in_top5": 2,
+     "dep_precision": 0.16666666666666666,
+     "dep_recall": 0.6666666666666666,
+     "file_rank": 15,
+     "packed_n": 12,
+     "packed_tokens": 600,
+     "rank": 15,
+     "rr": 0.06666666666666667,
+     "top1": 0,
+     "top10": [
+      "func:app/orders.py::create_order",
+      "func:app/inventory.py::Stock.reserve",
+      "class:app/inventory.py::Stock",
+      "func:app/inventory.py::Stock.add",
+      "func:app/inventory.py::Stock.available",
+      "class:app/cache.py::Client",
+      "func:app/orders.py::quote",
+      "func:app/inventory.py::Stock.__init__",
+      "func:app/money.py::apply_pct",
+      "func:app/cache.py::Client.__init__"
+     ],
+     "top3": 0,
+     "top5": 0
+    },
+    "G-distance": {
+     "decoys_in_top5": 2,
+     "dep_precision": 0.21428571428571427,
+     "dep_recall": 1.0,
+     "file_rank": 7,
+     "packed_n": 14,
+     "packed_tokens": 585,
+     "rank": 7,
+     "rr": 0.14285714285714285,
+     "top1": 0,
+     "top10": [
+      "func:app/inventory.py::Stock.reserve",
+      "func:app/inventory.py::Stock.__init__",
+      "func:app/orders.py::create_order",
+      "func:app/inventory.py::Stock.add",
+      "func:app/inventory.py::Stock.available",
+      "class:app/inventory.py::Stock",
+      "cfg:MAX_QTY",
+      "func:app/cache.py::connect",
+      "func:app/pricing.py::gross",
+      "cfg:CACHE_HOST"
+     ],
+     "top3": 0,
+     "top5": 0
+    },
+    "RC-overlay": {
+     "decoys_in_top5": 2,
+     "dep_precision": 0.16666666666666666,
+     "dep_recall": 1.0,
+     "file_rank": 2,
+     "packed_n": 18,
+     "packed_tokens": 593,
+     "rank": 2,
+     "rr": 0.5,
+     "top1": 0,
+     "top10": [
+      "func:app/inventory.py::Stock.reserve",
+      "cfg:MAX_QTY",
+      "func:app/orders.py::create_order",
+      "func:app/inventory.py::Stock.available",
+      "func:app/cache.py::connect",
+      "func:app/pricing.py::gross",
+      "func:app/inventory.py::Stock.__init__",
+      "func:app/inventory.py::Stock.add",
+      "cfg:CACHE_HOST",
+      "cfg:CACHE_PORT"
+     ],
+     "top3": 1,
+     "top5": 1
+    },
+    "RC-overlay+bm25": {
+     "decoys_in_top5": 2,
+     "dep_precision": 0.16666666666666666,
+     "dep_recall": 1.0,
+     "file_rank": 2,
+     "packed_n": 18,
+     "packed_tokens": 593,
+     "rank": 2,
+     "rr": 0.5,
+     "top1": 0,
+     "top10": [
+      "func:app/inventory.py::Stock.reserve",
+      "cfg:MAX_QTY",
+      "func:app/orders.py::create_order",
+      "func:app/inventory.py::Stock.available",
+      "func:app/cache.py::connect",
+      "func:app/pricing.py::gross",
+      "func:app/inventory.py::Stock.__init__",
+      "func:app/inventory.py::Stock.add",
+      "cfg:CACHE_HOST",
+      "cfg:CACHE_PORT"
+     ],
+     "top3": 1,
+     "top5": 1
+    }
+   },
+   "evidence_of_gold": "static",
+   "family": "D",
+   "frames": [
+    [
+     "tests/test_orders.py",
+     12
+    ],
+    [
+     "app/orders.py",
+     10
+    ],
+    [
+     "app/inventory.py",
+     16
+    ]
+   ],
+   "id": "D4",
+   "invalid": false,
+   "ms": {
+    "BM25": 5.205099994782358,
+    "G-distance": 2.960400015581399,
+    "RC-overlay": 34.04609998688102
+   },
+   "n_seeds": 5,
+   "top1_evidence": "observed",
+   "top1_reasons": [
+    "seed func:app/inventory.py::Stock.reserve (frame: trace frame app/inventory.py:16)",
+    "is the seed itself"
+   ],
+   "unresolved": []
+  },
+  {
+   "abstain": false,
+   "abstain_expected": false,
+   "arms": {
+    "BM25": {
+     "decoys_in_top5": 1,
+     "dep_precision": 0.21428571428571427,
+     "dep_recall": 1.0,
+     "file_rank": 8,
+     "packed_n": 14,
+     "packed_tokens": 598,
+     "rank": 8,
+     "rr": 0.125,
+     "top1": 0,
+     "top10": [
+      "func:app/orders.py::create_order_from_text",
+      "func:app/orders.py::create_order",
+      "func:app/inventory.py::Stock.reserve",
+      "func:app/inventory.py::Stock.__init__",
+      "func:app/util.py::normalize",
+      "func:app/inventory.py::Stock.available",
+      "class:app/inventory.py::Stock",
+      "func:app/validate.py::parse_qty",
+      "func:app/inventory.py::Stock.add",
+      "cfg:MAX_QTY"
+     ],
+     "top3": 0,
+     "top5": 0
+    },
+    "G-distance": {
+     "decoys_in_top5": 0,
+     "dep_precision": 0.2,
+     "dep_recall": 1.0,
+     "file_rank": 6,
+     "packed_n": 15,
+     "packed_tokens": 585,
+     "rank": 6,
+     "rr": 0.16666666666666666,
+     "top1": 0,
+     "top10": [
+      "func:app/inventory.py::Stock.__init__",
+      "func:app/orders.py::create_order_from_text",
+      "func:app/inventory.py::Stock.add",
+      "class:app/inventory.py::Stock",
+      "func:app/orders.py::create_order",
+      "func:app/validate.py::parse_qty",
+      "func:app/inventory.py::Stock.available",
+      "func:app/cache.py::connect",
+      "func:app/pricing.py::gross",
+      "func:app/util.py::normalize"
+     ],
+     "top3": 0,
+     "top5": 0
+    },
+    "RC-overlay": {
+     "decoys_in_top5": 0,
+     "dep_precision": 0.2,
+     "dep_recall": 1.0,
+     "file_rank": 3,
+     "packed_n": 15,
+     "packed_tokens": 585,
+     "rank": 3,
+     "rr": 0.3333333333333333,
+     "top1": 0,
+     "top10": [
+      "func:app/orders.py::create_order_from_text",
+      "func:app/orders.py::create_order",
+      "func:app/validate.py::parse_qty",
+      "func:app/inventory.py::Stock.__init__",
+      "class:app/inventory.py::Stock",
+      "func:app/inventory.py::Stock.add",
+      "func:app/inventory.py::Stock.available",
+      "func:app/cache.py::connect",
+      "func:app/pricing.py::gross",
+      "func:app/util.py::normalize"
+     ],
+     "top3": 1,
+     "top5": 1
+    },
+    "RC-overlay+bm25": {
+     "decoys_in_top5": 0,
+     "dep_precision": 0.2,
+     "dep_recall": 1.0,
+     "file_rank": 3,
+     "packed_n": 15,
+     "packed_tokens": 596,
+     "rank": 3,
+     "rr": 0.3333333333333333,
+     "top1": 0,
+     "top10": [
+      "func:app/orders.py::create_order_from_text",
+      "func:app/orders.py::create_order",
+      "func:app/validate.py::parse_qty",
+      "func:app/inventory.py::Stock.__init__",
+      "func:app/cache.py::connect",
+      "func:app/pricing.py::gross",
+      "cfg:MAX_QTY",
+      "class:app/inventory.py::Stock",
+      "func:app/inventory.py::Stock.available",
+      "func:app/inventory.py::Stock.add"
+     ],
+     "top3": 1,
+     "top5": 1
+    }
+   },
+   "evidence_of_gold": "static",
+   "family": "G",
+   "frames": [
+    [
+     "tests/test_text_orders.py",
+     8
+    ]
+   ],
+   "id": "G1",
+   "invalid": false,
+   "ms": {
+    "BM25": 8.607499999925494,
+    "G-distance": 2.3145000159274787,
+    "RC-overlay": 41.894699999829754
+   },
+   "n_seeds": 3,
+   "top1_evidence": "observed",
+   "top1_reasons": [
+    "seed func:app/orders.py::create_order_from_text (failing_test: covered by tests/test_text_orders.py::test_order_from_text)",
+    "is the seed itself"
+   ],
+   "unresolved": []
+  },
+  {
+   "abstain": false,
+   "abstain_expected": false,
+   "arms": {
+    "BM25": {
+     "decoys_in_top5": 2,
+     "dep_precision": 0.16666666666666666,
+     "dep_recall": 1.0,
+     "file_rank": 1,
+     "packed_n": 12,
+     "packed_tokens": 588,
+     "rank": 1,
+     "rr": 1.0,
+     "top1": 1,
+     "top10": [
+      "func:app/billing/totals.py::compute_total",
+      "func:app/invoice.py::create_invoice",
+      "func:app/reports/totals.py::compute_total",
+      "func:app/orders.py::create_order",
+      "func:app/reports/summary.py::daily_summary",
+      "func:app/pricing.py::net_price",
+      "func:app/cache.py::Client.set",
+      "func:app/orders.py::quote",
+      "class:app/cache.py::Client",
+      "func:app/pricing.py::gross"
+     ],
+     "top3": 1,
+     "top5": 1
+    },
+    "G-distance": {
+     "decoys_in_top5": 1,
+     "dep_precision": 0.6666666666666666,
+     "dep_recall": 1.0,
+     "file_rank": 1,
+     "packed_n": 3,
+     "packed_tokens": 88,
+     "rank": 1,
+     "rr": 1.0,
+     "top1": 1,
+     "top10": [
+      "func:app/billing/totals.py::compute_total",
+      "func:app/invoice.py::create_invoice",
+      "func:app/reports/totals.py::compute_total"
+     ],
+     "top3": 1,
+     "top5": 1
+    },
+    "RC-overlay": {
+     "decoys_in_top5": 2,
+     "dep_precision": 0.5,
+     "dep_recall": 1.0,
+     "file_rank": 1,
+     "packed_n": 4,
+     "packed_tokens": 117,
+     "rank": 1,
+     "rr": 1.0,
+     "top1": 1,
+     "top10": [
+      "func:app/billing/totals.py::compute_total",
+      "func:app/invoice.py::create_invoice",
+      "func:app/reports/totals.py::compute_total",
+      "func:app/reports/summary.py::daily_summary"
+     ],
+     "top3": 1,
+     "top5": 1
+    },
+    "RC-overlay+bm25": {
+     "decoys_in_top5": 2,
+     "dep_precision": 0.5,
+     "dep_recall": 1.0,
+     "file_rank": 1,
+     "packed_n": 4,
+     "packed_tokens": 117,
+     "rank": 1,
+     "rr": 1.0,
+     "top1": 1,
+     "top10": [
+      "func:app/billing/totals.py::compute_total",
+      "func:app/invoice.py::create_invoice",
+      "func:app/reports/totals.py::compute_total",
+      "func:app/reports/summary.py::daily_summary"
+     ],
+     "top3": 1,
+     "top5": 1
+    }
+   },
+   "evidence_of_gold": "observed",
+   "family": "G",
+   "frames": [
+    [
+     "tests/test_invoice.py",
+     5
+    ],
+    [
+     "app/invoice.py",
+     5
+    ],
+    [
+     "app/billing/totals.py",
+     2
+    ],
+    [
+     "app/billing/totals.py",
+     2
+    ]
+   ],
+   "id": "G2",
+   "invalid": false,
+   "ms": {
+    "BM25": 6.659199978457764,
+    "G-distance": 0.43230000301264226,
+    "RC-overlay": 50.09500001324341
+   },
+   "n_seeds": 6,
+   "top1_evidence": "observed",
+   "top1_reasons": [
+    "seed func:app/billing/totals.py::compute_total (frame: trace frame app/billing/totals.py:2)",
+    "is the seed itself"
+   ],
+   "unresolved": []
+  },
+  {
+   "abstain": true,
+   "abstain_expected": true,
+   "arms": {
+    "BM25": {
+     "decoys_in_top5": 1,
+     "dep_precision": 0.16666666666666666,
+     "dep_recall": 1.0,
+     "file_rank": 1,
+     "packed_n": 12,
+     "packed_tokens": 579,
+     "rank": 2,
+     "rr": 0.5,
+     "top1": 0,
+     "top10": [
+      "func:app/handlers.py::handle",
+      "func:app/handlers.py::_refund",
+      "func:app/handlers.py::_paid",
+      "func:app/orders.py::create_order",
+      "func:app/inventory.py::Stock.reserve",
+      "func:app/cache.py::Client.__init__",
+      "class:app/inventory.py::Stock",
+      "class:app/cache.py::Client",
+      "func:app/inventory.py::Stock.__init__",
+      "func:app/inventory.py::Stock.available"
+     ],
+     "top3": 1,
+     "top5": 1
+    },
+    "G-distance": {
+     "decoys_in_top5": 0,
+     "dep_precision": 1.0,
+     "dep_recall": 0.5,
+     "file_rank": 1,
+     "packed_n": 1,
+     "packed_tokens": 30,
+     "rank": null,
+     "rr": 0.0,
+     "top1": 0,
+     "top10": [
+      "func:app/handlers.py::handle"
+     ],
+     "top3": 0,
+     "top5": 0
+    },
+    "RC-overlay": {
+     "decoys_in_top5": 0,
+     "dep_precision": 1.0,
+     "dep_recall": 0.5,
+     "file_rank": 1,
+     "packed_n": 1,
+     "packed_tokens": 30,
+     "rank": null,
+     "rr": 0.0,
+     "top1": 0,
+     "top10": [
+      "func:app/handlers.py::handle"
+     ],
+     "top3": 0,
+     "top5": 0
+    },
+    "RC-overlay+bm25": {
+     "decoys_in_top5": 1,
+     "dep_precision": 0.6666666666666666,
+     "dep_recall": 1.0,
+     "file_rank": 1,
+     "packed_n": 3,
+     "packed_tokens": 77,
+     "rank": 2,
+     "rr": 0.5,
+     "top1": 0,
+     "top10": [
+      "func:app/handlers.py::handle",
+      "func:app/handlers.py::_refund",
+      "func:app/handlers.py::_paid"
+     ],
+     "top3": 1,
+     "top5": 1
+    }
+   },
+   "evidence_of_gold": null,
+   "family": "H",
+   "frames": [
+    [
+     "tests/test_handlers.py",
+     5
+    ]
+   ],
+   "id": "H1",
+   "invalid": false,
+   "ms": {
+    "BM25": 5.545300024095923,
+    "G-distance": 0.14039999223314226,
+    "RC-overlay": 35.8921000151895
+   },
+   "n_seeds": 2,
+   "top1_evidence": "observed",
+   "top1_reasons": [
+    "seed func:app/handlers.py::handle (failing_test: covered by tests/test_handlers.py::test_refund)",
+    "is the seed itself"
+   ],
+   "unresolved": [
+    "func:app/handlers.py::handle -> unknown:HANDLERS[event['kind']] @ app/handlers.py:13"
+   ]
+  },
+  {
+   "abstain": true,
+   "abstain_expected": true,
+   "arms": {
+    "BM25": {
+     "decoys_in_top5": 0,
+     "dep_precision": 0.15384615384615385,
+     "dep_recall": 1.0,
+     "file_rank": 2,
+     "packed_n": 13,
+     "packed_tokens": 595,
+     "rank": 2,
+     "rr": 0.5,
+     "top1": 0,
+     "top10": [
+      "func:app/plugins.py::run",
+      "func:app/plugin_double.py::apply",
+      "func:app/inventory.py::Stock.reserve",
+      "func:app/cache.py::Client.__init__",
+      "class:app/inventory.py::Stock",
+      "class:app/cache.py::Client",
+      "func:app/inventory.py::Stock.__init__",
+      "func:app/inventory.py::Stock.available",
+      "func:app/orders.py::quote",
+      "func:app/money.py::round_money"
+     ],
+     "top3": 1,
+     "top5": 1
+    },
+    "G-distance": {
+     "decoys_in_top5": 0,
+     "dep_precision": 1.0,
+     "dep_recall": 0.5,
+     "file_rank": null,
+     "packed_n": 1,
+     "packed_tokens": 40,
+     "rank": null,
+     "rr": 0.0,
+     "top1": 0,
+     "top10": [
+      "func:app/plugins.py::run"
+     ],
+     "top3": 0,
+     "top5": 0
+    },
+    "RC-overlay": {
+     "decoys_in_top5": 0,
+     "dep_precision": 1.0,
+     "dep_recall": 0.5,
+     "file_rank": null,
+     "packed_n": 1,
+     "packed_tokens": 40,
+     "rank": null,
+     "rr": 0.0,
+     "top1": 0,
+     "top10": [
+      "func:app/plugins.py::run"
+     ],
+     "top3": 0,
+     "top5": 0
+    },
+    "RC-overlay+bm25": {
+     "decoys_in_top5": 0,
+     "dep_precision": 0.3333333333333333,
+     "dep_recall": 1.0,
+     "file_rank": 3,
+     "packed_n": 6,
+     "packed_tokens": 246,
+     "rank": 3,
+     "rr": 0.3333333333333333,
+     "top1": 0,
+     "top10": [
+      "func:app/plugins.py::run",
+      "cfg:MAX_QTY",
+      "func:app/plugin_double.py::apply",
+      "func:app/inventory.py::Stock.reserve",
+      "func:app/inventory.py::Stock.available",
+      "func:app/orders.py::create_order"
+     ],
+     "top3": 1,
+     "top5": 1
+    }
+   },
+   "evidence_of_gold": null,
+   "family": "H",
+   "frames": [
+    [
+     "tests/test_plugins.py",
+     5
+    ]
+   ],
+   "id": "H2",
+   "invalid": false,
+   "ms": {
+    "BM25": 5.833900009747595,
+    "G-distance": 0.1514999894425273,
+    "RC-overlay": 40.164199977880344
+   },
+   "n_seeds": 2,
+   "top1_evidence": "observed",
+   "top1_reasons": [
+    "seed func:app/plugins.py::run (failing_test: covered by tests/test_plugins.py::test_double_plugin)",
+    "is the seed itself"
+   ],
+   "unresolved": [
+    "func:app/plugins.py::run -> unknown:dynamic:importlib.import_module(f'app.plugin_{name}') @ app/plugins.py:5"
+   ]
+  }
+ ]
+}

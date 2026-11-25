@@ -1,0 +1,39 @@
+{
+  "chain": [
+    "app/orders.py::quote",
+    "app/pricing.py::gross"
+  ],
+  "decoys": [
+    "app/pricing.py::tax",
+    "app/pricing.py::discount"
+  ],
+  "derivation": "test_quote calls orders.quote(50, 2, 10) expecting 108 (net 100, 10% off = 90, tax 18). quote only forwards to pricing.gross (other file, one call hop). The edit makes gross return the pre-tax 90. tax itself is correct (test_tax passes).",
+  "edits": [
+    {
+      "kind": "replace",
+      "new": "    return round_money(net)",
+      "old": "    return round_money(net + tax(net))",
+      "path": "app/pricing.py"
+    }
+  ],
+  "entry": "app/orders.py::quote",
+  "extra_deps": [
+    "app/pricing.py::discount",
+    "app/pricing.py::net_price",
+    "app/pricing.py::tax"
+  ],
+  "family": "B",
+  "gold": [
+    "app/pricing.py::gross"
+  ],
+  "gold_files": [
+    "app/pricing.py"
+  ],
+  "id": "B1",
+  "primary_test": "tests/test_orders.py::test_quote",
+  "project": "S",
+  "title": "gross drops the tax; failing test enters through orders.quote",
+  "tree": {
+    "repo": "repo"
+  }
+}

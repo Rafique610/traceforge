@@ -1,0 +1,38 @@
+{
+  "derivation": "Account.withdraw gains a required `memo`. SavingsAccount.withdraw overrides it with the old signature (so savings tests still pass) -> overrider, listed structurally. Callers: test_withdraw_cost calls Account.withdraw(100) directly -> TypeError; transfer calls src.withdraw(amount) on an untyped parameter -> TypeError for the Account in test_transfer (reachable only by method name). Predicted failures: those two tests.",
+  "edits": [
+    {
+      "kind": "replace",
+      "new": "    def withdraw(self, amount, memo):\n        return self._debit(amount)\n\n\nclass SavingsAccount(Account):",
+      "old": "    def withdraw(self, amount):\n        return self._debit(amount)\n\n\nclass SavingsAccount(Account):",
+      "path": "app/accounts.py"
+    }
+  ],
+  "expected_dependants": [
+    "app/accounts.py::SavingsAccount.withdraw",
+    "app/transfer.py::transfer"
+  ],
+  "expected_direct": [
+    "app/accounts.py::SavingsAccount.withdraw",
+    "app/transfer.py::transfer"
+  ],
+  "expected_flags": [
+    "signature_change_overriders:app/accounts.py::Account.withdraw",
+    "signature_change_external_callers:app/accounts.py::Account.withdraw"
+  ],
+  "family": "F",
+  "id": "F5",
+  "modified": [
+    "app/accounts.py::Account.withdraw"
+  ],
+  "predicted_failing": [
+    "tests/test_accounts.py::test_withdraw_cost",
+    "tests/test_transfer.py::test_transfer_converts"
+  ],
+  "project": "L",
+  "title": "base-class signature change with an overriding subclass and untyped callers",
+  "tree": {
+    "base": "base",
+    "patched": "patched"
+  }
+}

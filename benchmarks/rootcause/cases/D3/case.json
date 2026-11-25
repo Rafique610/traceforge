@@ -1,0 +1,45 @@
+{
+  "chain": [
+    "app/cache.py::connect",
+    "cfg:CACHE_HOST"
+  ],
+  "decoys": [
+    "cfg:CACHE_PORT",
+    "app/cache.py::Client.__init__"
+  ],
+  "derivation": "The code reads CACHE_HOST (default now 'localhost'); compose sets CACHE_HOSTNAME, a name nothing reads. So the service connects to 'localhost' and fails. Either side of the name mismatch is an acceptable answer: cfg:CACHE_HOST (code) or cfg:CACHE_HOSTNAME (compose).",
+  "edits": [
+    {
+      "kind": "replace",
+      "new": "os.getenv(\"CACHE_HOST\", \"localhost\")",
+      "old": "os.getenv(\"CACHE_HOST\", \"cache\")",
+      "path": "app/settings.py"
+    },
+    {
+      "kind": "replace",
+      "new": "      CACHE_HOSTNAME: cache\n",
+      "old": "      CACHE_HOST: cache\n",
+      "path": "compose.yaml"
+    }
+  ],
+  "entry": "app/cache.py::connect",
+  "extra_deps": [
+    "app/cache.py::Client.__init__"
+  ],
+  "family": "D",
+  "gold": [
+    "cfg:CACHE_HOST",
+    "cfg:CACHE_HOSTNAME"
+  ],
+  "gold_files": [
+    "compose.yaml",
+    "app/settings.py"
+  ],
+  "id": "D3",
+  "primary_test": "tests/test_cache.py::test_connect",
+  "project": "S",
+  "title": "compose key renamed to CACHE_HOSTNAME, code reads CACHE_HOST (default localhost)",
+  "tree": {
+    "repo": "repo"
+  }
+}

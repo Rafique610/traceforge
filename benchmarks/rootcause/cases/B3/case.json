@@ -1,0 +1,37 @@
+{
+  "chain": [
+    "app/transfer.py::transfer",
+    "app/convert.py::convert"
+  ],
+  "decoys": [
+    "app/rates.py::lookup",
+    "app/accounts.py::Account.withdraw"
+  ],
+  "derivation": "transfer(a, b, 100) USD->EUR must return 90 (100 / 1.0 * 0.9). transfer calls convert (other file, one hop). The edit computes 100 * 1.0 / 0.9 = 111.11. lookup returns the correct rate (test_lookup passes) and withdraw/deposit are not involved in the returned value.",
+  "edits": [
+    {
+      "kind": "replace",
+      "new": "amount * lookup(src) / lookup(dst)",
+      "old": "amount / lookup(src) * lookup(dst)",
+      "path": "app/convert.py"
+    }
+  ],
+  "entry": "app/transfer.py::transfer",
+  "extra_deps": [
+    "app/rates.py::lookup"
+  ],
+  "family": "B",
+  "gold": [
+    "app/convert.py::convert"
+  ],
+  "gold_files": [
+    "app/convert.py"
+  ],
+  "id": "B3",
+  "primary_test": "tests/test_transfer.py::test_transfer_converts",
+  "project": "L",
+  "title": "currency conversion inverted; test enters through transfer.transfer",
+  "tree": {
+    "repo": "repo"
+  }
+}

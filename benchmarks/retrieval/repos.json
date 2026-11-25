@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "note": "Pinned snapshots. Clones live under runs/bench_repos/ (git-ignored). Re-create with: git clone --depth 1 --branch <ref> <url> runs/bench_repos/<dir>. HEAD must equal `commit` (checked by the harness). size_bytes and py_files exclude .git.",
+  "repos": [
+    {
+      "name": "small_itsdangerous",
+      "tier": "small",
+      "url": "https://github.com/pallets/itsdangerous.git",
+      "ref": "2.2.0",
+      "commit": "096c8d42545d3b68ea21a4f890fb2b2d8979c0bd",
+      "license": "BSD-3-Clause",
+      "size_bytes": 139218,
+      "py_files": 15,
+      "src_py_files": 8,
+      "content_sha256": "b92efaeb427f2faea8978a01410c534b450f95d1ee46dd4d32167bd7c273c9f9",
+      "path": "runs/bench_repos/itsdangerous",
+      "queries": "queries/small_itsdangerous.json",
+      "service": "",
+      "description": "Cryptographic signing library: 8 source modules (~1.2k lines), 144 chunks incl. tests."
+    },
+    {
+      "name": "medium_requests",
+      "tier": "medium",
+      "url": "https://github.com/psf/requests.git",
+      "ref": "v2.32.3",
+      "commit": "0e322af87745eff34caffe4df68456ebc20d9068",
+      "license": "Apache-2.0",
+      "size_bytes": 5207857,
+      "py_files": 36,
+      "src_py_files": 18,
+      "content_sha256": "12997733e36cb51f4c7e48f945f5444d3598af2901dba7bf9be93759b4389507",
+      "path": "runs/bench_repos/requests",
+      "queries": "queries/medium_requests.json",
+      "service": "",
+      "description": "HTTP client library: 18 modules under src/requests, 284 source symbols, 765 chunks incl. tests."
+    },
+    {
+      "name": "complex_lab",
+      "tier": "complex",
+      "url": "local: this repository, directory lab/ (git archive of HEAD)",
+      "ref": "main",
+      "commit": "9f2eb794db0e8a14845a8e26815e4a88c38150e2",
+      "lab_tree_sha": "3b9ea6112986a19e8fccaf64724f4ab990fc01d9",
+      "license": "project-internal (TraceForge course project; not an external open-source repo)",
+      "size_bytes": 63273,
+      "py_files": 42,
+      "src_py_files": 30,
+      "content_sha256": "9dbd9ea18586105c09571596e9d6af134a4408461b2e0cd5e9a0080ec6682931",
+      "path": "runs/bench_repos/traceforge_lab",
+      "queries": "queries/complex_lab.json",
+      "service": "",
+      "description": "Service-like project: shop_api (FastAPI) + worker (Redis queue) + compose.yaml + .env.example + pydantic settings + tests; 280 chunks incl. 27 config keys. Created with `git archive HEAD lab | tar -x -C runs/bench_repos/traceforge_lab` (tracked files only, so no .env). NOTE: the dev split faults are injected into this same lab; the benchmark queries here are separate hypothetical bug reports on the pristine lab."
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "chain": [
+    "app/orders.py::quote",
+    "app/pricing.py::gross",
+    "app/pricing.py::net_price"
+  ],
+  "decoys": [
+    "app/pricing.py::discount",
+    "app/pricing.py::tax"
+  ],
+  "derivation": "quote -> gross -> net_price (2 hops). The edit computes 50 + 2 = 52 instead of 100 for the line total, so every later step is wrong. discount and tax are correct (their own tests pass).",
+  "edits": [
+    {
+      "kind": "replace",
+      "new": "return round_money(price + qty)",
+      "old": "return round_money(price * qty)",
+      "path": "app/pricing.py"
+    }
+  ],
+  "entry": "app/orders.py::quote",
+  "extra_deps": [
+    "app/pricing.py::discount",
+    "app/pricing.py::tax"
+  ],
+  "family": "C",
+  "gold": [
+    "app/pricing.py::net_price"
+  ],
+  "gold_files": [
+    "app/pricing.py"
+  ],
+  "id": "C2",
+  "primary_test": "tests/test_orders.py::test_quote",
+  "project": "S",
+  "title": "net_price adds instead of multiplies: two hops below the entry",
+  "tree": {
+    "repo": "repo"
+  }
+}

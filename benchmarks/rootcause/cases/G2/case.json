@@ -1,0 +1,77 @@
+{
+  "chain": [
+    "app/invoice.py::create_invoice",
+    "app/billing/totals.py::compute_total"
+  ],
+  "decoys": [
+    "app/reports/totals.py::compute_total",
+    "app/reports/summary.py::daily_summary"
+  ],
+  "derivation": "create_invoice imports compute_total from app.billing.totals; its body reads the misspelled key 'prize' -> KeyError. app.reports.totals defines a SAME-NAMED compute_total that is correct, exercised only by test_daily_summary (passing) and unrelated to the invoice path. A name-based search cannot tell them apart; the import resolves it.",
+  "edits": [
+    {
+      "kind": "create",
+      "new": "",
+      "old": null,
+      "path": "app/billing/__init__.py"
+    },
+    {
+      "kind": "create",
+      "new": "def compute_total(items):\n    return sum(i[\"prize\"] * i[\"qty\"] for i in items)\n",
+      "old": null,
+      "path": "app/billing/totals.py"
+    },
+    {
+      "kind": "create",
+      "new": "",
+      "old": null,
+      "path": "app/reports/__init__.py"
+    },
+    {
+      "kind": "create",
+      "new": "def compute_total(rows):\n    return sum(r[\"amount\"] for r in rows)\n",
+      "old": null,
+      "path": "app/reports/totals.py"
+    },
+    {
+      "kind": "create",
+      "new": "from app.reports.totals import compute_total\n\n\ndef daily_summary(rows):\n    return {\"total\": compute_total(rows)}\n",
+      "old": null,
+      "path": "app/reports/summary.py"
+    },
+    {
+      "kind": "create",
+      "new": "from app.billing.totals import compute_total\n\n\ndef create_invoice(items):\n    return compute_total(items)\n",
+      "old": null,
+      "path": "app/invoice.py"
+    },
+    {
+      "kind": "create",
+      "new": "from app.invoice import create_invoice\n\n\ndef test_invoice_total():\n    assert create_invoice([{\"price\": 10, \"qty\": 3}]) == 30\n",
+      "old": null,
+      "path": "tests/test_invoice.py"
+    },
+    {
+      "kind": "create",
+      "new": "from app.reports.summary import daily_summary\n\n\ndef test_daily_summary():\n    assert daily_summary([{\"amount\": 5}, {\"amount\": 7}]) == {\"total\": 12}\n",
+      "old": null,
+      "path": "tests/test_reports.py"
+    }
+  ],
+  "entry": "app/invoice.py::create_invoice",
+  "extra_deps": [],
+  "family": "G",
+  "gold": [
+    "app/billing/totals.py::compute_total"
+  ],
+  "gold_files": [
+    "app/billing/totals.py"
+  ],
+  "id": "G2",
+  "primary_test": "tests/test_invoice.py::test_invoice_total",
+  "project": "S",
+  "title": "name collision: two compute_total functions, the failing one is billing's",
+  "tree": {
+    "repo": "repo"
+  }
+}

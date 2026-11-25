@@ -1,0 +1,9 @@
+services:
+  api:
+    build: .
+    command: python -m app.orders
+    environment:
+      CACHE_HOST: cache
+      TAX_RATE: "0.2"
+  cache:
+    image: redis:7

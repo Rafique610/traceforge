@@ -37,8 +37,10 @@ def lab_report(lab_tests):
 def test_protocol_and_registry():
     p = get_impact_provider("graph")
     assert isinstance(p, ImpactProvider) and p.name == "graph"
+    s15 = get_impact_provider("s15")  # the P5-S15 provider now exists (traceforge.analysis)
+    assert isinstance(s15, ImpactProvider)
     with pytest.raises(KeyError):
-        get_impact_provider("s15")  # Rafique's module not present: refused, not faked
+        get_impact_provider("no-such-provider")
     register_impact_provider("dummy", GraphImpactProvider)
     assert get_impact_provider("dummy").name == "graph"
 

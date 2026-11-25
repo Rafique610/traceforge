@@ -1,0 +1,688 @@
+{
+  "abstention": {
+    "H_abstained": 2,
+    "H_gold_top5": {
+      "BM25": 2,
+      "G-distance": 0,
+      "RC-overlay": 0,
+      "RC-overlay+bm25": 2
+    },
+    "H_n": 2,
+    "false_abstain": 0,
+    "non_H_n": 16
+  },
+  "bootstrap": {
+    "n": 10000,
+    "seed": 20261125
+  },
+  "deterministic_two_runs": true,
+  "impact": {
+    "BM25-select": {
+      "dep_precision": null,
+      "dep_recall": null,
+      "detected": 1.0,
+      "direct_recall": null,
+      "flag_recall": null,
+      "fp_flags": null,
+      "frac_suite": 0.5753246753246752,
+      "hidden_leak": null,
+      "ms": null,
+      "n_not_analysable": null,
+      "report_tokens": null,
+      "sel_recall": 0.5392857142857143
+    },
+    "IMP-graph": {
+      "dep_precision": 1.0,
+      "dep_recall": 0.55,
+      "detected": 0.8,
+      "direct_recall": 0.6,
+      "flag_recall": 0.375,
+      "fp_flags": 0.0,
+      "frac_suite": 0.34805194805194806,
+      "hidden_leak": 0.0,
+      "ms": 41.57256000908092,
+      "n_not_analysable": 1.0,
+      "report_tokens": 649.6,
+      "sel_recall": 0.6
+    },
+    "IMP-overlay": {
+      "dep_precision": 1.0,
+      "dep_recall": 1.0,
+      "detected": 1.0,
+      "direct_recall": 1.0,
+      "flag_recall": 1.0,
+      "fp_flags": 0.0,
+      "frac_suite": 0.5753246753246752,
+      "hidden_leak": 0.0,
+      "ms": 89.5524200052023,
+      "n_not_analysable": 1.2,
+      "report_tokens": 969.2,
+      "sel_recall": 1.0
+    },
+    "full-suite": {
+      "dep_precision": null,
+      "dep_recall": null,
+      "detected": 1.0,
+      "direct_recall": null,
+      "flag_recall": null,
+      "fp_flags": null,
+      "frac_suite": 1.0,
+      "hidden_leak": null,
+      "ms": null,
+      "n_not_analysable": null,
+      "report_tokens": null,
+      "sel_recall": 1.0
+    },
+    "n": 5,
+    "prediction_matches": 5
+  },
+  "latency_ms": {
+    "BM25_median": 5.375200009439141,
+    "G-distance_median": 1.636600005440414,
+    "RC-overlay_max": 58.10539997764863,
+    "RC-overlay_median": 34.79069999593776
+  },
+  "n_cases": 23,
+  "n_invalid": 0,
+  "pools": {
+    "A": {
+      "BM25": {
+        "dep_precision": 0.21875,
+        "dep_recall": 1.0,
+        "packed_tokens": 576.5,
+        "rr": 0.6,
+        "top1": 0.5,
+        "top3": 0.5,
+        "top5": 1.0
+      },
+      "G-distance": {
+        "dep_precision": 0.41428571428571426,
+        "dep_recall": 1.0,
+        "packed_tokens": 214.5,
+        "rr": 0.6,
+        "top1": 0.5,
+        "top3": 0.5,
+        "top5": 1.0
+      },
+      "RC-overlay": {
+        "dep_precision": 0.4722222222222222,
+        "dep_recall": 1.0,
+        "packed_tokens": 251.0,
+        "rr": 0.6,
+        "top1": 0.5,
+        "top3": 0.5,
+        "top5": 1.0
+      },
+      "RC-overlay+bm25": {
+        "dep_precision": 0.3484848484848485,
+        "dep_recall": 1.0,
+        "packed_tokens": 338.0,
+        "rr": 0.6,
+        "top1": 0.5,
+        "top3": 0.5,
+        "top5": 1.0
+      },
+      "diff_rr_RC_minus_BM25": {
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "mean": 0.0
+      },
+      "diff_rr_RC_minus_G-distance": {
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "mean": 0.0
+      },
+      "diff_top5_RC_minus_BM25": {
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "mean": 0.0
+      },
+      "diff_top5_RC_minus_G-distance": {
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "mean": 0.0
+      },
+      "n": 2
+    },
+    "ABCD+G": {
+      "BM25": {
+        "dep_precision": 0.2502900745088245,
+        "dep_recall": 0.9028273809523809,
+        "packed_tokens": 576.4375,
+        "rr": 0.28323638167388165,
+        "top1": 0.125,
+        "top3": 0.1875,
+        "top5": 0.5625
+      },
+      "G-distance": {
+        "dep_precision": 0.3796705898268398,
+        "dep_recall": 0.9875,
+        "packed_tokens": 410.875,
+        "rr": 0.3955911531279178,
+        "top1": 0.1875,
+        "top3": 0.4375,
+        "top5": 0.6875
+      },
+      "RC-overlay": {
+        "dep_precision": 0.3788825757575757,
+        "dep_recall": 0.9660714285714286,
+        "packed_tokens": 418.3125,
+        "rr": 0.4996436403508772,
+        "top1": 0.3125,
+        "top3": 0.5625,
+        "top5": 0.75
+      },
+      "RC-overlay+bm25": {
+        "dep_precision": 0.30308441558441557,
+        "dep_recall": 0.9482142857142857,
+        "packed_tokens": 478.0625,
+        "rr": 0.4972874895572264,
+        "top1": 0.3125,
+        "top3": 0.5625,
+        "top5": 0.75
+      },
+      "diff_rr_RC_minus_BM25": {
+        "ci95": [
+          0.08895842826763879,
+          0.3554788961038961
+        ],
+        "mean": 0.2164072586769955
+      },
+      "diff_rr_RC_minus_G-distance": {
+        "ci95": [
+          0.013541666666666664,
+          0.21538681261978476
+        ],
+        "mean": 0.10405248722295936
+      },
+      "diff_top5_RC_minus_BM25": {
+        "ci95": [
+          -0.125,
+          0.5
+        ],
+        "mean": 0.1875
+      },
+      "diff_top5_RC_minus_G-distance": {
+        "ci95": [
+          -0.125,
+          0.3125
+        ],
+        "mean": 0.0625
+      },
+      "n": 16
+    },
+    "B+C": {
+      "BM25": {
+        "dep_precision": 0.27888257575757575,
+        "dep_recall": 0.8473214285714286,
+        "packed_tokens": 563.375,
+        "rr": 0.17376443001443,
+        "top1": 0.0,
+        "top3": 0.125,
+        "top5": 0.375
+      },
+      "G-distance": {
+        "dep_precision": 0.400196158008658,
+        "dep_recall": 0.975,
+        "packed_tokens": 445.875,
+        "rr": 0.3108251633986928,
+        "top1": 0.125,
+        "top3": 0.25,
+        "top5": 0.625
+      },
+      "RC-overlay": {
+        "dep_precision": 0.38207070707070706,
+        "dep_recall": 0.9321428571428572,
+        "packed_tokens": 490.125,
+        "rr": 0.3076206140350877,
+        "top1": 0.125,
+        "top3": 0.25,
+        "top5": 0.5
+      },
+      "RC-overlay+bm25": {
+        "dep_precision": 0.2614087301587302,
+        "dep_recall": 0.8964285714285715,
+        "packed_tokens": 586.5,
+        "rr": 0.30290831244778615,
+        "top1": 0.125,
+        "top3": 0.25,
+        "top5": 0.5
+      },
+      "diff_rr_RC_minus_BM25": {
+        "ci95": [
+          -0.004784688995215313,
+          0.2876939033189033
+        ],
+        "mean": 0.13385618402065771
+      },
+      "diff_rr_RC_minus_G-distance": {
+        "ci95": [
+          -0.030287882696938426,
+          0.017976006191950458
+        ],
+        "mean": -0.003204549363605093
+      },
+      "diff_top5_RC_minus_BM25": {
+        "ci95": [
+          -0.375,
+          0.625
+        ],
+        "mean": 0.125
+      },
+      "diff_top5_RC_minus_G-distance": {
+        "ci95": [
+          -0.375,
+          0.0
+        ],
+        "mean": -0.125
+      },
+      "n": 8
+    },
+    "D": {
+      "BM25": {
+        "dep_precision": 0.2387820512820513,
+        "dep_recall": 0.9166666666666666,
+        "packed_tokens": 594.25,
+        "rr": 0.20416666666666666,
+        "top1": 0.0,
+        "top3": 0.0,
+        "top5": 0.75
+      },
+      "G-distance": {
+        "dep_precision": 0.29448051948051945,
+        "dep_recall": 1.0,
+        "packed_tokens": 476.25,
+        "rr": 0.36904761904761907,
+        "top1": 0.0,
+        "top3": 0.75,
+        "top5": 0.75
+      },
+      "RC-overlay": {
+        "dep_precision": 0.3402777777777778,
+        "dep_recall": 1.0,
+        "packed_tokens": 392.0,
+        "rr": 0.75,
+        "top1": 0.5,
+        "top3": 1.0,
+        "top5": 1.0
+      },
+      "RC-overlay+bm25": {
+        "dep_precision": 0.3402777777777778,
+        "dep_recall": 1.0,
+        "packed_tokens": 392.0,
+        "rr": 0.75,
+        "top1": 0.5,
+        "top3": 1.0,
+        "top5": 1.0
+      },
+      "diff_rr_RC_minus_BM25": {
+        "ci95": [
+          0.3416666666666667,
+          0.75
+        ],
+        "mean": 0.5458333333333334
+      },
+      "diff_rr_RC_minus_G-distance": {
+        "ci95": [
+          0.125,
+          0.5892857142857143
+        ],
+        "mean": 0.380952380952381
+      },
+      "diff_top5_RC_minus_BM25": {
+        "ci95": [
+          0.0,
+          0.75
+        ],
+        "mean": 0.25
+      },
+      "diff_top5_RC_minus_G-distance": {
+        "ci95": [
+          0.0,
+          0.75
+        ],
+        "mean": 0.25
+      },
+      "n": 4
+    },
+    "G": {
+      "BM25": {
+        "dep_precision": 0.19047619047619047,
+        "dep_recall": 1.0,
+        "packed_tokens": 593.0,
+        "rr": 0.5625,
+        "top1": 0.5,
+        "top3": 0.5,
+        "top5": 0.5
+      },
+      "G-distance": {
+        "dep_precision": 0.43333333333333335,
+        "dep_recall": 1.0,
+        "packed_tokens": 336.5,
+        "rr": 0.5833333333333334,
+        "top1": 0.5,
+        "top3": 0.5,
+        "top5": 0.5
+      },
+      "RC-overlay": {
+        "dep_precision": 0.35,
+        "dep_recall": 1.0,
+        "packed_tokens": 351.0,
+        "rr": 0.6666666666666666,
+        "top1": 0.5,
+        "top3": 1.0,
+        "top5": 1.0
+      },
+      "RC-overlay+bm25": {
+        "dep_precision": 0.35,
+        "dep_recall": 1.0,
+        "packed_tokens": 356.5,
+        "rr": 0.6666666666666666,
+        "top1": 0.5,
+        "top3": 1.0,
+        "top5": 1.0
+      },
+      "diff_rr_RC_minus_BM25": {
+        "ci95": [
+          0.0,
+          0.20833333333333331
+        ],
+        "mean": 0.10416666666666666
+      },
+      "diff_rr_RC_minus_G-distance": {
+        "ci95": [
+          0.0,
+          0.16666666666666666
+        ],
+        "mean": 0.08333333333333333
+      },
+      "diff_top5_RC_minus_BM25": {
+        "ci95": [
+          0.0,
+          1.0
+        ],
+        "mean": 0.5
+      },
+      "diff_top5_RC_minus_G-distance": {
+        "ci95": [
+          0.0,
+          1.0
+        ],
+        "mean": 0.5
+      },
+      "n": 2
+    }
+  },
+  "priors_sha256": "290be1d1dca2876275aa61cdb4bf6452717f9f2910ed471d714c37410d0fe391",
+  "result_digest": "6d6a5bd34dee24a4e25e1331d4305ad3cd8c6f12f2a90e230b43a39e89f4c53f",
+  "rootcause_by_family": {
+    "A": {
+      "BM25": {
+        "decoys_in_top5": 0.0,
+        "dep_precision": 0.21875,
+        "dep_recall": 1.0,
+        "packed_tokens": 576.5,
+        "rr": 0.6,
+        "top1": 0.5,
+        "top3": 0.5,
+        "top5": 1.0
+      },
+      "G-distance": {
+        "decoys_in_top5": 1.5,
+        "dep_precision": 0.41428571428571426,
+        "dep_recall": 1.0,
+        "packed_tokens": 214.5,
+        "rr": 0.6,
+        "top1": 0.5,
+        "top3": 0.5,
+        "top5": 1.0
+      },
+      "RC-overlay": {
+        "decoys_in_top5": 1.5,
+        "dep_precision": 0.4722222222222222,
+        "dep_recall": 1.0,
+        "packed_tokens": 251.0,
+        "rr": 0.6,
+        "top1": 0.5,
+        "top3": 0.5,
+        "top5": 1.0
+      },
+      "RC-overlay+bm25": {
+        "decoys_in_top5": 1.5,
+        "dep_precision": 0.3484848484848485,
+        "dep_recall": 1.0,
+        "packed_tokens": 338.0,
+        "rr": 0.6,
+        "top1": 0.5,
+        "top3": 0.5,
+        "top5": 1.0
+      },
+      "n": 2
+    },
+    "B": {
+      "BM25": {
+        "decoys_in_top5": 1.0,
+        "dep_precision": 0.2864583333333333,
+        "dep_recall": 0.9375,
+        "packed_tokens": 563.25,
+        "rr": 0.22808441558441558,
+        "top1": 0.0,
+        "top3": 0.25,
+        "top5": 0.5
+      },
+      "G-distance": {
+        "decoys_in_top5": 0.75,
+        "dep_precision": 0.34523809523809523,
+        "dep_recall": 0.95,
+        "packed_tokens": 451.75,
+        "rr": 0.4875,
+        "top1": 0.25,
+        "top3": 0.5,
+        "top5": 1.0
+      },
+      "RC-overlay": {
+        "decoys_in_top5": 0.75,
+        "dep_precision": 0.3459595959595959,
+        "dep_recall": 0.95,
+        "packed_tokens": 489.5,
+        "rr": 0.4791666666666667,
+        "top1": 0.25,
+        "top3": 0.5,
+        "top5": 0.75
+      },
+      "RC-overlay+bm25": {
+        "decoys_in_top5": 1.0,
+        "dep_precision": 0.2361111111111111,
+        "dep_recall": 0.95,
+        "packed_tokens": 581.5,
+        "rr": 0.4732142857142857,
+        "top1": 0.25,
+        "top3": 0.5,
+        "top5": 0.75
+      },
+      "n": 4
+    },
+    "C": {
+      "BM25": {
+        "decoys_in_top5": 0.5,
+        "dep_precision": 0.2713068181818182,
+        "dep_recall": 0.7571428571428571,
+        "packed_tokens": 563.5,
+        "rr": 0.11944444444444444,
+        "top1": 0.0,
+        "top3": 0.0,
+        "top5": 0.25
+      },
+      "G-distance": {
+        "decoys_in_top5": 0.5,
+        "dep_precision": 0.45515422077922074,
+        "dep_recall": 1.0,
+        "packed_tokens": 440.0,
+        "rr": 0.13415032679738562,
+        "top1": 0.0,
+        "top3": 0.0,
+        "top5": 0.25
+      },
+      "RC-overlay": {
+        "decoys_in_top5": 0.75,
+        "dep_precision": 0.4181818181818182,
+        "dep_recall": 0.9142857142857143,
+        "packed_tokens": 490.75,
+        "rr": 0.13607456140350876,
+        "top1": 0.0,
+        "top3": 0.0,
+        "top5": 0.25
+      },
+      "RC-overlay+bm25": {
+        "decoys_in_top5": 1.0,
+        "dep_precision": 0.2867063492063492,
+        "dep_recall": 0.8428571428571429,
+        "packed_tokens": 591.5,
+        "rr": 0.13260233918128655,
+        "top1": 0.0,
+        "top3": 0.0,
+        "top5": 0.25
+      },
+      "n": 4
+    },
+    "D": {
+      "BM25": {
+        "decoys_in_top5": 1.75,
+        "dep_precision": 0.2387820512820513,
+        "dep_recall": 0.9166666666666666,
+        "packed_tokens": 594.25,
+        "rr": 0.20416666666666666,
+        "top1": 0.0,
+        "top3": 0.0,
+        "top5": 0.75
+      },
+      "G-distance": {
+        "decoys_in_top5": 2.0,
+        "dep_precision": 0.29448051948051945,
+        "dep_recall": 1.0,
+        "packed_tokens": 476.25,
+        "rr": 0.36904761904761907,
+        "top1": 0.0,
+        "top3": 0.75,
+        "top5": 0.75
+      },
+      "RC-overlay": {
+        "decoys_in_top5": 2.0,
+        "dep_precision": 0.3402777777777778,
+        "dep_recall": 1.0,
+        "packed_tokens": 392.0,
+        "rr": 0.75,
+        "top1": 0.5,
+        "top3": 1.0,
+        "top5": 1.0
+      },
+      "RC-overlay+bm25": {
+        "decoys_in_top5": 2.0,
+        "dep_precision": 0.3402777777777778,
+        "dep_recall": 1.0,
+        "packed_tokens": 392.0,
+        "rr": 0.75,
+        "top1": 0.5,
+        "top3": 1.0,
+        "top5": 1.0
+      },
+      "n": 4
+    },
+    "G": {
+      "BM25": {
+        "decoys_in_top5": 1.5,
+        "dep_precision": 0.19047619047619047,
+        "dep_recall": 1.0,
+        "packed_tokens": 593.0,
+        "rr": 0.5625,
+        "top1": 0.5,
+        "top3": 0.5,
+        "top5": 0.5
+      },
+      "G-distance": {
+        "decoys_in_top5": 0.5,
+        "dep_precision": 0.43333333333333335,
+        "dep_recall": 1.0,
+        "packed_tokens": 336.5,
+        "rr": 0.5833333333333334,
+        "top1": 0.5,
+        "top3": 0.5,
+        "top5": 0.5
+      },
+      "RC-overlay": {
+        "decoys_in_top5": 1.0,
+        "dep_precision": 0.35,
+        "dep_recall": 1.0,
+        "packed_tokens": 351.0,
+        "rr": 0.6666666666666666,
+        "top1": 0.5,
+        "top3": 1.0,
+        "top5": 1.0
+      },
+      "RC-overlay+bm25": {
+        "decoys_in_top5": 1.0,
+        "dep_precision": 0.35,
+        "dep_recall": 1.0,
+        "packed_tokens": 356.5,
+        "rr": 0.6666666666666666,
+        "top1": 0.5,
+        "top3": 1.0,
+        "top5": 1.0
+      },
+      "n": 2
+    },
+    "H": {
+      "BM25": {
+        "decoys_in_top5": 0.5,
+        "dep_precision": 0.16025641025641024,
+        "dep_recall": 1.0,
+        "packed_tokens": 587.0,
+        "rr": 0.5,
+        "top1": 0.0,
+        "top3": 1.0,
+        "top5": 1.0
+      },
+      "G-distance": {
+        "decoys_in_top5": 0.0,
+        "dep_precision": 1.0,
+        "dep_recall": 0.5,
+        "packed_tokens": 35.0,
+        "rr": 0.0,
+        "top1": 0.0,
+        "top3": 0.0,
+        "top5": 0.0
+      },
+      "RC-overlay": {
+        "decoys_in_top5": 0.0,
+        "dep_precision": 1.0,
+        "dep_recall": 0.5,
+        "packed_tokens": 35.0,
+        "rr": 0.0,
+        "top1": 0.0,
+        "top3": 0.0,
+        "top5": 0.0
+      },
+      "RC-overlay+bm25": {
+        "decoys_in_top5": 0.5,
+        "dep_precision": 0.5,
+        "dep_recall": 1.0,
+        "packed_tokens": 161.5,
+        "rr": 0.41666666666666663,
+        "top1": 0.0,
+        "top3": 1.0,
+        "top5": 1.0
+      },
+      "n": 2
+    }
+  },
+  "token_cap": 600,
+  "top_k": 20
+}

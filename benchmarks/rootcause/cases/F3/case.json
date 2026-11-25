@@ -1,0 +1,45 @@
+{
+  "derivation": "with_fee no longer exists. accounts.py does `from app.fees import with_fee`, so importing app.accounts raises ImportError. Direct caller: Account._debit; depth 2: Account.withdraw and SavingsAccount.withdraw (both call _debit); depth 3: transfer, which calls src.withdraw on an untyped parameter (a real dependant reachable by name only). test_fees.py also imports with_fee (collection error), test_accounts/test_transfer/test_report import app.accounts (import-time failure) even where the test does not call with_fee: 8 of 11 visible tests are predicted to fail; test_rates and test_convert (2 + 1 = 3) do not import fees or accounts.",
+  "edits": [
+    {
+      "kind": "replace",
+      "new": "def fee_inclusive(amount):",
+      "old": "def with_fee(amount):",
+      "path": "app/fees.py"
+    }
+  ],
+  "expected_dependants": [
+    "app/accounts.py::Account._debit",
+    "app/accounts.py::Account.withdraw",
+    "app/accounts.py::SavingsAccount.withdraw",
+    "app/transfer.py::transfer"
+  ],
+  "expected_direct": [
+    "app/accounts.py::Account._debit"
+  ],
+  "expected_flags": [
+    "removed_symbol_still_referenced:app/fees.py::with_fee",
+    "import_time_break:app/fees.py::with_fee"
+  ],
+  "family": "F",
+  "id": "F3",
+  "modified": [
+    "app/fees.py::with_fee"
+  ],
+  "predicted_failing": [
+    "tests/test_fees.py::test_fee",
+    "tests/test_fees.py::test_with_fee",
+    "tests/test_accounts.py::test_deposit",
+    "tests/test_accounts.py::test_withdraw_cost",
+    "tests/test_accounts.py::test_savings_withdraw",
+    "tests/test_accounts.py::test_savings_limit",
+    "tests/test_transfer.py::test_transfer_converts",
+    "tests/test_report.py::test_total_usd"
+  ],
+  "project": "L",
+  "title": "rename: with_fee -> fee_inclusive, callers not updated (import-time break)",
+  "tree": {
+    "base": "base",
+    "patched": "patched"
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "chain": [
+    "app/cache.py::connect",
+    "cfg:CACHE_PORT"
+  ],
+  "decoys": [
+    "cfg:CACHE_HOST",
+    "app/cache.py::Client.__init__"
+  ],
+  "derivation": "compose no longer sets CACHE_PORT, so settings.py falls back to its default, which was changed to 6397 (transposed digits). Client.__init__ raises 'cannot reach host cache port 6397'. Cause: key CACHE_PORT (default in app/settings.py).",
+  "edits": [
+    {
+      "kind": "replace",
+      "new": "os.getenv(\"CACHE_PORT\", \"6397\")",
+      "old": "os.getenv(\"CACHE_PORT\", \"6379\")",
+      "path": "app/settings.py"
+    },
+    {
+      "kind": "replace",
+      "new": "",
+      "old": "      CACHE_PORT: \"6379\"\n",
+      "path": "compose.yaml"
+    }
+  ],
+  "entry": "app/cache.py::connect",
+  "extra_deps": [
+    "app/cache.py::Client.__init__"
+  ],
+  "family": "D",
+  "gold": [
+    "cfg:CACHE_PORT"
+  ],
+  "gold_files": [
+    "app/settings.py"
+  ],
+  "id": "D2",
+  "primary_test": "tests/test_cache.py::test_connect",
+  "project": "S",
+  "title": "settings default port wrong and compose no longer sets it",
+  "tree": {
+    "repo": "repo"
+  }
+}

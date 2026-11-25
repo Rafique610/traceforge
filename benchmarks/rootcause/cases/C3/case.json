@@ -1,0 +1,38 @@
+{
+  "chain": [
+    "app/transfer.py::transfer",
+    "app/convert.py::convert",
+    "app/rates.py::lookup"
+  ],
+  "decoys": [
+    "app/convert.py::convert",
+    "app/accounts.py::Account.withdraw"
+  ],
+  "derivation": "transfer -> convert -> lookup (2 hops). The edit returns 1/rate, so convert(100, USD, EUR) = 100 / 1.0 * (1/0.9) = 111.11 instead of 90. convert's formula is unchanged and correct; test_convert fails only because lookup is wrong.",
+  "edits": [
+    {
+      "kind": "replace",
+      "new": "return 1 / RATES[currency]",
+      "old": "return RATES[currency]",
+      "path": "app/rates.py"
+    }
+  ],
+  "entry": "app/transfer.py::transfer",
+  "extra_deps": [
+    "app/convert.py::convert"
+  ],
+  "family": "C",
+  "gold": [
+    "app/rates.py::lookup"
+  ],
+  "gold_files": [
+    "app/rates.py"
+  ],
+  "id": "C3",
+  "primary_test": "tests/test_transfer.py::test_transfer_converts",
+  "project": "L",
+  "title": "rate lookup inverted: two hops below transfer",
+  "tree": {
+    "repo": "repo"
+  }
+}

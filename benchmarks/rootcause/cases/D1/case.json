@@ -1,0 +1,37 @@
+{
+  "chain": [
+    "app/cache.py::connect",
+    "cfg:CACHE_HOST"
+  ],
+  "decoys": [
+    "cfg:CACHE_PORT",
+    "app/cache.py::Client.__init__"
+  ],
+  "derivation": "conftest loads the compose api environment, so the host seen by settings.CACHE_HOST is the typo 'cahce'; Client.__init__ raises 'cannot reach host cahce'. The cause is the VALUE of key CACHE_HOST in compose.yaml. Values are not in the graph (no value flow in the MVP), so the expected answer is the key and its compose file.",
+  "edits": [
+    {
+      "kind": "replace",
+      "new": "      CACHE_HOST: cahce\n",
+      "old": "      CACHE_HOST: cache\n",
+      "path": "compose.yaml"
+    }
+  ],
+  "entry": "app/cache.py::connect",
+  "extra_deps": [
+    "app/cache.py::Client.__init__"
+  ],
+  "family": "D",
+  "gold": [
+    "cfg:CACHE_HOST"
+  ],
+  "gold_files": [
+    "compose.yaml"
+  ],
+  "id": "D1",
+  "primary_test": "tests/test_cache.py::test_connect",
+  "project": "S",
+  "title": "compose sets the cache host to a typo (value error)",
+  "tree": {
+    "repo": "repo"
+  }
+}

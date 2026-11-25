@@ -1,0 +1,42 @@
+{
+  "chain": [
+    "app/orders.py::create_order",
+    "app/pricing.py::gross",
+    "app/pricing.py::discount",
+    "app/money.py::apply_pct"
+  ],
+  "decoys": [
+    "app/pricing.py::tax",
+    "app/pricing.py::net_price",
+    "app/money.py::round_money"
+  ],
+  "derivation": "create_order -> gross -> discount -> apply_pct (3 call hops). With pct=10 the edit makes apply_pct(200, 10) return 200 instead of 20, so discount returns 0 and the total is wrong. round_money, tax and net_price are unchanged.",
+  "edits": [
+    {
+      "kind": "replace",
+      "new": "amount * pct / 10",
+      "old": "amount * pct / 100",
+      "path": "app/money.py"
+    }
+  ],
+  "entry": "app/orders.py::create_order",
+  "extra_deps": [
+    "app/pricing.py::net_price",
+    "app/pricing.py::tax",
+    "app/money.py::round_money"
+  ],
+  "family": "C",
+  "gold": [
+    "app/money.py::apply_pct"
+  ],
+  "gold_files": [
+    "app/money.py"
+  ],
+  "id": "C1",
+  "primary_test": "tests/test_orders.py::test_create_order",
+  "project": "S",
+  "title": "percentage divided by 10: three call hops below the entry",
+  "tree": {
+    "repo": "repo"
+  }
+}

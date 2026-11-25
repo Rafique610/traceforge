@@ -1,0 +1,43 @@
+{
+  "derivation": "conftest loads compose env into the process, so the new rate reaches settings. Reader of TAX_RATE: tax (reads settings.TAX_RATE); depth 2: gross; depth 3: quote and create_order. Every test asserting a taxed total fails (7); net_price, discount, money and inventory/cache tests do not use tax.",
+  "edits": [
+    {
+      "kind": "replace",
+      "new": "      TAX_RATE: \"0.25\"\n",
+      "old": "      TAX_RATE: \"0.2\"\n",
+      "path": "compose.yaml"
+    }
+  ],
+  "expected_dependants": [
+    "app/pricing.py::tax",
+    "app/pricing.py::gross",
+    "app/orders.py::quote",
+    "app/orders.py::create_order"
+  ],
+  "expected_direct": [
+    "app/pricing.py::tax"
+  ],
+  "expected_flags": [
+    "config_default_changed:cfg:TAX_RATE"
+  ],
+  "family": "F",
+  "id": "F4",
+  "modified": [
+    "cfg:TAX_RATE"
+  ],
+  "predicted_failing": [
+    "tests/test_pricing.py::test_tax",
+    "tests/test_pricing.py::test_gross_plain",
+    "tests/test_pricing.py::test_gross_with_discount",
+    "tests/test_orders.py::test_quote",
+    "tests/test_orders.py::test_create_order",
+    "tests/test_orders.py::test_create_order_exact_stock",
+    "tests/test_orders.py::test_create_order_after_two_adds"
+  ],
+  "project": "S",
+  "title": "config value change: compose TAX_RATE 0.2 -> 0.25",
+  "tree": {
+    "base": "base",
+    "patched": "patched"
+  }
+}

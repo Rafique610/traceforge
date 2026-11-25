@@ -1,0 +1,138 @@
+{
+  "repo": "complex_lab",
+  "labelled_by": "Claude (on behalf of Ruhan), by reading the code at the pinned commit; needs an independent second-person spot check",
+  "queries": [
+    {
+      "id": "lb01", "type": "exact_identifier",
+      "text": "OutOfStock: product 7: wanted 5, 2 left",
+      "gold": [
+        {"id": "sym:lab/shop_api/app/inventory.py::OutOfStock", "why": "inventory.py defines OutOfStock whose message is exactly 'product {id}: wanted {n}, {left} left'."},
+        {"id": "sym:lab/shop_api/app/inventory.py::reserve", "why": "inventory.reserve raises OutOfStock(product.id, quantity, product.stock) when can_fulfil is false."}
+      ]
+    },
+    {
+      "id": "lb02", "type": "exact_identifier",
+      "text": "coupons.ExpiredCoupon: WELCOME10",
+      "gold": [
+        {"id": "sym:lab/shop_api/app/coupons.py::discount_pct", "why": "discount_pct raises ExpiredCoupon(code) when today > expires; its argument is the coupon code, matching the message."}
+      ]
+    },
+    {
+      "id": "lb03", "type": "exact_identifier",
+      "text": "worker.queue: dead-lettering malformed job; MalformedJob: bad job payload: '{\"type\": \"order_confirmation\"}'",
+      "gold": [
+        {"id": "sym:lab/worker/queue.py::parse_job", "why": "parse_job raises MalformedJob(f'bad job payload: {raw[:80]!r}') on missing order_id/type or invalid JSON."},
+        {"id": "sym:lab/worker/queue.py::pop_job", "why": "pop_job catches MalformedJob, logs 'dead-lettering malformed job' and pushes the raw payload to the dead queue."}
+      ]
+    },
+    {
+      "id": "lb04", "type": "paraphrased_bug",
+      "text": "The total of an order is too low when a line has several units, as if the price were not multiplied by how many were bought.",
+      "gold": [
+        {"id": "sym:lab/shop_api/app/orders.py::order_total", "why": "order_total sums line_total(unit_price, quantity) over lines and rounds; the aggregate every endpoint reports."},
+        {"id": "sym:lab/shop_api/app/pricing.py::line_total", "why": "line_total computes unit_price * quantity rounded to cents."}
+      ]
+    },
+    {
+      "id": "lb05", "type": "paraphrased_bug",
+      "text": "A staff code gives fifty percent off although the policy says discounts must be limited to a maximum.",
+      "gold": [
+        {"id": "sym:lab/shop_api/app/coupons.py::discount_pct", "why": "returns min(pct, cap): the place where the cap is applied to a code's percentage."},
+        {"id": "sym:lab/shop_api/app/quote.py::quote", "why": "passes s.max_discount_pct as the cap into discount_pct; a wrong argument here would disable the cap."}
+      ]
+    },
+    {
+      "id": "lb06", "type": "symptom_no_identifier",
+      "text": "Customers place orders and get a success answer, but they never receive a confirmation message and the orders stay in their first state forever.",
+      "gold": [
+        {"id": "sym:lab/shop_api/app/queue.py::OrderQueue.enqueue_confirmation", "why": "producer: pushes the order_confirmation job (job_id, type, order_id, total) onto the Redis list."},
+        {"id": "sym:lab/worker/queue.py::consume_once", "why": "consumer: pops a job, runs the handler with retries and dead-letters on failure."},
+        {"id": "sym:lab/worker/handlers.py::confirm_order", "why": "sets status 'confirmed' and sends the email; this is where an order leaves its initial state."}
+      ]
+    },
+    {
+      "id": "lb07", "type": "symptom_no_identifier",
+      "text": "The status page answers degraded with a failure code and says a background component is missing, although browsing and ordering products works.",
+      "gold": [
+        {"id": "sym:lab/shop_api/app/health.py::check_worker", "why": "returns 'missing' when queue.worker_alive() is false, which makes /health degraded (503)."},
+        {"id": "sym:lab/shop_api/app/queue.py::OrderQueue.worker_alive", "why": "checks existence of the 'worker:heartbeat' key in Redis."},
+        {"id": "sym:lab/worker/heartbeat.py::beat", "why": "the worker sets that key with a 15 s TTL; if the worker loop stops beating, the key expires."}
+      ]
+    },
+    {
+      "id": "lb08", "type": "indirect_dependency",
+      "text": "GET /orders/12/quote?coupon=WELCOME10 answers 410 coupon expired for a coupon that should still be valid.",
+      "gold": [
+        {"id": "sym:lab/shop_api/app/coupons.py::discount_pct", "why": "raises ExpiredCoupon (mapped to 410 by the route) when today > expires."},
+        {"id": "sym:lab/shop_api/app/coupons.py::valid_until", "why": "parses the configured expiry date string that discount_pct compares against."},
+        {"id": "sym:lab/shop_api/app/settings.py::Settings.coupons_valid_until", "why": "the setting that holds the expiry date (default 2099-12-31); a wrong value makes every coupon expired."}
+      ]
+    },
+    {
+      "id": "lb09", "type": "indirect_dependency",
+      "text": "GET /orders/5/total returns an internal server error for an order whose lines all have a quantity of zero.",
+      "gold": [
+        {"id": "sym:lab/shop_api/app/orders.py::order_average_price", "why": "calls average_unit_price(total, unit_count) whenever items is non-empty, so unit_count == 0 reaches a division."},
+        {"id": "sym:lab/shop_api/app/pricing.py::average_unit_price", "why": "computes money(total / quantity): ZeroDivisionError when quantity is 0."}
+      ]
+    },
+    {
+      "id": "lb10", "type": "configuration",
+      "text": "Orders are accepted but nothing ever shows up for the worker; the broker address used by the API container looks wrong.",
+      "gold": [
+        {"id": "cfg:REDIS_HOST", "why": "compose x-app environment sets REDIS_HOST for the services; the broker host the API connects to."},
+        {"id": "sym:lab/shop_api/app/settings.py::Settings.redis_host", "why": "settings field bound to REDIS_HOST (default localhost)."},
+        {"id": "sym:lab/shop_api/app/queue.py::get_client", "why": "builds the Redis client from s.redis_host and s.redis_port."}
+      ]
+    },
+    {
+      "id": "lb11", "type": "configuration",
+      "text": "The service refuses to start with a validation error complaining that the database user and password are required.",
+      "gold": [
+        {"id": "sym:lab/shop_api/app/settings.py::Settings.db_user", "why": "required field without default: missing DB_USER raises a validation error at Settings()."},
+        {"id": "sym:lab/shop_api/app/settings.py::Settings.db_password", "why": "required SecretStr without default."},
+        {"id": "cfg:DB_USER", "why": "compose environment passes DB_USER from LAB_DB_USER (with a ':?' required marker)."},
+        {"id": "cfg:DB_PASSWORD", "why": "compose environment passes DB_PASSWORD from LAB_DB_PASSWORD."}
+      ]
+    },
+    {
+      "id": "lb12", "type": "configuration",
+      "text": "Orders well above fifty still pay the flat delivery fee; which setting controls the free delivery threshold?",
+      "gold": [
+        {"id": "cfg:FREE_SHIPPING_OVER", "why": "the configuration key (env FREE_SHIPPING_OVER) for the threshold."},
+        {"id": "sym:lab/shop_api/app/settings.py::Settings.free_shipping_over", "why": "settings field, default Decimal('50.00')."},
+        {"id": "sym:lab/shop_api/app/shipping.py::shipping_fee", "why": "returns ZERO when amount >= free_over, else the flat fee."}
+      ]
+    },
+    {
+      "id": "lb13", "type": "configuration",
+      "text": "A failing confirmation job is retried far too many times with long pauses before it ends up in the dead queue.",
+      "gold": [
+        {"id": "cfg:MAX_RETRIES", "why": "worker setting max_retries (default 3) that bounds the retries in consume_once."},
+        {"id": "cfg:BACKOFF_BASE_S", "why": "worker setting backoff_base_s (default 1.0): base delay doubled on each attempt."},
+        {"id": "sym:lab/worker/settings.py::WorkerSettings.max_retries", "why": "settings field behind MAX_RETRIES."},
+        {"id": "sym:lab/worker/retry.py::with_backoff", "why": "implements retries + 1 calls with base * 2**attempt sleeps."}
+      ]
+    },
+    {
+      "id": "lb14", "type": "multi_file",
+      "text": "After an order is created its confirmation job reaches Redis, but the worker never marks any order as confirmed; follow the job from the API to the worker.",
+      "gold": [
+        {"id": "sym:lab/shop_api/app/queue.py::OrderQueue.enqueue_confirmation", "why": "API side: builds the job JSON and lpush-es it onto settings.order_queue."},
+        {"id": "sym:lab/worker/queue.py::parse_job", "why": "worker side: parses the JSON and requires order_id and type."},
+        {"id": "sym:lab/worker/handlers.py::confirm_order", "why": "worker side: updates the order and sends the email."},
+        {"id": "cfg:ORDER_QUEUE", "why": "queue name shared by both services through their settings (default orders:confirm); a mismatch means the worker listens elsewhere."}
+      ]
+    },
+    {
+      "id": "lb15", "type": "multi_file",
+      "text": "The grand total in a quote does not equal the goods after discount plus the delivery fee plus the tax.",
+      "gold": [
+        {"id": "sym:lab/shop_api/app/quote.py::quote", "why": "assembles subtotal, discount, goods, shipping, tax and grand_total = money(goods + ship + tax)."},
+        {"id": "sym:lab/shop_api/app/coupons.py::apply_discount", "why": "computes the discounted goods amount used by shipping and tax."},
+        {"id": "sym:lab/shop_api/app/shipping.py::shipping_fee", "why": "delivery fee component."},
+        {"id": "sym:lab/shop_api/app/shipping.py::tax_amount", "why": "tax component, computed on goods only."}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,125 @@
+{
+  "repo": "small_itsdangerous",
+  "labelled_by": "Claude (on behalf of Ruhan), by reading the code at the pinned commit; needs an independent second-person spot check",
+  "queries": [
+    {
+      "id": "it01", "type": "exact_identifier",
+      "text": "BadSignature: Signature b'abc123' does not match",
+      "gold": [
+        {"id": "sym:src/itsdangerous/signer.py::Signer.unsign", "why": "signer.py raises BadSignature(f\"Signature {sig!r} does not match\", payload=value) when verify_signature fails."}
+      ]
+    },
+    {
+      "id": "it02", "type": "exact_identifier",
+      "text": "ValueError: The given separator cannot be used because it may be contained in the signature itself. ASCII letters, digits, and '-_=' must not be used.",
+      "gold": [
+        {"id": "sym:src/itsdangerous/signer.py::Signer.__init__", "why": "signer.py raises this exact ValueError when sep is in the base64 alphabet."}
+      ]
+    },
+    {
+      "id": "it03", "type": "exact_identifier",
+      "text": "TypeError: Unknown key derivation method",
+      "gold": [
+        {"id": "sym:src/itsdangerous/signer.py::Signer.derive_key", "why": "signer.py raises TypeError('Unknown key derivation method') in the final else branch of derive_key."}
+      ]
+    },
+    {
+      "id": "it04", "type": "exact_identifier",
+      "text": "BadPayload: Could not zlib decompress the payload before decoding the payload",
+      "gold": [
+        {"id": "sym:src/itsdangerous/url_safe.py::URLSafeSerializerMixin.load_payload", "why": "url_safe.py: wraps zlib.decompress failures into BadPayload with this message."}
+      ]
+    },
+    {
+      "id": "it05", "type": "paraphrased_bug",
+      "text": "A reset link that I wanted to be valid for one hour is still accepted a day later, as if the lifetime limit I passed to the loader was ignored.",
+      "gold": [
+        {"id": "sym:src/itsdangerous/timed.py::TimedSerializer.loads", "why": "timed.py accepts max_age and forwards it to each signer's unsign."},
+        {"id": "sym:src/itsdangerous/timed.py::TimestampSigner.unsign", "why": "timed.py: computes age = get_timestamp() - ts_int and raises SignatureExpired when age > max_age."}
+      ]
+    },
+    {
+      "id": "it06", "type": "paraphrased_bug",
+      "text": "Long payloads produce a token that begins with a dot; I do not understand how the library decides to shrink it and how it restores the original on the way back.",
+      "gold": [
+        {"id": "sym:src/itsdangerous/url_safe.py::URLSafeSerializerMixin.dump_payload", "why": "url_safe.py: compresses with zlib when it saves more than one byte and prefixes '.' to flag compression."},
+        {"id": "sym:src/itsdangerous/url_safe.py::URLSafeSerializerMixin.load_payload", "why": "url_safe.py: strips a leading '.' and decompresses before delegating to the base load_payload."}
+      ]
+    },
+    {
+      "id": "it07", "type": "symptom_no_identifier",
+      "text": "After we replaced our application's secret with a new one, links that were mailed out before the change all stopped working at once.",
+      "gold": [
+        {"id": "sym:src/itsdangerous/signer.py::Signer.verify_signature", "why": "signer.py iterates over all configured secret keys (newest first) so that older keys still verify; with a single key old signatures fail."},
+        {"id": "sym:src/itsdangerous/signer.py::_make_keys_list", "why": "signer.py normalises a single key or an iterable of keys into the secret_keys list used for rotation."}
+      ]
+    },
+    {
+      "id": "it08", "type": "symptom_no_identifier",
+      "text": "I plugged in a custom encoder that produces raw bytes and now reading values back gives errors about decoding, although writing worked fine.",
+      "gold": [
+        {"id": "sym:src/itsdangerous/serializer.py::Serializer.load_payload", "why": "serializer.py decodes the payload as UTF-8 text only when the serializer is a text serializer, else passes bytes through; mismatches raise BadPayload."},
+        {"id": "sym:src/itsdangerous/serializer.py::is_text_serializer", "why": "serializer.py decides text vs bytes by checking whether serializer.dumps({}) returns str."}
+      ]
+    },
+    {
+      "id": "it09", "type": "indirect_dependency",
+      "text": "URLSafeTimedSerializer.loads(token, max_age=60) fails with a 'timestamp missing' error for a token that was created by URLSafeSerializer.dumps.",
+      "gold": [
+        {"id": "sym:src/itsdangerous/timed.py::TimestampSigner.unsign", "why": "timed.py (impl): raises BadTimeSignature('timestamp missing') when the unsigned result has no separator, i.e. the token was not produced by a timestamp signer."},
+        {"id": "sym:src/itsdangerous/timed.py::TimedSerializer.default_signer", "why": "timed.py sets TimestampSigner as the signer class, which is why the timed serializer expects a timestamp in the token."}
+      ]
+    },
+    {
+      "id": "it10", "type": "indirect_dependency",
+      "text": "serializer.loads_unsafe(token) returns (False, None) for a string without any dot, even though I expected to see the payload.",
+      "gold": [
+        {"id": "sym:src/itsdangerous/serializer.py::Serializer._loads_unsafe_impl", "why": "serializer.py: returns (False, None) when the BadSignature has payload None (no separator found), otherwise tries load_payload on e.payload."},
+        {"id": "sym:src/itsdangerous/signer.py::Signer.unsign", "why": "signer.py raises BadSignature without payload when the separator is absent, which is what makes payload None."}
+      ]
+    },
+    {
+      "id": "it11", "type": "configuration",
+      "text": "We want SHA-256 instead of the default hash for every signature our serializers create; where is the default digest chosen and how can it be overridden per serializer?",
+      "gold": [
+        {"id": "sym:src/itsdangerous/signer.py::Signer.default_digest_method", "why": "signer.py class attribute naming the default digest (sha1 via _lazy_sha1)."},
+        {"id": "sym:src/itsdangerous/signer.py::Signer.__init__", "why": "signer.py accepts digest_method and falls back to default_digest_method."},
+        {"id": "sym:src/itsdangerous/serializer.py::Serializer.make_signer", "why": "serializer.py: instantiates the signer with **self.signer_kwargs, the per-serializer override path."}
+      ]
+    },
+    {
+      "id": "it12", "type": "configuration",
+      "text": "Two services sign the same data with the same secret but different default salts so they reject each other's tokens; which defaults apply to salt and separator?",
+      "gold": [
+        {"id": "sym:src/itsdangerous/signer.py::Signer.__init__", "why": "signer.py defaults salt to b'itsdangerous.Signer' and sep to b'.'."},
+        {"id": "sym:src/itsdangerous/serializer.py::Serializer.__init__", "why": "serializer.py defaults salt to b'itsdangerous' for the serializer (a different default than the signer)."}
+      ]
+    },
+    {
+      "id": "it13", "type": "configuration",
+      "text": "During a migration tokens signed with an older hash algorithm must still verify; how are fallback signers configured?",
+      "gold": [
+        {"id": "sym:src/itsdangerous/serializer.py::Serializer.default_fallback_signers", "why": "serializer.py class-level default list of fallback signer parameters (empty since 2.0)."},
+        {"id": "sym:src/itsdangerous/serializer.py::Serializer.iter_unsigners", "why": "serializer.py: yields the main signer, then builds a signer for each fallback entry (dict, tuple or class)."}
+      ]
+    },
+    {
+      "id": "it14", "type": "multi_file",
+      "text": "Tokens created with a custom salt cannot be loaded back with the default one although the secret key is identical; trace how the salt reaches the signing key.",
+      "gold": [
+        {"id": "sym:src/itsdangerous/serializer.py::Serializer.make_signer", "why": "serializer.py: picks the salt (argument or self.salt) and passes it to the signer class."},
+        {"id": "sym:src/itsdangerous/serializer.py::Serializer.iter_unsigners", "why": "serializer.py: the loads path builds signers with the salt given to loads, default self.salt."},
+        {"id": "sym:src/itsdangerous/signer.py::Signer.derive_key", "why": "signer.py mixes the salt into the derived key (concat / django-concat / hmac), so different salts give different keys."}
+      ]
+    },
+    {
+      "id": "it15", "type": "multi_file",
+      "text": "A token whose time stamp part is damaged raises Malformed timestamp; where is the time stamp encoded into the token and decoded again?",
+      "gold": [
+        {"id": "sym:src/itsdangerous/timed.py::TimestampSigner.unsign", "why": "timed.py: decodes ts_bytes with base64_decode and bytes_to_int and raises BadTimeSignature('Malformed timestamp')."},
+        {"id": "sym:src/itsdangerous/encoding.py::bytes_to_int", "why": "encoding.py turns the packed 8-byte big-endian value back into an int."},
+        {"id": "sym:src/itsdangerous/encoding.py::int_to_bytes", "why": "encoding.py packs the timestamp int into bytes with leading zero bytes stripped; used by TimestampSigner.sign."}
+      ]
+    }
+  ]
+}

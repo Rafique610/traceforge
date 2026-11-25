@@ -1,0 +1,39 @@
+{
+  "chain": [
+    "app/orders.py::create_order",
+    "app/inventory.py::Stock.reserve",
+    "cfg:MAX_QTY"
+  ],
+  "decoys": [
+    "app/inventory.py::Stock.reserve",
+    "app/inventory.py::Stock.available",
+    "cfg:CACHE_HOST"
+  ],
+  "derivation": "reserve reads settings.MAX_QTY. compose now sets MAX_QTY=1 for the api service, so create_order(.., qty=2) raises 'qty above limit' in Stock.reserve. Stock.reserve is correct; the cause is the config value of key MAX_QTY in compose.yaml.",
+  "edits": [
+    {
+      "kind": "replace",
+      "new": "      TAX_RATE: \"0.2\"\n      MAX_QTY: \"1\"\n",
+      "old": "      TAX_RATE: \"0.2\"\n",
+      "path": "compose.yaml"
+    }
+  ],
+  "entry": "app/orders.py::create_order",
+  "extra_deps": [
+    "app/inventory.py::Stock.reserve"
+  ],
+  "family": "D",
+  "gold": [
+    "cfg:MAX_QTY"
+  ],
+  "gold_files": [
+    "compose.yaml"
+  ],
+  "id": "D4",
+  "primary_test": "tests/test_orders.py::test_create_order",
+  "project": "S",
+  "title": "compose limits MAX_QTY to 1; order of 2 rejected",
+  "tree": {
+    "repo": "repo"
+  }
+}

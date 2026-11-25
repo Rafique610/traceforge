@@ -1,0 +1,68 @@
+{
+  "chain": [
+    "app/orders.py::create_order_from_text",
+    "app/validate.py::parse_qty"
+  ],
+  "decoys": [
+    "app/util.py::normalize",
+    "app/tags.py::tag_00",
+    "app/tags.py::tag_07"
+  ],
+  "derivation": "create_order_from_text(..., ' 2 ') should order 2 units (240.0). parse_qty adds 1, ordering 3 (360.0). parse_qty is one call hop below the entry. normalize is a shared helper called by parse_qty and 14 unrelated tag_NN functions (a hub): it is correct (strip/lower), and the tag functions are unrelated to the failure.",
+  "edits": [
+    {
+      "kind": "create",
+      "new": "def normalize(text):\n    return text.strip().lower()\n",
+      "old": null,
+      "path": "app/util.py"
+    },
+    {
+      "kind": "create",
+      "new": "from app.util import normalize\n\n\ndef parse_qty(text):\n    return int(normalize(text)) + 1\n",
+      "old": null,
+      "path": "app/validate.py"
+    },
+    {
+      "kind": "create",
+      "new": "from app.util import normalize\n\n\ndef tag_00(x):\n    return normalize(x)\n\n\ndef tag_01(x):\n    return normalize(x)\n\n\ndef tag_02(x):\n    return normalize(x)\n\n\ndef tag_03(x):\n    return normalize(x)\n\n\ndef tag_04(x):\n    return normalize(x)\n\n\ndef tag_05(x):\n    return normalize(x)\n\n\ndef tag_06(x):\n    return normalize(x)\n\n\ndef tag_07(x):\n    return normalize(x)\n\n\ndef tag_08(x):\n    return normalize(x)\n\n\ndef tag_09(x):\n    return normalize(x)\n\n\ndef tag_10(x):\n    return normalize(x)\n\n\ndef tag_11(x):\n    return normalize(x)\n\n\ndef tag_12(x):\n    return normalize(x)\n\n\ndef tag_13(x):\n    return normalize(x)\n\n",
+      "old": null,
+      "path": "app/tags.py"
+    },
+    {
+      "kind": "replace",
+      "new": "from app.pricing import gross\nfrom app.validate import parse_qty\n",
+      "old": "from app.pricing import gross\n",
+      "path": "app/orders.py"
+    },
+    {
+      "kind": "replace",
+      "new": "    return total\n\n\ndef create_order_from_text(stock, sku, price, qty_text):\n    return create_order(stock, sku, price, parse_qty(qty_text))\n",
+      "old": "    return total\n",
+      "path": "app/orders.py"
+    },
+    {
+      "kind": "create",
+      "new": "from app.inventory import Stock\nfrom app.orders import create_order_from_text\n\n\ndef test_order_from_text():\n    s = Stock()\n    s.add(\"A\", 10)\n    assert create_order_from_text(s, \"A\", 100, \" 2 \") == 240.0\n",
+      "old": null,
+      "path": "tests/test_text_orders.py"
+    }
+  ],
+  "entry": "app/orders.py::create_order_from_text",
+  "extra_deps": [
+    "app/orders.py::create_order"
+  ],
+  "family": "G",
+  "gold": [
+    "app/validate.py::parse_qty"
+  ],
+  "gold_files": [
+    "app/validate.py"
+  ],
+  "id": "G1",
+  "primary_test": "tests/test_text_orders.py::test_order_from_text",
+  "project": "S",
+  "title": "hub decoy: normalize() has 15 callers; bug is in parse_qty",
+  "tree": {
+    "repo": "repo"
+  }
+}

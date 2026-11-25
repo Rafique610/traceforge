@@ -1,0 +1,36 @@
+{
+  "chain": [
+    "app/pricing.py::discount"
+  ],
+  "decoys": [
+    "app/money.py::apply_pct"
+  ],
+  "derivation": "test_discount calls discount(200, 10) directly and expects 180. The edited body adds the percentage (220), so the defect is the sign in discount itself. apply_pct and round_money are unchanged and covered by passing tests in test_money.py.",
+  "edits": [
+    {
+      "kind": "replace",
+      "new": "return round_money(amount + apply_pct(amount, pct))",
+      "old": "return round_money(amount - apply_pct(amount, pct))",
+      "path": "app/pricing.py"
+    }
+  ],
+  "entry": "app/pricing.py::discount",
+  "extra_deps": [
+    "app/money.py::apply_pct",
+    "app/money.py::round_money"
+  ],
+  "family": "A",
+  "gold": [
+    "app/pricing.py::discount"
+  ],
+  "gold_files": [
+    "app/pricing.py"
+  ],
+  "id": "A1",
+  "primary_test": "tests/test_pricing.py::test_discount",
+  "project": "S",
+  "title": "sign error inside the function the failing test calls",
+  "tree": {
+    "repo": "repo"
+  }
+}

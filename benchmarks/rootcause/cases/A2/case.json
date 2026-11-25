@@ -1,0 +1,38 @@
+{
+  "chain": [
+    "app/pricing.py::gross",
+    "app/pricing.py::tax"
+  ],
+  "decoys": [
+    "app/pricing.py::discount",
+    "app/pricing.py::net_price"
+  ],
+  "derivation": "test_gross_plain calls gross(100, 1) and expects 120 = 100 + 20 tax. gross calls tax (same file). The edit doubles the tax so gross returns 140. net_price and discount are untouched and give 100 for these arguments.",
+  "edits": [
+    {
+      "kind": "replace",
+      "new": "return round_money(amount * settings.TAX_RATE * 2)",
+      "old": "return round_money(amount * settings.TAX_RATE)",
+      "path": "app/pricing.py"
+    }
+  ],
+  "entry": "app/pricing.py::gross",
+  "extra_deps": [
+    "app/pricing.py::net_price",
+    "app/pricing.py::discount"
+  ],
+  "family": "A",
+  "gold": [
+    "app/pricing.py::tax"
+  ],
+  "gold_files": [
+    "app/pricing.py"
+  ],
+  "id": "A2",
+  "primary_test": "tests/test_pricing.py::test_gross_plain",
+  "project": "S",
+  "title": "tax doubled; symptom entry gross and cause tax live in the same file",
+  "tree": {
+    "repo": "repo"
+  }
+}

@@ -1,0 +1,123 @@
+{
+  "repo": "medium_requests",
+  "labelled_by": "Claude (on behalf of Ruhan), by reading the code at the pinned commit; needs an independent second-person spot check",
+  "queries": [
+    {
+      "id": "rq01", "type": "exact_identifier",
+      "text": "InvalidSchema: No connection adapters were found for 'ftp://example.com/file'",
+      "gold": [
+        {"id": "sym:src/requests/sessions.py::Session.get_adapter", "why": "sessions.py is the only place (besides a SOCKS-missing guard) that raises InvalidSchema with this exact message, after no mounted prefix matches the URL."}
+      ]
+    },
+    {
+      "id": "rq02", "type": "exact_identifier",
+      "text": "CookieConflictError: There are multiple cookies with name 'sessionid'",
+      "gold": [
+        {"id": "sym:src/requests/cookies.py::RequestsCookieJar._find_no_duplicates", "why": "cookies.py raises CookieConflictError with exactly this message when more than one cookie matches name/domain/path."}
+      ]
+    },
+    {
+      "id": "rq03", "type": "exact_identifier",
+      "text": "requests.exceptions.MissingSchema: Invalid URL 'example.com/api': No scheme supplied. Perhaps you meant https://example.com/api?",
+      "gold": [
+        {"id": "sym:src/requests/models.py::PreparedRequest.prepare_url", "why": "models.py raises MissingSchema with this message when parse_url returns no scheme."}
+      ]
+    },
+    {
+      "id": "rq04", "type": "paraphrased_bug",
+      "text": "A file upload that was partly read is not sent again from the beginning after the server answers with a redirect, so the second request goes out with a truncated body or the library gives up saying it cannot replay the body.",
+      "gold": [
+        {"id": "sym:src/requests/utils.py::rewind_body", "why": "utils.py seeks the body back to the recorded _body_position and raises UnrewindableBodyError when it cannot."},
+        {"id": "sym:src/requests/sessions.py::SessionRedirectMixin.resolve_redirects", "why": "sessions.py: decides `rewindable` from _body_position and Content-Length/Transfer-Encoding and calls rewind_body before re-sending on each hop."}
+      ]
+    },
+    {
+      "id": "rq05", "type": "paraphrased_bug",
+      "text": "Sending an empty POST without any payload makes some servers answer 411 length required because no length header is present on the outgoing message.",
+      "gold": [
+        {"id": "sym:src/requests/models.py::PreparedRequest.prepare_content_length", "why": "models.py sets Content-Length to 0 for methods other than GET/HEAD when there is no body; this is the logic that governs the header."}
+      ]
+    },
+    {
+      "id": "rq06", "type": "symptom_no_identifier",
+      "text": "My script logs in to a website and gets bounced to a different website; afterwards my login details show up in that other website's access logs.",
+      "gold": [
+        {"id": "sym:src/requests/sessions.py::SessionRedirectMixin.should_strip_auth", "why": "sessions.py: compares old and new hostname/scheme/port to decide whether the Authorization header must be removed on a redirect."},
+        {"id": "sym:src/requests/sessions.py::SessionRedirectMixin.rebuild_auth", "why": "sessions.py: deletes the Authorization header on redirect when should_strip_auth says so, then re-applies netrc credentials."}
+      ]
+    },
+    {
+      "id": "rq07", "type": "symptom_no_identifier",
+      "text": "The text of the web page comes out with garbled accented letters when the server does not say which character set it uses.",
+      "gold": [
+        {"id": "sym:src/requests/models.py::Response.text", "why": "models.py: decodes content using self.encoding, falling back to apparent_encoding, with errors='replace'; wrong guess yields mojibake."},
+        {"id": "sym:src/requests/utils.py::get_encoding_from_headers", "why": "utils.py returns ISO-8859-1 for text/* without a charset, which is the usual source of garbled UTF-8 pages."}
+      ]
+    },
+    {
+      "id": "rq08", "type": "indirect_dependency",
+      "text": "session.get() to the intranet address 10.0.0.5 goes through the corporate proxy although my no_proxy variable lists 10.0.0.0/8.",
+      "gold": [
+        {"id": "sym:src/requests/utils.py::should_bypass_proxies", "why": "utils.py evaluates no_proxy (host suffix, IP and CIDR forms) and decides whether to skip proxies; reached from Session.send via resolve_proxies."},
+        {"id": "sym:src/requests/utils.py::address_in_network", "why": "utils.py is the CIDR membership test that should_bypass_proxies uses for IPv4 hosts when no_proxy contains a network."}
+      ]
+    },
+    {
+      "id": "rq09", "type": "indirect_dependency",
+      "text": "requests.post(url, json={'score': float('nan')}) fails with an error about out of range float values not being JSON compliant.",
+      "gold": [
+        {"id": "sym:src/requests/models.py::PreparedRequest.prepare_body", "why": "models.py calls complexjson.dumps(json, allow_nan=False) and wraps ValueError into InvalidJSONError; reached via post -> request -> prepare_request -> prepare."}
+      ]
+    },
+    {
+      "id": "rq10", "type": "indirect_dependency",
+      "text": "session.get(url, headers={'X-Token': 'abc\\n'}) raises InvalidHeader about return characters in the header value.",
+      "gold": [
+        {"id": "sym:src/requests/utils.py::_validate_header_part", "why": "utils.py raises InvalidHeader 'Invalid leading whitespace, reserved character(s), or return character(s) in header value' when the validator regex does not match."},
+        {"id": "sym:src/requests/utils.py::check_header_validity", "why": "utils.py is the entry that validates name and value; called from PreparedRequest.prepare_headers."}
+      ]
+    },
+    {
+      "id": "rq11", "type": "configuration",
+      "text": "I set session.verify = False but HTTPS calls still fail certificate verification as soon as REQUESTS_CA_BUNDLE is set in the environment.",
+      "gold": [
+        {"id": "sym:src/requests/sessions.py::Session.merge_environment_settings", "why": "sessions.py: when verify is True/None it substitutes REQUESTS_CA_BUNDLE or CURL_CA_BUNDLE, then merges with the session setting; the environment value wins over the session default."},
+        {"id": "sym:src/requests/sessions.py::merge_setting", "why": "sessions.py decides which of request vs session setting is used; for non-dict values the request-level setting (here the env bundle) is returned."}
+      ]
+    },
+    {
+      "id": "rq12", "type": "configuration",
+      "text": "How is the maximum number of redirects configured? I raised the limit but the exception about too many redirects still appears at thirty.",
+      "gold": [
+        {"id": "sym:src/requests/sessions.py::Session.__init__", "why": "sessions.py sets self.max_redirects = DEFAULT_REDIRECT_LIMIT (30), the configurable default."},
+        {"id": "sym:src/requests/sessions.py::SessionRedirectMixin.resolve_redirects", "why": "sessions.py: raises TooManyRedirects when len(resp.history) >= self.max_redirects."}
+      ]
+    },
+    {
+      "id": "rq13", "type": "configuration",
+      "text": "With many threads I get warnings that the connection pool is full and connections are discarded; where do I set pool size, blocking and retries for the transport?",
+      "gold": [
+        {"id": "sym:src/requests/adapters.py::HTTPAdapter.__init__", "why": "adapters.py takes pool_connections, pool_maxsize, max_retries, pool_block and stores them."},
+        {"id": "sym:src/requests/adapters.py::HTTPAdapter.init_poolmanager", "why": "adapters.py builds the urllib3 PoolManager from num_pools/maxsize/block."}
+      ]
+    },
+    {
+      "id": "rq14", "type": "multi_file",
+      "text": "Proxy credentials embedded in the proxy address (http://user:pass@proxy:3128) are not applied correctly: the Proxy-Authorization header is missing for plain HTTP targets after a redirect.",
+      "gold": [
+        {"id": "sym:src/requests/adapters.py::HTTPAdapter.proxy_headers", "why": "adapters.py builds Proxy-Authorization from get_auth_from_url(proxy) for the proxy manager."},
+        {"id": "sym:src/requests/sessions.py::SessionRedirectMixin.rebuild_proxies", "why": "sessions.py: deletes and re-adds Proxy-Authorization on each redirect hop for non-https schemes."},
+        {"id": "sym:src/requests/utils.py::get_auth_from_url", "why": "utils.py extracts username/password from the proxy URL used by both of the above."}
+      ]
+    },
+    {
+      "id": "rq15", "type": "multi_file",
+      "text": "Cookies that a server sets on a redirect response are not sent on the next hop of the redirect chain.",
+      "gold": [
+        {"id": "sym:src/requests/sessions.py::SessionRedirectMixin.resolve_redirects", "why": "sessions.py: pops Cookie, calls extract_cookies_to_jar and merge_cookies, then prepare_cookies for each hop."},
+        {"id": "sym:src/requests/cookies.py::extract_cookies_to_jar", "why": "cookies.py copies Set-Cookie headers from the urllib3 response into the jar; returns silently when _original_response is missing."},
+        {"id": "sym:src/requests/cookies.py::merge_cookies", "why": "cookies.py merges the session jar into the request jar for the redirected request."}
+      ]
+    }
+  ]
+}

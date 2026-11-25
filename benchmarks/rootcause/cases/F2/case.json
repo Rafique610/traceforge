@@ -1,0 +1,42 @@
+{
+  "derivation": "round_money(1.005) now truncates to 1.0 instead of rounding to 1.01, so test_round_money fails. Dependants by reading the source: direct callers apply_pct, net_price, discount, tax, gross (all call round_money); depth 2: quote and create_order via gross. The other tests use values with at most 2 exact decimals so truncation equals rounding: predicted pass. Many dependants, one real failure: this case measures how much of the suite the tool selects for a benign-looking edit.",
+  "edits": [
+    {
+      "kind": "replace",
+      "new": "return int(x * 100) / 100",
+      "old": "return round(x + 1e-9, 2)",
+      "path": "app/money.py"
+    }
+  ],
+  "expected_dependants": [
+    "app/money.py::apply_pct",
+    "app/pricing.py::net_price",
+    "app/pricing.py::discount",
+    "app/pricing.py::tax",
+    "app/pricing.py::gross",
+    "app/orders.py::quote",
+    "app/orders.py::create_order"
+  ],
+  "expected_direct": [
+    "app/money.py::apply_pct",
+    "app/pricing.py::net_price",
+    "app/pricing.py::discount",
+    "app/pricing.py::tax",
+    "app/pricing.py::gross"
+  ],
+  "expected_flags": [],
+  "family": "F",
+  "id": "F2",
+  "modified": [
+    "app/money.py::round_money"
+  ],
+  "predicted_failing": [
+    "tests/test_money.py::test_round_money"
+  ],
+  "project": "S",
+  "title": "behaviour change: round_money truncates (many dependants, one failing test)",
+  "tree": {
+    "base": "base",
+    "patched": "patched"
+  }
+}

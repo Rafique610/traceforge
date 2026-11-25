@@ -1,0 +1,11 @@
+services:
+  api:
+    build: .
+    command: python -m app.orders
+    environment:
+      CACHE_HOST: cache
+      CACHE_PORT: "6379"
+      TAX_RATE: "0.2"
+      MAX_QTY: "1"
+  cache:
+    image: redis:7

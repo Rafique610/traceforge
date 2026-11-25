@@ -1,0 +1,186 @@
+{
+  "go_no_go": {
+    "S12": false,
+    "S15": true
+  },
+  "verdicts": [
+    {
+      "id": "R1",
+      "measured": {
+        "G_mrr": 0.6,
+        "G_top1": 0.5,
+        "RC_mrr": 0.6,
+        "RC_ranks": {
+          "A1": 1,
+          "A2": 5
+        },
+        "RC_top1": 0.5
+      },
+      "pass": false,
+      "threshold": "A: RC top1 >= G top1, RC MRR >= G MRR, gold in top 3 for both A cases"
+    },
+    {
+      "id": "R2",
+      "measured": {
+        "G_top5": 0.625,
+        "RC_top5": 0.5,
+        "diff_ci95": [
+          -0.375,
+          0.0
+        ]
+      },
+      "pass": false,
+      "threshold": "B+C: RC top5 >= G top5 + 0.125 and RC top5 >= 0.75"
+    },
+    {
+      "id": "R3",
+      "measured": {
+        "BM25_top5": 0.375,
+        "RC_top5": 0.5,
+        "diff_ci95": [
+          -0.375,
+          0.625
+        ]
+      },
+      "pass": true,
+      "threshold": "B+C: RC top5 >= BM25 top5"
+    },
+    {
+      "id": "R4",
+      "measured": {
+        "BM25_top3": 0.0,
+        "G_top3": 0.75,
+        "RC_top3": 1.0
+      },
+      "pass": true,
+      "threshold": "D: RC gold key in top 3 for >= 3/4"
+    },
+    {
+      "id": "R5",
+      "measured": {
+        "BM25": [
+          0.9028273809523809,
+          0.2502900745088245
+        ],
+        "G": [
+          0.9875,
+          0.3796705898268398
+        ],
+        "RC": [
+          0.9660714285714286,
+          0.3788825757575757
+        ]
+      },
+      "pass": false,
+      "threshold": "A,B,C,D,G at equal 600-token cap: RC dep recall >= G and RC dep precision >= G"
+    },
+    {
+      "id": "R6",
+      "measured": {
+        "RC_ranks": {
+          "G1": 3,
+          "G2": 1
+        },
+        "mean_decoys_top5": 1.0
+      },
+      "pass": true,
+      "threshold": "G: gold in top 3 for both and mean decoys in top 5 <= 1.0"
+    },
+    {
+      "id": "R7",
+      "measured": {
+        "H_abstained": 2,
+        "H_gold_top5": {
+          "BM25": 2,
+          "G-distance": 0,
+          "RC-overlay": 0,
+          "RC-overlay+bm25": 2
+        },
+        "H_n": 2,
+        "false_abstain": 0,
+        "non_H_n": 16
+      },
+      "pass": true,
+      "threshold": "H: abstains on both; false abstention on non-H <= 1"
+    },
+    {
+      "id": "R8",
+      "measured": {
+        "detected": 1.0,
+        "sel_recall": 1.0
+      },
+      "pass": true,
+      "threshold": "F: macro selection recall >= 0.90 and detection 5/5"
+    },
+    {
+      "id": "R9",
+      "measured": {
+        "frac_suite": 0.5753246753246752
+      },
+      "pass": true,
+      "threshold": "F: macro fraction of suite selected <= 0.75"
+    },
+    {
+      "id": "R10",
+      "measured": {
+        "dep_recall": 1.0,
+        "direct_recall": 1.0
+      },
+      "pass": true,
+      "threshold": "F: macro direct-dependant recall >= 0.90 and affected-dependant recall >= 0.80"
+    },
+    {
+      "id": "R11",
+      "measured": {
+        "dep_precision": 1.0
+      },
+      "pass": true,
+      "threshold": "F: macro impact-report precision >= 0.70"
+    },
+    {
+      "id": "R12",
+      "measured": {
+        "fp_flags": 0.0
+      },
+      "pass": true,
+      "threshold": "F: mean false-positive warnings per patch <= 1.0"
+    },
+    {
+      "id": "R13",
+      "measured": {
+        "IMP-graph": 0.0,
+        "IMP-overlay": 0.0
+      },
+      "pass": true,
+      "threshold": "hidden isolation: 0 hidden-path strings in any report"
+    },
+    {
+      "id": "R14",
+      "measured": {
+        "result_digest": "6d6a5bd34dee24a4e25e1331d4305ad3cd8c6f12f2a90e230b43a39e89f4c53f"
+      },
+      "pass": true,
+      "threshold": "determinism: two full runs identical"
+    },
+    {
+      "id": "R15",
+      "measured": {
+        "BM25_median": 5.375200009439141,
+        "G-distance_median": 1.636600005440414,
+        "RC-overlay_max": 58.10539997764863,
+        "RC-overlay_median": 34.79069999593776
+      },
+      "pass": true,
+      "threshold": "latency: RC median <= 2000 ms, max <= 5000 ms"
+    },
+    {
+      "id": "R16",
+      "measured": {
+        "BM25-select": 0.5392857142857143,
+        "IMP-overlay": 1.0
+      },
+      "pass": true,
+      "threshold": "(informational) IMP-overlay selection recall >= BM25-select at equal k"
+    }
+  ]
+}

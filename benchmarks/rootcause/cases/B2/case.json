@@ -1,0 +1,38 @@
+{
+  "chain": [
+    "app/orders.py::create_order",
+    "app/inventory.py::Stock.reserve"
+  ],
+  "decoys": [
+    "app/inventory.py::Stock.available",
+    "app/inventory.py::Stock.add"
+  ],
+  "derivation": "The test reserves exactly the stock (3 of 3). create_order calls stock.reserve (another file, one hop; the receiver is a parameter so the static edge is only name-resolved). The edit turns > into >=, so reserving all stock raises ValueError 'insufficient stock'. Stock.available and Stock.add are correct.",
+  "edits": [
+    {
+      "kind": "replace",
+      "new": "if qty >= self.available(sku):",
+      "old": "if qty > self.available(sku):",
+      "path": "app/inventory.py"
+    }
+  ],
+  "entry": "app/orders.py::create_order",
+  "extra_deps": [
+    "app/inventory.py::Stock.available",
+    "app/pricing.py::gross"
+  ],
+  "family": "B",
+  "gold": [
+    "app/inventory.py::Stock.reserve"
+  ],
+  "gold_files": [
+    "app/inventory.py"
+  ],
+  "id": "B2",
+  "primary_test": "tests/test_orders.py::test_create_order_exact_stock",
+  "project": "S",
+  "title": "off-by-one in Stock.reserve; test enters through orders.create_order",
+  "tree": {
+    "repo": "repo"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "derivation": "net_price gains a mandatory third parameter. Callers: gross (pricing.py) passes two arguments -> TypeError. gross is called by quote and create_order (depth 2). Tests that reach net_price: test_net_price directly, gross tests, all orders tests. test_discount, test_tax, test_money and test_inventory/test_cache do not touch it.",
+  "edits": [
+    {
+      "kind": "replace",
+      "new": "def net_price(price, qty, unit_discount):\n    return round_money(price * qty - unit_discount)",
+      "old": "def net_price(price, qty):\n    return round_money(price * qty)",
+      "path": "app/pricing.py"
+    }
+  ],
+  "expected_dependants": [
+    "app/pricing.py::gross",
+    "app/orders.py::quote",
+    "app/orders.py::create_order"
+  ],
+  "expected_direct": [
+    "app/pricing.py::gross"
+  ],
+  "expected_flags": [
+    "signature_change_external_callers:app/pricing.py::net_price"
+  ],
+  "family": "F",
+  "id": "F1",
+  "modified": [
+    "app/pricing.py::net_price"
+  ],
+  "predicted_failing": [
+    "tests/test_pricing.py::test_net_price",
+    "tests/test_pricing.py::test_gross_plain",
+    "tests/test_pricing.py::test_gross_with_discount",
+    "tests/test_orders.py::test_quote",
+    "tests/test_orders.py::test_create_order",
+    "tests/test_orders.py::test_create_order_exact_stock",
+    "tests/test_orders.py::test_create_order_after_two_adds"
+  ],
+  "project": "S",
+  "title": "signature change: net_price gains a required parameter",
+  "tree": {
+    "base": "base",
+    "patched": "patched"
+  }
+}

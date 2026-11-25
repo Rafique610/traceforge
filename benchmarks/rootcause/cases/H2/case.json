@@ -1,0 +1,45 @@
+{
+  "abstain_expected": true,
+  "chain": [
+    "app/plugins.py::run",
+    "app/plugin_double.py::apply"
+  ],
+  "decoys": [],
+  "derivation": "run() imports app.plugin_<name> by a string built at runtime and calls its apply: no import or call edge exists in the source. plugin_double.apply multiplies by 3 instead of 2. Expected tool behaviour: flag the dynamic import as unknown and abstain.",
+  "edits": [
+    {
+      "kind": "create",
+      "new": "import importlib\n\n\ndef run(name, value):\n    module = importlib.import_module(f\"app.plugin_{name}\")\n    return module.apply(value)\n",
+      "old": null,
+      "path": "app/plugins.py"
+    },
+    {
+      "kind": "create",
+      "new": "def apply(value):\n    return value * 3\n",
+      "old": null,
+      "path": "app/plugin_double.py"
+    },
+    {
+      "kind": "create",
+      "new": "from app.plugins import run\n\n\ndef test_double_plugin():\n    assert run(\"double\", 4) == 8\n",
+      "old": null,
+      "path": "tests/test_plugins.py"
+    }
+  ],
+  "entry": "app/plugins.py::run",
+  "extra_deps": [],
+  "family": "H",
+  "gold": [
+    "app/plugin_double.py::apply"
+  ],
+  "gold_files": [
+    "app/plugin_double.py"
+  ],
+  "id": "H2",
+  "primary_test": "tests/test_plugins.py::test_double_plugin",
+  "project": "S",
+  "title": "importlib plugin loaded by a built string",
+  "tree": {
+    "repo": "repo"
+  }
+}
