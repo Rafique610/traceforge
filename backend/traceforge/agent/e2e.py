@@ -180,6 +180,10 @@ def run(a: argparse.Namespace) -> dict:
         inc = service.create_incident(
             db, IncidentCreate(case_id=case.case_id, service=case.service, symptom=incident_symptom)
         )  # fmt: skip
+    if db is not None and v5:
+        from traceforge.investigation import _SymptomPersistingEvidence
+
+        src.evidence = _SymptomPersistingEvidence(src.evidence, db, sym_obj)
     t0 = datetime.now(UTC)
     rec = run_case_with_repair(
         inc or case, a.condition, src,

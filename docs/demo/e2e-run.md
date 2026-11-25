@@ -72,3 +72,13 @@ Note: the "No code was changed" line under the first run predates the two fixes 
 
 ## BeatAPI patch check (2026-11-25, after the final sync)
 `agent.e2e --case shop_api-056 --condition G1 --provider beatapi --model glm-5.3-flash-free` (one case, no retries): HTTP 503 InternalServerError at the first diagnosis call after 298 s, 6,806 tokens in, 2,863 out, outcome NO_PATCH. This is the third 503 on this provider at the diagnosis step even though a short smoke call succeeds, so the free model is not usable for the investigation prompt. The patch stage on a strong model remains the owner-gated AxForge run above.
+
+## AxForge demonstration run (2026-11-25, owner-delegated, slot 2) — patch stage verified
+Command shape: `TRACEFORGE_AXFORGE_KEY_SLOT=2 python -m traceforge.agent.e2e --case shop_api-001 --condition G1 --provider axforge --model glm-5.3-flash --axforge-billing-verified --label EXPERIMENTAL-DEMO...` (persisting to the dev Postgres; outputs under `runs/axforge-demo/`). Not part of results/final and not an official run.
+- Attempt 1: the CLI hit the same "evidence ids not stored" defect as the route had; fixed in `agent/e2e.py` (same symptom-persisting evidence wrapper as `investigation.py`).
+- Attempt 2: diagnosis correct (configuration, `shop_api.REDIS_HOST`), patch call truncated at the default output cap: `NO_PATCH`, `output_truncated`.
+- Attempt 3 (output cap raised to 8,192 for this demo only): `TEST_VERIFIED_IN_LAB`, hidden gate passed, 2 attempts, 15,206 in / 4,830 out tokens.
+- Then through the API against the persisted incident: report populated (patch sha256, diff, impact rows, validation runs: reproducer and 35 visible tests passing on the final attempt, limitation text); a review with a wrong patch hash was refused (409, "patch hash does not match the frozen patch"); approval with the correct hash returned 201 and the incident went to CLOSED; a second review on the closed incident returned 409. Server stopped afterwards.
+- Cost: slot 2 ledger 1,209,905 -> 1,261,929 committed (52,024 tokens over the three runs). Combined ledger remaining about 690,700.
+- Still not exercised on a strong model: starting the run through `POST /incidents/{id}/investigate` (the API process cannot call the AxForge billing gate by design). Frontend not driven against this incident.
+- The reviewer name `owner-demo` on the approval is a demo label, not a real approval of the patch for merging.
