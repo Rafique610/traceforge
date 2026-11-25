@@ -15,7 +15,7 @@ All three steps map to Synverk card **TRAC-23** (one card, three owners' activit
 | Step ID | Task | Responsible | Dependencies | Status |
 |---|---|---|---|---|
 | [P4-S01](step-01-a3-experiments.md) | A3 experiments (TRAC-23) | Ruhan | P2-S07, P3-S01, P3-S02, P3-S04 | PARTIALLY COMPLETE (reduced evaluation; owner decision open) |
-| [P4-S02](step-02-failure-analysis-and-results.md) | Failure analysis and results (TRAC-23) | Rafique | P4-S01 | NOT STARTED |
+| [P4-S02](step-02-failure-analysis-and-results.md) | Failure analysis and results (TRAC-23) | Rafique | P4-S01 | IN PROGRESS (failure analysis approved 25 Nov; slides, rehearsal open) |
 | [P4-S03](step-03-demo-and-submission-pack.md) | Demo and submission pack (TRAC-23) | Ruhan | P0-S04, P2-S06, P3-S03, P4-S02 | PARTIALLY COMPLETE (no dry run) |
 
 ## Execution order

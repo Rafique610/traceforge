@@ -12,8 +12,10 @@
 | Reviewer | Muhammad Ruhan Kamran |
 | Priority | High |
 | Effort | 2 days |
-| Status | NOT STARTED |
-| Branch | `rafique/P4-S02-failure-analysis` |
+| Status | IN PROGRESS: failure analysis APPROVED by the owner 25 Nov 2026 (agent/repair rows A1 to A3 still await Ruhan's review); slides and rehearsal not started |
+| Branch | `main` (AGENTS.md: no step branches; the old branch name is superseded) |
+
+**Progress 2026-11-25 (Rafique).** Failure analysis drafted at `results/analysis/a3_failure_analysis.md` (the repo keeps tracked analyses in `results/analysis/`; there is no root `evaluation/` folder, so the path in G is superseded). 10 groups, 28 analysed failures, 6 taxonomy categories plus one new (`MODEL_OUTPUT_INVALID`), each with a planned fix mapped to a Phase 5 step or explicitly deferred. Sources: RC1 records via `results/analysis/failure_cases.csv`, the 25 Nov live free-model runs, and the P5-S06 retrieval benchmark. Ruhan was on a break, so Rafique drafted the agent/repair rows (A1 to A3) for Ruhan's review. Not done: `task eval:failures` export (the RC1 run directories are not on this laptop; `failure_cases.csv` is the committed export), slides, rehearsal.
 
 ## B. Objective
 Turn raw results into what the examiners assess: ≥10 failure examples grouped by cause with planned fixes (rubric D4), an interpretation of each baseline difference (D3), and slides/results that every member can explain (E2, E3).
@@ -33,10 +35,10 @@ Turn raw results into what the examiners assess: ≥10 failure examples grouped 
 5. Each member rehearses explaining the other's slides (viva E3 is individual).
 
 ## F. Checklist
-- [ ] Failure export generated
-- [ ] ≥5 analyses by Rafique, ≥5 by Ruhan; ≥4 categories
-- [ ] Planned fix and owner per category
-- [ ] `failure_analysis.md` committed
+- [x] Failure export generated (committed `results/analysis/failure_cases.csv`, 44 rows; `task eval:failures` not rerun, RC1 run dirs not on this laptop)
+- [ ] ≥5 analyses by Rafique, ≥5 by Ruhan; ≥4 categories (7 categories, 28 failures; all drafted by Rafique, A1 to A3 await Ruhan's review)
+- [x] Planned fix and owner per category
+- [x] `failure_analysis.md` committed (as `results/analysis/a3_failure_analysis.md`, owner-approved 25 Nov)
 - [ ] Slides built only from `report.json`
 - [ ] Run IDs footnoted
 - [ ] Cross-explanation rehearsal done
