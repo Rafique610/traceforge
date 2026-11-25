@@ -183,3 +183,51 @@ def test_usage_is_recorded_in_a_development_ledger():
     rows = [json.loads(x) for x in beatapi.LEDGER.read_text("utf-8").splitlines()]
     assert rows[0]["tier"] == "development" and rows[0]["input_tokens"] == 10
     assert rows[1]["usage_source"] == "unknown"
+
+
+def _chunk(content=None, tool=None, finish=None, usage=None):
+    tcs = None
+    if tool:
+        idx, name, args = tool
+        tcs = [SimpleNamespace(index=idx, function=SimpleNamespace(name=name, arguments=args))]
+    delta = SimpleNamespace(content=content, tool_calls=tcs)
+    choices = [SimpleNamespace(delta=delta, finish_reason=finish)] if usage is None else []
+    return SimpleNamespace(choices=choices, usage=usage)
+
+
+class StreamClient(FakeClient):
+    """Returns the reply as stream chunks: text, then one tool call split over three pieces."""
+
+    def _create(self, **kw):
+        self.calls.append(kw)
+        return iter(
+            [
+                _chunk(content="Looking at "),
+                _chunk(content="schemas."),
+                _chunk(tool=(0, "read_symbol", '{"path": "a.py",')),
+                _chunk(tool=(0, None, ' "qualname": ')),
+                _chunk(tool=(0, None, '"Order"}'), finish="tool_calls"),
+                _chunk(usage=SimpleNamespace(prompt_tokens=70, completion_tokens=9)),
+            ]
+        )
+
+
+def test_beatapi_requests_are_streamed_and_capped(isolated):
+    tmp, _ = isolated
+    client = StreamClient()
+    tools = [{"type": "function", "function": {"name": "read_symbol", "parameters": {}}}]
+    r = chat([{"role": "user", "content": "x"}], tools, settings=settings(tmp), client=client,
+             use_cache=False, max_tokens=9000)  # fmt: skip
+    sent = client.calls[0]
+    assert sent["stream"] is True and sent["stream_options"] == {"include_usage": True}
+    assert sent["max_tokens"] == beatapi.STREAM_MAX_TOKENS  # a larger request is capped
+    assert r.content == "Looking at schemas." and r.finish_reason == "tool_calls"
+    assert [(t.name, json.loads(t.arguments)) for t in r.tool_calls] == [
+        ("read_symbol", {"path": "a.py", "qualname": "Order"})
+    ]
+    assert (r.tokens_in, r.tokens_out) == (70, 9)
+
+
+def test_collect_stream_passes_a_non_streamed_reply_through():
+    done = SimpleNamespace(choices=[], usage=None)
+    assert beatapi.collect_stream(done) is done

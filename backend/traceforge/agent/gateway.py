@@ -134,8 +134,9 @@ def _call_beatapi(client: Any, kwargs: dict[str, Any]) -> Any:
     if (why := beatapi.halted()) is not None:  # the first failure ended BeatAPI use: no more calls
         raise GatewayError(f"beatapi halted after the first provider failure ({why}); not retried")
     beatapi.pace()
-    try:
-        resp = client.chat.completions.create(**kwargs)
+    try:  # streamed: a long silent reply was cut off by the provider (see beatapi.stream_kwargs)
+        raw = client.chat.completions.create(**beatapi.stream_kwargs(kwargs))
+        resp = beatapi.collect_stream(raw)
     except openai.APIConnectionError as e:
         beatapi.halt("cannot reach beatapi")
         beatapi.stamp_done()

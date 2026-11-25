@@ -252,3 +252,38 @@ def record_usage(usage, *, path: Path | None = None) -> None:
     p.parent.mkdir(parents=True, exist_ok=True)
     with p.open("a", encoding="utf-8") as f:
         f.write(json.dumps(row) + chr(10))
+
+
+# --- streaming: long non-streamed replies were cut off by the provider (503 after ~5 min) ---------
+STREAM_MAX_TOKENS = 2048  # output cap per call, reasoning included: < 300 s even at ~10 tok/s
+
+
+def stream_kwargs(kwargs: dict) -> dict:
+    """Ask for a streamed reply with usage, output capped at STREAM_MAX_TOKENS."""
+    cap = min(int(kwargs.get("max_tokens") or STREAM_MAX_TOKENS), STREAM_MAX_TOKENS)
+    return kwargs | {"stream": True, "stream_options": {"include_usage": True}, "max_tokens": cap}
+
+
+def collect_stream(raw):
+    """Join streamed chunks into the shape of a non-streamed completion. A raw object that already
+    has `choices` (a non-streamed reply) is returned unchanged."""
+    from types import SimpleNamespace as NS
+
+    if hasattr(raw, "choices"):
+        return raw
+    content, calls, finish, usage = [], {}, None, None
+    for ch in raw:
+        usage = getattr(ch, "usage", None) or usage
+        if not getattr(ch, "choices", None):
+            continue
+        c = ch.choices[0]
+        finish = c.finish_reason or finish
+        content.append(c.delta.content or "")
+        for tc in c.delta.tool_calls or []:
+            slot = calls.setdefault(tc.index, {"name": "", "arguments": ""})
+            if tc.function is not None:
+                slot["name"] += tc.function.name or ""
+                slot["arguments"] += tc.function.arguments or ""
+    tool_calls = [NS(function=NS(**calls[i])) for i in sorted(calls)] or None
+    msg = NS(content="".join(content) or None, tool_calls=tool_calls)
+    return NS(choices=[NS(message=msg, finish_reason=finish)], usage=usage)
