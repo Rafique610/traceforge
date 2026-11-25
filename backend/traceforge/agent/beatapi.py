@@ -255,7 +255,7 @@ def record_usage(usage, *, path: Path | None = None) -> None:
 
 
 # --- streaming: long non-streamed replies were cut off by the provider (503 after ~5 min) ---------
-STREAM_MAX_TOKENS = 2048  # output cap per call, reasoning included: < 300 s even at ~10 tok/s
+STREAM_MAX_TOKENS = 4096  # output cap per call incl. reasoning; 2048 cut the model's thinking short
 
 
 def stream_kwargs(kwargs: dict) -> dict:
