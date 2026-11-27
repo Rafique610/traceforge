@@ -14,6 +14,7 @@ App-wide: `main.py` (create app, middleware, include routers; nothing else), `co
 - Every endpoint with a body or meaningful query params declares a Pydantic model in `schemas.py`. No unnamed dict bodies.
 - Constrain values in the schema (enums, ranges, lengths) so bad input gets a 422 before it touches the DB.
 - Typed responses where sensible, so `/docs` is a usable test console. Tell the user how to test each new endpoint in `/docs`.
+- After any change to a shared contract in `backend/traceforge/contracts/`, run `task contracts:schema` and commit the regenerated `contracts/schema/*.json` in the same commit. CI's "contracts (schema drift)" job fails otherwise (missed once, 27 Nov 2026).
 
 ## Database
 - PostgreSQL through SQLAlchemy 2.x ORM; migrations with Alembic. No raw SQL strings.
