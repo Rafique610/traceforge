@@ -1,0 +1,425 @@
+[
+ {
+  "case_id": "bugsinpy-fastapi-10",
+  "split": "test",
+  "cause_class": "application_code",
+  "fault_family": "bugsinpy",
+  "service": "fastapi",
+  "base_sha": "b77a43bcac3ec8e7edbe82543e777c60ae85c178",
+  "gold_config_keys": [],
+  "gold_symbols": [
+   {
+    "path": "lab/fastapi/fastapi/routing.py",
+    "qualname": "serialize_response",
+    "start_line": 37,
+    "end_line": 63
+   }
+  ],
+  "distance": 0,
+  "reproducer_id": "datasets/reproducers/bugsinpy-fastapi-10/test_symptom.py::test_return_defaults",
+  "visible_test_ids": [],
+  "hidden_test_ids": [
+   "datasets/hidden_tests/bugsinpy-fastapi-10/test_hidden_behaviour.py::test_return_defaults"
+  ],
+  "variant_group": "bugsinpy:fastapi-10",
+  "origin": "bugsinpy",
+  "log_format": "none"
+ },
+ {
+  "case_id": "bugsinpy-fastapi-11",
+  "split": "test",
+  "cause_class": "application_code",
+  "fault_family": "bugsinpy",
+  "service": "fastapi",
+  "base_sha": "bf229ad5d830eb5320f966d51a55e590e8d57008",
+  "gold_config_keys": [],
+  "gold_symbols": [
+   {
+    "path": "lab/fastapi/fastapi/dependencies/utils.py",
+    "qualname": "is_scalar_field",
+    "start_line": 133,
+    "end_line": 139
+   }
+  ],
+  "distance": 0,
+  "reproducer_id": "datasets/reproducers/bugsinpy-fastapi-11/test_symptom.py::test_item_openapi_schema",
+  "visible_test_ids": [],
+  "hidden_test_ids": [
+   "datasets/hidden_tests/bugsinpy-fastapi-11/test_hidden_behaviour.py::test_item_openapi_schema",
+   "datasets/hidden_tests/bugsinpy-fastapi-11/test_hidden_behaviour.py::test_post_other_item",
+   "datasets/hidden_tests/bugsinpy-fastapi-11/test_hidden_behaviour.py::test_post_item",
+   "datasets/hidden_tests/bugsinpy-fastapi-11/test_hidden_behaviour.py::test_inherited_item_openapi_schema",
+   "datasets/hidden_tests/bugsinpy-fastapi-11/test_hidden_behaviour.py::test_post_extended_item",
+   "datasets/hidden_tests/bugsinpy-fastapi-11/test_hidden_behaviour.py::test_post_item"
+  ],
+  "variant_group": "bugsinpy:fastapi-11",
+  "origin": "bugsinpy",
+  "log_format": "none"
+ },
+ {
+  "case_id": "bugsinpy-fastapi-12",
+  "split": "test",
+  "cause_class": "application_code",
+  "fault_family": "bugsinpy",
+  "service": "fastapi",
+  "base_sha": "d61f5e4b555b123bf222503fc0e076cbae6a7ebc",
+  "gold_config_keys": [],
+  "gold_symbols": [
+   {
+    "path": "lab/fastapi/fastapi/security/http.py",
+    "qualname": "HTTPBearer.__call__",
+    "start_line": 102,
+    "end_line": 119
+   }
+  ],
+  "distance": 0,
+  "reproducer_id": "datasets/reproducers/bugsinpy-fastapi-12/test_symptom.py::test_security_http_bearer_incorrect_scheme_credentials",
+  "visible_test_ids": [],
+  "hidden_test_ids": [
+   "datasets/hidden_tests/bugsinpy-fastapi-12/test_hidden_behaviour.py::test_security_http_bearer_incorrect_scheme_credentials"
+  ],
+  "variant_group": "bugsinpy:fastapi-12",
+  "origin": "bugsinpy",
+  "log_format": "none"
+ },
+ {
+  "case_id": "bugsinpy-fastapi-13",
+  "split": "test",
+  "cause_class": "application_code",
+  "fault_family": "bugsinpy",
+  "service": "fastapi",
+  "base_sha": "6f7f9268f6b03f42831dcfeaa5c15ba9813333ec",
+  "gold_config_keys": [],
+  "gold_symbols": [
+   {
+    "path": "lab/fastapi/fastapi/routing.py",
+    "qualname": "APIRouter.include_router",
+    "start_line": 275,
+    "end_line": 321
+   }
+  ],
+  "distance": 0,
+  "reproducer_id": "datasets/reproducers/bugsinpy-fastapi-13/test_symptom.py::test_openapi_schema",
+  "visible_test_ids": [],
+  "hidden_test_ids": [
+   "datasets/hidden_tests/bugsinpy-fastapi-13/test_hidden_behaviour.py::test_openapi_schema"
+  ],
+  "variant_group": "bugsinpy:fastapi-13",
+  "origin": "bugsinpy",
+  "log_format": "none"
+ },
+ {
+  "case_id": "bugsinpy-fastapi-14",
+  "split": "test",
+  "cause_class": "application_code",
+  "fault_family": "bugsinpy",
+  "service": "fastapi",
+  "base_sha": "2ddb804940bbcad4ed730b2a910c8fd3c1167127",
+  "gold_config_keys": [],
+  "gold_symbols": [
+   {
+    "path": "lab/fastapi/fastapi/openapi/models.py",
+    "qualname": "SchemaBase",
+    "start_line": 77,
+    "end_line": 113
+   },
+   {
+    "path": "lab/fastapi/fastapi/openapi/models.py",
+    "qualname": "Schema",
+    "start_line": 116,
+    "end_line": 123
+   },
+   {
+    "path": "lab/fastapi/fastapi/openapi/models.py",
+    "qualname": "Operation",
+    "start_line": 215,
+    "end_line": 228
+   }
+  ],
+  "distance": 0,
+  "reproducer_id": "datasets/reproducers/bugsinpy-fastapi-14/test_symptom.py::test_additional_properties_schema",
+  "visible_test_ids": [],
+  "hidden_test_ids": [
+   "datasets/hidden_tests/bugsinpy-fastapi-14/test_hidden_behaviour.py::test_additional_properties_schema"
+  ],
+  "variant_group": "bugsinpy:fastapi-14",
+  "origin": "bugsinpy",
+  "log_format": "none"
+ },
+ {
+  "case_id": "bugsinpy-fastapi-15",
+  "split": "test",
+  "cause_class": "application_code",
+  "fault_family": "bugsinpy",
+  "service": "fastapi",
+  "base_sha": "b16ca54c30644667ab9f65a712704850666a039c",
+  "gold_config_keys": [],
+  "gold_symbols": [
+   {
+    "path": "lab/fastapi/fastapi/routing.py",
+    "qualname": "APIRouter.include_router",
+    "start_line": 240,
+    "end_line": 273
+   }
+  ],
+  "distance": 0,
+  "reproducer_id": "datasets/reproducers/bugsinpy-fastapi-15/test_symptom.py::test_router",
+  "visible_test_ids": [],
+  "hidden_test_ids": [
+   "datasets/hidden_tests/bugsinpy-fastapi-15/test_hidden_behaviour.py::test_router",
+   "datasets/hidden_tests/bugsinpy-fastapi-15/test_hidden_behaviour.py::test_prefix_router"
+  ],
+  "variant_group": "bugsinpy:fastapi-15",
+  "origin": "bugsinpy",
+  "log_format": "none"
+ },
+ {
+  "case_id": "bugsinpy-fastapi-16",
+  "split": "test",
+  "cause_class": "application_code",
+  "fault_family": "bugsinpy",
+  "service": "fastapi",
+  "base_sha": "92c825be6a7362099400c9c3fe8b01ea13add3dc",
+  "gold_config_keys": [],
+  "gold_symbols": [
+   {
+    "path": "lab/fastapi/fastapi/encoders.py",
+    "qualname": "jsonable_encoder",
+    "start_line": 9,
+    "end_line": 79
+   }
+  ],
+  "distance": 0,
+  "reproducer_id": "datasets/reproducers/bugsinpy-fastapi-16/test_symptom.py::test_encode_model_with_config",
+  "visible_test_ids": [],
+  "hidden_test_ids": [
+   "datasets/hidden_tests/bugsinpy-fastapi-16/test_hidden_behaviour.py::test_encode_model_with_config"
+  ],
+  "variant_group": "bugsinpy:fastapi-16",
+  "origin": "bugsinpy",
+  "log_format": "none"
+ },
+ {
+  "case_id": "bugsinpy-fastapi-2",
+  "split": "test",
+  "cause_class": "application_code",
+  "fault_family": "bugsinpy",
+  "service": "fastapi",
+  "base_sha": "210af1fd3dc0f612a08fa02a0cb3f5adb81e5bfb",
+  "gold_config_keys": [],
+  "gold_symbols": [
+   {
+    "path": "lab/fastapi/fastapi/routing.py",
+    "qualname": "APIRouter.add_api_websocket_route",
+    "start_line": 498,
+    "end_line": 502
+   }
+  ],
+  "distance": 0,
+  "reproducer_id": "datasets/reproducers/bugsinpy-fastapi-2/test_symptom.py::test_router_ws_depends_with_override",
+  "visible_test_ids": [],
+  "hidden_test_ids": [
+   "datasets/hidden_tests/bugsinpy-fastapi-2/test_hidden_behaviour.py::test_router_ws_depends_with_override"
+  ],
+  "variant_group": "bugsinpy:fastapi-2",
+  "origin": "bugsinpy",
+  "log_format": "none"
+ },
+ {
+  "case_id": "bugsinpy-fastapi-3",
+  "split": "test",
+  "cause_class": "application_code",
+  "fault_family": "bugsinpy",
+  "service": "fastapi",
+  "base_sha": "869c7389e22dc9ad659940fa271da76c4f3ba3b1",
+  "gold_config_keys": [],
+  "gold_symbols": [
+   {
+    "path": "lab/fastapi/fastapi/routing.py",
+    "qualname": "serialize_response",
+    "start_line": 51,
+    "end_line": 90
+   }
+  ],
+  "distance": 0,
+  "reproducer_id": "datasets/reproducers/bugsinpy-fastapi-3/test_symptom.py::test_valid",
+  "visible_test_ids": [],
+  "hidden_test_ids": [
+   "datasets/hidden_tests/bugsinpy-fastapi-3/test_hidden_behaviour.py::test_valid",
+   "datasets/hidden_tests/bugsinpy-fastapi-3/test_hidden_behaviour.py::test_coerce",
+   "datasets/hidden_tests/bugsinpy-fastapi-3/test_hidden_behaviour.py::test_validlist",
+   "datasets/hidden_tests/bugsinpy-fastapi-3/test_hidden_behaviour.py::test_validdict",
+   "datasets/hidden_tests/bugsinpy-fastapi-3/test_hidden_behaviour.py::test_valid_exclude_unset",
+   "datasets/hidden_tests/bugsinpy-fastapi-3/test_hidden_behaviour.py::test_coerce_exclude_unset",
+   "datasets/hidden_tests/bugsinpy-fastapi-3/test_hidden_behaviour.py::test_validlist_exclude_unset",
+   "datasets/hidden_tests/bugsinpy-fastapi-3/test_hidden_behaviour.py::test_validdict_exclude_unset"
+  ],
+  "variant_group": "bugsinpy:fastapi-3",
+  "origin": "bugsinpy",
+  "log_format": "none"
+ },
+ {
+  "case_id": "bugsinpy-fastapi-4",
+  "split": "test",
+  "cause_class": "application_code",
+  "fault_family": "bugsinpy",
+  "service": "fastapi",
+  "base_sha": "7ccd81f70653857bd8f3a15ee946aa3fb0edc2cb",
+  "gold_config_keys": [],
+  "gold_symbols": [
+   {
+    "path": "lab/fastapi/fastapi/openapi/utils.py",
+    "qualname": "get_openapi_path",
+    "start_line": 158,
+    "end_line": 268
+   }
+  ],
+  "distance": 0,
+  "reproducer_id": "datasets/reproducers/bugsinpy-fastapi-4/test_symptom.py::test_reused_param",
+  "visible_test_ids": [],
+  "hidden_test_ids": [
+   "datasets/hidden_tests/bugsinpy-fastapi-4/test_hidden_behaviour.py::test_reused_param"
+  ],
+  "variant_group": "bugsinpy:fastapi-4",
+  "origin": "bugsinpy",
+  "log_format": "none"
+ },
+ {
+  "case_id": "bugsinpy-fastapi-5",
+  "split": "test",
+  "cause_class": "application_code",
+  "fault_family": "bugsinpy",
+  "service": "fastapi",
+  "base_sha": "7cea84b74ca3106a7f861b774e9d215e5228728f",
+  "gold_config_keys": [],
+  "gold_symbols": [
+   {
+    "path": "lab/fastapi/fastapi/utils.py",
+    "qualname": "create_cloned_field",
+    "start_line": 89,
+    "end_line": 154
+   }
+  ],
+  "distance": 0,
+  "reproducer_id": "datasets/reproducers/bugsinpy-fastapi-5/test_symptom.py::test_filter_sub_model",
+  "visible_test_ids": [],
+  "hidden_test_ids": [
+   "datasets/hidden_tests/bugsinpy-fastapi-5/test_hidden_behaviour.py::test_filter_sub_model"
+  ],
+  "variant_group": "bugsinpy:fastapi-5",
+  "origin": "bugsinpy",
+  "log_format": "none"
+ },
+ {
+  "case_id": "bugsinpy-fastapi-6",
+  "split": "test",
+  "cause_class": "application_code",
+  "fault_family": "bugsinpy",
+  "service": "fastapi",
+  "base_sha": "5db99a27cf640864b4793807811848698c5ff4a2",
+  "gold_config_keys": [],
+  "gold_symbols": [
+   {
+    "path": "lab/fastapi/fastapi/dependencies/utils.py",
+    "qualname": "request_body_to_args",
+    "start_line": 617,
+    "end_line": 685
+   }
+  ],
+  "distance": 0,
+  "reproducer_id": "datasets/reproducers/bugsinpy-fastapi-6/test_symptom.py::test_python_list_param_as_form",
+  "visible_test_ids": [],
+  "hidden_test_ids": [
+   "datasets/hidden_tests/bugsinpy-fastapi-6/test_hidden_behaviour.py::test_python_list_param_as_form",
+   "datasets/hidden_tests/bugsinpy-fastapi-6/test_hidden_behaviour.py::test_python_set_param_as_form",
+   "datasets/hidden_tests/bugsinpy-fastapi-6/test_hidden_behaviour.py::test_python_tuple_param_as_form"
+  ],
+  "variant_group": "bugsinpy:fastapi-6",
+  "origin": "bugsinpy",
+  "log_format": "none"
+ },
+ {
+  "case_id": "bugsinpy-fastapi-7",
+  "split": "test",
+  "cause_class": "application_code",
+  "fault_family": "bugsinpy",
+  "service": "fastapi",
+  "base_sha": "cc4c13e4ae3f65fc76c23962b316df4a60e0c7e0",
+  "gold_config_keys": [],
+  "gold_symbols": [
+   {
+    "path": "lab/fastapi/fastapi/exception_handlers.py",
+    "qualname": "request_validation_exception_handler",
+    "start_line": 18,
+    "end_line": 23
+   }
+  ],
+  "distance": 0,
+  "reproducer_id": "datasets/reproducers/bugsinpy-fastapi-7/test_symptom.py::test_jsonable_encoder_requiring_error",
+  "visible_test_ids": [],
+  "hidden_test_ids": [
+   "datasets/hidden_tests/bugsinpy-fastapi-7/test_hidden_behaviour.py::test_jsonable_encoder_requiring_error"
+  ],
+  "variant_group": "bugsinpy:fastapi-7",
+  "origin": "bugsinpy",
+  "log_format": "none"
+ },
+ {
+  "case_id": "bugsinpy-fastapi-8",
+  "split": "test",
+  "cause_class": "application_code",
+  "fault_family": "bugsinpy",
+  "service": "fastapi",
+  "base_sha": "fdb6d43e103bcf7a7325d796e37c9435c9460e4c",
+  "gold_config_keys": [],
+  "gold_symbols": [
+   {
+    "path": "lab/fastapi/fastapi/routing.py",
+    "qualname": "APIRouter.add_api_route",
+    "start_line": 328,
+    "end_line": 375
+   },
+   {
+    "path": "lab/fastapi/fastapi/routing.py",
+    "qualname": "APIRouter.include_router",
+    "start_line": 440,
+    "end_line": 506
+   }
+  ],
+  "distance": 0,
+  "reproducer_id": "datasets/reproducers/bugsinpy-fastapi-8/test_symptom.py::test_route_classes",
+  "visible_test_ids": [],
+  "hidden_test_ids": [
+   "datasets/hidden_tests/bugsinpy-fastapi-8/test_hidden_behaviour.py::test_route_classes"
+  ],
+  "variant_group": "bugsinpy:fastapi-8",
+  "origin": "bugsinpy",
+  "log_format": "none"
+ },
+ {
+  "case_id": "bugsinpy-fastapi-9",
+  "split": "test",
+  "cause_class": "application_code",
+  "fault_family": "bugsinpy",
+  "service": "fastapi",
+  "base_sha": "a7a92bc63768ccee3f3afc2b73b2c581928dfe75",
+  "gold_config_keys": [],
+  "gold_symbols": [
+   {
+    "path": "lab/fastapi/fastapi/dependencies/utils.py",
+    "qualname": "get_body_field",
+    "start_line": 549,
+    "end_line": 579
+   }
+  ],
+  "distance": 0,
+  "reproducer_id": "datasets/reproducers/bugsinpy-fastapi-9/test_symptom.py::test_openapi_schema",
+  "visible_test_ids": [],
+  "hidden_test_ids": [
+   "datasets/hidden_tests/bugsinpy-fastapi-9/test_hidden_behaviour.py::test_openapi_schema"
+  ],
+  "variant_group": "bugsinpy:fastapi-9",
+  "origin": "bugsinpy",
+  "log_format": "none"
+ }
+]

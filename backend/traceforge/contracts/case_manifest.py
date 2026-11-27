@@ -24,7 +24,7 @@ class CaseManifest(BaseModel):
     split: Literal["dev", "test"]
     cause_class: CauseClass
     fault_family: str
-    service: Literal["shop_api", "worker"]
+    service: Literal["shop_api", "worker", "fastapi"]  # fastapi: BugsInPy cases (P5-S05)
     base_sha: str
     gold_config_keys: list[str] = []
     gold_symbols: list[GoldSymbol] = []

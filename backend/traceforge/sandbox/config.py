@@ -6,6 +6,7 @@ from dataclasses import dataclass
 @dataclass(frozen=True)
 class SandboxConfig:
     requirements: str = "pytest==8.3.4"  # space-separated pip specs baked into the image
+    base_image: str = "python:3.12-slim"  # BugsInPy cases need their own Python (P5-S05)
     memory: str = "512m"
     cpus: str = "1"
     pids_limit: int = 128

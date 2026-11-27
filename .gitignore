@@ -49,3 +49,7 @@ results/*
 !results/analysis/
 results/analysis/e1-test-all151/
 
+
+# BugsInPy-derived test dirs (no licence on BugsInPy metadata; regenerate with traceforge.external.bugsinpy)
+datasets/reproducers/bugsinpy-*/
+datasets/hidden_tests/bugsinpy-*/

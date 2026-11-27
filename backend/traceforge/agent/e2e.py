@@ -66,8 +66,13 @@ def _git(repo: Path, *args: str) -> str:
 
 def build_repo(case: CaseManifest, datasets: Path, dest: Path) -> tuple[Path, str]:
     """Faulty tree as a git repo (the repair loop works on worktrees of its HEAD)."""
-    patch = (datasets / "cases" / case.case_id / "mutation.patch").read_text("utf-8")
-    materialize(patch, dest)
+    if case.origin == "bugsinpy":  # a real project's buggy commit, in the lab layout (P5-S05)
+        from traceforge.external.bugsinpy import materialize_case
+
+        materialize_case(case, dest)
+    else:
+        patch = (datasets / "cases" / case.case_id / "mutation.patch").read_text("utf-8")
+        materialize(patch, dest)
     subprocess.run(["git", "init", "-q", "-b", "main", str(dest)], check=True)  # noqa: S603,S607
     _git(dest, "config", "core.autocrlf", "false")
     _git(dest, "add", "-A")
