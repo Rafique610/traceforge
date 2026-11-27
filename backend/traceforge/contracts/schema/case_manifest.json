@@ -63,7 +63,8 @@
     "service": {
       "enum": [
         "shop_api",
-        "worker"
+        "worker",
+        "fastapi"
       ],
       "title": "Service",
       "type": "string"
