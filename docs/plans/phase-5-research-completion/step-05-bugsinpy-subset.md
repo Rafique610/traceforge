@@ -12,7 +12,7 @@
 | Reviewer | Muhammad Ruhan Kamran (contract change in section E.2 touches the shared contract) |
 | Priority | High. Raised from Low on 27 Nov 2026 at the owner's request: this is the answer to "you planted the bugs" |
 | Effort | 2.5 days (converter + image 1 day, red/green validation 0.5 day, runs 1 evening, write-up 0.5 day) |
-| Status | PARTIALLY COMPLETE (27 Nov 2026): importer, sandbox support and validation done (14 of 15 fastapi bugs kept); 1 live free-model run (bug 5). The owner stopped here (free tokens used up for the week); the 13-bug live batch is optional and handed to Ruhan (`docs/plans/HANDOFF_TO_RUHAN.md`) |
+| Status | PARTIALLY COMPLETE (27 Nov 2026): importer, sandbox support and validation done (14 of 15 fastapi bugs kept); 1 live free-model attempt (bug 5: no result, provider outage then a 25-min timeout without a diagnosis). The owner stopped here (free tokens used up for the week); the 13-bug live batch is optional and handed to Ruhan (`docs/plans/HANDOFF_TO_RUHAN.md`) |
 | Branch | `main` (no step branches, per AGENTS.md) |
 
 ## B. Objective
@@ -97,7 +97,7 @@ This tests **application-code** bugs only. Public datasets have no Docker runtim
 - [x] Per-version sandbox image; tag hash covers the base image
 - [x] Red/green validation twice per bug; drop list (fastapi-16) in `results/analysis/free_model_live_runs.md`
 - [x] Evidence bundles saved
-- [ ] 10 runs done on the free model (1 done: bug 5; rest optional, handed over)
+- [ ] 10 runs done on the free model (1 attempted: bug 5, no result; rest optional, handed over)
 - [x] Separate results table with limits and contamination note
 - [x] RC1 fingerprint unchanged (`ee3d8d87…`), checked before hand-off
 

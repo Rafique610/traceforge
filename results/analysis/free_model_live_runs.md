@@ -46,6 +46,10 @@ Details: `runs/external/bugsinpy/validation.json` (local).
 
 | Bug | Real fix | Outcome | Notes |
 |---|---|---|---|
-| bugsinpy-fastapi-5 | `fastapi/utils.py::create_cloned_field` (1 line) | _filled in below_ | first try: provider unreachable (outage, not an AI failure); retried after 15 min |
+| bugsinpy-fastapi-5 | `fastapi/utils.py::create_cloned_field` (1 line) | **No result** (inconclusive, not counted as a fix or a failure) | Try 1 (11:46): provider unreachable, no AI call (an outage, not an AI failure). Try 2 (12:11): 6 AI calls, every answer very short (14–50 output tokens, ~9k input), then the runner's 25-min time limit killed it before a diagnosis was submitted. Its log is empty (output was buffered). Stopped there by the owner to save free tokens |
 
-Remaining 13 validated bugs: not run (out of free tokens this week). Command to run them: `bash repeat_runner`-style batch, see `docs/plans/HANDOFF_TO_RUHAN.md` section 4.
+**Reading.** The pipeline works on this real bug (the stand-in run verified it), but the free model did not produce a diagnosis on it within the time limit. The short answers suggest it kept making tool calls (reading code) instead of submitting. On a repo much larger than the lab, that's plausible but unconfirmed, because the log was lost. **Do not present this as a result; present the validation and the stand-in run.**
+
+**Fixed for the next run:** `scripts/live_batch.sh` now runs unbuffered (`PYTHONUNBUFFERED=1`, so a killed run still leaves its log) with a 45-min limit.
+
+Remaining 13 validated bugs: not run (out of free tokens this week). Command: `bash scripts/live_batch.sh 0 "2 3 4 6 7 8 9 10 11 12 13 14 15"` (see `docs/plans/HANDOFF_TO_RUHAN.md` section 4).

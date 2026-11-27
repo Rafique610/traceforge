@@ -18,8 +18,8 @@ run_one() {  # $1 case, $2 rep, $3 try -> sets REASON
   local c=$1 rep=$2 try=$3 t L N0 st oc calls mx
   t=$(date +%H:%M); N0=$(wc -l < "$LEDGER")
   L=$OUT/bugsinpy-fastapi-$c-r$rep-t$try.log
-  MANIFEST="$S/../datasets/manifests/bugsinpy.json" REAL_MODEL=1 TRACEFORGE_LLM_PROVIDER=beatapi TRACEFORGE_LLM_MODEL=glm-5.3-flash-free \
-    timeout 1500 .venv/Scripts/python.exe "$S/live_investigate.py" "bugsinpy-fastapi-$c" > "$L" 2>&1
+  PYTHONUNBUFFERED=1 MANIFEST="$S/../datasets/manifests/bugsinpy.json" REAL_MODEL=1 TRACEFORGE_LLM_PROVIDER=beatapi TRACEFORGE_LLM_MODEL=glm-5.3-flash-free \
+    timeout 2700 .venv/Scripts/python.exe "$S/live_investigate.py" "bugsinpy-fastapi-$c" > "$L" 2>&1
   st=$(grep -m1 "final state" "$L" | sed 's/final state: //; s/ | cause: /,/')
   REASON=$(grep -o '"reason": "[^"]*"' "$L" | tail -1 | cut -d'"' -f4)
   oc=$(grep -o '"outcome": "[^"]*"' "$L" | tail -1 | cut -d'"' -f4)

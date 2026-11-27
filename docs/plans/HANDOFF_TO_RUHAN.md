@@ -32,7 +32,7 @@ Full tables: [`results/analysis/free_model_live_runs.md`](../../results/analysis
 3. **Independent real bugs (BugsInPy, 27 Nov):**
    - 14 of 15 real FastAPI bugs validated in our sandbox (each fails before the real fix and passes after, twice);
    - the full pipeline verified bug 5 with a stand-in model;
-   - one live free-model run on bug 5 (result in `free_model_live_runs.md` section 3).
+   - one live free-model attempt on bug 5 gave **no result**: one provider outage, then a 25-min timeout after 6 very short AI answers. Don't show it as a result; details are in `free_model_live_runs.md` section 3.
 
    This answers "you planted the bugs". State the limits on the slide: code bugs only, the only evidence is the test's output, and the model may have seen these public fixes during training.
 4. **Retrieval benchmark:** recall@10 = 0.556 for both search methods on 45 queries over real libraries. The gold labels are AI-drafted and not yet human-checked; say so.
@@ -49,7 +49,7 @@ Run IDs and log paths are in each results file. The A3 brief allows "slides or a
 - [ ] **Review rows A1–A3** in `results/analysis/a3_failure_analysis.md` (your agent/repair rows; Rafique drafted them).
 - [ ] **Self-evaluation form, submission pack, then ask the owner before tagging.**
 
-Optional, only if there is time and free tokens: run the other 13 validated BugsInPy bugs. It's one command (section 4) and takes about 2–3 h unattended. Each fix adds a row to the independent-test table.
+Optional, only if there is time and free tokens: run the other 13 validated BugsInPy bugs. It's one command (section 4) and takes about 3–6 h unattended (45-min limit per bug). Try bug 2 or 4 alone first: the one live attempt (bug 5) timed out without a diagnosis, so check that a single run finishes before starting the batch.
 
 ## 4. How to run things
 
@@ -91,4 +91,4 @@ cd .. && bash scripts/live_batch.sh 0 "2 3 4 6 7 8 9 10 11 12 13 14 15"         
 - The free provider has had 10–20 min outages, so the demo needs the backup video.
 - The 98 retrieval gold labels are AI-drafted and unchecked.
 - The A3 deadline date is not recorded in the docs (Q8); confirm it with the supervisor.
-- P5-S05 is a pilot, not a full experiment: 14 bugs validated, 1 run live. The A4 plan can extend it.
+- P5-S05 is a pilot, not a full experiment: 14 bugs validated, 1 live attempt without a result. The A4 plan can extend it.

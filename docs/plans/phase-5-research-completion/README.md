@@ -16,7 +16,7 @@
 | [P5-S02](step-02-statistics.md) | Statistics (TRAC-25) | Rafique | P4-S03 | NOT STARTED |
 | [P5-S03](step-03-full-factorial-runs.md) | Full 2×2 × 3 runs (TRAC-28) | Ruhan | P4-S03 | PARTIALLY COMPLETE (reduced evaluation) |
 | [P5-S04](step-04-model-sensitivity.md) | Model sensitivity (TRAC-29) | Ruhan | P5-S03 (G1 runs) | PARTIALLY COMPLETE (setup + monitor; no comparison) |
-| [P5-S05](step-05-bugsinpy-subset.md) | BugsInPy subset: independent real-bug test, 10-bug fastapi pilot (TRAC-27; raised to High 27 Nov) | Rafique | sandbox, Investigate path, free model | PARTIALLY COMPLETE (14 bugs validated, 1 live run; batch optional, handed to Ruhan) |
+| [P5-S05](step-05-bugsinpy-subset.md) | BugsInPy subset: independent real-bug test, 10-bug fastapi pilot (TRAC-27; raised to High 27 Nov) | Rafique | sandbox, Investigate path, free model | PARTIALLY COMPLETE (14 bugs validated, 1 live attempt without result; batch optional, handed to Ruhan) |
 | [P5-S06](step-06-retrieval-benchmark-and-baselines.md) | Retrieval benchmark + baselines RET-L / RET-G, dev split (essential) | Rafique | P3-S01 (done), review of P2-S02/S03 | IMPLEMENTED, TESTED (not reviewed) |
 | [P5-S07](step-07-incremental-index-and-embedding-cache.md) | Incremental chunk manifest, embedding cache, index verifier (essential) | Rafique | P5-S06 (data model in parallel) | IMPLEMENTED, TESTED (not reviewed) |
 | [P5-S08](step-08-embedding-retrieval-and-fusion.md) | RET-E + fusion arms RET-LE/LG/LGE, ADR 0003 decision gate (essential) | Rafique | P5-S06, P5-S07 | DONE, preregistered NO-GO (not reviewed; ADR 0003 PROPOSED) |
